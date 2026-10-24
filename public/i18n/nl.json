@@ -6,6 +6,7 @@
   "NAV": {
     "HOME": "Hoe het werkt",
     "LEADERBOARD": "Ranglijst",
+    "CHECK": "Tipster checken",
     "GITHUB": "GitHub",
     "MENU": "Menu",
     "VERIFY": "Verifiëren",
@@ -385,6 +386,13 @@
       "BODY": "Gratis tracker, openbaar profiel, dezelfde regels voor iedereen.",
       "SOURCE": "Bekijk de broncode",
       "START": "Volg je tips"
+    },
+    "CHECK": {
+      "TITLE": "Check een tipster voordat je betaalt",
+      "BODY": "Iemand wil je via een DM een VIP-kanaal verkopen? Plak zijn naam. Elke eerlijke tipster kan hier een openbaar track record hebben; zonder track record valt niets van wat hij beweert te bewijzen.",
+      "LABEL": "Naam van de tipster of Discord-ID",
+      "PLACEHOLDER": "Naam op OpenCapper, Discord, Telegram of Polymarket",
+      "SUBMIT": "Checken"
     }
   },
   "LEADERBOARD": {
@@ -452,7 +460,8 @@
       "PICKS": "{count, plural, one {# tip} other {# tips}}",
       "SMALL_SAMPLE": "Kleine steekproef: ROI over {count, number} beoordeelde tips zegt nog weinig",
       "EMPTY": "Nog geen tipster heeft een tip vastgelegd in deze selectie."
-    }
+    },
+    "CHECK_LINK": "Tipster checken"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} in totaal",
@@ -564,6 +573,19 @@
       "OWNER_HINT": "Je hebt dit profiel geclaimd. Je kunt het op elk moment weer openbaar maken.",
       "UNHIDE": "Dit profiel weer tonen",
       "FAILED": "De wijziging kon niet worden opgeslagen."
+    },
+    "SHARE": {
+      "TITLE": "Deel je track record",
+      "DESCRIPTION": "Zet deze link in je Discord-bio en je kanalen. Iedereen kan hem controleren en nadoeners kunnen hem niet vervalsen.",
+      "PREVIEW": "Live badge, bijgewerkt bij elke beoordeelde tip.",
+      "PROFILE_URL": "Profiellink",
+      "BIO": "Regel voor je Discord-bio",
+      "BIO_LINE": "Geverifieerd track record: {url}",
+      "MARKDOWN": "Markdown-badge",
+      "HTML": "HTML-badge",
+      "BADGE_ALT": "Geverifieerd OpenCapper track record",
+      "COPY": "Kopiëren",
+      "COPIED": "Gekopieerd naar het klembord"
     }
   },
   "SPORTS": {
@@ -777,6 +799,68 @@
     "EXPORT": {
       "TITLE": "Het volledige logboek naspelen",
       "BODY": "Deze endpoints zijn openbaar en vereisen geen account. Blader op volgorde door de vermeldingen, hash elke vastgelegde tip, keten de leaves vanaf 32 nulbytes en vergelijk het resultaat met de head."
+    }
+  },
+  "CHECK": {
+    "LABEL": "Tipster checken",
+    "TITLE": "Tipster checken",
+    "DESCRIPTION": "Zoek elke tipster op via zijn naam op OpenCapper, Discord, Telegram of Polymarket en bekijk het geverifieerde track record, of de waarschuwing dat er geen is.",
+    "HEADING": "Is deze tipster echt?",
+    "SUBHEADING": "Oplichters kopiëren namen en profielfoto's van bekende tipsters en verkopen nep-VIP-toegang via DM's. Een echt track record staat op OpenCapper en kan niet worden bewerkt. Zoek het op voordat je iemand betaalt.",
+    "ERROR": "Het opzoeken is mislukt. Probeer het later opnieuw.",
+    "FORM": {
+      "LABEL": "Wie wil je checken?",
+      "PLACEHOLDER": "Gebruikersnaam, Discord-ID, Telegram-naam of Polymarket-wallet",
+      "SUBMIT": "Checken",
+      "HINT": "Profiellinks werken ook. E-mailadressen zijn nooit doorzoekbaar of zichtbaar."
+    },
+    "RESULT": {
+      "COUNT": "Gevonden profielen: {count, number}",
+      "PROFILE": "Volledig track record openen",
+      "WARNING": "Vergelijk de naam letter voor letter en vraag om de OpenCapper-link. Nepaccounts kunnen een naam en foto kopiëren, maar niet het track record erachter.",
+      "NO_GRADED": "Nog geen beoordeelde tips, dus er is geen track record om te beoordelen. Zie elk geclaimd winstpercentage als onbewezen."
+    },
+    "MATCH": {
+      "USERNAME": "Gevonden via OpenCapper-gebruikersnaam",
+      "DISCORD": "Gevonden via Discord-account",
+      "TELEGRAM": "Gevonden via Telegram-account",
+      "POLYMARKET": "Gevonden via Polymarket-wallet of naam",
+      "REDDIT": "Gevonden via Reddit-naam"
+    },
+    "STATUS": {
+      "MEMBER": "Geverifieerd lid"
+    },
+    "STATS": {
+      "RECORD": "Track record",
+      "RECORD_HINT": "Winst, verlies, push",
+      "UNITS": "Units",
+      "ROI": "ROI",
+      "NO_ROI": "Geen beoordeelde tips",
+      "SAMPLE": "Beoordeelde tips",
+      "PENDING": "{count, number} open",
+      "LAST": "Laatste tip {date}",
+      "NO_LAST": "Nog geen tips"
+    },
+    "SPLIT": {
+      "LIVE": "Hier vastgelegde live tips",
+      "HISTORY": "On chain historie",
+      "UNITS": "{units} units"
+    },
+    "NONE": {
+      "TITLE": "Geen geverifieerd track record voor {query}",
+      "BODY": "Wie tips verkoopt zonder openbaar track record, kan het niet bewijzen. Vraag om de OpenCapper-link.",
+      "TIP_1": "Echte tipsters delen hun track record-link openlijk. Wie weigert, heeft daar een reden voor.",
+      "TIP_2": "Screenshots van wedbonnen en winstreeksen zijn in seconden vervalst. Een vastgelegd track record met tijdstempel niet.",
+      "TIP_3": "Betaal een onbekende uit je DM's nooit vooruit met cadeaukaarten, crypto of vrienden en familie overboekingen."
+    },
+    "HOW": {
+      "TITLE": "Zo check je een tipster",
+      "STEP_1_TITLE": "Zoek de naam op",
+      "STEP_1_BODY": "Zoek de exacte naam die hij op Discord, Telegram of Polymarket gebruikt, of plak zijn Discord-ID.",
+      "STEP_2_TITLE": "Open het track record",
+      "STEP_2_BODY": "Elke tip in het track record is voor de wedstrijd vastgelegd tegen odds die het platform heeft vastgelegd. Niets kan worden bewerkt of verwijderd.",
+      "STEP_3_TITLE": "Geen track record, geen vertrouwen",
+      "STEP_3_BODY": "Verschijnt er geen track record, dan kan de tipster geen enkele winst bewijzen. Vraag om de OpenCapper-link voordat je betaalt."
     }
   },
   "SOURCES": {

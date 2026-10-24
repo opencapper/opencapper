@@ -1,6 +1,7 @@
 import type { PickMarket, PickResult } from "@/lib/api/typebox/picks";
 import type { LeaderboardScope } from "@/lib/api/typebox/leaderboard";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
+import type { CheckMatchKind, CheckStatus } from "@/lib/api/typebox/check";
 import type { SportGroup } from "@/lib/config/sports";
 import type { AuthRole } from "@/lib/config/permissions";
 import type { Messages, useTranslations } from "next-intl";
@@ -212,6 +213,35 @@ export type ApiHistoryPick = {
   awayImage?: string | null;
   homeCountry?: string | null;
   awayCountry?: string | null;
+};
+
+export type CheckRecord = {
+  graded: number;
+  wins: number;
+  losses: number;
+  pushes: number;
+  units: number;
+  unitsRisked: number;
+  roi: number;
+};
+
+export type CheckMatch = {
+  username: string;
+  avatarUrl: string | null;
+  matchedBy: CheckMatchKind;
+  status: CheckStatus;
+  platform: SourcePlatform | null;
+  claimedBy: string | null;
+  // Live is every pick locked here; history is imported on chain trades, never live.
+  live: CheckRecord & { pending: number };
+  history: CheckRecord | null;
+  total: CheckRecord;
+  lastPickAt: string | null;
+};
+
+export type CapperCheck = {
+  query: string;
+  matches: CheckMatch[];
 };
 
 export type RecapResponse = {

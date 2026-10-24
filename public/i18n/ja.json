@@ -6,6 +6,7 @@
   "NAV": {
     "HOME": "使い方",
     "LEADERBOARD": "ランキング",
+    "CHECK": "予想家を照会",
     "GITHUB": "GitHub",
     "MENU": "メニュー",
     "VERIFY": "検証",
@@ -385,6 +386,13 @@
       "BODY": "無料のトラッカー、公開プロフィール、全員に同じルール。",
       "SOURCE": "ソースコードを見る",
       "START": "予想を記録する"
+    },
+    "CHECK": {
+      "TITLE": "お金を払う前に予想家を照会",
+      "BODY": "DMでVIPチャンネルを売り込まれましたか？その名前を貼り付けてください。誠実な予想家はここに公開の成績を持てます。成績がなければ、その主張は何ひとつ証明できません。",
+      "LABEL": "予想家の名前またはDiscord ID",
+      "PLACEHOLDER": "OpenCapper、Discord、Telegram、Polymarketの名前",
+      "SUBMIT": "照会"
     }
   },
   "LEADERBOARD": {
@@ -452,7 +460,8 @@
       "PICKS": "{count, plural, other {#件の予想}}",
       "SMALL_SAMPLE": "サンプル不足：判定済み{count, number}件のROIでは、まだほとんど何もわかりません",
       "EMPTY": "この条件で予想を登録した予想家はまだいません。"
-    }
+    },
+    "CHECK_LINK": "予想家を照会する"
   },
   "TABLE": {
     "TOTAL_COUNT": "合計 {count, number} 件",
@@ -564,6 +573,19 @@
       "OWNER_HINT": "あなたはこのプロフィールを申請済みです。いつでも再び公開できます。",
       "UNHIDE": "このプロフィールを再表示する",
       "FAILED": "変更を保存できませんでした。"
+    },
+    "SHARE": {
+      "TITLE": "成績を共有する",
+      "DESCRIPTION": "このリンクをDiscordのプロフィールやチャンネルに載せましょう。誰でも確認でき、なりすましには偽造できません。",
+      "PREVIEW": "ライブバッジ。判定済みの予想ごとに更新されます。",
+      "PROFILE_URL": "プロフィールリンク",
+      "BIO": "Discordプロフィール用の一文",
+      "BIO_LINE": "検証済みの成績：{url}",
+      "MARKDOWN": "Markdownバッジ",
+      "HTML": "HTMLバッジ",
+      "BADGE_ALT": "OpenCapperの検証済み成績",
+      "COPY": "コピー",
+      "COPIED": "クリップボードにコピーしました"
     }
   },
   "SPORTS": {
@@ -777,6 +799,68 @@
     "EXPORT": {
       "TITLE": "ログ全体を再現",
       "BODY": "これらのエンドポイントは公開されており、アカウントは不要です。エントリーを順番にページ送りで取得し、記録された予想をそれぞれハッシュ化し、32個のゼロバイトから始めてリーフをチェーンし、結果をヘッドと比較してください。"
+    }
+  },
+  "CHECK": {
+    "LABEL": "予想家を照会",
+    "TITLE": "予想家を照会",
+    "DESCRIPTION": "OpenCapper、Discord、Telegram、Polymarketの名前で予想家を検索し、検証済みの成績、または成績がないという警告を確認できます。",
+    "HEADING": "この予想家は本物？",
+    "SUBHEADING": "詐欺師は有名な予想家の名前やアイコンをコピーし、DMで偽のVIPアクセスを販売します。本物の成績はOpenCapperにあり、編集できません。誰かにお金を払う前に照会してください。",
+    "ERROR": "照会に失敗しました。しばらくしてから再度お試しください。",
+    "FORM": {
+      "LABEL": "誰を照会しますか？",
+      "PLACEHOLDER": "ユーザー名、Discord ID、Telegram名、Polymarketウォレット",
+      "SUBMIT": "照会",
+      "HINT": "プロフィールリンクも使えます。メールアドレスは検索も表示もされません。"
+    },
+    "RESULT": {
+      "COUNT": "一致したプロフィール：{count, number}",
+      "PROFILE": "成績をすべて見る",
+      "WARNING": "名前を一文字ずつ比べ、OpenCapperのリンクを求めてください。なりすましアカウントは名前やアイコンはコピーできても、その裏の成績はコピーできません。",
+      "NO_GRADED": "判定済みの予想がまだないため、評価できる成績はありません。主張される的中率は証明されていないものとして扱ってください。"
+    },
+    "MATCH": {
+      "USERNAME": "OpenCapperのユーザー名で一致",
+      "DISCORD": "Discordアカウントで一致",
+      "TELEGRAM": "Telegramアカウントで一致",
+      "POLYMARKET": "Polymarketのウォレットまたは名前で一致",
+      "REDDIT": "Redditの名前で一致"
+    },
+    "STATUS": {
+      "MEMBER": "認証済みメンバー"
+    },
+    "STATS": {
+      "RECORD": "成績",
+      "RECORD_HINT": "勝ち、負け、引き分け",
+      "UNITS": "ユニット",
+      "ROI": "ROI",
+      "NO_ROI": "判定済みの予想なし",
+      "SAMPLE": "判定済みの予想",
+      "PENDING": "未判定 {count, number} 件",
+      "LAST": "最新の予想 {date}",
+      "NO_LAST": "まだ予想がありません"
+    },
+    "SPLIT": {
+      "LIVE": "ここで確定したライブ予想",
+      "HISTORY": "オンチェーン履歴",
+      "UNITS": "{units} ユニット"
+    },
+    "NONE": {
+      "TITLE": "{query} の検証済み成績はありません",
+      "BODY": "公開の成績なしに予想を売る人は、それを証明できません。OpenCapperのリンクを求めてください。",
+      "TIP_1": "本物の予想家は成績のリンクを堂々と共有します。拒む人には理由があります。",
+      "TIP_2": "馬券やベット画面、連勝のスクリーンショットは数秒で偽造できます。確定済みでタイムスタンプ付きの成績はできません。",
+      "TIP_3": "DMで声をかけてきた見知らぬ人に、ギフトカード、暗号資産、知人間送金で前払いしないでください。"
+    },
+    "HOW": {
+      "TITLE": "予想家の照会方法",
+      "STEP_1_TITLE": "名前を検索",
+      "STEP_1_BODY": "Discord、Telegram、Polymarketで使っている正確な名前を検索するか、Discord IDを貼り付けます。",
+      "STEP_2_TITLE": "成績を開く",
+      "STEP_2_BODY": "成績にある予想はすべて試合前に、プラットフォームが取得したオッズで確定されています。編集も削除もできません。",
+      "STEP_3_TITLE": "成績なしは信用なし",
+      "STEP_3_BODY": "成績が見つからなければ、その予想家は一度の的中も証明できません。支払う前にOpenCapperのリンクを求めてください。"
     }
   },
   "SOURCES": {

@@ -6,6 +6,7 @@
   "NAV": {
     "HOME": "So funktioniert's",
     "LEADERBOARD": "Rangliste",
+    "CHECK": "Capper checken",
     "GITHUB": "GitHub",
     "MENU": "Menü",
     "VERIFY": "Prüfen",
@@ -385,6 +386,13 @@
       "BODY": "Kostenloser Tracker, öffentliches Profil, dieselben Regeln für alle.",
       "SOURCE": "Quellcode lesen",
       "START": "Tipps erfassen"
+    },
+    "CHECK": {
+      "TITLE": "Prüfe einen Capper, bevor du zahlst",
+      "BODY": "Jemand will dir per DM einen VIP-Kanal verkaufen? Füge seinen Namen ein. Jeder ehrliche Capper kann hier eine öffentliche Bilanz haben; ohne Bilanz lässt sich nichts von dem beweisen, was er behauptet.",
+      "LABEL": "Capper-Name oder Discord-ID",
+      "PLACEHOLDER": "Name auf OpenCapper, Discord, Telegram oder Polymarket",
+      "SUBMIT": "Prüfen"
     }
   },
   "LEADERBOARD": {
@@ -452,7 +460,8 @@
       "PICKS": "{count, plural, one {# Tipp} other {# Tipps}}",
       "SMALL_SAMPLE": "Kleine Stichprobe: Der ROI aus {count, number} gewerteten Tipps sagt noch wenig aus",
       "EMPTY": "In dieser Auswahl hat noch kein Capper einen Tipp erfasst."
-    }
+    },
+    "CHECK_LINK": "Capper checken"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} gesamt",
@@ -564,6 +573,19 @@
       "OWNER_HINT": "Du hast dieses Profil beansprucht. Du kannst es jederzeit wieder öffentlich machen.",
       "UNHIDE": "Profil wieder anzeigen",
       "FAILED": "Die Änderung konnte nicht gespeichert werden."
+    },
+    "SHARE": {
+      "TITLE": "Teile deine Bilanz",
+      "DESCRIPTION": "Setze diesen Link in deine Discord-Bio und deine Kanäle. Jeder kann ihn prüfen, und Nachahmer können ihn nicht fälschen.",
+      "PREVIEW": "Live-Badge, aktualisiert mit jedem gewerteten Tipp.",
+      "PROFILE_URL": "Profil-Link",
+      "BIO": "Zeile für die Discord-Bio",
+      "BIO_LINE": "Verifizierte Bilanz: {url}",
+      "MARKDOWN": "Markdown-Badge",
+      "HTML": "HTML-Badge",
+      "BADGE_ALT": "Verifizierte OpenCapper-Bilanz",
+      "COPY": "Kopieren",
+      "COPIED": "In die Zwischenablage kopiert"
     }
   },
   "SPORTS": {
@@ -777,6 +799,68 @@
     "EXPORT": {
       "TITLE": "Das ganze Protokoll nachspielen",
       "BODY": "Diese Endpunkte sind öffentlich und brauchen kein Konto. Blättere die Einträge der Reihe nach durch, hashe jeden protokollierten Tipp, verkette die Blätter ab 32 Null Bytes und vergleiche das Ergebnis mit dem Kopf."
+    }
+  },
+  "CHECK": {
+    "LABEL": "Capper checken",
+    "TITLE": "Capper checken",
+    "DESCRIPTION": "Finde jeden Capper über seinen Namen auf OpenCapper, Discord, Telegram oder Polymarket und sieh die verifizierte Bilanz oder die Warnung, dass es keine gibt.",
+    "HEADING": "Ist dieser Capper echt?",
+    "SUBHEADING": "Betrüger kopieren Namen und Profilbilder bekannter Capper und verkaufen per DM gefälschte VIP-Zugänge. Eine echte Bilanz liegt auf OpenCapper und kann nicht bearbeitet werden. Prüfe sie, bevor du irgendwem Geld schickst.",
+    "ERROR": "Die Suche ist fehlgeschlagen. Bitte versuche es später erneut.",
+    "FORM": {
+      "LABEL": "Wen möchtest du prüfen?",
+      "PLACEHOLDER": "Nutzername, Discord-ID, Telegram-Name oder Polymarket-Wallet",
+      "SUBMIT": "Prüfen",
+      "HINT": "Profil-Links funktionieren auch. E-Mail-Adressen sind nie durchsuchbar oder sichtbar."
+    },
+    "RESULT": {
+      "COUNT": "Passende Profile: {count, number}",
+      "PROFILE": "Ganze Bilanz öffnen",
+      "WARNING": "Vergleiche den Namen Buchstabe für Buchstabe und frag nach dem OpenCapper-Link. Doppelgänger-Konten können Namen und Bild kopieren, aber nicht die Bilanz dahinter.",
+      "NO_GRADED": "Noch keine gewerteten Tipps, also gibt es keine Bilanz zu beurteilen. Behandle jede behauptete Trefferquote als unbewiesen."
+    },
+    "MATCH": {
+      "USERNAME": "Gefunden über OpenCapper-Nutzername",
+      "DISCORD": "Gefunden über Discord-Konto",
+      "TELEGRAM": "Gefunden über Telegram-Konto",
+      "POLYMARKET": "Gefunden über Polymarket-Wallet oder Namen",
+      "REDDIT": "Gefunden über Reddit-Namen"
+    },
+    "STATUS": {
+      "MEMBER": "Verifiziertes Mitglied"
+    },
+    "STATS": {
+      "RECORD": "Bilanz",
+      "RECORD_HINT": "Siege, Niederlagen, Pushes",
+      "UNITS": "Einheiten",
+      "ROI": "ROI",
+      "NO_ROI": "Keine gewerteten Tipps",
+      "SAMPLE": "Gewertete Tipps",
+      "PENDING": "{count, number} offen",
+      "LAST": "Letzter Tipp {date}",
+      "NO_LAST": "Noch keine Tipps"
+    },
+    "SPLIT": {
+      "LIVE": "Hier gesperrte Live-Tipps",
+      "HISTORY": "On Chain Historie",
+      "UNITS": "{units} Einheiten"
+    },
+    "NONE": {
+      "TITLE": "Keine verifizierte Bilanz für {query}",
+      "BODY": "Wer Tipps ohne öffentliche Bilanz verkauft, kann nichts beweisen. Frag nach dem OpenCapper-Link.",
+      "TIP_1": "Echte Capper teilen ihren Bilanz-Link offen. Wer sich weigert, hat einen Grund.",
+      "TIP_2": "Screenshots von Wettscheinen und Siegesserien sind in Sekunden gefälscht. Eine gesperrte Bilanz mit Zeitstempel nicht.",
+      "TIP_3": "Zahle Fremden aus deinen DMs nie im Voraus mit Gutscheinkarten, Krypto oder Überweisungen an Freunde und Familie."
+    },
+    "HOW": {
+      "TITLE": "So prüfst du einen Capper",
+      "STEP_1_TITLE": "Namen suchen",
+      "STEP_1_BODY": "Suche den exakten Namen, den er auf Discord, Telegram oder Polymarket nutzt, oder füge seine Discord-ID ein.",
+      "STEP_2_TITLE": "Bilanz öffnen",
+      "STEP_2_BODY": "Jeder Tipp der Bilanz wurde vor dem Spiel zu Quoten gesperrt, die die Plattform erfasst hat. Nichts lässt sich bearbeiten oder löschen.",
+      "STEP_3_TITLE": "Keine Bilanz, kein Vertrauen",
+      "STEP_3_BODY": "Erscheint keine Bilanz, kann der Capper keinen einzigen Treffer beweisen. Frag vor dem Bezahlen nach seinem OpenCapper-Link."
     }
   },
   "SOURCES": {

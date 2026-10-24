@@ -6,6 +6,7 @@
   "NAV": {
     "HOME": "Como funciona",
     "LEADERBOARD": "Ranking",
+    "CHECK": "Consultar tipster",
     "GITHUB": "GitHub",
     "MENU": "Menu",
     "VERIFY": "Verificar",
@@ -385,6 +386,13 @@
       "BODY": "Acompanhamento grátis, perfil público, as mesmas regras para todo mundo.",
       "SOURCE": "Ler o código-fonte",
       "START": "Acompanhe seus palpites"
+    },
+    "CHECK": {
+      "TITLE": "Consulte um tipster antes de pagar",
+      "BODY": "Alguém na sua DM vendendo um canal VIP? Cole o nome dele. Todo tipster honesto pode ter um histórico público aqui; sem histórico, nada do que ele diz pode ser provado.",
+      "LABEL": "Nome do tipster ou ID do Discord",
+      "PLACEHOLDER": "Nome no OpenCapper, Discord, Telegram ou Polymarket",
+      "SUBMIT": "Consultar"
     }
   },
   "LEADERBOARD": {
@@ -452,7 +460,8 @@
       "PICKS": "{count, plural, one {# palpite} other {# palpites}}",
       "SMALL_SAMPLE": "Amostra pequena: o ROI sobre {count, number} palpites liquidados ainda diz pouco",
       "EMPTY": "Nenhum tipster registrou um palpite nesta seleção ainda."
-    }
+    },
+    "CHECK_LINK": "Consultar um tipster"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} no total",
@@ -564,6 +573,19 @@
       "OWNER_HINT": "Você reivindicou este perfil. Pode torná-lo público de novo quando quiser.",
       "UNHIDE": "Mostrar este perfil de novo",
       "FAILED": "Não foi possível salvar a alteração."
+    },
+    "SHARE": {
+      "TITLE": "Compartilhe seu histórico",
+      "DESCRIPTION": "Coloque este link na sua bio do Discord e nos seus canais. Qualquer pessoa pode conferir, e impostores não conseguem falsificar.",
+      "PREVIEW": "Selo ao vivo, atualizado a cada palpite liquidado.",
+      "PROFILE_URL": "Link do perfil",
+      "BIO": "Linha para a bio do Discord",
+      "BIO_LINE": "Histórico verificado: {url}",
+      "MARKDOWN": "Selo em Markdown",
+      "HTML": "Selo em HTML",
+      "BADGE_ALT": "Histórico verificado no OpenCapper",
+      "COPY": "Copiar",
+      "COPIED": "Copiado para a área de transferência"
     }
   },
   "SPORTS": {
@@ -777,6 +799,68 @@
     "EXPORT": {
       "TITLE": "Refazer o registro completo",
       "BODY": "Estes endpoints são públicos e não exigem conta. Percorra as entradas em ordem, calcule o hash de cada palpite registrado, encadeie as folhas a partir de 32 bytes zero e compare o resultado com o topo."
+    }
+  },
+  "CHECK": {
+    "LABEL": "Consultar um tipster",
+    "TITLE": "Consultar um tipster",
+    "DESCRIPTION": "Pesquise qualquer tipster pelo nome no OpenCapper, Discord, Telegram ou Polymarket e veja o histórico verificado, ou o aviso de que não existe nenhum.",
+    "HEADING": "Esse tipster é real?",
+    "SUBHEADING": "Golpistas copiam o nome e a foto de tipsters conhecidos e vendem acessos VIP falsos pela DM. Um histórico real fica no OpenCapper e não pode ser editado. Consulte antes de pagar qualquer pessoa.",
+    "ERROR": "A consulta falhou. Tente novamente mais tarde.",
+    "FORM": {
+      "LABEL": "Quem você quer consultar?",
+      "PLACEHOLDER": "Usuário, ID do Discord, nome no Telegram ou carteira da Polymarket",
+      "SUBMIT": "Consultar",
+      "HINT": "Links de perfil também funcionam. E-mails nunca podem ser pesquisados nem são exibidos."
+    },
+    "RESULT": {
+      "COUNT": "Perfis encontrados: {count, number}",
+      "PROFILE": "Abrir histórico completo",
+      "WARNING": "Compare o nome letra por letra e peça o link do OpenCapper. Contas falsas conseguem copiar um nome e uma foto, mas não o histórico por trás deles.",
+      "NO_GRADED": "Ainda não há palpites liquidados, então não há histórico para avaliar. Trate qualquer taxa de acerto alegada como não comprovada."
+    },
+    "MATCH": {
+      "USERNAME": "Encontrado pelo usuário do OpenCapper",
+      "DISCORD": "Encontrado pela conta do Discord",
+      "TELEGRAM": "Encontrado pela conta do Telegram",
+      "POLYMARKET": "Encontrado pela carteira ou nome da Polymarket",
+      "REDDIT": "Encontrado pelo nome no Reddit"
+    },
+    "STATUS": {
+      "MEMBER": "Membro verificado"
+    },
+    "STATS": {
+      "RECORD": "Histórico",
+      "RECORD_HINT": "Vitórias, derrotas, reembolsos",
+      "UNITS": "Unidades",
+      "ROI": "ROI",
+      "NO_ROI": "Nenhum palpite liquidado",
+      "SAMPLE": "Palpites liquidados",
+      "PENDING": "{count, number} pendentes",
+      "LAST": "Último palpite {date}",
+      "NO_LAST": "Nenhum palpite ainda"
+    },
+    "SPLIT": {
+      "LIVE": "Palpites ao vivo travados aqui",
+      "HISTORY": "Histórico on-chain",
+      "UNITS": "{units} unidades"
+    },
+    "NONE": {
+      "TITLE": "Nenhum histórico verificado para {query}",
+      "BODY": "Quem vende palpites sem um histórico público não tem como provar. Peça o link do OpenCapper.",
+      "TIP_1": "Tipsters de verdade compartilham o link do histórico sem problema. Quem se recusa tem um motivo.",
+      "TIP_2": "Prints de bilhetes e sequências de vitórias são falsificados em segundos. Um histórico travado e com data e hora, não.",
+      "TIP_3": "Nunca pague adiantado a um desconhecido da sua DM com cartão presente, cripto ou transferência entre amigos."
+    },
+    "HOW": {
+      "TITLE": "Como consultar um tipster",
+      "STEP_1_TITLE": "Pesquise o nome",
+      "STEP_1_BODY": "Pesquise o nome exato que ele usa no Discord, Telegram ou Polymarket, ou cole o ID do Discord dele.",
+      "STEP_2_TITLE": "Abra o histórico",
+      "STEP_2_BODY": "Cada palpite do histórico foi travado antes do jogo com odds capturadas pela plataforma. Nada pode ser editado ou apagado.",
+      "STEP_3_TITLE": "Sem histórico, sem confiança",
+      "STEP_3_BODY": "Se nenhum histórico aparecer, o tipster não consegue provar nem um acerto. Peça o link do OpenCapper antes de pagar."
     }
   },
   "SOURCES": {

@@ -32,5 +32,6 @@ export const isActiveLink = (
 export const navigation = [
   { name: "NAV.HOME", href: "/", iconName: "house", exact: true },
   { name: "NAV.LEADERBOARD", href: "/leaderboard", iconName: "trophy" },
+  { name: "NAV.CHECK", href: "/check", iconName: "user-search" },
   { name: "NAV.VERIFY", href: "/verify", iconName: "shield-check" },
 ] satisfies NavigationItem[];

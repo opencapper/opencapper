@@ -4,6 +4,7 @@ import { PageHeading } from "@/components/elements/page/page-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { useLeaderboardQuery } from "@/hooks/leaderboard/leaderboard-hook";
+import { Link } from "@/i18n/navigation";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { useTranslations } from "next-intl";
 import { useLeaderboardFilters } from "./leaderboard-filters";
@@ -37,7 +38,14 @@ export function Leaderboard(props: { minGraded: number }) {
             className="text-foreground/80 underline-offset-4 hover:underline"
           >
             {t("METHOD.TITLE")}
-          </a>
+          </a>{" "}
+          <Link
+            href="/check"
+            className="text-foreground/80 inline-flex items-center gap-1 underline-offset-4 hover:underline"
+          >
+            <Icon name="user-search" className="size-3.5" />
+            {t("CHECK_LINK")}
+          </Link>
         </p>
       </PageHeading>
 

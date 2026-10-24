@@ -8,6 +8,7 @@ export const queryKeys = {
   userStats: (username: string) => ["user-stats", username] as const,
   userHistory: (username: string) => ["user-history", username] as const,
   myClaims: () => ["my-claims"] as const,
+  capperCheck: (q: string) => ["capper-check", q] as const,
   eventBoard: (sportKey: string) => ["event-board", sportKey] as const,
   eventLeagues: () => ["event-leagues"] as const,
   eventOdds: (sportKey: string, eventId: string) =>

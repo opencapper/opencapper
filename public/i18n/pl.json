@@ -6,6 +6,7 @@
   "NAV": {
     "HOME": "Jak to działa",
     "LEADERBOARD": "Ranking",
+    "CHECK": "Sprawdź typera",
     "GITHUB": "GitHub",
     "MENU": "Menu",
     "VERIFY": "Weryfikuj",
@@ -385,6 +386,13 @@
       "BODY": "Darmowy tracker, publiczny profil, te same zasady dla wszystkich.",
       "SOURCE": "Przeczytaj kod",
       "START": "Śledź swoje typy"
+    },
+    "CHECK": {
+      "TITLE": "Sprawdź typera, zanim zapłacisz",
+      "BODY": "Ktoś w wiadomościach prywatnych sprzedaje ci kanał VIP? Wklej jego nazwę. Każdy uczciwy typer może mieć tu publiczną historię; bez historii nie da się udowodnić niczego, co twierdzi.",
+      "LABEL": "Nazwa typera lub ID Discord",
+      "PLACEHOLDER": "Nazwa na OpenCapper, Discord, Telegram lub Polymarket",
+      "SUBMIT": "Sprawdź"
     }
   },
   "LEADERBOARD": {
@@ -452,7 +460,8 @@
       "PICKS": "{count, plural, one {# typ} few {# typy} many {# typów} other {# typu}}",
       "SMALL_SAMPLE": "Mała próba: ROI z {count, number} rozliczonych typów jeszcze niewiele mówi",
       "EMPTY": "Żaden typer nie zapisał jeszcze typu w tym wyborze."
-    }
+    },
+    "CHECK_LINK": "Sprawdź typera"
   },
   "TABLE": {
     "TOTAL_COUNT": "łącznie {count, number}",
@@ -564,6 +573,19 @@
       "OWNER_HINT": "Ten profil został przez ciebie przejęty. W każdej chwili możesz go znowu upublicznić.",
       "UNHIDE": "Pokaż ten profil ponownie",
       "FAILED": "Nie udało się zapisać zmiany."
+    },
+    "SHARE": {
+      "TITLE": "Udostępnij swoją historię",
+      "DESCRIPTION": "Umieść ten link w bio na Discordzie i na swoich kanałach. Każdy może go sprawdzić, a podszywający się nie mogą go podrobić.",
+      "PREVIEW": "Odznaka na żywo, aktualizowana po każdym rozliczonym typie.",
+      "PROFILE_URL": "Link do profilu",
+      "BIO": "Linijka do bio na Discordzie",
+      "BIO_LINE": "Zweryfikowana historia: {url}",
+      "MARKDOWN": "Odznaka Markdown",
+      "HTML": "Odznaka HTML",
+      "BADGE_ALT": "Zweryfikowana historia OpenCapper",
+      "COPY": "Kopiuj",
+      "COPIED": "Skopiowano do schowka"
     }
   },
   "SPORTS": {
@@ -777,6 +799,68 @@
     "EXPORT": {
       "TITLE": "Odtwórz cały rejestr",
       "BODY": "Te endpointy są publiczne i nie wymagają konta. Przechodź po wpisach po kolei, licz hash każdego zapisanego typu, łącz liście w łańcuch, zaczynając od 32 bajtów zerowych, i porównaj wynik z głową."
+    }
+  },
+  "CHECK": {
+    "LABEL": "Sprawdź typera",
+    "TITLE": "Sprawdź typera",
+    "DESCRIPTION": "Wyszukaj dowolnego typera po nazwie na OpenCapper, Discordzie, Telegramie lub Polymarket i zobacz jego zweryfikowaną historię albo ostrzeżenie, że jej nie ma.",
+    "HEADING": "Czy ten typer jest prawdziwy?",
+    "SUBHEADING": "Oszuści kopiują nazwy i zdjęcia znanych typerów i sprzedają fałszywy dostęp VIP w wiadomościach prywatnych. Prawdziwa historia jest na OpenCapper i nie da się jej edytować. Sprawdź ją, zanim komukolwiek zapłacisz.",
+    "ERROR": "Wyszukiwanie nie powiodło się. Spróbuj ponownie później.",
+    "FORM": {
+      "LABEL": "Kogo chcesz sprawdzić?",
+      "PLACEHOLDER": "Nazwa użytkownika, ID Discord, nazwa na Telegramie lub portfel Polymarket",
+      "SUBMIT": "Sprawdź",
+      "HINT": "Linki do profili też działają. Adresów e-mail nigdy nie da się wyszukać ani zobaczyć."
+    },
+    "RESULT": {
+      "COUNT": "Pasujące profile: {count, number}",
+      "PROFILE": "Otwórz pełną historię",
+      "WARNING": "Porównaj nazwę litera po literze i poproś o link do OpenCapper. Konta podróbki mogą skopiować nazwę i zdjęcie, ale nie historię, która za nimi stoi.",
+      "NO_GRADED": "Brak rozliczonych typów, więc nie ma historii do oceny. Każdą deklarowaną skuteczność traktuj jako niepotwierdzoną."
+    },
+    "MATCH": {
+      "USERNAME": "Znaleziono po nazwie użytkownika OpenCapper",
+      "DISCORD": "Znaleziono po koncie Discord",
+      "TELEGRAM": "Znaleziono po koncie Telegram",
+      "POLYMARKET": "Znaleziono po portfelu lub nazwie Polymarket",
+      "REDDIT": "Znaleziono po nazwie na Reddicie"
+    },
+    "STATUS": {
+      "MEMBER": "Zweryfikowany członek"
+    },
+    "STATS": {
+      "RECORD": "Bilans",
+      "RECORD_HINT": "Wygrane, przegrane, zwroty",
+      "UNITS": "Jednostki",
+      "ROI": "ROI",
+      "NO_ROI": "Brak rozliczonych typów",
+      "SAMPLE": "Rozliczone typy",
+      "PENDING": "Oczekujące: {count, number}",
+      "LAST": "Ostatni typ {date}",
+      "NO_LAST": "Jeszcze brak typów"
+    },
+    "SPLIT": {
+      "LIVE": "Typy na żywo zablokowane tutaj",
+      "HISTORY": "Historia on-chain",
+      "UNITS": "Jednostki: {units}"
+    },
+    "NONE": {
+      "TITLE": "Brak zweryfikowanej historii dla {query}",
+      "BODY": "Kto sprzedaje typy bez publicznej historii, nie może tego udowodnić. Poproś o link do OpenCapper.",
+      "TIP_1": "Prawdziwi typerzy otwarcie udostępniają link do swojej historii. Kto odmawia, ma ku temu powód.",
+      "TIP_2": "Zrzuty ekranu kuponów i serii wygranych można podrobić w kilka sekund. Zablokowanej historii ze znacznikami czasu nie.",
+      "TIP_3": "Nigdy nie płać z góry nieznajomemu z wiadomości prywatnych kartami podarunkowymi, kryptowalutą ani przelewem dla znajomych i rodziny."
+    },
+    "HOW": {
+      "TITLE": "Jak sprawdzić typera",
+      "STEP_1_TITLE": "Wyszukaj nazwę",
+      "STEP_1_BODY": "Wyszukaj dokładną nazwę, której używa na Discordzie, Telegramie lub Polymarket, albo wklej jego ID Discord.",
+      "STEP_2_TITLE": "Otwórz historię",
+      "STEP_2_BODY": "Każdy typ w historii został zablokowany przed meczem po kursie zapisanym przez platformę. Niczego nie da się edytować ani usunąć.",
+      "STEP_3_TITLE": "Brak historii, brak zaufania",
+      "STEP_3_BODY": "Jeśli nie pojawia się żadna historia, typer nie może udowodnić ani jednej wygranej. Poproś o link do OpenCapper, zanim zapłacisz."
     }
   },
   "SOURCES": {

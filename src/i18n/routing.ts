@@ -45,6 +45,18 @@ export const pathnames = {
     nl: "/verifieren",
     ja: "/kensho",
   },
+  "/check": {
+    en: "/check",
+    de: "/pruefen",
+    es: "/comprobar",
+    "pt-BR": "/consultar",
+    fr: "/controler",
+    it: "/controlla",
+    pl: "/sprawdz",
+    tr: "/sorgula",
+    nl: "/controleren",
+    ja: "/kakunin",
+  },
   "/settings/appearance": {
     en: "/settings/appearance",
     de: "/einstellungen/darstellung",

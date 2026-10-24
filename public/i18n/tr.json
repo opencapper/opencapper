@@ -6,6 +6,7 @@
   "NAV": {
     "HOME": "Nasıl çalışır",
     "LEADERBOARD": "Sıralama",
+    "CHECK": "Tahminci sorgula",
     "GITHUB": "GitHub",
     "MENU": "Menü",
     "VERIFY": "Doğrula",
@@ -385,6 +386,13 @@
       "BODY": "Ücretsiz takip, herkese açık profil, herkes için aynı kurallar.",
       "SOURCE": "Kaynak kodu oku",
       "START": "Tahminlerini takip et"
+    },
+    "CHECK": {
+      "TITLE": "Ödeme yapmadan önce tahminciyi sorgula",
+      "BODY": "Biri DM'den sana VIP kanal mı satmaya çalışıyor? Adını yapıştır. Her dürüst tahmincinin burada herkese açık bir sicili olabilir; sicil yoksa iddia ettiği hiçbir şey kanıtlanamaz.",
+      "LABEL": "Tahminci adı veya Discord kimliği",
+      "PLACEHOLDER": "OpenCapper, Discord, Telegram veya Polymarket adı",
+      "SUBMIT": "Sorgula"
     }
   },
   "LEADERBOARD": {
@@ -452,7 +460,8 @@
       "PICKS": "{count, plural, other {# tahmin}}",
       "SMALL_SAMPLE": "Küçük örneklem: {count, number} sonuçlanmış tahmindeki ROI henüz pek bir şey söylemez",
       "EMPTY": "Bu seçimde henüz hiçbir tahminci tahmin kaydetmedi."
-    }
+    },
+    "CHECK_LINK": "Tahminci sorgula"
   },
   "TABLE": {
     "TOTAL_COUNT": "toplam {count, number}",
@@ -564,6 +573,19 @@
       "OWNER_HINT": "Bu profili sen sahiplendin. İstediğin zaman yeniden herkese açık yapabilirsin.",
       "UNHIDE": "Bu profili yeniden göster",
       "FAILED": "Değişiklik kaydedilemedi."
+    },
+    "SHARE": {
+      "TITLE": "Sicilini paylaş",
+      "DESCRIPTION": "Bu bağlantıyı Discord biyografine ve kanallarına ekle. Herkes kontrol edebilir, taklitçiler sahtesini yapamaz.",
+      "PREVIEW": "Canlı rozet, sonuçlanan her tahminle güncellenir.",
+      "PROFILE_URL": "Profil bağlantısı",
+      "BIO": "Discord biyografisi satırı",
+      "BIO_LINE": "Doğrulanmış sicil: {url}",
+      "MARKDOWN": "Markdown rozeti",
+      "HTML": "HTML rozeti",
+      "BADGE_ALT": "OpenCapper doğrulanmış sicil",
+      "COPY": "Kopyala",
+      "COPIED": "Panoya kopyalandı"
     }
   },
   "SPORTS": {
@@ -777,6 +799,68 @@
     "EXPORT": {
       "TITLE": "Kayıt defterinin tamamını yeniden oynat",
       "BODY": "Bu uç noktalar herkese açıktır ve hesap gerektirmez. Kayıtlarda sırayla sayfa sayfa ilerle, kaydedilen her tahminin hash'ini al, yaprakları 32 sıfır bayttan başlayarak zincirle ve sonucu baş ile karşılaştır."
+    }
+  },
+  "CHECK": {
+    "LABEL": "Tahminci sorgula",
+    "TITLE": "Tahminci sorgula",
+    "DESCRIPTION": "Herhangi bir tahminciyi OpenCapper, Discord, Telegram veya Polymarket adıyla ara; doğrulanmış sicilini ya da sicili olmadığı uyarısını gör.",
+    "HEADING": "Bu tahminci gerçek mi?",
+    "SUBHEADING": "Dolandırıcılar tanınmış tahmincilerin adını ve fotoğrafını kopyalayıp DM'den sahte VIP erişimi satar. Gerçek bir sicil OpenCapper'da durur ve düzenlenemez. Kimseye ödeme yapmadan önce sorgula.",
+    "ERROR": "Sorgulama başarısız oldu. Lütfen daha sonra tekrar dene.",
+    "FORM": {
+      "LABEL": "Kimi sorgulamak istiyorsun?",
+      "PLACEHOLDER": "Kullanıcı adı, Discord kimliği, Telegram adı veya Polymarket cüzdanı",
+      "SUBMIT": "Sorgula",
+      "HINT": "Profil bağlantıları da çalışır. E-posta adresleri asla aranamaz ve gösterilmez."
+    },
+    "RESULT": {
+      "COUNT": "Eşleşen profiller: {count, number}",
+      "PROFILE": "Tüm sicili aç",
+      "WARNING": "Adı harf harf karşılaştır ve OpenCapper bağlantısını iste. Taklit hesaplar bir adı ve fotoğrafı kopyalayabilir ama arkasındaki sicili kopyalayamaz.",
+      "NO_GRADED": "Henüz sonuçlanan tahmin yok, yani değerlendirilecek bir sicil yok. İddia edilen her başarı oranını kanıtlanmamış say."
+    },
+    "MATCH": {
+      "USERNAME": "OpenCapper kullanıcı adıyla eşleşti",
+      "DISCORD": "Discord hesabıyla eşleşti",
+      "TELEGRAM": "Telegram hesabıyla eşleşti",
+      "POLYMARKET": "Polymarket cüzdanı veya adıyla eşleşti",
+      "REDDIT": "Reddit adıyla eşleşti"
+    },
+    "STATUS": {
+      "MEMBER": "Doğrulanmış üye"
+    },
+    "STATS": {
+      "RECORD": "Sicil",
+      "RECORD_HINT": "Kazanç, kayıp, iade",
+      "UNITS": "Birim",
+      "ROI": "ROI",
+      "NO_ROI": "Sonuçlanan tahmin yok",
+      "SAMPLE": "Sonuçlanan tahminler",
+      "PENDING": "{count, number} bekliyor",
+      "LAST": "Son tahmin {date}",
+      "NO_LAST": "Henüz tahmin yok"
+    },
+    "SPLIT": {
+      "LIVE": "Burada kilitlenen canlı tahminler",
+      "HISTORY": "Zincir üstü geçmiş",
+      "UNITS": "{units} birim"
+    },
+    "NONE": {
+      "TITLE": "{query} için doğrulanmış sicil yok",
+      "BODY": "Herkese açık sicili olmadan tahmin satan kimse bunu kanıtlayamaz. OpenCapper bağlantısını iste.",
+      "TIP_1": "Gerçek tahminciler sicil bağlantısını açıkça paylaşır. Reddeden birinin bir sebebi vardır.",
+      "TIP_2": "Kupon ve galibiyet serisi ekran görüntüleri saniyeler içinde sahtelenebilir. Kilitlenmiş, zaman damgalı bir sicil sahtelenemez.",
+      "TIP_3": "DM'den yazan bir yabancıya hediye kartı, kripto veya arkadaş ve aile transferiyle asla peşin ödeme yapma."
+    },
+    "HOW": {
+      "TITLE": "Bir tahminci nasıl sorgulanır",
+      "STEP_1_TITLE": "Adı ara",
+      "STEP_1_BODY": "Discord, Telegram veya Polymarket'ta kullandığı tam adı ara ya da Discord kimliğini yapıştır.",
+      "STEP_2_TITLE": "Sicili aç",
+      "STEP_2_BODY": "Sicildeki her tahmin maçtan önce, platformun kaydettiği oranlarla kilitlendi. Hiçbir şey düzenlenemez veya silinemez.",
+      "STEP_3_TITLE": "Sicil yoksa güven de yok",
+      "STEP_3_BODY": "Hiç sicil çıkmıyorsa, tahminci tek bir kazancı bile kanıtlayamaz. Ödeme yapmadan önce OpenCapper bağlantısını iste."
     }
   },
   "SOURCES": {

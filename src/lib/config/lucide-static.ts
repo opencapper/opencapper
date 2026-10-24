@@ -55,6 +55,8 @@ import {
   Scale,
   Search,
   Settings2,
+  Share2,
+  ShieldAlert,
   ShieldCheck,
   ShieldUser,
   Sun,
@@ -64,6 +66,7 @@ import {
   Trophy,
   User,
   UserCheck,
+  UserSearch,
   X,
 } from "lucide-react";
 
@@ -118,6 +121,8 @@ export const LUCIDE_STATIC = {
   scale: Scale,
   search: Search,
   "settings-2": Settings2,
+  "share-2": Share2,
+  "shield-alert": ShieldAlert,
   "shield-check": ShieldCheck,
   "shield-user": ShieldUser,
   shuffle: Shuffle,
@@ -129,6 +134,7 @@ export const LUCIDE_STATIC = {
   trophy: Trophy,
   user: User,
   "user-check": UserCheck,
+  "user-search": UserSearch,
   x: X,
   "x-circle": CircleX,
 } satisfies Record<string, IconComponent>;

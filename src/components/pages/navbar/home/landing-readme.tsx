@@ -5,6 +5,7 @@ import { env } from "@/lib/config/env";
 import type { LandingData } from "@/lib/types";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
+import { CheckSection } from "./check-section";
 import { DashSection } from "./dash/dash-section";
 import { FeatureGrid } from "./feature-grid";
 import { IntegrationsGrid } from "./integrations-grid";
@@ -42,6 +43,8 @@ export async function LandingReadme(props: { data: LandingData }) {
         <SectionTitle>{t("FEATURES.TITLE")}</SectionTitle>
       </div>
       <FeatureGrid data={props.data} />
+
+      <CheckSection />
 
       <VerifySection latest={props.data.stats?.latest ?? null} />
 

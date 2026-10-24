@@ -6,6 +6,7 @@
   "NAV": {
     "HOME": "How it works",
     "LEADERBOARD": "Leaderboard",
+    "CHECK": "Check a capper",
     "GITHUB": "GitHub",
     "MENU": "Menu",
     "VERIFY": "Verify",
@@ -385,6 +386,13 @@
       "BODY": "Free tracker, public profile, the same rules for everyone.",
       "SOURCE": "Read the source",
       "START": "Track your picks"
+    },
+    "CHECK": {
+      "TITLE": "Check a capper before you pay",
+      "BODY": "Someone in your DMs selling a VIP channel? Paste their name. Every honest capper can have a public record here; no record means nothing they claim can be proven.",
+      "LABEL": "Capper name or Discord ID",
+      "PLACEHOLDER": "OpenCapper, Discord, Telegram or Polymarket name",
+      "SUBMIT": "Check"
     }
   },
   "LEADERBOARD": {
@@ -452,7 +460,8 @@
       "PICKS": "{count, plural, one {# pick} other {# picks}}",
       "SMALL_SAMPLE": "Small sample: ROI over {count, number} graded picks says little yet",
       "EMPTY": "No capper has logged a pick in this selection yet."
-    }
+    },
+    "CHECK_LINK": "Check a capper"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} total",
@@ -564,6 +573,19 @@
       "OWNER_HINT": "You claimed this profile. You can make it public again at any time.",
       "UNHIDE": "Show this profile again",
       "FAILED": "The change could not be saved."
+    },
+    "SHARE": {
+      "TITLE": "Share your record",
+      "DESCRIPTION": "Put this link in your Discord bio and your channels. Anyone can check it, and impersonators cannot fake it.",
+      "PREVIEW": "Live badge, updated with every graded pick.",
+      "PROFILE_URL": "Profile link",
+      "BIO": "Discord bio line",
+      "BIO_LINE": "Verified record: {url}",
+      "MARKDOWN": "Markdown badge",
+      "HTML": "HTML badge",
+      "BADGE_ALT": "OpenCapper verified record",
+      "COPY": "Copy",
+      "COPIED": "Copied to clipboard"
     }
   },
   "SPORTS": {
@@ -777,6 +799,68 @@
     "EXPORT": {
       "TITLE": "Replay the full log",
       "BODY": "These endpoints are public and need no account. Page through the entries in order, hash each logged pick, chain the leaves starting from 32 zero bytes and compare the result with the head."
+    }
+  },
+  "CHECK": {
+    "LABEL": "Check a capper",
+    "TITLE": "Check a capper",
+    "DESCRIPTION": "Look up any capper by OpenCapper, Discord, Telegram or Polymarket name and see the verified record, or the warning that there is none.",
+    "HEADING": "Is this capper for real?",
+    "SUBHEADING": "Scammers copy the names and pictures of known cappers and sell fake VIP access in DMs. A real record lives on OpenCapper and cannot be edited. Look it up before you pay anyone.",
+    "ERROR": "The lookup failed. Please try again later.",
+    "FORM": {
+      "LABEL": "Who do you want to check?",
+      "PLACEHOLDER": "Username, Discord ID, Telegram name or Polymarket wallet",
+      "SUBMIT": "Check",
+      "HINT": "Profile links work too. Emails are never searchable or shown."
+    },
+    "RESULT": {
+      "COUNT": "Matching profiles: {count, number}",
+      "PROFILE": "Open full record",
+      "WARNING": "Compare the name letter by letter and ask for their OpenCapper link. Lookalike accounts can copy a name and a picture, but not the record behind it.",
+      "NO_GRADED": "No graded picks yet, so there is no record to judge. Treat any claimed win rate as unproven."
+    },
+    "MATCH": {
+      "USERNAME": "Matched by OpenCapper username",
+      "DISCORD": "Matched by Discord account",
+      "TELEGRAM": "Matched by Telegram account",
+      "POLYMARKET": "Matched by Polymarket wallet or name",
+      "REDDIT": "Matched by Reddit name"
+    },
+    "STATUS": {
+      "MEMBER": "Verified member"
+    },
+    "STATS": {
+      "RECORD": "Record",
+      "RECORD_HINT": "Wins, losses, pushes",
+      "UNITS": "Units",
+      "ROI": "ROI",
+      "NO_ROI": "No graded picks",
+      "SAMPLE": "Graded picks",
+      "PENDING": "{count, number} pending",
+      "LAST": "Last pick {date}",
+      "NO_LAST": "No picks yet"
+    },
+    "SPLIT": {
+      "LIVE": "Live picks locked here",
+      "HISTORY": "On chain history",
+      "UNITS": "{units} units"
+    },
+    "NONE": {
+      "TITLE": "No verified record for {query}",
+      "BODY": "Anyone selling picks without a public record cannot prove it. Ask for their OpenCapper link.",
+      "TIP_1": "Real cappers share their record link openly. Someone who refuses has a reason.",
+      "TIP_2": "Screenshots of slips and win streaks can be faked in seconds. A locked, timestamped record cannot.",
+      "TIP_3": "Never pay a stranger from your DMs up front with gift cards, crypto or friends and family transfers."
+    },
+    "HOW": {
+      "TITLE": "How to check a capper",
+      "STEP_1_TITLE": "Look up the name",
+      "STEP_1_BODY": "Search the exact name they use on Discord, Telegram or Polymarket, or paste their Discord ID.",
+      "STEP_2_TITLE": "Open the record",
+      "STEP_2_BODY": "Every pick on the record was locked before the game at odds the platform captured. Nothing can be edited or deleted.",
+      "STEP_3_TITLE": "No record, no trust",
+      "STEP_3_BODY": "If no record shows up, the capper cannot prove a single win. Ask for their OpenCapper link before you pay."
     }
   },
   "SOURCES": {

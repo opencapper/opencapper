@@ -1,4 +1,5 @@
 import { adminRoute } from "@/server/admin/route";
+import { checkRoute } from "@/server/check/route";
 import { claimsRoute } from "@/server/claims/route";
 import { ApiError, errorBody } from "@/server/errors";
 import { eventsRoute } from "@/server/events/route";
@@ -37,6 +38,7 @@ export const app = new Elysia({ prefix: "/api" })
   .use(eventsRoute)
   .use(picksRoute)
   .use(usersRoute)
+  .use(checkRoute)
   .use(claimsRoute)
   .use(recapRoute)
   .use(leaderboardRoute)

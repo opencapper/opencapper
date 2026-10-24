@@ -14,6 +14,7 @@ import { HistoryTable } from "./history-table";
 import { PicksTable } from "./picks-table";
 import { ProfileHeader } from "./profile-header";
 import { ProfileStats } from "./profile-stats";
+import { ShareRecord } from "./share-record";
 import { SourceBanner } from "./source-banner";
 import { UnitsChart } from "./units-chart";
 
@@ -30,7 +31,10 @@ export function CapperProfile(props: {
   const known =
     stats.data !== undefined &&
     (stats.data.discordUserId !== null || source !== null);
-  const own = useAuthUser()?.username === props.username.toLowerCase();
+  const viewer = useAuthUser();
+  const own = viewer?.username === props.username.toLowerCase();
+  const claimant =
+    viewer !== null && stats.data?.claimedBy?.username === viewer.username;
   const history = stats.data?.history;
 
   if (stats.data?.hidden) return <HiddenProfile username={props.username} />;
@@ -76,6 +80,9 @@ export function CapperProfile(props: {
           stats={stats.data}
           minPicksForRoi={props.ranking.profileMinPicksForRoi}
         />
+      )}
+      {stats.data && (own || claimant) && (
+        <ShareRecord username={stats.data.username} />
       )}
 
       {known && (

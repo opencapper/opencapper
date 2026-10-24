@@ -6,6 +6,7 @@
   "NAV": {
     "HOME": "Cómo funciona",
     "LEADERBOARD": "Clasificación",
+    "CHECK": "Comprobar tipster",
     "GITHUB": "GitHub",
     "MENU": "Menú",
     "VERIFY": "Verificar",
@@ -385,6 +386,13 @@
       "BODY": "Seguimiento gratuito, perfil público y las mismas reglas para todos.",
       "SOURCE": "Ver el código fuente",
       "START": "Registra tus picks"
+    },
+    "CHECK": {
+      "TITLE": "Comprueba a un tipster antes de pagar",
+      "BODY": "¿Alguien te escribe por DM para venderte un canal VIP? Pega su nombre. Cualquier tipster honesto puede tener aquí un historial público; sin historial, nada de lo que diga se puede demostrar.",
+      "LABEL": "Nombre del tipster o ID de Discord",
+      "PLACEHOLDER": "Nombre en OpenCapper, Discord, Telegram o Polymarket",
+      "SUBMIT": "Comprobar"
     }
   },
   "LEADERBOARD": {
@@ -452,7 +460,8 @@
       "PICKS": "{count, plural, one {# pick} other {# picks}}",
       "SMALL_SAMPLE": "Muestra pequeña: el ROI sobre {count, number} picks liquidados todavía dice poco",
       "EMPTY": "Ningún tipster ha registrado todavía un pick en esta selección."
-    }
+    },
+    "CHECK_LINK": "Comprobar un tipster"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} en total",
@@ -564,6 +573,19 @@
       "OWNER_HINT": "Reclamaste este perfil. Puedes volver a hacerlo público cuando quieras.",
       "UNHIDE": "Volver a mostrar este perfil",
       "FAILED": "No se pudo guardar el cambio."
+    },
+    "SHARE": {
+      "TITLE": "Comparte tu historial",
+      "DESCRIPTION": "Pon este enlace en tu biografía de Discord y en tus canales. Cualquiera puede comprobarlo y los imitadores no pueden falsificarlo.",
+      "PREVIEW": "Insignia en vivo, se actualiza con cada pick liquidado.",
+      "PROFILE_URL": "Enlace al perfil",
+      "BIO": "Línea para la biografía de Discord",
+      "BIO_LINE": "Historial verificado: {url}",
+      "MARKDOWN": "Insignia en Markdown",
+      "HTML": "Insignia en HTML",
+      "BADGE_ALT": "Historial verificado en OpenCapper",
+      "COPY": "Copiar",
+      "COPIED": "Copiado al portapapeles"
     }
   },
   "SPORTS": {
@@ -777,6 +799,68 @@
     "EXPORT": {
       "TITLE": "Reproduce el registro completo",
       "BODY": "Estos endpoints son públicos y no requieren cuenta. Recorre las entradas en orden, calcula el hash de cada pick registrado, encadena las hojas empezando por 32 bytes a cero y compara el resultado con la cabeza."
+    }
+  },
+  "CHECK": {
+    "LABEL": "Comprobar un tipster",
+    "TITLE": "Comprobar un tipster",
+    "DESCRIPTION": "Busca cualquier tipster por su nombre en OpenCapper, Discord, Telegram o Polymarket y mira su historial verificado, o el aviso de que no tiene ninguno.",
+    "HEADING": "¿Este tipster es real?",
+    "SUBHEADING": "Los estafadores copian el nombre y la foto de tipsters conocidos y venden accesos VIP falsos por DM. Un historial real está en OpenCapper y no se puede editar. Búscalo antes de pagarle a nadie.",
+    "ERROR": "La búsqueda falló. Inténtalo de nuevo más tarde.",
+    "FORM": {
+      "LABEL": "¿A quién quieres comprobar?",
+      "PLACEHOLDER": "Usuario, ID de Discord, nombre de Telegram o wallet de Polymarket",
+      "SUBMIT": "Comprobar",
+      "HINT": "También funcionan los enlaces de perfil. Los correos nunca se pueden buscar ni se muestran."
+    },
+    "RESULT": {
+      "COUNT": "Perfiles encontrados: {count, number}",
+      "PROFILE": "Ver historial completo",
+      "WARNING": "Compara el nombre letra por letra y pide su enlace de OpenCapper. Las cuentas imitadoras pueden copiar un nombre y una foto, pero no el historial que hay detrás.",
+      "NO_GRADED": "Todavía no hay picks liquidados, así que no hay historial que valorar. Trata cualquier porcentaje de acierto que afirme como no demostrado."
+    },
+    "MATCH": {
+      "USERNAME": "Encontrado por usuario de OpenCapper",
+      "DISCORD": "Encontrado por cuenta de Discord",
+      "TELEGRAM": "Encontrado por cuenta de Telegram",
+      "POLYMARKET": "Encontrado por wallet o nombre de Polymarket",
+      "REDDIT": "Encontrado por nombre de Reddit"
+    },
+    "STATUS": {
+      "MEMBER": "Miembro verificado"
+    },
+    "STATS": {
+      "RECORD": "Historial",
+      "RECORD_HINT": "Ganados, perdidos, nulos",
+      "UNITS": "Unidades",
+      "ROI": "ROI",
+      "NO_ROI": "Sin picks liquidados",
+      "SAMPLE": "Picks liquidados",
+      "PENDING": "{count, number} pendientes",
+      "LAST": "Último pick {date}",
+      "NO_LAST": "Aún sin picks"
+    },
+    "SPLIT": {
+      "LIVE": "Picks en vivo bloqueados aquí",
+      "HISTORY": "Historial en la cadena de bloques",
+      "UNITS": "{units} unidades"
+    },
+    "NONE": {
+      "TITLE": "No hay historial verificado para {query}",
+      "BODY": "Quien vende picks sin un historial público no puede demostrarlo. Pide su enlace de OpenCapper.",
+      "TIP_1": "Los tipsters reales comparten su enlace sin problema. Quien se niega tiene sus motivos.",
+      "TIP_2": "Las capturas de boletos y rachas se falsifican en segundos. Un historial bloqueado y con fecha no.",
+      "TIP_3": "Nunca pagues por adelantado a un desconocido de tus DM con tarjetas regalo, cripto o transferencias entre amigos."
+    },
+    "HOW": {
+      "TITLE": "Cómo comprobar a un tipster",
+      "STEP_1_TITLE": "Busca el nombre",
+      "STEP_1_BODY": "Busca el nombre exacto que usa en Discord, Telegram o Polymarket, o pega su ID de Discord.",
+      "STEP_2_TITLE": "Abre el historial",
+      "STEP_2_BODY": "Cada pick del historial se bloqueó antes del partido con cuotas que capturó la plataforma. Nada se puede editar ni borrar.",
+      "STEP_3_TITLE": "Sin historial, sin confianza",
+      "STEP_3_BODY": "Si no aparece ningún historial, el tipster no puede demostrar ni un solo acierto. Pide su enlace de OpenCapper antes de pagar."
     }
   },
   "SOURCES": {
