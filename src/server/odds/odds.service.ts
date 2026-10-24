@@ -1,6 +1,11 @@
 import { dayjs } from "@/lib/utils/format/date";
 import { PICK_MARKETS, type PickMarket } from "@/lib/api/typebox/picks";
-import type { ApiEvent, ApiEventOdds, ApiMarketOdds } from "@/lib/types";
+import type {
+  ApiEvent,
+  ApiEventOdds,
+  ApiMarketOdds,
+  OddsCredits,
+} from "@/lib/types";
 import { ApiError } from "@/server/errors";
 import { BOOKMAKER_PRIORITY, ODDS_API_BASE } from "@/server/constants";
 import { serverEnv } from "@/server/env";
@@ -61,6 +66,37 @@ const ScoresSchema = Type.Array(
   ]),
 );
 
+declare global {
+  var oddsApiCredits: OddsCredits | undefined;
+}
+
+function headerNumber(res: Response, name: string): number | null {
+  const raw = res.headers.get(name);
+  const n = Number(raw);
+  return raw !== null && Number.isFinite(n) ? n : null;
+}
+
+// globalThis: the grading job (instrumentation) and the routes load separate module copies.
+function recordCredits(res: Response) {
+  const remaining = headerNumber(res, "x-requests-remaining");
+  if (remaining === null) return;
+  globalThis.oddsApiCredits = {
+    remaining,
+    used: headerNumber(res, "x-requests-used"),
+    updatedAt: dayjs().toISOString(),
+  };
+}
+
+export function getOddsCredits(): OddsCredits {
+  return (
+    globalThis.oddsApiCredits ?? {
+      remaining: null,
+      used: null,
+      updatedAt: null,
+    }
+  );
+}
+
 export type EventOdds = Static<typeof EventOddsSchema>;
 export type EventScore = Static<typeof ScoresSchema>[number];
 
@@ -79,6 +115,7 @@ async function oddsApi<T extends TSchema>(
     url.searchParams.set(key, value);
 
   const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+  recordCredits(res);
   if (res.status === 404 || res.status === 422)
     throw new ApiError(404, "ERRORS.EVENT_NOT_FOUND");
   if (!res.ok) throw new ApiError(502, "ERRORS.ODDS_UNAVAILABLE");

@@ -540,6 +540,7 @@
     "MY_PROFILE": "Mijn profiel",
     "LOG_PICK": "Tip vastleggen",
     "APPEARANCE": "Weergave",
+    "ADMIN": "Beheer",
     "LOGOUT": "Uitloggen",
     "LOG_IN": "Inloggen",
     "WITH_DISCORD": "Doorgaan met Discord",
@@ -729,6 +730,100 @@
     "POSTED_AT": "Oorspronkelijk geplaatst {time}. Op OpenCapper vergrendeld op het moment van importeren, nooit met terugwerkende kracht gedateerd.",
     "FILL_HINT": "Vergrendeld op {time}. De quotering is de on chain fill op Polymarket van {filled}, geen quotering van een bookmaker. Deze tip kan niet worden bewerkt of verwijderd."
   },
+  "ADMIN": {
+    "TITLE": "Beheer",
+    "DESCRIPTION": "Moderatie en systeemstatus.",
+    "LABEL": "Beheer",
+    "HEADING": "Controlekamer",
+    "SUBHEADING": "Gebruikers, geïmporteerde profielen, recente tips en systeemgezondheid. Je bent ingelogd als {role}.",
+    "LOAD_FAILED": "Dit onderdeel kon niet worden geladen.",
+    "NEVER": "Nooit",
+    "TABS": {
+      "USERS": "Gebruikers",
+      "IMPORTS": "Geïmporteerde profielen",
+      "PICKS": "Tips",
+      "SYSTEM": "Systeem"
+    },
+    "ROLES": {
+      "USER": "Gebruiker",
+      "MODERATOR": "Moderator",
+      "ADMIN": "Beheerder"
+    },
+    "USERS": {
+      "USER": "Gebruiker",
+      "PROVIDERS": "Logins",
+      "ROLE": "Rol",
+      "STATUS": "Status",
+      "PICKS": "Tips",
+      "CREATED": "Lid sinds",
+      "NO_WEB_ACCOUNT": "Alleen bot, geen weblogin",
+      "BANNED": "Verbannen",
+      "ACTIVE": "Actief",
+      "NO_REASON": "Geen reden opgegeven.",
+      "BAN_UNTIL": "Tot {time}",
+      "BAN": "Verbannen",
+      "UNBAN": "Opheffen",
+      "BAN_BLOCKED": "Beheerders, jijzelf en gebruikers zonder weblogin kunnen niet worden verbannen.",
+      "SEARCH": "Zoek gebruikersnaam of e-mail",
+      "SEARCH_GO": "Zoeken",
+      "ACTION_FAILED": "De wijziging kon niet worden opgeslagen."
+    },
+    "BAN": {
+      "TITLE": "@{username} verbannen",
+      "HINT": "Verbannen gebruikers worden uitgelogd, kunnen niet inloggen en kunnen geen tips vastleggen via de site of de bots.",
+      "REASON": "Reden",
+      "REASON_PLACEHOLDER": "Optioneel, alleen zichtbaar voor het team",
+      "CONFIRM": "Gebruiker verbannen"
+    },
+    "IMPORTS": {
+      "PROFILE": "Profiel",
+      "PLATFORM": "Platform",
+      "HANDLE": "Bron",
+      "PICKS": "Tips",
+      "HISTORY": "Geschiedenis",
+      "LAST_IMPORT": "Laatste import",
+      "EMPTY": "Nog geen geïmporteerde profielen."
+    },
+    "PICKS": {
+      "CAPPER": "Capper",
+      "EVENT": "Wedstrijd",
+      "SELECTION": "Selectie",
+      "SOURCE": "Bron",
+      "DIRECT": "Direct",
+      "STATUS": "Status",
+      "LOGGED": "Vastgelegd",
+      "HINT": "De laatste {count, number} tips van alle cappers",
+      "EMPTY": "Nog geen tips."
+    },
+    "SYSTEM": {
+      "CREDITS": "Odds API credits",
+      "ODDS_REMAINING": "Resterende credits",
+      "ODDS_USED": "Gebruikte credits",
+      "ODDS_USED_HINT": "Gebruikt in de huidige factuurperiode, volgens de Odds API.",
+      "ODDS_NOT_CONFIGURED": "Er is geen Odds API sleutel ingesteld.",
+      "AS_OF": "Stand {time}",
+      "NO_CALL_YET": "Geen Odds API aanroep sinds de server is gestart.",
+      "BOARD_BUDGET": "Tipbord vandaag",
+      "BOARD_BUDGET_HINT": "Credits die het tipbord vandaag van zijn dagbudget heeft besteed.",
+      "JOBS": "Taken",
+      "GRADING": "Beoordeling",
+      "IMPORT_BUDGET": "Importeurs mogen {credits, number} credits per dag besteden; de Polymarket geschiedenis beslaat {days, number} dagen.",
+      "LOG": "Tiplog",
+      "LOG_SIZE": "Loggrootte",
+      "LAST_ANCHOR": "Laatste anker",
+      "ANCHOR_CONFIRMED": "Bevestigd in Bitcoin, gestempeld {time}",
+      "ANCHOR_PENDING": "Wacht op Bitcoin, gestempeld {time}",
+      "NO_ANCHOR": "Nog geen anker.",
+      "IMAGES_PENDING": "Afbeeldingen in wachtrij",
+      "IMAGES_HINT": "Team en spelersfoto's die op TheSportsDB wachten.",
+      "IMPORTER": "{platform} importeur",
+      "RUN": "Laatste run {time}: {created, number} aangemaakt, {skipped, number} overgeslagen, {credits, number} credits",
+      "RUN_FAILED": "Laatste run {time} is mislukt. Bekijk het serverlog.",
+      "NO_RUN_YET": "Geen run sinds de server is gestart.",
+      "ON": "Aan",
+      "OFF": "Uit"
+    }
+  },
   "OG": {
     "HOME_LABEL": "Open source tiptracker",
     "POST_FROM": "Plaats tips vanuit",
@@ -781,6 +876,10 @@
     "NOTHING_TO_VERIFY": "Niets te verifiëren.",
     "EMPTY_RESPONSE": "De server stuurde een leeg antwoord.",
     "UNEXPECTED_ERROR": "Er ging iets mis. Probeer het opnieuw.",
-    "LEAGUE_NOT_OFFERED": "Deze competitie wordt niet aangeboden."
+    "LEAGUE_NOT_OFFERED": "Deze competitie wordt niet aangeboden.",
+    "FORBIDDEN": "Je hebt geen toestemming om dat te doen.",
+    "CANNOT_BAN_SELF": "Je kunt jezelf niet verbannen.",
+    "CANNOT_BAN_ADMIN": "Beheerders kunnen niet worden verbannen.",
+    "USER_BANNED": "Je account mag geen tips meer vastleggen."
   }
 }

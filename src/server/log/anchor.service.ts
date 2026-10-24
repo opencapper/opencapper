@@ -127,7 +127,7 @@ export function startLogAnchoring() {
   setInterval(() => void tick(), CHECK_EVERY_MS).unref();
 }
 
-export async function listAnchors(): Promise<ApiLogAnchor[]> {
+export async function listAnchors(limit = 100): Promise<ApiLogAnchor[]> {
   const rows = await getDb()
     .select({
       id: logAnchors.id,
@@ -138,7 +138,7 @@ export async function listAnchors(): Promise<ApiLogAnchor[]> {
     })
     .from(logAnchors)
     .orderBy(desc(logAnchors.createdAt))
-    .limit(100);
+    .limit(limit);
   return rows.map((row) => ({
     id: row.id,
     root: row.root.toString("hex"),

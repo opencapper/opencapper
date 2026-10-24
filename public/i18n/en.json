@@ -540,6 +540,7 @@
     "MY_PROFILE": "My profile",
     "LOG_PICK": "Log a pick",
     "APPEARANCE": "Appearance",
+    "ADMIN": "Admin",
     "LOGOUT": "Log out",
     "LOG_IN": "Log in",
     "WITH_DISCORD": "Continue with Discord",
@@ -729,6 +730,100 @@
     "POSTED_AT": "Originally posted {time}. Locked on OpenCapper at import time, never backdated.",
     "FILL_HINT": "Locked on {time}. The price is the on chain Polymarket fill from {filled}, not a sportsbook price. This pick cannot be edited or deleted."
   },
+  "ADMIN": {
+    "TITLE": "Admin",
+    "DESCRIPTION": "Moderation and system status.",
+    "LABEL": "Admin",
+    "HEADING": "Control room",
+    "SUBHEADING": "Users, imported profiles, recent picks and system health. You are signed in as {role}.",
+    "LOAD_FAILED": "Could not load this section.",
+    "NEVER": "Never",
+    "TABS": {
+      "USERS": "Users",
+      "IMPORTS": "Imported profiles",
+      "PICKS": "Picks",
+      "SYSTEM": "System"
+    },
+    "ROLES": {
+      "USER": "User",
+      "MODERATOR": "Moderator",
+      "ADMIN": "Admin"
+    },
+    "USERS": {
+      "USER": "User",
+      "PROVIDERS": "Logins",
+      "ROLE": "Role",
+      "STATUS": "Status",
+      "PICKS": "Picks",
+      "CREATED": "Joined",
+      "NO_WEB_ACCOUNT": "Bot only, no web login",
+      "BANNED": "Banned",
+      "ACTIVE": "Active",
+      "NO_REASON": "No reason given.",
+      "BAN_UNTIL": "Until {time}",
+      "BAN": "Ban",
+      "UNBAN": "Unban",
+      "BAN_BLOCKED": "Admins, yourself and users without a web login cannot be banned.",
+      "SEARCH": "Search username or email",
+      "SEARCH_GO": "Search",
+      "ACTION_FAILED": "The change could not be saved."
+    },
+    "BAN": {
+      "TITLE": "Ban @{username}",
+      "HINT": "Banned users are signed out, cannot sign in and cannot log picks through the site or the bots.",
+      "REASON": "Reason",
+      "REASON_PLACEHOLDER": "Optional, visible to staff only",
+      "CONFIRM": "Ban user"
+    },
+    "IMPORTS": {
+      "PROFILE": "Profile",
+      "PLATFORM": "Platform",
+      "HANDLE": "Source",
+      "PICKS": "Picks",
+      "HISTORY": "History",
+      "LAST_IMPORT": "Last import",
+      "EMPTY": "No imported profiles yet."
+    },
+    "PICKS": {
+      "CAPPER": "Capper",
+      "EVENT": "Event",
+      "SELECTION": "Selection",
+      "SOURCE": "Source",
+      "DIRECT": "Direct",
+      "STATUS": "Status",
+      "LOGGED": "Logged",
+      "HINT": "Latest {count, number} picks across all cappers",
+      "EMPTY": "No picks yet."
+    },
+    "SYSTEM": {
+      "CREDITS": "Odds API credits",
+      "ODDS_REMAINING": "Credits remaining",
+      "ODDS_USED": "Credits used",
+      "ODDS_USED_HINT": "Used in the current billing period, as reported by the Odds API.",
+      "ODDS_NOT_CONFIGURED": "No Odds API key is configured.",
+      "AS_OF": "As of {time}",
+      "NO_CALL_YET": "No Odds API call since the server started.",
+      "BOARD_BUDGET": "Pick board today",
+      "BOARD_BUDGET_HINT": "Credits the pick board spent today out of its daily budget.",
+      "JOBS": "Jobs",
+      "GRADING": "Grading",
+      "IMPORT_BUDGET": "Importers may spend {credits, number} credits a day; Polymarket history covers {days, number} days.",
+      "LOG": "Pick log",
+      "LOG_SIZE": "Log size",
+      "LAST_ANCHOR": "Last anchor",
+      "ANCHOR_CONFIRMED": "Confirmed in Bitcoin, stamped {time}",
+      "ANCHOR_PENDING": "Waiting for Bitcoin, stamped {time}",
+      "NO_ANCHOR": "No anchor yet.",
+      "IMAGES_PENDING": "Images pending",
+      "IMAGES_HINT": "Team and player pictures waiting for TheSportsDB.",
+      "IMPORTER": "{platform} importer",
+      "RUN": "Last run {time}: {created, number} created, {skipped, number} skipped, {credits, number} credits",
+      "RUN_FAILED": "Last run {time} failed. Check the server log.",
+      "NO_RUN_YET": "No run since the server started.",
+      "ON": "On",
+      "OFF": "Off"
+    }
+  },
   "OG": {
     "HOME_LABEL": "Open source pick tracker",
     "POST_FROM": "Post picks from",
@@ -781,6 +876,10 @@
     "NOTHING_TO_VERIFY": "Nothing to verify.",
     "EMPTY_RESPONSE": "The server sent an empty response.",
     "UNEXPECTED_ERROR": "Something went wrong. Please try again.",
-    "LEAGUE_NOT_OFFERED": "This league is not offered."
+    "LEAGUE_NOT_OFFERED": "This league is not offered.",
+    "FORBIDDEN": "You do not have permission to do that.",
+    "CANNOT_BAN_SELF": "You cannot ban yourself.",
+    "CANNOT_BAN_ADMIN": "Admins cannot be banned.",
+    "USER_BANNED": "Your account is banned from logging picks."
   }
 }

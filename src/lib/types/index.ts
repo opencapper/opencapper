@@ -2,6 +2,7 @@ import type { PickMarket, PickResult } from "@/lib/api/typebox/picks";
 import type { LeaderboardScope } from "@/lib/api/typebox/leaderboard";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
 import type { SportGroup } from "@/lib/config/sports";
+import type { AuthRole } from "@/lib/config/permissions";
 import type { Messages, useTranslations } from "next-intl";
 
 export type TranslationKey = Parameters<
@@ -188,6 +189,7 @@ export type AuthUser = {
   discordId: string | null;
   username: string;
   avatarUrl: string | null;
+  role: AuthRole;
 };
 
 export type AuthProviders = {
@@ -275,4 +277,72 @@ export type LandingData = {
   featured: LandingFeatured[];
   stats: LandingStats | null;
   minGraded: number;
+};
+
+export type OddsCredits = {
+  remaining: number | null;
+  used: number | null;
+  updatedAt: string | null;
+};
+
+export type ImporterRun = {
+  at: string;
+  created: number;
+  skipped: number;
+  credits: number;
+  failed: boolean;
+};
+
+export type AdminUser = {
+  id: number;
+  authUserId: string | null;
+  username: string;
+  avatarUrl: string | null;
+  email: string | null;
+  providers: string[];
+  role: AuthRole;
+  banned: boolean;
+  banReason: string | null;
+  banExpires: string | null;
+  picks: number;
+  createdAt: string;
+};
+
+export type AdminUsersPage = {
+  rows: AdminUser[];
+  total: number;
+  page: number;
+  pageSize: number;
+};
+
+export type AdminImportedProfile = {
+  id: number;
+  username: string;
+  avatarUrl: string | null;
+  platform: SourcePlatform;
+  handle: string;
+  url: string;
+  picks: number;
+  historyPicks: number;
+  lastImportAt: string | null;
+};
+
+export type AdminPick = ApiPick & { avatarUrl: string | null };
+
+export type AdminImporterStatus = {
+  platform: SourcePlatform;
+  enabled: boolean;
+  lastRun: ImporterRun | null;
+};
+
+export type AdminSystem = {
+  oddsConfigured: boolean;
+  oddsCredits: OddsCredits;
+  board: { used: number; limit: number };
+  importOddsCreditsPerDay: number;
+  historyDays: number;
+  gradingEnabled: boolean;
+  importers: AdminImporterStatus[];
+  log: { head: LogHead; lastAnchor: ApiLogAnchor | null };
+  imagesPending: number;
 };

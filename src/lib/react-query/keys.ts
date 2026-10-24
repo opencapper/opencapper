@@ -1,3 +1,4 @@
+import type { AdminUsersQuery } from "@/lib/api/typebox/admin";
 import type { LeaderboardQuery } from "@/lib/api/typebox/leaderboard";
 
 export const queryKeys = {
@@ -16,4 +17,9 @@ export const queryKeys = {
   logVerifyPick: (pickId: number) => ["log-verify", "pick", pickId] as const,
   logVerifyUserSeq: (username: string, seq: number) =>
     ["log-verify", "user", username, seq] as const,
+  adminUsersAll: () => ["admin-users"] as const,
+  adminUsers: (query: AdminUsersQuery) => ["admin-users", query] as const,
+  adminImports: () => ["admin-imports"] as const,
+  adminPicks: () => ["admin-picks"] as const,
+  adminSystem: () => ["admin-system"] as const,
 };

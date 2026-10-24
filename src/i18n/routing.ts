@@ -57,6 +57,7 @@ export const pathnames = {
     nl: "/instellingen/weergave",
     ja: "/settei/gaikan",
   },
+  "/admin": "/admin",
 } as const;
 
 export const routing = defineRouting({

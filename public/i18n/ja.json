@@ -540,6 +540,7 @@
     "MY_PROFILE": "マイプロフィール",
     "LOG_PICK": "予想を登録",
     "APPEARANCE": "外観",
+    "ADMIN": "管理",
     "LOGOUT": "ログアウト",
     "LOG_IN": "ログイン",
     "WITH_DISCORD": "Discordで続ける",
@@ -729,6 +730,100 @@
     "POSTED_AT": "元の投稿日時 {time}。インポート時にOpenCapperで確定され、日時を遡ることはありません。",
     "FILL_HINT": "{time}に確定。オッズはブックメーカーのものではなく、{filled}のオンチェーンPolymarket約定価格です。この予想は編集も削除もできません。"
   },
+  "ADMIN": {
+    "TITLE": "管理",
+    "DESCRIPTION": "モデレーションとシステム状態。",
+    "LABEL": "管理",
+    "HEADING": "コントロールルーム",
+    "SUBHEADING": "ユーザー、インポートしたプロフィール、最新の予想、システムの状態。{role}としてログインしています。",
+    "LOAD_FAILED": "このセクションを読み込めませんでした。",
+    "NEVER": "なし",
+    "TABS": {
+      "USERS": "ユーザー",
+      "IMPORTS": "インポートしたプロフィール",
+      "PICKS": "予想",
+      "SYSTEM": "システム"
+    },
+    "ROLES": {
+      "USER": "ユーザー",
+      "MODERATOR": "モデレーター",
+      "ADMIN": "管理者"
+    },
+    "USERS": {
+      "USER": "ユーザー",
+      "PROVIDERS": "ログイン",
+      "ROLE": "ロール",
+      "STATUS": "状態",
+      "PICKS": "予想",
+      "CREATED": "登録日",
+      "NO_WEB_ACCOUNT": "ボットのみ、Webログインなし",
+      "BANNED": "BAN中",
+      "ACTIVE": "有効",
+      "NO_REASON": "理由の記載なし。",
+      "BAN_UNTIL": "{time}まで",
+      "BAN": "BAN",
+      "UNBAN": "BAN解除",
+      "BAN_BLOCKED": "管理者、自分自身、WebログインのないユーザーはBANできません。",
+      "SEARCH": "ユーザー名またはメールで検索",
+      "SEARCH_GO": "検索",
+      "ACTION_FAILED": "変更を保存できませんでした。"
+    },
+    "BAN": {
+      "TITLE": "@{username} をBAN",
+      "HINT": "BANされたユーザーはログアウトされ、ログインできず、サイトでもボットでも予想を記録できなくなります。",
+      "REASON": "理由",
+      "REASON_PLACEHOLDER": "任意、スタッフのみ閲覧可",
+      "CONFIRM": "ユーザーをBAN"
+    },
+    "IMPORTS": {
+      "PROFILE": "プロフィール",
+      "PLATFORM": "プラットフォーム",
+      "HANDLE": "ソース",
+      "PICKS": "予想",
+      "HISTORY": "履歴",
+      "LAST_IMPORT": "最終インポート",
+      "EMPTY": "インポートしたプロフィールはまだありません。"
+    },
+    "PICKS": {
+      "CAPPER": "キャッパー",
+      "EVENT": "試合",
+      "SELECTION": "選択",
+      "SOURCE": "ソース",
+      "DIRECT": "直接",
+      "STATUS": "状態",
+      "LOGGED": "記録日時",
+      "HINT": "全キャッパーの最新 {count, number} 件の予想",
+      "EMPTY": "予想はまだありません。"
+    },
+    "SYSTEM": {
+      "CREDITS": "Odds API クレジット",
+      "ODDS_REMAINING": "残りクレジット",
+      "ODDS_USED": "使用済みクレジット",
+      "ODDS_USED_HINT": "Odds API が報告する現在の請求期間の使用量。",
+      "ODDS_NOT_CONFIGURED": "Odds API キーが設定されていません。",
+      "AS_OF": "{time}時点",
+      "NO_CALL_YET": "サーバー起動後、Odds API の呼び出しはありません。",
+      "BOARD_BUDGET": "本日の予想ボード",
+      "BOARD_BUDGET_HINT": "予想ボードが本日、1日の予算から使ったクレジット。",
+      "JOBS": "ジョブ",
+      "GRADING": "判定",
+      "IMPORT_BUDGET": "インポーターは1日 {credits, number} クレジットまで使えます。Polymarket の履歴は {days, number} 日分です。",
+      "LOG": "予想ログ",
+      "LOG_SIZE": "ログサイズ",
+      "LAST_ANCHOR": "最新のアンカー",
+      "ANCHOR_CONFIRMED": "Bitcoin で確認済み、刻印 {time}",
+      "ANCHOR_PENDING": "Bitcoin 待ち、刻印 {time}",
+      "NO_ANCHOR": "アンカーはまだありません。",
+      "IMAGES_PENDING": "待機中の画像",
+      "IMAGES_HINT": "TheSportsDB 待ちのチームと選手の画像。",
+      "IMPORTER": "{platform} インポーター",
+      "RUN": "最終実行 {time}：作成 {created, number}、スキップ {skipped, number}、クレジット {credits, number}",
+      "RUN_FAILED": "最終実行 {time} は失敗しました。サーバーログを確認してください。",
+      "NO_RUN_YET": "サーバー起動後の実行はありません。",
+      "ON": "オン",
+      "OFF": "オフ"
+    }
+  },
   "OG": {
     "HOME_LABEL": "オープンソースの予想トラッカー",
     "POST_FROM": "予想の投稿元",
@@ -781,6 +876,10 @@
     "NOTHING_TO_VERIFY": "検証するものがありません。",
     "EMPTY_RESPONSE": "サーバーから空の応答が返されました。",
     "UNEXPECTED_ERROR": "問題が発生しました。もう一度お試しください。",
-    "LEAGUE_NOT_OFFERED": "このリーグは提供されていません。"
+    "LEAGUE_NOT_OFFERED": "このリーグは提供されていません。",
+    "FORBIDDEN": "この操作を行う権限がありません。",
+    "CANNOT_BAN_SELF": "自分自身をBANすることはできません。",
+    "CANNOT_BAN_ADMIN": "管理者はBANできません。",
+    "USER_BANNED": "このアカウントは予想の記録を禁止されています。"
   }
 }

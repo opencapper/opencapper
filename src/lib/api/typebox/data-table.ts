@@ -7,6 +7,9 @@ export const DataTableId = t.Union([
   t.Literal("PROFILE_PICKS"),
   t.Literal("PROFILE_HISTORY"),
   t.Literal("LOG_ANCHORS"),
+  t.Literal("ADMIN_USERS"),
+  t.Literal("ADMIN_IMPORTS"),
+  t.Literal("ADMIN_PICKS"),
 ]);
 export type DataTableId = typeof DataTableId.static;
 

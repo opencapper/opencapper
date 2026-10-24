@@ -35,6 +35,14 @@ function creditsLeft(): number {
   return serverEnv.boardOddsCreditsPerDay - budget.used;
 }
 
+export function getBoardBudget() {
+  const left = creditsLeft();
+  return {
+    used: serverEnv.boardOddsCreditsPerDay - left,
+    limit: serverEnv.boardOddsCreditsPerDay,
+  };
+}
+
 function bestOffer(event: EventOdds): Offer | null {
   const offers = event.bookmakers
     .flatMap((bookmaker) => {
