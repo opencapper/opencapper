@@ -1,0 +1,370 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-pick-win: var(--pick-win);
+  --color-pick-loss: var(--pick-loss);
+  --color-pick-push: var(--pick-push);
+  --color-pick-void: var(--pick-void);
+  --color-pick-pending: var(--pick-pending);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-header: var(--header);
+  --color-footer: var(--footer);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  /* Inline theme values are pasted into every utility, so a var() here is what
+     lets the theme swap shadows. */
+  --shadow-xs: var(--theme-shadow-xs, 0 1px 2px 0 rgb(0 0 0 / 0.05));
+  --shadow-sm: var(--theme-shadow-sm, 0 1px 3px 0 rgb(0 0 0 / 0.1));
+  --shadow-md: var(--theme-shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1));
+  --shadow-lg: var(--theme-shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1));
+}
+
+:root {
+  --expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius: 0;
+  --header: var(--background);
+  --footer: color-mix(in srgb, var(--muted) 30%, transparent);
+  --background: #ffffff;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  --pick-win: #059669;
+  --pick-loss: #dc2626;
+  --pick-push: #2563eb;
+  --pick-void: #71717a;
+  --pick-pending: #d97706;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #a1a1aa;
+  --chart-1: oklch(0.55 0.2 250);
+  --chart-2: oklch(0.55 0.18 160);
+  --chart-3: oklch(0.52 0.18 300);
+  --chart-4: oklch(0.6 0.16 85);
+  --chart-5: oklch(0.55 0.15 30);
+  --sidebar: #fafafa;
+  --sidebar-foreground: #09090b;
+  --sidebar-primary: #18181b;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #f4f4f5;
+  --sidebar-accent-foreground: #18181b;
+  --sidebar-border: #e4e4e7;
+  --sidebar-ring: #a1a1aa;
+}
+
+.dark {
+  --background: #050505;
+  --foreground: #f8fafc;
+  --card: #0a0a0a;
+  --card-foreground: #f8fafc;
+  --popover: #0a0a0a;
+  --popover-foreground: #f8fafc;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+  --secondary: rgba(255, 255, 255, 0.05);
+  --secondary-foreground: #f8fafc;
+  --muted: rgba(255, 255, 255, 0.05);
+  --muted-foreground: #9ca3af;
+  --accent: rgba(255, 255, 255, 0.05);
+  --accent-foreground: #f8fafc;
+  --destructive: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  --pick-win: #34d399;
+  --pick-loss: #f87171;
+  --pick-push: #60a5fa;
+  --pick-void: #a1a1aa;
+  --pick-pending: #fbbf24;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: rgba(255, 255, 255, 0.2);
+  --chart-1: oklch(0.75 0.15 250);
+  --chart-2: oklch(0.72 0.18 160);
+  --chart-3: oklch(0.7 0.15 300);
+  --chart-4: oklch(0.78 0.16 85);
+  --chart-5: oklch(0.68 0.14 30);
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: rgba(255, 255, 255, 0.05);
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: rgba(255, 255, 255, 0.2);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  /* Theme tokens land as variables; these rules are their only readers. An
+     unset var() on an inherited property resolves to inherit. */
+  html {
+    font-size: calc(100% * var(--font-scale, 1));
+    overscroll-behavior: none;
+  }
+
+  body {
+    --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+    --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+    --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+    @apply bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden font-sans;
+    font-weight: var(--font-weight, 400);
+    letter-spacing: var(--tracking, normal);
+    touch-action: manipulation;
+    overscroll-behavior: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Odds, units, ROI and every stat: aligned digits in the number font. */
+@utility tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Uppercase letterspaced mono: nav tabs, section labels, table heads. */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@utility font-pixel {
+  font-family: var(--font-geist-pixel), var(--font-mono);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes mark-snap-left {
+  from {
+    opacity: 0;
+    transform: translateX(-36px) rotate(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(0);
+  }
+}
+
+@keyframes mark-snap-right {
+  from {
+    opacity: 0;
+    transform: translateX(36px) rotate(10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(0);
+  }
+}
+
+@keyframes mark-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@utility animate-mark-left {
+  animation: mark-snap-left 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+@utility animate-mark-right {
+  animation: mark-snap-right 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+@utility animate-mark-reveal {
+  animation: mark-reveal 0.5s ease-out 0.2s both;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@utility animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-mark-left,
+  .animate-mark-right,
+  .animate-mark-reveal,
+  .animate-blink,
+  .animate-fade-in,
+  .animate-slide-up {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+@utility animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@utility animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+@keyframes navbar-scroll-bg {
+  0% {
+    background-color: transparent;
+    border-color: transparent;
+    backdrop-filter: blur(0);
+  }
+  100% {
+    background-color: color-mix(in srgb, var(--header) 90%, transparent);
+    border-color: var(--border);
+    backdrop-filter: blur(12px);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .navbar-scroll {
+    animation: navbar-scroll-bg linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0px 11px;
+  }
+}
+
+/* Safari has no scroll-timeline: without this the fixed navbar stays
+   transparent and scrolled content bleeds through it. */
+@supports not (animation-timeline: scroll()) {
+  .navbar-scroll {
+    background-color: color-mix(in srgb, var(--header) 90%, transparent);
+    border-color: var(--border);
+    backdrop-filter: blur(12px);
+  }
+}
+
+@utility thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  &:hover {
+    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+  }
+}
+
+.dark .thin-scrollbar:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+/* iOS zooms the page into any field under 16px on focus and leaves it zoomed. */
+@supports (-webkit-touch-callout: none) {
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1rem);
+  }
+}
