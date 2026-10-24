@@ -7,6 +7,8 @@ export const statements = {
   ...defaultStatements,
   picks: ["list"],
   imports: ["list"],
+  profiles: ["hide"],
+  claims: ["approve", "revoke"],
   system: ["view"],
 } as const;
 
@@ -19,6 +21,7 @@ export const roles = {
     session: ["list"],
     picks: ["list"],
     imports: ["list"],
+    profiles: ["hide"],
     system: ["view"],
   }),
   // No impersonate, create, delete or credential rights: identities come from OAuth only.
@@ -27,6 +30,8 @@ export const roles = {
     session: ["list", "revoke"],
     picks: ["list"],
     imports: ["list"],
+    profiles: ["hide"],
+    claims: ["approve", "revoke"],
     system: ["view"],
   }),
 };

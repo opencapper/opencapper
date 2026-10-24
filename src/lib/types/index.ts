@@ -144,6 +144,42 @@ export type CapperStats = {
   history?: HistoryStats;
 };
 
+// "bio": a code in the source profile's bio proves ownership; "manual": staff review only.
+export type ClaimMode = "bio" | "manual";
+
+export type ApiProfileClaimant = {
+  username: string;
+  avatarUrl: string | null;
+  verifiedAt: string;
+};
+
+export type ApiClaimedProfile = {
+  username: string;
+  platform: SourcePlatform;
+};
+
+// A hidden profile answers with zeroed stats and no source, picture or claim details.
+export type ProfileStats = CapperStats & {
+  hidden: boolean;
+  claimedBy: ApiProfileClaimant | null;
+  claimed: ApiClaimedProfile[];
+  claimMode: ClaimMode | null;
+};
+
+export type ClaimChallenge = {
+  code: string;
+  expiresAt: string;
+  platform: SourcePlatform;
+  editUrl: string;
+};
+
+export type MyClaim = {
+  username: string;
+  platform: SourcePlatform;
+  hidden: boolean;
+  verifiedAt: string;
+};
+
 // On chain trades imported after the fact, kept apart from the live record above.
 export type HistoryStats = {
   picks: number;
@@ -401,6 +437,8 @@ export type AdminImportedProfile = {
   picks: number;
   historyPicks: number;
   lastImportAt: string | null;
+  hiddenAt: string | null;
+  claimedBy: string | null;
 };
 
 export type AdminPick = ApiPick & { avatarUrl: string | null };

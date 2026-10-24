@@ -4,6 +4,8 @@ import { PARTICIPANT_KINDS } from "@/lib/api/typebox/participants";
 import type { ParticipantKind } from "@/lib/api/typebox/participants";
 import { SOURCE_PLATFORMS } from "@/lib/api/typebox/sources";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
+import { CLAIM_METHODS } from "@/lib/api/typebox/claims";
+import type { ClaimMethod } from "@/lib/api/typebox/claims";
 import { sql } from "drizzle-orm";
 import {
   bigint,
@@ -48,6 +50,8 @@ export const users = pgTable(
     sourcePlatform: text("source_platform").$type<SourcePlatform>(),
     sourceHandle: text("source_handle"),
     sourceUrl: text("source_url"),
+    // Hidden at the owner's or staff's request: off every public listing, importers skip it.
+    hiddenAt: timestamp("hidden_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -259,6 +263,69 @@ export const historyPicks = pgTable(
   ],
 );
 
+// Proof that a signed in user owns an imported profile. Never touches its picks.
+export const profileClaims = pgTable(
+  "profile_claims",
+  {
+    id: serial("id").primaryKey(),
+    profileUserId: integer("profile_user_id")
+      .notNull()
+      .references(() => users.id),
+    claimantUserId: integer("claimant_user_id")
+      .notNull()
+      .references(() => users.id),
+    method: text("method").$type<ClaimMethod>().notNull(),
+    // Staff member who approved a manual claim; null for a bio code proof.
+    approvedByUserId: integer("approved_by_user_id").references(() => users.id),
+    verifiedAt: timestamp("verified_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+  },
+  (table) => [
+    uniqueIndex("profile_claims_active_idx")
+      .on(table.profileUserId)
+      .where(sql`${table.revokedAt} is null`),
+    index("profile_claims_claimant_idx").on(table.claimantUserId),
+    check(
+      "profile_claims_method_check",
+      sql`${table.method} in (${sqlList(CLAIM_METHODS)})`,
+    ),
+    check(
+      "profile_claims_distinct_check",
+      sql`${table.profileUserId} <> ${table.claimantUserId}`,
+    ),
+  ],
+);
+
+// One open bio code per claimant and profile; attempts count per hour for the rate limit.
+export const claimChallenges = pgTable(
+  "claim_challenges",
+  {
+    id: serial("id").primaryKey(),
+    profileUserId: integer("profile_user_id")
+      .notNull()
+      .references(() => users.id),
+    claimantUserId: integer("claimant_user_id")
+      .notNull()
+      .references(() => users.id),
+    code: text("code").notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    attempts: integer("attempts").notNull().default(0),
+    lastAttemptAt: timestamp("last_attempt_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("claim_challenges_pair_idx").on(
+      table.profileUserId,
+      table.claimantUserId,
+    ),
+    index("claim_challenges_claimant_idx").on(table.claimantUserId),
+  ],
+);
+
 export const participants = pgTable(
   "participants",
   {
@@ -406,6 +473,7 @@ export type Pick = typeof picks.$inferSelect;
 export type PickSettlement = typeof pickSettlements.$inferSelect;
 export type PickSource = typeof pickSources.$inferSelect;
 export type HistoryPick = typeof historyPicks.$inferSelect;
+export type ProfileClaim = typeof profileClaims.$inferSelect;
 export type Participant = typeof participants.$inferSelect;
 export type PickLogEntry = typeof pickLog.$inferSelect;
 export type LogAnchor = typeof logAnchors.$inferSelect;

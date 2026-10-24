@@ -1,7 +1,5 @@
-import {
-  POLYMARKET_DATA_BASE,
-  POLYMARKET_GAMMA_BASE,
-} from "@/server/constants";
+import { POLYMARKET_DATA_BASE } from "@/server/constants";
+import { serverEnv } from "@/server/env";
 import { Type, type Static, type TSchema } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 
@@ -46,6 +44,7 @@ const StringList = Type.Array(Type.String());
 
 const ProfileSchema = Type.Object({
   profileImage: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  bio: Type.Optional(Type.Union([Type.String(), Type.Null()])),
 });
 
 export type PolymarketTrade = Static<typeof TradeSchema>;
@@ -94,11 +93,18 @@ export function fetchTrades(wallet: string, limit = 500) {
   return getJson(url, Type.Array(TradeSchema));
 }
 
-export async function fetchProfileImage(wallet: string) {
-  const url = new URL(`${POLYMARKET_GAMMA_BASE}/public-profile`);
+function fetchPublicProfile(wallet: string) {
+  const url = new URL(`${serverEnv.polymarketGammaBase}/public-profile`);
   url.searchParams.set("address", wallet);
-  const profile = await getJson(url, ProfileSchema);
-  return profile.profileImage || null;
+  return getJson(url, ProfileSchema);
+}
+
+export async function fetchProfileImage(wallet: string) {
+  return (await fetchPublicProfile(wallet)).profileImage || null;
+}
+
+export async function fetchProfileBio(wallet: string) {
+  return (await fetchPublicProfile(wallet)).bio ?? "";
 }
 
 function tradeKey(trade: PolymarketTrade) {
@@ -148,7 +154,7 @@ export async function fetchMarkets(
   const out: PolymarketMarket[] = [];
   for (let i = 0; i < ids.length; i += MARKETS_PER_REQUEST) {
     if (i > 0 && delayMs > 0) await pause(delayMs);
-    const url = new URL(`${POLYMARKET_GAMMA_BASE}/markets`);
+    const url = new URL(`${serverEnv.polymarketGammaBase}/markets`);
     url.searchParams.set("closed", String(closed));
     url.searchParams.set("limit", String(MARKETS_PER_REQUEST));
     for (const id of ids.slice(i, i + MARKETS_PER_REQUEST))

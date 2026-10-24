@@ -1,7 +1,7 @@
 import { getDb } from "@/lib/db/server/client";
 import { users } from "@/lib/db/schema/server";
 import { fetchProfileImage, pause } from "@/server/polymarket/polymarket.api";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
 export async function refreshPolymarketImages() {
   const rows = await getDb()
@@ -11,7 +11,7 @@ export async function refreshPolymarketImages() {
       imageUrl: users.imageUrl,
     })
     .from(users)
-    .where(eq(users.sourcePlatform, "polymarket"));
+    .where(and(eq(users.sourcePlatform, "polymarket"), isNull(users.hiddenAt)));
   for (const row of rows) {
     if (!row.wallet) continue;
     const image = await fetchProfileImage(row.wallet).catch(() => undefined);

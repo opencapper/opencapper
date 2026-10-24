@@ -548,6 +548,17 @@
       "TRADED_HINT": "{time}にオンチェーンで取引（開始時刻{start}より前）。後からインポートされたもので、リアルタイムの記録ではありません。",
       "TRANSACTION": "トランザクション",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "@{username} が申請済み",
+    "CLAIMED_PROFILES": "申請済みのインポートプロフィール：",
+    "HIDDEN": {
+      "TITLE": "非表示のプロフィール",
+      "HEADING": "このプロフィールは本人の希望により非表示になりました",
+      "BODY": "ランキング、検索、プレビューには表示されなくなりました。予想は公開ログに残り、予想IDで引き続き確認できます。",
+      "VERIFY_LINK": "検証ページで予想を確認する",
+      "OWNER_HINT": "あなたはこのプロフィールを申請済みです。いつでも再び公開できます。",
+      "UNHIDE": "このプロフィールを再表示する",
+      "FAILED": "変更を保存できませんでした。"
     }
   },
   "SPORTS": {
@@ -768,10 +779,40 @@
     "BANNER_TITLE": "{platform, select, polymarket {Polymarket} reddit {Reddit} other {他のプラットフォーム}}からインポートした公開プロフィール（未申請）",
     "BANNER_BODY": "各予想は、試合開始前の{platform, select, polymarket {Polymarket} reddit {Reddit} other {他のプラットフォーム}}上の公開アクティビティからインポートされ、インポート時に確定されました。この人物は登録しておらず、この成績を確認していません。",
     "BANNER_SOURCE": "{platform, select, polymarket {Polymarket} reddit {Reddit} other {他のプラットフォーム}}で見る",
-    "BANNER_CLAIM": "ご本人ですか？申請または異議申し立て",
     "PICK_SOURCE": "ソース：{platform, select, polymarket {Polymarketの取引} reddit {Redditのコメント} other {元の投稿}}",
     "POSTED_AT": "元の投稿日時 {time}。インポート時にOpenCapperで確定され、日時を遡ることはありません。",
-    "FILL_HINT": "{time}に確定。オッズはブックメーカーのものではなく、{filled}のオンチェーンPolymarket約定価格です。この予想は編集も削除もできません。"
+    "FILL_HINT": "{time}に確定。オッズはブックメーカーのものではなく、{filled}のオンチェーンPolymarket約定価格です。この予想は編集も削除もできません。",
+    "PUBLIC_HINT_CLAIMED": "{platform}からインポートした公開プロフィールです。本人がOpenCapperアカウントで申請済みです。",
+    "BANNER_TITLE_CLAIMED": "{platform}からインポートした公開プロフィール（@{username} が申請済み）",
+    "BANNER_BODY_CLAIMED": "本人がこの{platform}アカウントの所有者であることを証明しました。予想は引き続き、各イベントの開始前に公開アクティビティからインポートされ、インポート時に確定します。",
+    "MANUAL_CLAIM": "ご本人ですか？{platform}の申請は当面、手動で審査しています。お問い合わせいただければ確認します。",
+    "OWNER_HINT": "あなたはこのプロフィールを申請済みです。非表示にするとランキング、検索、プレビューから外れます。ログのエントリーは残ります。",
+    "CLAIMANT_PROFILE": "所有者：@{username}",
+    "CONTACT": "お問い合わせ",
+    "REMOVAL": "ご本人ではありませんか？削除を依頼する",
+    "CLAIM": "このプロフィールを申請する",
+    "LOGIN_TO_CLAIM": "ご本人ですか？ログインして申請してください。",
+    "HIDE": "このプロフィールを非表示にする",
+    "VISIBILITY_FAILED": "変更を保存できませんでした。"
+  },
+  "CLAIM": {
+    "TITLE": "@{username} を申請する",
+    "INTRO": "公開されている自己紹介にワンタイムコードを書き込み、この{platform}アカウントがあなたのものだと証明します。パスワードは不要です。",
+    "START": "コードを取得",
+    "STEP_CODE": "1. コードをコピーする",
+    "COPY": "コピー",
+    "COPIED": "コードをコピーしました",
+    "STEP_BIO": "2. {platform}の自己紹介のどこかに貼り付けて保存する",
+    "OPEN_SETTINGS": "{platform}の設定を開く",
+    "STEP_VERIFY": "3. ここに戻って「検証」を押す",
+    "EXPIRES": "コードの有効期限は{time}までです。申請が完了したら自己紹介から削除して構いません。",
+    "VERIFY": "検証",
+    "VERIFYING": "{platform}の自己紹介を確認しています",
+    "NEW_CODE": "新しいコード",
+    "SUCCESS_TITLE": "申請が完了しました",
+    "SUCCESS_BODY": "@{username} があなたのものとして表示されるようになりました。いつでもそのページから非表示にできます。",
+    "DONE": "完了",
+    "FAILED": "申請を完了できませんでした。もう一度お試しください。"
   },
   "ADMIN": {
     "TITLE": "管理",
@@ -825,7 +866,14 @@
       "PICKS": "予想",
       "HISTORY": "履歴",
       "LAST_IMPORT": "最終インポート",
-      "EMPTY": "インポートしたプロフィールはまだありません。"
+      "EMPTY": "インポートしたプロフィールはまだありません。",
+      "STATUS": "状態",
+      "HIDDEN": "非表示",
+      "VISIBLE": "表示中",
+      "HIDE": "非表示にする",
+      "UNHIDE": "再表示",
+      "APPROVE": "申請を承認",
+      "REVOKE": "申請を取り消す"
     },
     "PICKS": {
       "CAPPER": "キャッパー",
@@ -865,6 +913,13 @@
       "NO_RUN_YET": "サーバー起動後の実行はありません。",
       "ON": "オン",
       "OFF": "オフ"
+    },
+    "CLAIM": {
+      "TITLE": "@{username} の申請を承認",
+      "HINT": "元のアカウントからのメッセージなど、本人の証明を手動で確認した後にだけ行ってください。申請者にはOpenCapperアカウントが必要です。予想は変更されません。",
+      "CLAIMANT": "申請者のユーザー名",
+      "CLAIMANT_PLACEHOLDER": "@username",
+      "CONFIRM": "申請を承認"
     }
   },
   "OG": {
@@ -923,6 +978,18 @@
     "FORBIDDEN": "この操作を行う権限がありません。",
     "CANNOT_BAN_SELF": "自分自身をBANすることはできません。",
     "CANNOT_BAN_ADMIN": "管理者はBANできません。",
-    "USER_BANNED": "このアカウントは予想の記録を禁止されています。"
+    "USER_BANNED": "このアカウントは予想の記録を禁止されています。",
+    "CLAIM_NOT_IMPORTED": "申請または非表示にできるのは、インポートされた公開プロフィールだけです。",
+    "PROFILE_ALREADY_CLAIMED": "このプロフィールはすでに申請済みです。",
+    "CLAIM_MANUAL_ONLY": "このプラットフォームの申請は当面、手動で審査しています。お問い合わせください。",
+    "CLAIM_RATE_LIMITED": "試行回数が多すぎます。少し待ってからもう一度お試しください。",
+    "CLAIM_SOURCE_UNAVAILABLE": "元のプロフィールを読み込めませんでした。しばらくしてからもう一度お試しください。",
+    "CLAIM_NOT_STARTED": "先にコードを取得してください。",
+    "CLAIM_CODE_EXPIRED": "コードの有効期限が切れました。新しいコードを取得してもう一度お試しください。",
+    "CLAIM_CODE_NOT_FOUND": "プロフィールの自己紹介にまだコードがありません。自己紹介を保存し、1分ほど待ってからもう一度確認してください。",
+    "NOT_PROFILE_OWNER": "この操作は、このプロフィールを申請した本人だけが行えます。",
+    "CLAIMANT_NOT_FOUND": "その名前の登録ユーザーはいません。",
+    "CLAIM_NOT_FOUND": "このプロフィールに有効な申請はありません。",
+    "PROFILE_HIDDEN": "このプロフィールは本人の希望により非表示になっています。"
   }
 }

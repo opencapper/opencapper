@@ -14,6 +14,12 @@ const SOURCE_ICON = {
   reddit: "message-square",
 } satisfies Record<SourcePlatform, IconName>;
 
+// Brand names, never translated; ICU `select` per message is costly for the typed message keys.
+export const SOURCE_NAMES = {
+  polymarket: "Polymarket",
+  reddit: "Reddit",
+} satisfies Record<SourcePlatform, string>;
+
 export function SourceIcon(props: {
   platform: SourcePlatform;
   className?: string;
@@ -23,7 +29,10 @@ export function SourceIcon(props: {
   );
 }
 
-export function PublicBadge(props: { platform: SourcePlatform }) {
+export function PublicBadge(props: {
+  platform: SourcePlatform;
+  claimed?: boolean;
+}) {
   const t = useTranslations("SOURCES");
   return (
     <Tooltip>
@@ -34,7 +43,9 @@ export function PublicBadge(props: { platform: SourcePlatform }) {
         {t("PUBLIC_BADGE")}
       </TooltipTrigger>
       <TooltipContent className="max-w-64">
-        {t("PUBLIC_HINT", { platform: props.platform })}
+        {props.claimed
+          ? t("PUBLIC_HINT_CLAIMED", { platform: SOURCE_NAMES[props.platform] })
+          : t("PUBLIC_HINT", { platform: props.platform })}
       </TooltipContent>
     </Tooltip>
   );

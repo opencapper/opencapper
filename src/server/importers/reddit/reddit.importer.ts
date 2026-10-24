@@ -23,6 +23,7 @@ import {
   parsePotd,
   type ParsedPotd,
 } from "@/server/importers/reddit/reddit.parser";
+import { hiddenHandles } from "@/server/users/hidden";
 import { and, eq, inArray } from "drizzle-orm";
 
 const THREAD_MAX_AGE_HOURS = 36;
@@ -138,7 +139,10 @@ export async function importReddit(
     ).map((r) => r.externalId),
   );
 
-  for (const comment of comments.filter((c) => !done.has(c.id))) {
+  const hidden = await hiddenHandles("reddit");
+  for (const comment of comments.filter(
+    (c) => !done.has(c.id) && !hidden.has(c.author.toLowerCase()),
+  )) {
     const ref = `${comment.author} ${comment.id}`;
     try {
       const result = await importComment(cycle, comment);

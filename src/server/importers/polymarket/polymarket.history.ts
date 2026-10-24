@@ -24,6 +24,7 @@ import {
   type PolymarketMarket,
   type PolymarketTrade,
 } from "@/server/polymarket/polymarket.api";
+import { hiddenHandles } from "@/server/users/hidden";
 import { upsertSourceUser } from "@/server/users/identity.service";
 import { and, eq, inArray } from "drizzle-orm";
 
@@ -169,9 +170,10 @@ export async function backfillPolymarketHistory(options: {
   const delayMs = options.delayMs ?? POLITE_DELAY_MS;
   const since = now.subtract(options.days, "day").unix();
   const reports: HistoryTraderReport[] = [];
+  const hidden = await hiddenHandles("polymarket");
 
   for (const trader of (options.traders ?? POLYMARKET_TRADERS).filter(
-    (t) => t.enabled,
+    (t) => t.enabled && !hidden.has(t.wallet.toLowerCase()),
   )) {
     const report: HistoryTraderReport = {
       name: trader.name,

@@ -28,3 +28,9 @@ export const POLYMARKET_GAMMA_BASE = "https://gamma-api.polymarket.com";
 export const POLYMARKET_DATA_BASE = "https://data-api.polymarket.com";
 export const POLYMARKET_SITE = "https://polymarket.com";
 export const POLYGONSCAN_TX = "https://polygonscan.com/tx";
+
+// Where the owner edits the bio that carries the claim code.
+export const CLAIM_EDIT_URL = {
+  polymarket: `${POLYMARKET_SITE}/settings`,
+  reddit: "https://www.reddit.com/settings/profile",
+} as const;

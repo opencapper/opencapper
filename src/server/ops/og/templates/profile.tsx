@@ -57,13 +57,14 @@ function topSports(picks: ApiPick[]): string[] {
 export async function profileCard(
   locale: Locale,
   username: string,
-): Promise<ReactNode> {
+): Promise<ReactNode | null> {
   const [t, stats, picks, avatarUrl] = await Promise.all([
     getTranslations({ locale }),
     getCapperStats(username),
     getUserPicks(username),
     getProfileAvatar(username),
   ]);
+  if (stats.hidden) return null;
   const sports = topSports(picks);
   const [avatar, sourceLogo, ...icons] = await Promise.all([
     remoteImage(avatarUrl, AVATAR),

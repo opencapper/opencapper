@@ -106,6 +106,13 @@
       "when": 1792815723863,
       "tag": "0014_admin_roles",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1792842198532,
+      "tag": "0015_profile_claims",
+      "breakpoints": true
     }
   ]
 }

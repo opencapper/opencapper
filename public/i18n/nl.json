@@ -548,6 +548,17 @@
       "TRADED_HINT": "On chain getraded {time}, vóór de aanvang om {start}. Later geïmporteerd, niet live vastgelegd.",
       "TRANSACTION": "Transactie",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "Geclaimd door @{username}",
+    "CLAIMED_PROFILES": "Geclaimde geïmporteerde profielen:",
+    "HIDDEN": {
+      "TITLE": "Verborgen profiel",
+      "HEADING": "Dit profiel is verborgen op verzoek van de eigenaar",
+      "BODY": "Het verschijnt niet meer in de ranglijst, in zoekresultaten of in previews. De tips blijven in het openbare logboek en zijn nog steeds te controleren via het tip id.",
+      "VERIFY_LINK": "Een tip controleren op de verificatiepagina",
+      "OWNER_HINT": "Je hebt dit profiel geclaimd. Je kunt het op elk moment weer openbaar maken.",
+      "UNHIDE": "Dit profiel weer tonen",
+      "FAILED": "De wijziging kon niet worden opgeslagen."
     }
   },
   "SPORTS": {
@@ -768,10 +779,40 @@
     "BANNER_TITLE": "Openbaar profiel, geïmporteerd van {platform, select, polymarket {Polymarket} reddit {Reddit} other {een ander platform}}, niet geclaimd",
     "BANNER_BODY": "Elke tip is geïmporteerd uit openbare activiteit op {platform, select, polymarket {Polymarket} reddit {Reddit} other {een ander platform}} vóór de aanvang van het evenement en vergrendeld op het moment van importeren. Deze persoon heeft zich niet aangemeld en heeft dit track record niet gecontroleerd.",
     "BANNER_SOURCE": "Bekijk op {platform, select, polymarket {Polymarket} reddit {Reddit} other {een ander platform}}",
-    "BANNER_CLAIM": "Ben jij dit? Claimen of betwisten",
     "PICK_SOURCE": "Bron: {platform, select, polymarket {Polymarket trade} reddit {Reddit reactie} other {oorspronkelijke post}}",
     "POSTED_AT": "Oorspronkelijk geplaatst {time}. Op OpenCapper vergrendeld op het moment van importeren, nooit met terugwerkende kracht gedateerd.",
-    "FILL_HINT": "Vergrendeld op {time}. De quotering is de on chain fill op Polymarket van {filled}, geen quotering van een bookmaker. Deze tip kan niet worden bewerkt of verwijderd."
+    "FILL_HINT": "Vergrendeld op {time}. De quotering is de on chain fill op Polymarket van {filled}, geen quotering van een bookmaker. Deze tip kan niet worden bewerkt of verwijderd.",
+    "PUBLIC_HINT_CLAIMED": "Openbaar profiel geïmporteerd van {platform}. De eigenaar heeft het geclaimd met een OpenCapper account.",
+    "BANNER_TITLE_CLAIMED": "Openbaar profiel, geïmporteerd van {platform}, geclaimd door @{username}",
+    "BANNER_BODY_CLAIMED": "De eigenaar heeft bewezen dat dit {platform} account echt van de eigenaar is. Tips worden nog steeds vóór de start van elk evenement uit openbare activiteit geïmporteerd en bij de import vastgezet.",
+    "MANUAL_CLAIM": "Ben jij dit? Claims voor {platform} worden voorlopig met de hand beoordeeld. Neem contact op en wij controleren het.",
+    "OWNER_HINT": "Je hebt dit profiel geclaimd. Verbergen haalt het uit de ranglijst, zoekresultaten en previews. De logboekregels blijven staan.",
+    "CLAIMANT_PROFILE": "Eigenaar: @{username}",
+    "CONTACT": "Neem contact op",
+    "REMOVAL": "Ben jij dit niet? Verwijdering aanvragen",
+    "CLAIM": "Dit profiel claimen",
+    "LOGIN_TO_CLAIM": "Ben jij dit? Log in om het te claimen.",
+    "HIDE": "Dit profiel verbergen",
+    "VISIBILITY_FAILED": "De wijziging kon niet worden opgeslagen."
+  },
+  "CLAIM": {
+    "TITLE": "@{username} claimen",
+    "INTRO": "Bewijs met een eenmalige code in de openbare bio dat dit {platform} account van jou is. Geen wachtwoord nodig.",
+    "START": "Mijn code ophalen",
+    "STEP_CODE": "1. Kopieer je code",
+    "COPY": "Kopiëren",
+    "COPIED": "Code gekopieerd",
+    "STEP_BIO": "2. Zet hem ergens in je {platform} bio en sla op",
+    "OPEN_SETTINGS": "{platform} instellingen openen",
+    "STEP_VERIFY": "3. Kom hier terug en druk op Verifiëren",
+    "EXPIRES": "De code is geldig tot {time}. Na de claim kun je hem weer uit je bio halen.",
+    "VERIFY": "Verifiëren",
+    "VERIFYING": "Je {platform} bio wordt gecontroleerd",
+    "NEW_CODE": "Nieuwe code",
+    "SUCCESS_TITLE": "Profiel geclaimd",
+    "SUCCESS_BODY": "@{username} laat nu zien dat het van jou is. Je kunt het op elk moment op de profielpagina verbergen.",
+    "DONE": "Klaar",
+    "FAILED": "De claim kon niet worden afgerond. Probeer het opnieuw."
   },
   "ADMIN": {
     "TITLE": "Beheer",
@@ -825,7 +866,14 @@
       "PICKS": "Tips",
       "HISTORY": "Geschiedenis",
       "LAST_IMPORT": "Laatste import",
-      "EMPTY": "Nog geen geïmporteerde profielen."
+      "EMPTY": "Nog geen geïmporteerde profielen.",
+      "STATUS": "Status",
+      "HIDDEN": "Verborgen",
+      "VISIBLE": "Zichtbaar",
+      "HIDE": "Verbergen",
+      "UNHIDE": "Tonen",
+      "APPROVE": "Claim goedkeuren",
+      "REVOKE": "Claim intrekken"
     },
     "PICKS": {
       "CAPPER": "Capper",
@@ -865,6 +913,13 @@
       "NO_RUN_YET": "Geen run sinds de server is gestart.",
       "ON": "Aan",
       "OFF": "Uit"
+    },
+    "CLAIM": {
+      "TITLE": "Claim voor @{username} goedkeuren",
+      "HINT": "Alleen nadat je het bewijs van de eigenaar met de hand hebt gecontroleerd, bijvoorbeeld een bericht vanaf het bronaccount. De aanvrager heeft een OpenCapper account nodig. De tips blijven ongewijzigd.",
+      "CLAIMANT": "Gebruikersnaam van de aanvrager",
+      "CLAIMANT_PLACEHOLDER": "@gebruikersnaam",
+      "CONFIRM": "Claim goedkeuren"
     }
   },
   "OG": {
@@ -923,6 +978,18 @@
     "FORBIDDEN": "Je hebt geen toestemming om dat te doen.",
     "CANNOT_BAN_SELF": "Je kunt jezelf niet verbannen.",
     "CANNOT_BAN_ADMIN": "Beheerders kunnen niet worden verbannen.",
-    "USER_BANNED": "Je account mag geen tips meer vastleggen."
+    "USER_BANNED": "Je account mag geen tips meer vastleggen.",
+    "CLAIM_NOT_IMPORTED": "Alleen geïmporteerde openbare profielen kunnen worden geclaimd of verborgen.",
+    "PROFILE_ALREADY_CLAIMED": "Dit profiel is al geclaimd.",
+    "CLAIM_MANUAL_ONLY": "Claims voor dit platform worden voorlopig met de hand beoordeeld. Neem contact met ons op.",
+    "CLAIM_RATE_LIMITED": "Te veel pogingen. Wacht even en probeer het opnieuw.",
+    "CLAIM_SOURCE_UNAVAILABLE": "Het bronprofiel kon niet worden geladen. Probeer het later opnieuw.",
+    "CLAIM_NOT_STARTED": "Vraag eerst een code aan.",
+    "CLAIM_CODE_EXPIRED": "De code is verlopen. Vraag een nieuwe code aan en probeer het opnieuw.",
+    "CLAIM_CODE_NOT_FOUND": "De code staat nog niet in de profielbio. Sla de bio op, wacht een minuut en verifieer opnieuw.",
+    "NOT_PROFILE_OWNER": "Alleen de persoon die dit profiel heeft geclaimd kan dat doen.",
+    "CLAIMANT_NOT_FOUND": "Geen geregistreerde gebruiker heeft deze naam.",
+    "CLAIM_NOT_FOUND": "Dit profiel heeft geen actieve claim.",
+    "PROFILE_HIDDEN": "Dit profiel is verborgen op verzoek van de eigenaar."
   }
 }

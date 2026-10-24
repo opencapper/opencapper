@@ -32,6 +32,7 @@ import {
   type PolymarketTrade,
 } from "@/server/polymarket/polymarket.api";
 import { createPick, type CreatePickInput } from "@/server/picks/picks.service";
+import { hiddenHandles } from "@/server/users/hidden";
 import { and, eq, inArray } from "drizzle-orm";
 
 // 1 unit is the trader's median taker fill (USDC) over this window.
@@ -276,9 +277,10 @@ export async function importPolymarket(
   const report = emptyReport();
   const cycle = createCycle(report);
 
+  const hidden = await hiddenHandles("polymarket");
   const candidates: Candidate[] = [];
   for (const trader of (options.traders ?? POLYMARKET_TRADERS).filter(
-    (t) => t.enabled,
+    (t) => t.enabled && !hidden.has(t.wallet.toLowerCase()),
   )) {
     try {
       candidates.push(

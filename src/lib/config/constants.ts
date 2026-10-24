@@ -63,6 +63,3 @@ export const DATA_TABLES_COOKIE = "data-tables" as const;
 export const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const;
-
-export const CLAIM_ISSUE_URL =
-  "https://github.com/opencapper/opencapper/issues/new";

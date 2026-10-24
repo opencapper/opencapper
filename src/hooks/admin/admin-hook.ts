@@ -8,6 +8,7 @@ import { useElysiaQuery } from "@/lib/react-query/hooks";
 import { queryKeys } from "@/lib/react-query/keys";
 import { rpc } from "@/lib/rpc";
 import { CodedError, readApiError } from "@/lib/utils/api-error";
+import { handleElysia } from "@/lib/utils/base";
 import {
   keepPreviousData,
   useMutation,
@@ -87,5 +88,38 @@ export function useBanUserMutation() {
 export function useUnbanUserMutation() {
   return useUserAdminMutation((input: { userId: string }) =>
     authClient.admin.unbanUser({ userId: input.userId }),
+  );
+}
+
+function useImportsMutation<TInput, TOutput>(
+  run: (input: TInput) => Promise<{ data: TOutput | null; error: unknown }>,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: TInput) => handleElysia(await run(input)),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: queryKeys.adminImports() }),
+  });
+}
+
+export function useAdminHideProfileMutation() {
+  return useImportsMutation((input: { id: number; hidden: boolean }) =>
+    input.hidden
+      ? rpc.api.admin.imports({ id: input.id }).hide.post()
+      : rpc.api.admin.imports({ id: input.id }).unhide.post(),
+  );
+}
+
+export function useAdminApproveClaimMutation() {
+  return useImportsMutation((input: { id: number; claimant: string }) =>
+    rpc.api.admin
+      .imports({ id: input.id })
+      .claim.post({ claimant: input.claimant }),
+  );
+}
+
+export function useAdminRevokeClaimMutation() {
+  return useImportsMutation((input: { id: number }) =>
+    rpc.api.admin.imports({ id: input.id })["revoke-claim"].post(),
   );
 }

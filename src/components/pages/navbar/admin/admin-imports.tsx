@@ -4,21 +4,36 @@ import { CapperAvatar } from "@/components/elements/capper/capper-avatar";
 import { SourceIcon } from "@/components/elements/source/source-badge";
 import { DataTable } from "@/components/elements/table/data-table";
 import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
-import { useAdminImportsQuery } from "@/hooks/admin/admin-hook";
+import {
+  useAdminHideProfileMutation,
+  useAdminImportsQuery,
+  useAdminRevokeClaimMutation,
+} from "@/hooks/admin/admin-hook";
 import { Link } from "@/i18n/navigation";
+import { can, type AuthRole } from "@/lib/config/permissions";
 import type { TableFeats } from "@/lib/config/table-features";
 import type { AdminImportedProfile } from "@/lib/types";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { dayjs, formatDateTime } from "@/lib/utils/format/date";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
+import { ClaimSheet } from "./claim-sheet";
 
-export function AdminImports(props: { active: boolean }) {
+export function AdminImports(props: { active: boolean; role: AuthRole }) {
   const t = useTranslations();
   const locale = useLocale();
   const imports = useAdminImportsQuery(props.active);
+  const hide = useAdminHideProfileMutation();
+  const revoke = useAdminRevokeClaimMutation();
+  const claimTarget = useState<AdminImportedProfile | null>(null);
+  const canHide = can(props.role, { profiles: ["hide"] });
+  const canClaim = can(props.role, { claims: ["approve", "revoke"] });
+  const mutationError = hide.error ?? revoke.error;
 
   const columns: ColumnDef<TableFeats, AdminImportedProfile>[] = [
     {
@@ -129,6 +144,85 @@ export function AdminImports(props: { active: boolean }) {
         </span>
       ),
     },
+    {
+      id: "status",
+      header: t("ADMIN.IMPORTS.STATUS"),
+      enableSorting: false,
+      size: 190,
+      cell: ({ row }) => (
+        <div className="flex flex-wrap items-center gap-1.5 text-xs">
+          {row.original.hiddenAt ? (
+            <Badge variant="outline" className="text-muted-foreground">
+              <Icon name="eye-off" />
+              {t("ADMIN.IMPORTS.HIDDEN")}
+            </Badge>
+          ) : (
+            <span className="text-muted-foreground">
+              {t("ADMIN.IMPORTS.VISIBLE")}
+            </span>
+          )}
+          {row.original.claimedBy && (
+            <Link
+              href={{
+                pathname: "/u/[username]",
+                params: { username: row.original.claimedBy },
+              }}
+              className="text-foreground/80 inline-flex items-center gap-1 underline-offset-4 hover:underline"
+            >
+              <Icon name="user-check" className="size-3" />@
+              {row.original.claimedBy}
+            </Link>
+          )}
+        </div>
+      ),
+    },
+    {
+      id: "actions",
+      header: "",
+      enableSorting: false,
+      size: 240,
+      meta: { cellClassName: "text-right" },
+      cell: ({ row }) => {
+        const target = row.original;
+        const hidden = target.hiddenAt !== null;
+        return (
+          <div className="flex justify-end gap-1.5">
+            {canHide && (
+              <Button
+                size="sm"
+                variant="ghost"
+                disabled={hide.isPending}
+                onClick={() => hide.mutate({ id: target.id, hidden: !hidden })}
+              >
+                <Icon name={hidden ? "eye" : "eye-off"} />
+                {hidden ? t("ADMIN.IMPORTS.UNHIDE") : t("ADMIN.IMPORTS.HIDE")}
+              </Button>
+            )}
+            {canClaim && target.claimedBy && (
+              <Button
+                size="sm"
+                variant="ghost"
+                disabled={revoke.isPending}
+                onClick={() => revoke.mutate({ id: target.id })}
+              >
+                <Icon name="x-circle" />
+                {t("ADMIN.IMPORTS.REVOKE")}
+              </Button>
+            )}
+            {canClaim && !target.claimedBy && (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => claimTarget[1](target)}
+              >
+                <Icon name="user-check" />
+                {t("ADMIN.IMPORTS.APPROVE")}
+              </Button>
+            )}
+          </div>
+        );
+      },
+    },
   ];
 
   if (imports.isError)
@@ -141,18 +235,31 @@ export function AdminImports(props: { active: boolean }) {
     );
 
   return (
-    <DataTable
-      id="ADMIN_IMPORTS"
-      data={imports.data ?? []}
-      columns={columns}
-      total={imports.data?.length ?? 0}
-      isLoading={imports.isPending}
-      localSorting
-      emptyState={
-        <span className="text-muted-foreground text-sm">
-          {t("ADMIN.IMPORTS.EMPTY")}
-        </span>
-      }
-    />
+    <div className="flex flex-col gap-3">
+      {mutationError && (
+        <p className="text-destructive text-sm">
+          {apiErrorText(t, mutationError, t("ADMIN.USERS.ACTION_FAILED"))}
+        </p>
+      )}
+      <DataTable
+        id="ADMIN_IMPORTS"
+        data={imports.data ?? []}
+        columns={columns}
+        total={imports.data?.length ?? 0}
+        isLoading={imports.isPending}
+        localSorting
+        emptyState={
+          <span className="text-muted-foreground text-sm">
+            {t("ADMIN.IMPORTS.EMPTY")}
+          </span>
+        }
+      />
+      <ClaimSheet
+        target={claimTarget[0]}
+        onOpenChange={(open) => {
+          if (!open) claimTarget[1](null);
+        }}
+      />
+    </div>
   );
 }

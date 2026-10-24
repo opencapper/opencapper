@@ -29,7 +29,7 @@ import {
   upsertSourceUser,
   upsertTelegramUser,
 } from "@/server/users/identity.service";
-import { and, asc, eq, gt, ne, sql } from "drizzle-orm";
+import { and, asc, eq, gt, isNotNull, ne, sql } from "drizzle-orm";
 
 export type PickIdentity =
   | { kind: "discord"; discordId: string; username: string }
@@ -131,6 +131,23 @@ async function assertNotBanned(identity: PickIdentity) {
   throw new ApiError(403, "ERRORS.USER_BANNED");
 }
 
+// Imported profiles hidden at the owner's request get no new picks.
+async function assertNotHidden(identity: PickIdentity) {
+  if (identity.kind !== "source") return;
+  const [row] = await getDb()
+    .select({ id: users.id })
+    .from(users)
+    .where(
+      and(
+        eq(users.sourcePlatform, identity.platform),
+        eq(users.sourceHandle, identity.handle.toLowerCase()),
+        isNotNull(users.hiddenAt),
+      ),
+    )
+    .limit(1);
+  if (row) throw new ApiError(409, "ERRORS.PROFILE_HIDDEN");
+}
+
 function exchangeOdds(fill: ExchangeFill): CapturedOdds {
   const commence = dayjs(fill.commenceTime);
   if (!commence.isAfter(dayjs()))
@@ -153,6 +170,7 @@ function exchangeOdds(fill: ExchangeFill): CapturedOdds {
 
 export async function createPick(input: CreatePickInput): Promise<ApiPick> {
   await assertNotBanned(input.identity);
+  await assertNotHidden(input.identity);
   const odds = input.exchangeFill
     ? exchangeOdds(input.exchangeFill)
     : await captureOdds(input, input.loadOdds);

@@ -9,6 +9,7 @@ import type {
 } from "@/lib/types";
 import { dayjs } from "@/lib/utils/format/date";
 import { ApiError } from "@/server/errors";
+import { visibleUser } from "@/server/users/hidden";
 import { and, asc, desc, eq, gte, isNull, sql } from "drizzle-orm";
 import { createHash } from "node:crypto";
 
@@ -156,6 +157,7 @@ export async function getUserSequenceEntry(
       and(
         eq(users.username, username.toLowerCase()),
         eq(picks.sequence, sequence),
+        visibleUser,
       ),
     )
     .limit(1);
