@@ -4,7 +4,7 @@
     "DESCRIPTION": "Her tahmin maçtan önce zaman damgası alır ve kilitlenir. Oranları platform kaydeder, sicil ROI'ye göre sıralanır, bahis siteleriyle hiçbir affiliate anlaşması yok."
   },
   "NAV": {
-    "HOME": "Benioku",
+    "HOME": "Nasıl çalışır",
     "LEADERBOARD": "Sıralama",
     "GITHUB": "GitHub",
     "MENU": "Menü",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "Tahminlerini takip et",
     "CTA_LEADERBOARD": "Sıralama",
     "HERO_FOOTNOTE": "Discord / Telegram / Web / API",
-    "README": "BENİOKU",
+    "README": "Nasıl çalışır",
     "INTRO": "OpenCapper, ekstra uğraş gerektirmeden <b>tahminlerinin dürüst bir sicilini</b> tutar. Tahminini zaten bulunduğun yerde paylaş: bir Discord sunucusunda, bir Telegram sohbetinde ya da web üzerinde. O anki oranı not ederiz, <b>maçtan sonra sonuçlandırırız</b> ve herkese açık profiline ekleriz. Kazançlar da kayıplar da kalır, hiçbir şey silinmez ve tahminciler kazanma oranına göre değil <b>yatırım getirisine (ROI)</b> göre sıralanır.",
     "SPORTS_LABEL": "Takip edilen sporlar",
     "SHOWCASE": {

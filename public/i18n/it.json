@@ -4,7 +4,7 @@
     "DESCRIPTION": "Ogni pronostico registrato con data e ora e bloccato prima della partita. Quote rilevate dalla piattaforma, storici classificati per ROI, nessun accordo di affiliazione con i bookmaker."
   },
   "NAV": {
-    "HOME": "Panoramica",
+    "HOME": "Come funziona",
     "LEADERBOARD": "Classifica",
     "GITHUB": "GitHub",
     "MENU": "Menu",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "Registra i tuoi pronostici",
     "CTA_LEADERBOARD": "Classifica",
     "HERO_FOOTNOTE": "Discord / Telegram / Web / API",
-    "README": "README",
+    "README": "Come funziona",
     "INTRO": "OpenCapper tiene uno <b>storico onesto dei tuoi pronostici</b> senza lavoro extra. Pubblica un pronostico dove sei già, in un server Discord, in una chat Telegram o sul web. Annotiamo la quota di quel momento, <b>lo refertiamo dopo la partita</b> e lo aggiungiamo al tuo profilo pubblico. Vinti e persi restano entrambi, non si cancella nulla, e i tipster sono classificati per <b>ritorno sull’investimento</b> invece che per percentuale di vincita.",
     "SPORTS_LABEL": "Sport coperti",
     "SHOWCASE": {

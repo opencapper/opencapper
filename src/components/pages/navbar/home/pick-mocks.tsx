@@ -1,5 +1,6 @@
 "use client";
 
+import { LogoImage } from "@/components/elements/brand/brand";
 import { Matchup } from "@/components/elements/participant/matchup";
 import { SportIcon } from "@/components/elements/sport/sport-icon";
 import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
@@ -26,15 +27,16 @@ export type PickSample = {
 
 const UNIT_STEPS = ["0.5u", "1u", "2u", "3u", "5u"];
 
+// The bot's Discord avatar: the favicon mark, dark square with a white ring, cropped round.
 function BotAvatar(props: { className?: string }) {
   return (
     <span
       className={cn(
-        "bg-primary text-primary-foreground inline-flex size-9 shrink-0 items-center justify-center rounded-full font-mono text-[11px] font-semibold",
+        "inline-flex size-9 shrink-0 overflow-hidden rounded-full bg-[#fafafa]",
         props.className,
       )}
     >
-      OC
+      <LogoImage className="size-full text-[#0a0a0a]" />
     </span>
   );
 }

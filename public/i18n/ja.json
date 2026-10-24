@@ -4,7 +4,7 @@
     "DESCRIPTION": "すべての予想は試合前にタイムスタンプ付きで確定。オッズはプラットフォームが記録し、成績はROIでランキング。ブックメーカーとのアフィリエイト契約は一切ありません。"
   },
   "NAV": {
-    "HOME": "Readme",
+    "HOME": "使い方",
     "LEADERBOARD": "ランキング",
     "GITHUB": "GitHub",
     "MENU": "メニュー",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "予想を記録する",
     "CTA_LEADERBOARD": "ランキング",
     "HERO_FOOTNOTE": "Discord / Telegram / Web / API",
-    "README": "README",
+    "README": "使い方",
     "INTRO": "OpenCapperは、手間をかけずに<b>予想の誠実な成績</b>を残します。DiscordサーバーやTelegramのチャット、Webなど、いつもの場所で予想を投稿するだけ。その時点のオッズを記録し、<b>試合後に判定</b>して公開プロフィールに追加します。勝ちも負けもすべて残り、削除はできません。予想家は的中率ではなく<b>ROI（投資収益率）</b>でランキングされます。",
     "SPORTS_LABEL": "対応スポーツ",
     "SHOWCASE": {

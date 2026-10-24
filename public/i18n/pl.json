@@ -4,7 +4,7 @@
     "DESCRIPTION": "Każdy typ ma znacznik czasu i jest blokowany przed meczem. Kursy zapisuje platforma, historie są rankingowane według ROI, zero umów partnerskich z bukmacherami."
   },
   "NAV": {
-    "HOME": "Przegląd",
+    "HOME": "Jak to działa",
     "LEADERBOARD": "Ranking",
     "GITHUB": "GitHub",
     "MENU": "Menu",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "Śledź swoje typy",
     "CTA_LEADERBOARD": "Ranking",
     "HERO_FOOTNOTE": "Discord / Telegram / WWW / API",
-    "README": "README",
+    "README": "Jak to działa",
     "INTRO": "OpenCapper prowadzi <b>uczciwą historię twoich typów</b> bez dodatkowej pracy. Publikuj typ tam, gdzie już jesteś: na serwerze Discord, w czacie na Telegramie albo w przeglądarce. Zapisujemy kurs z tej chwili, <b>rozliczamy typ po meczu</b> i dodajemy go do twojego publicznego profilu. Wygrane i przegrane zostają, nic nie znika, a typerzy są rankingowani według <b>zwrotu z inwestycji</b>, a nie skuteczności.",
     "SPORTS_LABEL": "Śledzone dyscypliny",
     "SHOWCASE": {

@@ -4,7 +4,7 @@
     "DESCRIPTION": "Every pick timestamped and locked before the game. Odds captured by the platform, records ranked by ROI, no sportsbook affiliate deals."
   },
   "NAV": {
-    "HOME": "Readme",
+    "HOME": "How it works",
     "LEADERBOARD": "Leaderboard",
     "GITHUB": "GitHub",
     "MENU": "Menu",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "Track your picks",
     "CTA_LEADERBOARD": "Leaderboard",
     "HERO_FOOTNOTE": "Discord / Telegram / Web / API",
-    "README": "README",
+    "README": "How it works",
     "INTRO": "OpenCapper keeps an <b>honest record of your picks</b> without extra work. Post a pick where you already are, in a Discord server, a Telegram chat or on the web. We note the odds at that moment, <b>grade it after the game</b> and add it to your public profile. Wins and losses both stay, nothing gets deleted, and cappers are ranked by <b>return on investment</b> instead of win rate.",
     "SPORTS_LABEL": "Tracked sports",
     "SHOWCASE": {

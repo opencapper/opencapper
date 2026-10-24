@@ -4,7 +4,7 @@
     "DESCRIPTION": "Jeder Tipp mit Zeitstempel und vor dem Spiel gesperrt. Quoten erfasst die Plattform, Bilanzen werden nach ROI bewertet, keine Affiliate-Deals mit Buchmachern."
   },
   "NAV": {
-    "HOME": "Übersicht",
+    "HOME": "So funktioniert's",
     "LEADERBOARD": "Rangliste",
     "GITHUB": "GitHub",
     "MENU": "Menü",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "Tipps erfassen",
     "CTA_LEADERBOARD": "Rangliste",
     "HERO_FOOTNOTE": "Discord / Telegram / Web / API",
-    "README": "README",
+    "README": "So funktioniert's",
     "INTRO": "OpenCapper führt eine <b>ehrliche Bilanz deiner Tipps</b>, ohne Mehraufwand. Du gibst den Tipp dort ab, wo du ohnehin bist, auf einem Discord Server, in einem Telegram Chat oder im Web. Wir halten die Quote in diesem Moment fest, <b>werten den Tipp nach dem Spiel</b> und tragen ihn in dein öffentliches Profil ein. Siege und Niederlagen bleiben stehen, nichts wird gelöscht, und Capper werden nach <b>Rendite</b> sortiert statt nach Trefferquote.",
     "SPORTS_LABEL": "Erfasste Sportarten",
     "SHOWCASE": {

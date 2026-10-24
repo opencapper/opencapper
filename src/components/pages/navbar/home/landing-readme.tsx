@@ -30,8 +30,7 @@ export async function LandingReadme(props: { data: LandingData }) {
       </p>
 
       <IntegrationsShowcase
-        event={props.data.event}
-        price={props.data.price}
+        featured={props.data.featured}
         username={props.data.stats?.top[0]?.username ?? "username"}
       />
       <SportsMarquee />

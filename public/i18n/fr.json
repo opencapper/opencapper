@@ -4,7 +4,7 @@
     "DESCRIPTION": "Chaque pronostic horodaté et verrouillé avant le match. Cotes relevées par la plateforme, historiques classés par ROI, aucun partenariat d’affiliation avec les bookmakers."
   },
   "NAV": {
-    "HOME": "Lisez-moi",
+    "HOME": "Comment ça marche",
     "LEADERBOARD": "Classement",
     "GITHUB": "GitHub",
     "MENU": "Menu",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "Suivre vos pronostics",
     "CTA_LEADERBOARD": "Classement",
     "HERO_FOOTNOTE": "Discord / Telegram / Web / API",
-    "README": "README",
+    "README": "Comment ça marche",
     "INTRO": "OpenCapper tient un <b>historique honnête de vos pronostics</b> sans effort supplémentaire. Publiez un pronostic là où vous êtes déjà, sur un serveur Discord, dans un chat Telegram ou sur le web. Nous relevons la cote à cet instant, <b>le réglons après le match</b> et l’ajoutons à votre profil public. Les gains comme les pertes restent, rien n’est supprimé, et les tipsters sont classés selon leur <b>retour sur investissement</b> plutôt que leur taux de réussite.",
     "SPORTS_LABEL": "Sports suivis",
     "SHOWCASE": {

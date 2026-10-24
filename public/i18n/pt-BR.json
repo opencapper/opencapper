@@ -4,7 +4,7 @@
     "DESCRIPTION": "Cada palpite registrado com data e hora e travado antes do jogo. Odds capturadas pela plataforma, históricos ranqueados por ROI, nenhum acordo de afiliado com casas de apostas."
   },
   "NAV": {
-    "HOME": "Início",
+    "HOME": "Como funciona",
     "LEADERBOARD": "Ranking",
     "GITHUB": "GitHub",
     "MENU": "Menu",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "Acompanhe seus palpites",
     "CTA_LEADERBOARD": "Ranking",
     "HERO_FOOTNOTE": "Discord / Telegram / Web / API",
-    "README": "LEIA-ME",
+    "README": "Como funciona",
     "INTRO": "O OpenCapper mantém um <b>histórico honesto dos seus palpites</b> sem trabalho extra. Poste um palpite onde você já está, num servidor do Discord, num chat do Telegram ou na web. Anotamos a odd daquele momento, <b>liquidamos o palpite depois do jogo</b> e o adicionamos ao seu perfil público. Greens e reds ficam, nada é apagado, e os tipsters são ranqueados pelo <b>retorno sobre o investimento</b>, não pela taxa de acerto.",
     "SPORTS_LABEL": "Esportes acompanhados",
     "SHOWCASE": {

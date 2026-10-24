@@ -4,7 +4,7 @@
     "DESCRIPTION": "Cada pick queda registrado con fecha y hora y bloqueado antes del partido. La plataforma captura las cuotas, los historiales se clasifican por ROI y no hay acuerdos de afiliación con casas de apuestas."
   },
   "NAV": {
-    "HOME": "Inicio",
+    "HOME": "Cómo funciona",
     "LEADERBOARD": "Clasificación",
     "GITHUB": "GitHub",
     "MENU": "Menú",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "Registra tus picks",
     "CTA_LEADERBOARD": "Clasificación",
     "HERO_FOOTNOTE": "Discord / Telegram / Web / API",
-    "README": "README",
+    "README": "Cómo funciona",
     "INTRO": "OpenCapper lleva un <b>historial honesto de tus picks</b> sin trabajo extra. Publica tu pick donde ya estás, en un servidor de Discord, un chat de Telegram o en la web. Anotamos la cuota en ese momento, <b>lo liquidamos después del partido</b> y lo añadimos a tu perfil público. Las victorias y las derrotas se quedan, no se borra nada, y los tipsters se clasifican por <b>retorno de la inversión</b> en lugar de por porcentaje de acierto.",
     "SPORTS_LABEL": "Deportes disponibles",
     "SHOWCASE": {

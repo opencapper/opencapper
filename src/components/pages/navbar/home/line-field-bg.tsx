@@ -96,7 +96,8 @@ export function LineFieldBackground() {
         const x = i * PITCH + 2;
         const gain = columnGain(i);
         for (let y = 0; y < height; y += CELL) {
-          const ink = density(x, y + CELL / 2, seconds, width, height, hole) * gain;
+          const ink =
+            density(x, y + CELL / 2, seconds, width, height, hole) * gain;
           const length = ink * CELL;
           if (length < 0.5) continue;
           ctx.rect(x, y + (CELL - length) / 2, 1, length);

@@ -1,20 +1,17 @@
 import { getDb } from "@/lib/db/server/client";
 import { pickSettlements, picks } from "@/lib/db/schema/server";
+import { PICK_LEAGUES } from "@/lib/config/sports";
 import type {
   LandingData,
   LandingEvent,
-  LandingPrice,
+  LandingFeatured,
   LandingStats,
 } from "@/lib/types";
-import { dayjs } from "@/lib/utils/format/date";
 import { serverEnv } from "@/server/env";
 import { getLeaderboard } from "@/server/leaderboard/leaderboard.service";
 import { getHeadRow, getLogHead, getPickEntry } from "@/server/log/log.service";
-import {
-  bookmakerRank,
-  fetchEventOdds,
-  listEvents,
-} from "@/server/odds/odds.service";
+import { getFeaturedEvents } from "@/server/odds/board.service";
+import { listEvents } from "@/server/odds/odds.service";
 import { and, desc, eq, inArray, isNotNull, sql } from "drizzle-orm";
 
 // MMA first, the rest are the leagues most likely to have a fixture this week.
@@ -26,8 +23,9 @@ const LANDING_SPORTS = [
   { sportKey: "soccer_epl", sportName: "Soccer EPL" },
 ];
 
-// One h2h odds call over us,eu costs 2 Odds API credits; 6 hours keeps it at 8 a day per process.
-const EVENT_TTL_MS = 6 * 60 * 60_000;
+// Prices come from the pick board's budgeted league cache, so the landing page spends no credits of its own.
+const FEATURED_TTL_MS = 15 * 60_000;
+const FEATURED_COUNT = 6;
 const STATS_TTL_MS = 60_000;
 
 type Slot<T> = { expires: number; value: Promise<T> };
@@ -69,44 +67,41 @@ async function nextEvent(): Promise<LandingEvent | null> {
   return null;
 }
 
-async function eventPrice(event: LandingEvent): Promise<LandingPrice | null> {
-  const odds = await fetchEventOdds({
-    sportKey: event.sportKey,
-    eventId: event.id,
-    markets: ["h2h"],
-  }).catch(() => null);
-  if (!odds) return null;
-  const offer = odds.bookmakers
-    .flatMap((bookmaker) => {
-      const outcome = bookmaker.markets
-        .find((m) => m.key === "h2h")
-        ?.outcomes.find((o) => o.name === event.home);
-      return outcome
-        ? [{ bookmaker: bookmaker.key, price: outcome.price }]
-        : [];
-    })
-    .toSorted(
-      (a, b) => bookmakerRank(a.bookmaker) - bookmakerRank(b.bookmaker),
-    )[0];
-  if (!offer) return null;
-  return {
-    selection: event.home,
-    bookmaker: offer.bookmaker,
-    oddsDecimal: offer.price,
-    capturedAt: dayjs().toISOString(),
-  };
+function leagueName(sportKey: string): string {
+  return (
+    PICK_LEAGUES.find((league) => league.sportKey === sportKey)?.label ??
+    sportKey
+  );
 }
 
-const landingEvent = cached(async () => {
-  const event = await nextEvent();
-  const price = event ? await eventPrice(event) : null;
-  const ttlEnd = Date.now() + EVENT_TTL_MS;
-  const kickoff = event ? dayjs(event.commenceTime).valueOf() : ttlEnd;
-  return {
-    value: { event, price },
-    expires: Math.min(ttlEnd, kickoff),
-  };
-});
+async function loadFeatured(): Promise<LandingFeatured[]> {
+  const rows = await getFeaturedEvents(FEATURED_COUNT).catch(() => []);
+  if (rows.length === 0) {
+    const event = await nextEvent();
+    return event ? [{ event, price: null }] : [];
+  }
+  return rows.map((row) => {
+    const homeFavoured = row.offer.home <= row.offer.away;
+    return {
+      event: {
+        ...row.event,
+        sportKey: row.sportKey,
+        sportName: leagueName(row.sportKey),
+      },
+      price: {
+        selection: homeFavoured ? row.event.home : row.event.away,
+        bookmaker: row.offer.bookmaker,
+        oddsDecimal: homeFavoured ? row.offer.home : row.offer.away,
+        capturedAt: row.pricedAt,
+      },
+    };
+  });
+}
+
+const landingFeatured = cached(async () => ({
+  value: await loadFeatured(),
+  expires: Date.now() + FEATURED_TTL_MS,
+}));
 
 const GRADED = ["win", "loss", "push", "void"] as const;
 
@@ -200,13 +195,14 @@ const landingStats = cached(async () => ({
 }));
 
 export async function getLandingData(): Promise<LandingData> {
-  const [event, stats] = await Promise.all([
-    landingEvent().catch(() => ({ event: null, price: null })),
+  const [featured, stats] = await Promise.all([
+    landingFeatured().catch(() => []),
     landingStats().catch(() => null),
   ]);
   return {
-    event: event.event,
-    price: event.price,
+    event: featured[0]?.event ?? null,
+    price: featured[0]?.price ?? null,
+    featured,
     stats,
     minGraded: serverEnv.ranking.leaderboardMinGradedPicks,
   };

@@ -1,5 +1,5 @@
 import { PICK_LEAGUE_KEYS, type PickLeagueKey } from "@/lib/config/sports";
-import type { ApiBoard, ApiMoneyline } from "@/lib/types";
+import type { ApiBoard, ApiEvent } from "@/lib/types";
 import { dayjs } from "@/lib/utils/format/date";
 import { serverEnv } from "@/server/env";
 import {
@@ -18,7 +18,9 @@ const PRICES_TTL_MS = 15 * 60_000;
 const FAILED_TTL_MS = 60_000;
 const LEAGUES_TTL_MS = 6 * 60 * 60_000;
 
-type Prices = { pricedAt: string; byEvent: Map<string, ApiMoneyline> };
+// Decimal prices of the best ranked bookmaker; `books` counts every bookmaker quoting the game.
+type Offer = { bookmaker: string; home: number; away: number; books: number };
+type Prices = { pricedAt: string; byEvent: Map<string, Offer> };
 type PriceSlot = { expires: number; prices: Promise<Prices | null> };
 
 const priceCache = new Map<string, PriceSlot>();
@@ -33,8 +35,8 @@ function creditsLeft(): number {
   return serverEnv.boardOddsCreditsPerDay - budget.used;
 }
 
-function moneyline(event: EventOdds): ApiMoneyline | null {
-  const offer = event.bookmakers
+function bestOffer(event: EventOdds): Offer | null {
+  const offers = event.bookmakers
     .flatMap((bookmaker) => {
       const outcomes = bookmaker.markets.find((m) => m.key === "h2h")?.outcomes;
       const home = outcomes?.find((o) => o.name === event.home_team);
@@ -45,21 +47,17 @@ function moneyline(event: EventOdds): ApiMoneyline | null {
     })
     .toSorted(
       (a, b) => bookmakerRank(a.bookmaker) - bookmakerRank(b.bookmaker),
-    )[0];
-  if (!offer) return null;
-  return {
-    bookmaker: offer.bookmaker,
-    home: toAmericanOdds(offer.home),
-    away: toAmericanOdds(offer.away),
-  };
+    );
+  const offer = offers[0];
+  return offer ? { ...offer, books: offers.length } : null;
 }
 
 async function loadPrices(sportKey: string): Promise<Prices> {
   const events = await fetchSportOdds({ sportKey, markets: ["h2h"] });
-  const byEvent = new Map<string, ApiMoneyline>();
+  const byEvent = new Map<string, Offer>();
   for (const event of events) {
-    const line = moneyline(event);
-    if (line) byEvent.set(event.id, line);
+    const offer = bestOffer(event);
+    if (offer) byEvent.set(event.id, offer);
   }
   return { pricedAt: dayjs().toISOString(), byEvent };
 }
@@ -91,10 +89,19 @@ export async function getBoard(sportKey: PickLeagueKey): Promise<ApiBoard> {
   ]);
   return {
     sportKey,
-    events: events.map((event) => ({
-      ...event,
-      moneyline: prices?.byEvent.get(event.id) ?? null,
-    })),
+    events: events.map((event) => {
+      const offer = prices?.byEvent.get(event.id);
+      return {
+        ...event,
+        moneyline: offer
+          ? {
+              bookmaker: offer.bookmaker,
+              home: toAmericanOdds(offer.home),
+              away: toAmericanOdds(offer.away),
+            }
+          : null,
+      };
+    }),
     pricedAt: prices?.pricedAt ?? null,
     imagesPending: events.some(
       (event) =>
@@ -123,4 +130,52 @@ export function getActiveLeagues(): Promise<PickLeagueKey[]> {
   };
   leaguesSlot = slot;
   return slot.keys;
+}
+
+const FEATURED_LEAGUES = [
+  "americanfootball_nfl",
+  "basketball_nba",
+  "soccer_uefa_champs_league",
+  "soccer_epl",
+  "mma_mixed_martial_arts",
+  "icehockey_nhl",
+  "baseball_mlb",
+  "soccer_spain_la_liga",
+] satisfies PickLeagueKey[];
+const FEATURED_WINDOW_HOURS = 72;
+
+export type FeaturedEvent = {
+  sportKey: PickLeagueKey;
+  event: ApiEvent;
+  offer: Offer;
+  pricedAt: string;
+};
+
+// Bookmaker coverage is the popularity signal we already pay for: marquee games are quoted by far more books.
+export async function getFeaturedEvents(
+  limit: number,
+): Promise<FeaturedEvent[]> {
+  const active = new Set(await getActiveLeagues());
+  const now = dayjs();
+  const horizon = now.add(FEATURED_WINDOW_HOURS, "hour");
+  const perLeague = await Promise.all(
+    FEATURED_LEAGUES.filter((key) => active.has(key)).map(async (sportKey) => {
+      const events = (await listEvents(sportKey).catch(() => [])).filter(
+        (event) => dayjs(event.commenceTime).isBefore(horizon),
+      );
+      if (events.length === 0) return [];
+      const prices = await boardPrices(sportKey);
+      if (!prices) return [];
+      return events.flatMap((event) => {
+        const offer = prices.byEvent.get(event.id);
+        return offer
+          ? [{ sportKey, event, offer, pricedAt: prices.pricedAt }]
+          : [];
+      });
+    }),
+  );
+  return perLeague
+    .flat()
+    .toSorted((a, b) => b.offer.books - a.offer.books)
+    .slice(0, limit);
 }

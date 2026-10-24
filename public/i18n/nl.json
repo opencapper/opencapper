@@ -4,7 +4,7 @@
     "DESCRIPTION": "Elke tip krijgt een tijdstempel en wordt vergrendeld vóór de wedstrijd. Odds vastgelegd door het platform, track records gerangschikt op ROI, geen affiliatedeals met bookmakers."
   },
   "NAV": {
-    "HOME": "Readme",
+    "HOME": "Hoe het werkt",
     "LEADERBOARD": "Ranglijst",
     "GITHUB": "GitHub",
     "MENU": "Menu",
@@ -148,7 +148,7 @@
     "CTA_TRACK": "Volg je tips",
     "CTA_LEADERBOARD": "Ranglijst",
     "HERO_FOOTNOTE": "Discord / Telegram / Web / API",
-    "README": "README",
+    "README": "Hoe het werkt",
     "INTRO": "OpenCapper houdt een <b>eerlijk track record van je tips</b> bij zonder extra werk. Plaats een tip waar je al zit, in een Discord server, een Telegram chat of op het web. Wij noteren de odds op dat moment, <b>beoordelen de tip na de wedstrijd</b> en zetten hem op je openbare profiel. Winst en verlies blijven allebei staan, er wordt niets verwijderd, en tipsters worden gerangschikt op <b>rendement (ROI)</b> in plaats van op winstpercentage.",
     "SPORTS_LABEL": "Gevolgde sporten",
     "SHOWCASE": {

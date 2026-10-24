@@ -264,9 +264,15 @@ export type LandingStats = {
   top: { username: string; roi: number }[];
 };
 
+export type LandingFeatured = {
+  event: LandingEvent;
+  price: LandingPrice | null;
+};
+
 export type LandingData = {
   event: LandingEvent | null;
   price: LandingPrice | null;
+  featured: LandingFeatured[];
   stats: LandingStats | null;
   minGraded: number;
 };

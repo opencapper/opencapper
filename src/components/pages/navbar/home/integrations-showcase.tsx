@@ -7,11 +7,11 @@ import { useCopyToClipboard } from "@/hooks/ui/use-copy-to-clipboard-hook";
 import { msg } from "@/lib/config/constants";
 import { env } from "@/lib/config/env";
 import { isFighterGroup, sportGroup } from "@/lib/config/sports";
-import type { LandingEvent, LandingPrice } from "@/lib/types";
+import type { LandingEvent, LandingFeatured, LandingPrice } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { formatUtcShortDateTime } from "@/lib/utils/format/date";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DiscordMock,
   type PickSample,
@@ -20,6 +20,8 @@ import {
 } from "./pick-mocks";
 
 type Mode = "discord" | "telegram" | "web" | "api";
+
+const ROTATE_MS = 8000;
 
 const TABS = [
   {
@@ -103,14 +105,25 @@ function ApiSnippet(props: { username: string }) {
 }
 
 export function IntegrationsShowcase(props: {
-  event: LandingEvent | null;
-  price: LandingPrice | null;
+  featured: LandingFeatured[];
   username: string;
 }) {
   const t = useTranslations();
   const modeState = useState<Mode>("discord");
   const mode = modeState[0];
-  const sample = useSample(props.event, props.price);
+  const indexState = useState(0);
+  const setIndex = indexState[1];
+  const count = props.featured.length;
+  const current = props.featured.at(indexState[0] % Math.max(count, 1));
+  const sample = useSample(current?.event ?? null, current?.price ?? null);
+
+  // The server renders the most covered game; the client then starts at a random one and rotates.
+  useEffect(() => {
+    if (count < 2) return;
+    setIndex(Math.floor(Math.random() * count));
+    const timer = setInterval(() => setIndex((i) => i + 1), ROTATE_MS);
+    return () => clearInterval(timer);
+  }, [count, setIndex]);
 
   return (
     <div className="border-input bg-card mb-8 overflow-hidden rounded-lg border">
@@ -141,7 +154,10 @@ export function IntegrationsShowcase(props: {
         ))}
       </div>
 
-      <div className="bg-muted/25 min-h-[300px] px-4 py-5 sm:px-6">
+      <div
+        key={current?.event.id}
+        className="bg-muted/25 animate-fade-in min-h-[300px] px-4 py-5 sm:px-6"
+      >
         {mode === "discord" && <DiscordMock sample={sample} />}
         {mode === "telegram" && <TelegramMock sample={sample} />}
         {mode === "web" && <WebMock sample={sample} />}
