@@ -243,6 +243,19 @@
   animation: marquee 40s linear infinite;
 }
 
+@keyframes tab-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@utility animate-tab-progress {
+  animation: tab-progress 6s linear forwards;
+}
+
 @keyframes mark-snap-left {
   from {
     opacity: 0;

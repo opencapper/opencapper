@@ -21,8 +21,6 @@ import {
 
 type Mode = "discord" | "telegram" | "web" | "api";
 
-const ROTATE_MS = 8000;
-
 const TABS = [
   {
     id: "discord",
@@ -117,16 +115,20 @@ export function IntegrationsShowcase(props: {
   const current = props.featured.at(indexState[0] % Math.max(count, 1));
   const sample = useSample(current?.event ?? null, current?.price ?? null);
 
-  // The server renders the most covered game; the client then starts at a random one and rotates.
+  // The server renders the most covered game; the client then starts at a random one.
   useEffect(() => {
-    if (count < 2) return;
-    setIndex(Math.floor(Math.random() * count));
-    const timer = setInterval(() => setIndex((i) => i + 1), ROTATE_MS);
-    return () => clearInterval(timer);
+    if (count > 1) setIndex(Math.floor(Math.random() * count));
   }, [count, setIndex]);
 
+  // The active underline is the timer: its CSS animation pauses on hover or focus, and its end moves on.
+  const advance = () => {
+    const next = (TABS.findIndex((tab) => tab.id === mode) + 1) % TABS.length;
+    if (next === 0) setIndex((i) => i + 1);
+    modeState[1](TABS[next].id);
+  };
+
   return (
-    <div className="border-input bg-card mb-8 overflow-hidden rounded-lg border">
+    <div className="group/showcase border-input bg-card mb-8 overflow-hidden rounded-lg border">
       <div
         className="border-input thin-scrollbar flex items-center overflow-x-auto border-b"
         role="tablist"
@@ -148,7 +150,13 @@ export function IntegrationsShowcase(props: {
             <Icon name={tab.icon} className="size-3.5" />
             {t(tab.label)}
             {mode === tab.id && (
-              <span className="bg-primary/70 absolute right-4 bottom-0 left-4 h-[1.5px] rounded-full" />
+              <span className="bg-foreground/10 absolute right-4 bottom-0 left-4 h-[1.5px] overflow-hidden rounded-full">
+                <span
+                  key={`${mode}-${indexState[0]}`}
+                  onAnimationEnd={advance}
+                  className="bg-primary/70 animate-tab-progress block size-full origin-left group-focus-within/showcase:[animation-play-state:paused] group-hover/showcase:[animation-play-state:paused] motion-reduce:scale-x-100 motion-reduce:animate-none"
+                />
+              </span>
             )}
           </button>
         ))}
