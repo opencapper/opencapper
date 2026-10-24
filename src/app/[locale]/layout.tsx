@@ -9,7 +9,11 @@ import { INITIAL_USER_THEME, USER_THEME_KEY } from "@/lib/theme/theme-types";
 import { getCookieValue, serverLocale } from "@/lib/utils/server";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
 import { ReactNode } from "react";
 import "../globals.css";
 
@@ -44,6 +48,10 @@ export default async function LocaleLayout(props: Props) {
   const userTheme = rawTheme === undefined ? undefined : migrateTheme(rawTheme);
   const themeCss = userTheme ? buildThemeCss(userTheme) : DEFAULT_THEME_CSS;
   const fontHref = userTheme ? googleFontHref(userTheme) : null;
+  // Legal pages render on the server only; their long texts stay out of every page's client payload.
+  const clientMessages = Object.fromEntries(
+    Object.entries(await getMessages()).filter((entry) => entry[0] !== "LEGAL"),
+  );
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -65,7 +73,7 @@ export default async function LocaleLayout(props: Props) {
       <body
         className={`${allFontVariablesClass} flex min-h-dvh flex-col font-sans antialiased`}
       >
-        <NextIntlClientProvider>
+        <NextIntlClientProvider messages={clientMessages}>
           <Providers userTheme={userTheme}>
             <Toaster richColors />
             {props.children}

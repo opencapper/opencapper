@@ -29,6 +29,7 @@ import {
 } from "@/hooks/auth/auth-hook";
 import { Link } from "@/i18n/navigation";
 import { isStaff } from "@/lib/config/permissions";
+import { cn } from "@/lib/utils";
 import type { AuthUser } from "@/lib/types";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { useTranslations } from "next-intl";
@@ -98,6 +99,8 @@ export function LoginButton(props: { returnTo?: string; label?: boolean }) {
               {t("WITH_TELEGRAM")}
             </DropdownMenuItem>
           )}
+          <DropdownMenuSeparator />
+          <LoginLegalNotice className="w-0 min-w-full px-2 py-1.5" />
         </DropdownMenuContent>
       </DropdownMenu>
       {providers.telegramBot && (
@@ -108,6 +111,31 @@ export function LoginButton(props: { returnTo?: string; label?: boolean }) {
         />
       )}
     </>
+  );
+}
+
+function LoginLegalNotice(props: { className?: string }) {
+  const t = useTranslations("AUTH");
+  return (
+    <p
+      className={cn(
+        "text-muted-foreground text-[11px] leading-snug",
+        props.className,
+      )}
+    >
+      {t.rich("LEGAL_NOTICE", {
+        terms: (chunks) => (
+          <Link href="/terms" className="text-foreground hover:underline">
+            {chunks}
+          </Link>
+        ),
+        privacy: (chunks) => (
+          <Link href="/privacy" className="text-foreground hover:underline">
+            {chunks}
+          </Link>
+        ),
+      })}
+    </p>
   );
 }
 
@@ -143,6 +171,7 @@ function TelegramLoginSheet(props: {
               {apiErrorText(tRoot, telegram.error, t("TELEGRAM_FAILED"))}
             </p>
           )}
+          <LoginLegalNotice className="text-center" />
         </div>
       </SheetContent>
     </Sheet>

@@ -14,6 +14,19 @@ ARG GIT_SHA=dev
 ARG NEXT_PUBLIC_SITE_URL=https://opencapper.coding-global.com
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 ENV NEXT_PUBLIC_RELEASE_VERSION=$GIT_SHA
+# Impressum identity: public on the site, but kept out of the public repo.
+ARG NEXT_PUBLIC_LEGAL_NAME
+ARG NEXT_PUBLIC_LEGAL_ADDRESS
+ARG NEXT_PUBLIC_LEGAL_VAT_ID
+ARG NEXT_PUBLIC_LEGAL_EMAIL
+ENV NEXT_PUBLIC_LEGAL_NAME=$NEXT_PUBLIC_LEGAL_NAME \
+    NEXT_PUBLIC_LEGAL_ADDRESS=$NEXT_PUBLIC_LEGAL_ADDRESS \
+    NEXT_PUBLIC_LEGAL_VAT_ID=$NEXT_PUBLIC_LEGAL_VAT_ID \
+    NEXT_PUBLIC_LEGAL_EMAIL=$NEXT_PUBLIC_LEGAL_EMAIL
+# An empty Impressum is a legal defect, so a missing value stops the build.
+RUN for v in NEXT_PUBLIC_LEGAL_NAME NEXT_PUBLIC_LEGAL_ADDRESS NEXT_PUBLIC_LEGAL_VAT_ID NEXT_PUBLIC_LEGAL_EMAIL; do \
+      [ -n "$(printenv "$v")" ] || { echo "missing build arg $v (set ${v#NEXT_PUBLIC_} in the stack env)" >&2; exit 1; }; \
+    done
 # Komodo passes no commit, so a timestamp keeps asset URLs unique per deploy: a 404 cached at the edge during a container swap must not outlive that deploy.
 RUN --mount=type=cache,target=/app/.next/cache \
     NEXT_DEPLOYMENT_ID=$([ "$GIT_SHA" = dev ] && date +%s || echo "$GIT_SHA") \

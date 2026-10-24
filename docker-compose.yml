@@ -50,6 +50,10 @@ services:
       target: prod
       args:
         GIT_SHA: ${GIT_SHA:-dev}
+        NEXT_PUBLIC_LEGAL_NAME: ${LEGAL_NAME:-}
+        NEXT_PUBLIC_LEGAL_ADDRESS: ${LEGAL_ADDRESS:-}
+        NEXT_PUBLIC_LEGAL_VAT_ID: ${LEGAL_VAT_ID:-}
+        NEXT_PUBLIC_LEGAL_EMAIL: ${LEGAL_EMAIL:-}
     restart: always
     env_file: .env
     networks:

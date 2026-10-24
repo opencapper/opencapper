@@ -2,7 +2,7 @@
 
 import { Icon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
-import { APP_VALUES } from "@/lib/config/constants";
+import { APP_VALUES, msg } from "@/lib/config/constants";
 import { env } from "@/lib/config/env";
 import { dayjs } from "@/lib/utils/format/date";
 import { useTranslations } from "next-intl";
@@ -11,6 +11,18 @@ import { navigation } from "./navigation";
 
 const LINK =
   "text-foreground/50 hover:text-foreground/80 font-mono text-[11px] transition-colors";
+
+const LEGAL_LINKS = [
+  { href: "/impressum", key: msg("FOOTER.IMPRESSUM") },
+  { href: "/privacy", key: msg("FOOTER.PRIVACY") },
+  { href: "/terms", key: msg("FOOTER.TERMS") },
+] as const;
+
+function Separator() {
+  return (
+    <span className="text-foreground/15 mx-1 text-[10px] select-none">/</span>
+  );
+}
 
 export function Footer() {
   const t = useTranslations();
@@ -24,9 +36,7 @@ export function Footer() {
               <Link href={item.href} className={LINK}>
                 {t(item.name)}
               </Link>
-              <span className="text-foreground/15 mx-1 text-[10px] select-none">
-                /
-              </span>
+              <Separator />
             </Fragment>
           ))}
           <a
@@ -37,9 +47,7 @@ export function Footer() {
           >
             {t("FOOTER.LICENSE_SHORT")}
           </a>
-          <span className="text-foreground/15 mx-1 text-[10px] select-none">
-            /
-          </span>
+          <Separator />
           <a
             href={env.discordInviteUrl}
             target="_blank"
@@ -48,6 +56,14 @@ export function Footer() {
           >
             {t("NAV.DISCORD")}
           </a>
+          {LEGAL_LINKS.map((item) => (
+            <Fragment key={item.href}>
+              <Separator />
+              <Link href={item.href} className={LINK}>
+                {t(item.key)}
+              </Link>
+            </Fragment>
+          ))}
         </div>
 
         <div className="flex items-center justify-between gap-4">
