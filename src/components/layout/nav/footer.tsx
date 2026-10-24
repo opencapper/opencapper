@@ -37,6 +37,17 @@ export function Footer() {
           >
             {t("FOOTER.LICENSE_SHORT")}
           </a>
+          <span className="text-foreground/15 mx-1 text-[10px] select-none">
+            /
+          </span>
+          <a
+            href={env.discordInviteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={LINK}
+          >
+            {t("NAV.DISCORD")}
+          </a>
         </div>
 
         <div className="flex items-center justify-between gap-4">
