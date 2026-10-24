@@ -271,11 +271,87 @@ export type LandingFeatured = {
   price: LandingPrice | null;
 };
 
+export type LandingDashSport = {
+  sportKey: string;
+  graded: number;
+  wins: number;
+  losses: number;
+  units: number;
+};
+
+export type LandingDashTick =
+  | {
+      kind: "locked";
+      key: string;
+      at: string;
+      username: string;
+      market: string;
+      selection: string;
+      point: number | null;
+      odds: number;
+    }
+  | {
+      kind: "graded";
+      key: string;
+      at: string;
+      username: string;
+      sequence: number;
+      result: PickResult;
+    }
+  | {
+      kind: "anchored";
+      key: string;
+      at: string;
+      size: number;
+      upgraded: boolean;
+    };
+
+export type DashSource = "discord" | "telegram" | "web" | "polymarket";
+
+export type LandingDashSource = {
+  key: DashSource;
+  picks: number;
+  lastAt: string | null;
+};
+
+export type LandingDashCapper = {
+  username: string;
+  avatarUrl: string | null;
+  source: ApiProfileSource | null;
+  rank: number | null;
+  graded: number;
+  gradedLive: number;
+  gradedHistory: number;
+  wins: number;
+  losses: number;
+  pushes: number;
+  units: number;
+  roi: number;
+  clv: number | null;
+  clvSample: number;
+};
+
+export type LandingDashPoint = { at: string; units: number };
+
+export type LandingDash = {
+  capper: LandingDashCapper;
+  curve: { live: boolean; points: LandingDashPoint[] };
+  sports: LandingDashSport[];
+  picks: ApiPick[];
+  history: ApiHistoryPick[];
+  ticker: LandingDashTick[];
+  head: LogHead;
+  anchor: { size: number; upgraded: boolean; createdAt: string } | null;
+  gradedToday: number;
+  sources: LandingDashSource[];
+};
+
 export type LandingData = {
   event: LandingEvent | null;
   price: LandingPrice | null;
   featured: LandingFeatured[];
   stats: LandingStats | null;
+  dash: LandingDash | null;
   minGraded: number;
 };
 
