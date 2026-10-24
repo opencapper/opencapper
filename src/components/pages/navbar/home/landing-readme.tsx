@@ -5,6 +5,7 @@ import { env } from "@/lib/config/env";
 import type { LandingData } from "@/lib/types";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
+import { DashSection } from "./dash/dash-section";
 import { FeatureGrid } from "./feature-grid";
 import { IntegrationsGrid } from "./integrations-grid";
 import { IntegrationsShowcase } from "./integrations-showcase";
@@ -35,6 +36,7 @@ export async function LandingReadme(props: { data: LandingData }) {
       />
       <SportsMarquee />
       <IntegrationsGrid />
+      <DashSection dash={props.data.dash} />
 
       <div className="mb-4">
         <SectionTitle>{t("FEATURES.TITLE")}</SectionTitle>
