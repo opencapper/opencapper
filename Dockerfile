@@ -14,15 +14,14 @@ ARG GIT_SHA=dev
 ARG NEXT_PUBLIC_SITE_URL=https://opencapper.coding-global.com
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 ENV NEXT_PUBLIC_RELEASE_VERSION=$GIT_SHA
-ENV NEXT_DEPLOYMENT_ID=$GIT_SHA
+# Komodo passes no commit, so a timestamp keeps asset URLs unique per deploy: a 404 cached at the edge during a container swap must not outlive that deploy.
 RUN --mount=type=cache,target=/app/.next/cache \
+    NEXT_DEPLOYMENT_ID=$([ "$GIT_SHA" = dev ] && date +%s || echo "$GIT_SHA") \
     NBC_TARGET=bun-linux-$([ "$TARGETARCH" = arm64 ] && echo arm64 || echo x64) bun run build
 
 FROM gcr.io/distroless/cc-debian12:nonroot@sha256:9dac0a79194e45a7da0158a9c6da57b217585af0786db3845d1f0ec1a0dd182f AS prod
 WORKDIR /app
 ENV NODE_ENV=production
-ARG GIT_SHA=dev
-ENV NEXT_DEPLOYMENT_ID=$GIT_SHA
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 # the binary extracts its runtime tree here on first start and runs with it as cwd
