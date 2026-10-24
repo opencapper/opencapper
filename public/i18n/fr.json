@@ -370,7 +370,8 @@
       "UNITS": "Unités",
       "ROI": "ROI",
       "SAMPLE": "Pronostics réglés",
-      "SPORTS": "Disciplines"
+      "SPORTS": "Disciplines",
+      "PROGRESS": "Progression"
     },
     "RECORD_HINT": "Gagnés / perdus / remboursés",
     "SAMPLE_HINT": "{graded, number} réglés sur {picks, number} pronostics",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "Aucun tipster n’a encore un échantillon suffisant",
     "EMPTY_BODY": "Les tipsters sont classés après {count, number} pronostics réglés sur la période choisie, pour que la chance ne fasse pas le classement.",
     "ERROR": "Impossible de charger le classement. Veuillez réessayer plus tard.",
-    "PAGINATION": {
-      "PREVIOUS": "Précédent",
-      "NEXT": "Suivant",
-      "PAGE": "Page {page, number} sur {pages, number}"
-    },
     "METHOD": {
       "TITLE": "Notre méthode de classement",
       "SAMPLE_TITLE": "Échantillon minimum",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "Petit échantillon : un ROI sur {count, number} pronostics réglés ne dit pas encore grand-chose",
       "EMPTY": "Aucun tipster n’a encore enregistré de pronostic dans cette sélection."
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "{count, number} au total",
+    "ROWS": "Lignes",
+    "SORT_ASC": "Croissant",
+    "SORT_DESC": "Décroissant",
+    "SORT_RESET": "Réinitialiser",
+    "NO_RESULTS": "Aucun résultat.",
+    "VIEW": "Affichage",
+    "TOGGLE_COLUMNS": "Afficher les colonnes"
   },
   "PROFILE": {
     "LABEL": "Profil du tipster",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "Preuves OpenTimestamps quotidiennes de la racine du journal.",
       "EMPTY": "Aucun ancrage pour l’instant. Le premier est créé dans la journée qui suit le premier pronostic.",
       "ERROR": "Impossible de charger les ancrages. Veuillez réessayer plus tard.",
-      "SIZE": "{count, number} pronostics",
       "PENDING": "En attente de Bitcoin",
       "CONFIRMED": "Dans Bitcoin",
       "DOWNLOAD": "Télécharger la preuve",
-      "HINT": "Une preuve récente a besoin de quelques heures pour que les calendriers l’intègrent à un bloc Bitcoin. Mettez-la ensuite à jour et vérifiez-la avec le client OpenTimestamps, en passant la racine comme condensé (digest) :"
+      "HINT": "Une preuve récente a besoin de quelques heures pour que les calendriers l’intègrent à un bloc Bitcoin. Mettez-la ensuite à jour et vérifiez-la avec le client OpenTimestamps, en passant la racine comme condensé (digest) :",
+      "COLUMNS": {
+        "DATE": "Ancré le",
+        "SIZE": "Pronostics",
+        "STATUS": "Statut",
+        "ROOT": "Racine du journal"
+      }
     },
     "EXPORT": {
       "TITLE": "Rejouer l’intégralité du journal",

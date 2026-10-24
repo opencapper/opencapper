@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  CARD_LABEL,
-  TABLE_HEAD,
-} from "@/components/elements/page/page-heading";
+import { CARD_LABEL } from "@/components/elements/page/page-heading";
 import { PickStatusBadge } from "@/components/elements/badge/pick-status-badge";
 import { Matchup } from "@/components/elements/participant/matchup";
 import { SourceIcon } from "@/components/elements/source/source-badge";
@@ -11,6 +8,8 @@ import {
   SportIcon,
   sportLabelKey,
 } from "@/components/elements/sport/sport-icon";
+import { DataTable } from "@/components/elements/table/data-table";
+import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import {
   Card,
   CardContent,
@@ -22,14 +21,6 @@ import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/ui/icon";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -37,16 +28,18 @@ import {
 import { Link } from "@/i18n/navigation";
 import { isMarket, MARKET_KEY } from "@/lib/config/markets";
 import type { ProofMarkerStyle } from "@/lib/config/ranking";
+import type { TableFeats } from "@/lib/config/table-features";
 import { cn } from "@/lib/utils";
 import type { ApiPick, ApiPickSource } from "@/lib/types";
 import { EXCHANGE_BOOKMAKER } from "@/lib/api/typebox/sources";
-import { formatDateTime } from "@/lib/utils/format/date";
+import { dayjs, formatDateTime } from "@/lib/utils/format/date";
 import {
   formatAmericanOdds,
   formatPercent,
   formatPlainPercent,
   formatPlainUnits,
 } from "@/lib/utils/format/number";
+import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect } from "react";
 
@@ -66,6 +59,119 @@ export function PicksTable(props: {
       ?.scrollIntoView({ block: "center", behavior: "smooth" });
   }, [highlightId, props.picks]);
 
+  const columns: ColumnDef<TableFeats, ApiPick>[] = [
+    {
+      id: "sequence",
+      accessorFn: (pick) => pick.sequence,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.SEQUENCE" />
+      ),
+      size: 60,
+      meta: { cellClassName: "text-muted-foreground tabular" },
+      cell: ({ row }) => (
+        <span id={`pick-${row.original.id}`}>{row.original.sequence}</span>
+      ),
+    },
+    {
+      id: "event",
+      accessorFn: (pick) => dayjs(pick.commenceTime).valueOf(),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.EVENT" />
+      ),
+      size: 260,
+      meta: { cellClassName: "min-w-56" },
+      cell: ({ row }) => <EventCell event={row.original} />,
+    },
+    {
+      id: "market",
+      header: t("PROFILE.PICKS.MARKET"),
+      enableSorting: false,
+      size: 100,
+      cell: ({ row }) =>
+        isMarket(row.original.market)
+          ? t(MARKET_KEY[row.original.market])
+          : row.original.market,
+    },
+    {
+      id: "selection",
+      header: t("PROFILE.PICKS.SELECTION"),
+      enableSorting: false,
+      size: 140,
+      cell: ({ row }) => (
+        <>
+          {row.original.selection}
+          {row.original.source && <SourceLine source={row.original.source} />}
+        </>
+      ),
+    },
+    {
+      id: "odds",
+      accessorFn: (pick) => pick.odds,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.ODDS" />
+      ),
+      size: 110,
+      cell: ({ row }) => (
+        <>
+          <div className="tabular">{formatAmericanOdds(row.original.odds)}</div>
+          <VendorLabel
+            vendorKey={row.original.bookmaker}
+            className="text-muted-foreground mt-0.5 text-xs"
+          />
+        </>
+      ),
+    },
+    {
+      id: "clv",
+      accessorFn: (pick) => pick.clv,
+      sortUndefined: "last",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.CLV" />
+      ),
+      size: 80,
+      cell: ({ row }) => <ClvCell pick={row.original} />,
+    },
+    {
+      id: "units",
+      accessorFn: (pick) => pick.units,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="PROFILE.PICKS.UNITS"
+          className="justify-end"
+        />
+      ),
+      size: 80,
+      meta: { headerClassName: "text-right", cellClassName: "text-right" },
+      cell: ({ row }) => (
+        <span className="tabular">
+          {formatPlainUnits(row.original.units, locale)}
+        </span>
+      ),
+    },
+    {
+      id: "status",
+      header: t("PROFILE.PICKS.STATUS"),
+      enableSorting: false,
+      size: 100,
+      cell: ({ row }) => <PickStatusBadge result={row.original.result} />,
+    },
+    {
+      id: "lockedAt",
+      accessorFn: (pick) => dayjs(pick.createdAt).valueOf(),
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="PROFILE.PICKS.LOCKED_AT"
+        />
+      ),
+      size: 170,
+      cell: ({ row }) => (
+        <LockedCell pick={row.original} marker={props.marker} />
+      ),
+    },
+  ];
+
   return (
     <Card className="mt-8">
       <CardHeader>
@@ -73,176 +179,124 @@ export function PicksTable(props: {
         <CardDescription>{t("PROFILE.PICKS.DESCRIPTION")}</CardDescription>
       </CardHeader>
       <CardContent>
-        {props.picks.length === 0 ? (
-          <p className="text-muted-foreground text-sm">
-            {t("PROFILE.PICKS.EMPTY")}
-          </p>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.SEQUENCE")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.EVENT")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.MARKET")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.SELECTION")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.ODDS")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.CLV")}
-                </TableHead>
-                <TableHead className={cn(TABLE_HEAD, "text-right")}>
-                  {t("PROFILE.PICKS.UNITS")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.STATUS")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.LOCKED_AT")}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {props.picks.map((pick) => {
-                const lockedAt = formatDateTime(pick.createdAt, locale);
-                return (
-                  <TableRow
-                    key={pick.id}
-                    id={`pick-${pick.id}`}
-                    className={cn(
-                      pick.id === highlightId &&
-                        "bg-primary/10 hover:bg-primary/15",
-                    )}
-                  >
-                    <TableCell className="text-muted-foreground tabular">
-                      {pick.sequence}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Tooltip>
-                          <TooltipTrigger
-                            render={
-                              <span
-                                role="img"
-                                aria-label={t(sportLabelKey(pick.sportKey))}
-                                className="text-muted-foreground inline-flex shrink-0"
-                              />
-                            }
-                          >
-                            <SportIcon sportKey={pick.sportKey} />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {t(sportLabelKey(pick.sportKey))}
-                          </TooltipContent>
-                        </Tooltip>
-                        <Matchup event={pick} />
-                      </div>
-                      <div className="text-muted-foreground mt-1 text-xs">
-                        {t("PROFILE.PICKS.STARTS_AT", {
-                          time: formatDateTime(pick.commenceTime, locale),
-                        })}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {isMarket(pick.market)
-                        ? t(MARKET_KEY[pick.market])
-                        : pick.market}
-                    </TableCell>
-                    <TableCell>
-                      {pick.selection}
-                      {pick.source && <SourceLine source={pick.source} />}
-                    </TableCell>
-                    <TableCell>
-                      <div className="tabular">
-                        {formatAmericanOdds(pick.odds)}
-                      </div>
-                      <VendorLabel
-                        vendorKey={pick.bookmaker}
-                        className="text-muted-foreground mt-0.5 text-xs"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <ClvCell pick={pick} />
-                    </TableCell>
-                    <TableCell className="tabular text-right">
-                      {formatPlainUnits(pick.units, locale)}
-                    </TableCell>
-                    <TableCell>
-                      <PickStatusBadge result={pick.result} />
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip>
-                        <TooltipTrigger className="text-muted-foreground tabular flex items-center gap-1.5 text-xs">
-                          <Icon
-                            name="lock"
-                            className={cn(
-                              "size-3.5",
-                              props.marker === "filled"
-                                ? "bg-primary text-primary-foreground rounded-sm p-0.5"
-                                : "text-primary",
-                            )}
-                          />
-                          {lockedAt}
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-64">
-                          {pick.bookmaker === EXCHANGE_BOOKMAKER && pick.source
-                            ? t("SOURCES.FILL_HINT", {
-                                time: lockedAt,
-                                filled: formatDateTime(
-                                  pick.source.postedAt,
-                                  locale,
-                                ),
-                              })
-                            : t("PROFILE.PICKS.LOCKED_HINT", {
-                                time: lockedAt,
-                              })}
-                        </TooltipContent>
-                      </Tooltip>
-                      {pick.logSeq != null && (
-                        <Tooltip>
-                          <TooltipTrigger
-                            render={
-                              <Badge
-                                variant="outline"
-                                className="text-muted-foreground mt-1.5"
-                                render={
-                                  <Link
-                                    href={{
-                                      pathname: "/verify",
-                                      query: { pick: pick.id },
-                                    }}
-                                  />
-                                }
-                              />
-                            }
-                          >
-                            <Icon name="shield-check" />
-                            {t("PROFILE.PICKS.IN_LOG")}
-                          </TooltipTrigger>
-                          <TooltipContent className="max-w-64">
-                            {t("PROFILE.PICKS.IN_LOG_HINT", {
-                              seq: pick.logSeq,
-                            })}
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        )}
+        <DataTable
+          id="PROFILE_PICKS"
+          data={props.picks}
+          columns={columns}
+          localSorting
+          rowClassName={(row) =>
+            row.original.id === highlightId
+              ? "bg-primary/10 hover:bg-primary/15"
+              : undefined
+          }
+          emptyState={
+            <span className="text-muted-foreground text-sm">
+              {t("PROFILE.PICKS.EMPTY")}
+            </span>
+          }
+        />
       </CardContent>
     </Card>
+  );
+}
+
+export function EventCell(props: {
+  event: Pick<
+    ApiPick,
+    | "sportKey"
+    | "commenceTime"
+    | "home"
+    | "away"
+    | "homeImage"
+    | "awayImage"
+    | "homeCountry"
+    | "awayCountry"
+  >;
+}) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const label = t(sportLabelKey(props.event.sportKey));
+  return (
+    <>
+      <div className="flex items-center gap-2">
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <span
+                role="img"
+                aria-label={label}
+                className="text-muted-foreground inline-flex shrink-0"
+              />
+            }
+          >
+            <SportIcon sportKey={props.event.sportKey} />
+          </TooltipTrigger>
+          <TooltipContent>{label}</TooltipContent>
+        </Tooltip>
+        <Matchup event={props.event} />
+      </div>
+      <div className="text-muted-foreground mt-1 text-xs">
+        {t("PROFILE.PICKS.STARTS_AT", {
+          time: formatDateTime(props.event.commenceTime, locale),
+        })}
+      </div>
+    </>
+  );
+}
+
+function LockedCell(props: { pick: ApiPick; marker: ProofMarkerStyle }) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const pick = props.pick;
+  const lockedAt = formatDateTime(pick.createdAt, locale);
+  return (
+    <>
+      <Tooltip>
+        <TooltipTrigger className="text-muted-foreground tabular flex items-center gap-1.5 text-xs">
+          <Icon
+            name="lock"
+            className={cn(
+              "size-3.5",
+              props.marker === "filled"
+                ? "bg-primary text-primary-foreground rounded-sm p-0.5"
+                : "text-primary",
+            )}
+          />
+          {lockedAt}
+        </TooltipTrigger>
+        <TooltipContent className="max-w-64">
+          {pick.bookmaker === EXCHANGE_BOOKMAKER && pick.source
+            ? t("SOURCES.FILL_HINT", {
+                time: lockedAt,
+                filled: formatDateTime(pick.source.postedAt, locale),
+              })
+            : t("PROFILE.PICKS.LOCKED_HINT", { time: lockedAt })}
+        </TooltipContent>
+      </Tooltip>
+      {pick.logSeq != null && (
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <Badge
+                variant="outline"
+                className="text-muted-foreground mt-1.5"
+                render={
+                  <Link
+                    href={{ pathname: "/verify", query: { pick: pick.id } }}
+                  />
+                }
+              />
+            }
+          >
+            <Icon name="shield-check" />
+            {t("PROFILE.PICKS.IN_LOG")}
+          </TooltipTrigger>
+          <TooltipContent className="max-w-64">
+            {t("PROFILE.PICKS.IN_LOG_HINT", { seq: pick.logSeq })}
+          </TooltipContent>
+        </Tooltip>
+      )}
+    </>
   );
 }
 

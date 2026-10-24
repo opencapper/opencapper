@@ -4,36 +4,26 @@ import {
   SportIcon,
   sportLabelKey,
 } from "@/components/elements/sport/sport-icon";
+import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Link } from "@/i18n/navigation";
-import { msg } from "@/lib/config/constants";
-import type {
-  LeaderboardRow,
-  PlainTranslationKey,
-  UnrankedRow,
-} from "@/lib/types";
+import type { TableFeats } from "@/lib/config/table-features";
+import type { LeaderboardRow, UnrankedRow } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { formatPercent, formatUnits } from "@/lib/utils/format/number";
+import type { ColumnDef } from "@tanstack/react-table";
 import type { useTranslations } from "next-intl";
-import type { ReactNode } from "react";
 
 export type CellContext = {
   t: ReturnType<typeof useTranslations<never>>;
   locale: string;
 };
 
-export type LeaderboardColumn = {
-  id: string;
-  header: PlainTranslationKey;
-  align?: "right";
-  // Stat columns also render in the mobile card grid.
-  stat?: boolean;
-  cell: (row: LeaderboardRow, ctx: CellContext) => ReactNode;
-};
+const RIGHT = { headerClassName: "text-right", cellClassName: "text-right" };
 
 export function signTone(value: number) {
   if (value > 0) return "text-pick-win";
@@ -139,61 +129,214 @@ export function RecordCell(props: { row: UnrankedRow; ctx: CellContext }) {
   );
 }
 
-export const LEADERBOARD_COLUMNS: LeaderboardColumn[] = [
-  {
-    id: "rank",
-    header: msg("LEADERBOARD.COLUMNS.RANK"),
-    cell: (row) => <RankCell rank={row.rank} />,
-  },
-  {
-    id: "capper",
-    header: msg("LEADERBOARD.COLUMNS.CAPPER"),
-    cell: (row) => (
-      <CapperCell
-        username={row.username}
-        source={row.source}
-        avatarUrl={row.avatarUrl}
-      />
-    ),
-  },
-  {
-    id: "record",
-    header: msg("LEADERBOARD.COLUMNS.RECORD"),
-    stat: true,
-    cell: (row, ctx) => <RecordCell row={row} ctx={ctx} />,
-  },
-  {
-    id: "units",
-    header: msg("LEADERBOARD.COLUMNS.UNITS"),
-    align: "right",
-    stat: true,
-    cell: (row, ctx) => (
-      <span className={cn("tabular", signTone(row.units))}>
-        {formatUnits(row.units, ctx.locale)}
-      </span>
-    ),
-  },
-  {
-    id: "roi",
-    header: msg("LEADERBOARD.COLUMNS.ROI"),
-    align: "right",
-    stat: true,
-    cell: (row, ctx) => (
-      <span className={cn("tabular font-semibold", signTone(row.roi))}>
-        {formatPercent(row.roi, ctx.locale)}
-      </span>
-    ),
-  },
-  {
-    id: "sample",
-    header: msg("LEADERBOARD.COLUMNS.SAMPLE"),
-    align: "right",
-    stat: true,
-    cell: (row, ctx) => <SampleCell row={row} ctx={ctx} />,
-  },
-  {
-    id: "sports",
-    header: msg("LEADERBOARD.COLUMNS.SPORTS"),
-    cell: (row, ctx) => <SportsCell row={row} ctx={ctx} />,
-  },
-];
+// Sortable ids are the server `sort` values; ROI and units sit first for phones.
+export function buildLeaderboardColumns(
+  ctx: CellContext,
+): ColumnDef<TableFeats, LeaderboardRow>[] {
+  return [
+    {
+      id: "rank",
+      header: ctx.t("LEADERBOARD.COLUMNS.RANK"),
+      enableSorting: false,
+      size: 60,
+      cell: ({ row }) => <RankCell rank={row.original.rank} />,
+    },
+    {
+      id: "capper",
+      header: ctx.t("LEADERBOARD.COLUMNS.CAPPER"),
+      enableSorting: false,
+      size: 240,
+      meta: { cellClassName: "min-w-44" },
+      cell: ({ row }) => (
+        <CapperCell
+          username={row.original.username}
+          source={row.original.source}
+          avatarUrl={row.original.avatarUrl}
+        />
+      ),
+    },
+    {
+      id: "roi",
+      accessorFn: (row) => row.roi,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.ROI"
+          className="justify-end"
+        />
+      ),
+      size: 100,
+      meta: RIGHT,
+      cell: ({ row }) => (
+        <span
+          className={cn("tabular font-semibold", signTone(row.original.roi))}
+        >
+          {formatPercent(row.original.roi, ctx.locale)}
+        </span>
+      ),
+    },
+    {
+      id: "units",
+      accessorFn: (row) => row.units,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.UNITS"
+          className="justify-end"
+        />
+      ),
+      size: 100,
+      meta: RIGHT,
+      cell: ({ row }) => (
+        <span className={cn("tabular", signTone(row.original.units))}>
+          {formatUnits(row.original.units, ctx.locale)}
+        </span>
+      ),
+    },
+    {
+      id: "record",
+      header: ctx.t("LEADERBOARD.COLUMNS.RECORD"),
+      enableSorting: false,
+      size: 120,
+      cell: ({ row }) => <RecordCell row={row.original} ctx={ctx} />,
+    },
+    {
+      id: "picks",
+      accessorFn: (row) => row.graded,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.SAMPLE"
+          className="justify-end"
+        />
+      ),
+      size: 130,
+      meta: RIGHT,
+      cell: ({ row }) => <SampleCell row={row.original} ctx={ctx} />,
+    },
+    {
+      id: "sports",
+      header: ctx.t("LEADERBOARD.COLUMNS.SPORTS"),
+      enableSorting: false,
+      size: 130,
+      meta: { cellClassName: "min-w-32" },
+      cell: ({ row }) => <SportsCell row={row.original} ctx={ctx} />,
+    },
+  ];
+}
+
+export function buildUnrankedColumns(
+  ctx: CellContext,
+  minGraded: number,
+): ColumnDef<TableFeats, UnrankedRow>[] {
+  return [
+    {
+      id: "capper",
+      header: ctx.t("LEADERBOARD.COLUMNS.CAPPER"),
+      size: 240,
+      meta: { cellClassName: "min-w-44" },
+      cell: ({ row }) => (
+        <div className="flex min-w-0 flex-col gap-1">
+          <span className="truncate">
+            <CapperCell
+              username={row.original.username}
+              source={row.original.source}
+              avatarUrl={row.original.avatarUrl}
+            />
+          </span>
+          <span className="text-muted-foreground tabular text-xs">
+            {ctx.t("LEADERBOARD.UNRANKED.PICKS", {
+              count: row.original.picks,
+            })}
+          </span>
+        </div>
+      ),
+    },
+    {
+      id: "progress",
+      header: ctx.t("LEADERBOARD.COLUMNS.PROGRESS"),
+      size: 180,
+      meta: { cellClassName: "min-w-36" },
+      cell: ({ row }) => {
+        const label = ctx.t("LEADERBOARD.UNRANKED.PROGRESS", {
+          graded: row.original.graded,
+          min: minGraded,
+        });
+        return (
+          <div className="flex flex-col gap-1.5">
+            <div
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={minGraded}
+              aria-valuenow={row.original.graded}
+              aria-label={label}
+              className="bg-foreground/8 h-1.5 w-full overflow-hidden rounded-full"
+            >
+              <div
+                className="bg-foreground/50 h-full rounded-full"
+                style={{
+                  width: `${Math.min(1, row.original.graded / minGraded) * 100}%`,
+                }}
+              />
+            </div>
+            <span className="text-muted-foreground tabular text-xs">
+              {label}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      id: "record",
+      header: ctx.t("LEADERBOARD.COLUMNS.RECORD"),
+      size: 120,
+      cell: ({ row }) => <RecordCell row={row.original} ctx={ctx} />,
+    },
+    {
+      id: "units",
+      header: ctx.t("LEADERBOARD.COLUMNS.UNITS"),
+      size: 100,
+      meta: RIGHT,
+      cell: ({ row }) => (
+        <span className="text-muted-foreground tabular">
+          {formatUnits(row.original.units, ctx.locale)}
+        </span>
+      ),
+    },
+    {
+      id: "roi",
+      header: ctx.t("LEADERBOARD.COLUMNS.ROI"),
+      size: 100,
+      meta: RIGHT,
+      cell: ({ row }) => (
+        <span
+          className={cn(
+            "text-muted-foreground tabular opacity-60",
+            row.original.unitsRisked === 0 && "opacity-40",
+          )}
+          title={ctx.t("LEADERBOARD.UNRANKED.SMALL_SAMPLE", {
+            count: row.original.graded,
+          })}
+        >
+          {row.original.unitsRisked > 0
+            ? formatPercent(row.original.roi, ctx.locale)
+            : ctx.t("PROFILE.STATS.NO_ROI")}
+        </span>
+      ),
+    },
+    {
+      id: "sports",
+      header: ctx.t("LEADERBOARD.COLUMNS.SPORTS"),
+      size: 150,
+      meta: { cellClassName: "min-w-32" },
+      cell: ({ row }) => (
+        <div className="flex items-center justify-between gap-3">
+          <SportsCell row={row.original} ctx={ctx} />
+          {row.original.gradedHistory > 0 && (
+            <SampleCell row={row.original} ctx={ctx} />
+          )}
+        </div>
+      ),
+    },
+  ];
+}

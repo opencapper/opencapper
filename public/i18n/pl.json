@@ -370,7 +370,8 @@
       "UNITS": "Jednostki",
       "ROI": "ROI",
       "SAMPLE": "Rozliczone typy",
-      "SPORTS": "Dyscypliny"
+      "SPORTS": "Dyscypliny",
+      "PROGRESS": "Postęp"
     },
     "RECORD_HINT": "Wygrane / przegrane / zwroty",
     "SAMPLE_HINT": "Rozliczone: {graded, number} z {picks, number}",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "Żaden typer nie ma jeszcze wystarczająco dużej próby",
     "EMPTY_BODY": "Typerzy trafiają do rankingu po {count, number} rozliczonych typach w wybranym okresie, żeby nie wygrywało szczęście.",
     "ERROR": "Nie udało się wczytać rankingu. Spróbuj ponownie później.",
-    "PAGINATION": {
-      "PREVIOUS": "Poprzednia",
-      "NEXT": "Następna",
-      "PAGE": "Strona {page, number} z {pages, number}"
-    },
     "METHOD": {
       "TITLE": "Jak liczymy ranking",
       "SAMPLE_TITLE": "Minimalna próba",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "Mała próba: ROI z {count, number} rozliczonych typów jeszcze niewiele mówi",
       "EMPTY": "Żaden typer nie zapisał jeszcze typu w tym wyborze."
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "łącznie {count, number}",
+    "ROWS": "Wiersze",
+    "SORT_ASC": "Rosnąco",
+    "SORT_DESC": "Malejąco",
+    "SORT_RESET": "Resetuj",
+    "NO_RESULTS": "Brak wyników.",
+    "VIEW": "Widok",
+    "TOGGLE_COLUMNS": "Pokaż kolumny"
   },
   "PROFILE": {
     "LABEL": "Profil typera",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "Codzienne dowody OpenTimestamps dla korzenia rejestru.",
       "EMPTY": "Brak jeszcze kotwicy. Pierwsza powstanie w ciągu doby od pierwszego typu.",
       "ERROR": "Nie udało się wczytać kotwic. Spróbuj ponownie później.",
-      "SIZE": "Typy: {count, number}",
       "PENDING": "Czeka na Bitcoina",
       "CONFIRMED": "W Bitcoinie",
       "DOWNLOAD": "Pobierz dowód",
-      "HINT": "Świeży dowód potrzebuje kilku godzin, aż kalendarze umieszczą go w bloku Bitcoina. Potem zaktualizuj go i zweryfikuj klientem OpenTimestamps, podając korzeń jako skrót:"
+      "HINT": "Świeży dowód potrzebuje kilku godzin, aż kalendarze umieszczą go w bloku Bitcoina. Potem zaktualizuj go i zweryfikuj klientem OpenTimestamps, podając korzeń jako skrót:",
+      "COLUMNS": {
+        "DATE": "Zakotwiczono",
+        "SIZE": "Typy",
+        "STATUS": "Status",
+        "ROOT": "Korzeń logu"
+      }
     },
     "EXPORT": {
       "TITLE": "Odtwórz cały rejestr",

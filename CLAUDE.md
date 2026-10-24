@@ -15,6 +15,7 @@ Next.js 16 + Elysia API in `src/app/api/[[...route]]/route.ts`. The Discord bot 
 - Translation keys UPPER_SNAKE nested, real translations in every `public/i18n/*.json`, `msg()` for keys outside React. A key list typed as `TranslationKey` widens to the full union and `t()` then demands params: keep literals (`satisfies`, `msg()`).
 - Never refactor `src/components/ui/` (shadcn base-ui primitives copied verbatim from unorouter). Only `icon.tsx` differs: lucide only, no icon library switch.
 - Dependency direction: `route.ts` -> `*.service.ts` -> db. Domain routers aggregate in `src/server/<domain>/route.ts`. Services throw `ApiError(status, "ERRORS.X", params?)`; no try/catch in handlers. The body is `{ error, code, params? }`: `error` is the English text from `en.json`, the web translates `code` via `apiErrorText`. A new ERRORS message with ICU arguments needs its case in `formatError` (`src/lib/utils/api-error.ts`), or tsc fails.
+- Tables use `DataTable` (`src/components/elements/table/`, ported from unorouter, ids in `src/lib/api/typebox/data-table.ts`). The leaderboard passes controlled `sorting`/`pagination` so sort, order, page and size stay in the nuqs URL params and run server side.
 - Localized routes go in `pathnames` (`src/i18n/routing.ts`); links use the internal path.
 
 ## Theme

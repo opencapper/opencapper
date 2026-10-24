@@ -9,7 +9,10 @@ import {
   users,
 } from "@/lib/db/schema/server";
 import type { ApiHistoryPick, ApiPick } from "@/lib/types";
-import { lookupParticipants } from "@/server/participants/participants.service";
+import {
+  lookupParticipants,
+  participantFields,
+} from "@/server/participants/participants.service";
 import { toAmericanOdds, toApiPick } from "@/server/picks/picks.mapper";
 import { avatarColumns, avatarUrl } from "@/server/users/avatar";
 import { desc, eq } from "drizzle-orm";
@@ -61,6 +64,12 @@ export async function getUserHistory(
     .where(eq(users.username, username.toLowerCase()))
     .orderBy(desc(historyPicks.commenceTime), desc(historyPicks.id))
     .limit(HISTORY_LIMIT);
+  const images = await lookupParticipants(
+    rows.flatMap((row) => [
+      { sportKey: row.pick.sportKey, name: row.pick.home },
+      { sportKey: row.pick.sportKey, name: row.pick.away },
+    ]),
+  );
   return rows.map((row) => ({
     id: row.pick.id,
     platform: row.pick.platform,
@@ -77,6 +86,12 @@ export async function getUserHistory(
     units: row.pick.units,
     result: row.pick.result,
     gradedAt: row.pick.gradedAt.toISOString(),
+    ...participantFields(
+      images,
+      row.pick.sportKey,
+      row.pick.home,
+      row.pick.away,
+    ),
   }));
 }
 

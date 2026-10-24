@@ -62,5 +62,3 @@ export function PageHeading(props: {
 
 export const CARD_LABEL =
   "label-mono text-foreground/80 text-[11px] leading-4 font-normal";
-export const TABLE_HEAD =
-  "label-mono text-foreground/45 text-[11px] font-normal";

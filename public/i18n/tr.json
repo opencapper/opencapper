@@ -370,7 +370,8 @@
       "UNITS": "Birim",
       "ROI": "ROI",
       "SAMPLE": "Sonuçlanan tahmin",
-      "SPORTS": "Sporlar"
+      "SPORTS": "Sporlar",
+      "PROGRESS": "İlerleme"
     },
     "RECORD_HINT": "Kazanç / kayıp / iade",
     "SAMPLE_HINT": "{picks, number} tahminden {graded, number} tanesi sonuçlandı",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "Henüz yeterli örnekleme sahip tahminci yok",
     "EMPTY_BODY": "Tahminciler seçilen dönemde {count, number} sonuçlanmış tahminden sonra sıralamaya girer, böylece tabloyu şans kazanmaz.",
     "ERROR": "Sıralama yüklenemedi. Lütfen daha sonra tekrar dene.",
-    "PAGINATION": {
-      "PREVIOUS": "Önceki",
-      "NEXT": "Sonraki",
-      "PAGE": "Sayfa {page, number} / {pages, number}"
-    },
     "METHOD": {
       "TITLE": "Nasıl sıralıyoruz",
       "SAMPLE_TITLE": "Asgari örneklem",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "Küçük örneklem: {count, number} sonuçlanmış tahmindeki ROI henüz pek bir şey söylemez",
       "EMPTY": "Bu seçimde henüz hiçbir tahminci tahmin kaydetmedi."
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "toplam {count, number}",
+    "ROWS": "Satır",
+    "SORT_ASC": "Artan",
+    "SORT_DESC": "Azalan",
+    "SORT_RESET": "Sıfırla",
+    "NO_RESULTS": "Sonuç yok.",
+    "VIEW": "Görünüm",
+    "TOGGLE_COLUMNS": "Sütunları göster"
   },
   "PROFILE": {
     "LABEL": "Tahminci profili",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "Kayıt defteri kökünün günlük OpenTimestamps kanıtları.",
       "EMPTY": "Henüz sabitleme yok. İlki, ilk tahminden sonraki bir gün içinde oluşturulur.",
       "ERROR": "Sabitlemeler yüklenemedi. Lütfen daha sonra tekrar dene.",
-      "SIZE": "{count, number} tahmin",
       "PENDING": "Bitcoin bekleniyor",
       "CONFIRMED": "Bitcoin'de",
       "DOWNLOAD": "Kanıtı indir",
-      "HINT": "Yeni bir kanıtın, takvimler onu bir Bitcoin bloğuna koyana kadar birkaç saate ihtiyacı vardır. Sonra kökü digest olarak vererek OpenTimestamps istemcisiyle yükselt ve doğrula:"
+      "HINT": "Yeni bir kanıtın, takvimler onu bir Bitcoin bloğuna koyana kadar birkaç saate ihtiyacı vardır. Sonra kökü digest olarak vererek OpenTimestamps istemcisiyle yükselt ve doğrula:",
+      "COLUMNS": {
+        "DATE": "Sabitlendi",
+        "SIZE": "Tahminler",
+        "STATUS": "Durum",
+        "ROOT": "Kayıt kökü"
+      }
     },
     "EXPORT": {
       "TITLE": "Kayıt defterinin tamamını yeniden oynat",

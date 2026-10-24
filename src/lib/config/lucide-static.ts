@@ -6,7 +6,10 @@ import {
 } from "@/components/ui/local-icons";
 import type { IconComponent } from "@/lib/config/icon-map";
 import {
+  ArrowDown,
   ArrowRight,
+  ArrowUp,
+  ArrowUpDown,
   ArrowUpRight,
   Ban,
   BadgeCheck,
@@ -18,7 +21,10 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronUp,
+  ChevronsLeft,
+  ChevronsRight,
   CircleCheck,
+  CircleX,
   Clock,
   Coins,
   Copy,
@@ -45,6 +51,7 @@ import {
   Store,
   Scale,
   Search,
+  Settings2,
   ShieldCheck,
   Sun,
   Target,
@@ -56,7 +63,10 @@ import {
 } from "lucide-react";
 
 export const LUCIDE_STATIC = {
+  "arrow-down": ArrowDown,
   "arrow-right": ArrowRight,
+  "arrow-up": ArrowUp,
+  "arrow-up-down": ArrowUpDown,
   "arrow-up-right": ArrowUpRight,
   ban: Ban,
   "badge-check": BadgeCheck,
@@ -72,6 +82,8 @@ export const LUCIDE_STATIC = {
   "chevron-left": ChevronLeft,
   "chevron-right": ChevronRight,
   "chevron-up": ChevronUp,
+  "chevrons-left": ChevronsLeft,
+  "chevrons-right": ChevronsRight,
   "circle-check": CircleCheck,
   clock: Clock,
   coins: Coins,
@@ -97,6 +109,7 @@ export const LUCIDE_STATIC = {
   "refresh-ccw": RefreshCcw,
   scale: Scale,
   search: Search,
+  "settings-2": Settings2,
   "shield-check": ShieldCheck,
   shuffle: Shuffle,
   store: Store,
@@ -107,4 +120,5 @@ export const LUCIDE_STATIC = {
   trophy: Trophy,
   user: User,
   x: X,
+  "x-circle": CircleX,
 } satisfies Record<string, IconComponent>;

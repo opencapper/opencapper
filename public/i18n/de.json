@@ -370,7 +370,8 @@
       "UNITS": "Einheiten",
       "ROI": "ROI",
       "SAMPLE": "Gewertete Tipps",
-      "SPORTS": "Sportarten"
+      "SPORTS": "Sportarten",
+      "PROGRESS": "Fortschritt"
     },
     "RECORD_HINT": "Siege / Niederlagen / Pushes",
     "SAMPLE_HINT": "{graded, number} gewertet von {picks, number} Tipps",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "Noch hat kein Capper eine ausreichende Stichprobe",
     "EMPTY_BODY": "Capper erscheinen ab {count, number} gewerteten Tipps im gewählten Zeitraum, damit nicht das Glück die Tabelle gewinnt.",
     "ERROR": "Die Rangliste konnte nicht geladen werden. Bitte versuche es später erneut.",
-    "PAGINATION": {
-      "PREVIOUS": "Zurück",
-      "NEXT": "Weiter",
-      "PAGE": "Seite {page, number} von {pages, number}"
-    },
     "METHOD": {
       "TITLE": "So entsteht die Rangliste",
       "SAMPLE_TITLE": "Mindeststichprobe",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "Kleine Stichprobe: Der ROI aus {count, number} gewerteten Tipps sagt noch wenig aus",
       "EMPTY": "In dieser Auswahl hat noch kein Capper einen Tipp erfasst."
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "{count, number} gesamt",
+    "ROWS": "Zeilen",
+    "SORT_ASC": "Aufsteigend",
+    "SORT_DESC": "Absteigend",
+    "SORT_RESET": "Zurücksetzen",
+    "NO_RESULTS": "Keine Ergebnisse.",
+    "VIEW": "Ansicht",
+    "TOGGLE_COLUMNS": "Spalten anzeigen"
   },
   "PROFILE": {
     "LABEL": "Capperprofil",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "Tägliche OpenTimestamps Nachweise der Protokollwurzel.",
       "EMPTY": "Noch kein Anker. Der erste entsteht innerhalb eines Tages nach dem ersten Tipp.",
       "ERROR": "Die Anker konnten nicht geladen werden. Bitte versuche es später erneut.",
-      "SIZE": "{count, number} Tipps",
       "PENDING": "Wartet auf Bitcoin",
       "CONFIRMED": "In Bitcoin",
       "DOWNLOAD": "Nachweis herunterladen",
-      "HINT": "Ein neuer Nachweis braucht einige Stunden, bis die Kalender ihn in einen Bitcoin Block aufgenommen haben. Danach aktualisierst und prüfst du ihn mit dem OpenTimestamps Client und gibst die Wurzel als Digest an:"
+      "HINT": "Ein neuer Nachweis braucht einige Stunden, bis die Kalender ihn in einen Bitcoin Block aufgenommen haben. Danach aktualisierst und prüfst du ihn mit dem OpenTimestamps Client und gibst die Wurzel als Digest an:",
+      "COLUMNS": {
+        "DATE": "Verankert",
+        "SIZE": "Tipps",
+        "STATUS": "Status",
+        "ROOT": "Log Root"
+      }
     },
     "EXPORT": {
       "TITLE": "Das ganze Protokoll nachspielen",
