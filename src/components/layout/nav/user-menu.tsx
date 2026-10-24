@@ -28,6 +28,7 @@ import {
   useTelegramLoginMutation,
 } from "@/hooks/auth/auth-hook";
 import { Link } from "@/i18n/navigation";
+import { isStaff } from "@/lib/config/permissions";
 import type { AuthUser } from "@/lib/types";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { useTranslations } from "next-intl";
@@ -207,6 +208,12 @@ function SignedInMenu(props: { user: AuthUser }) {
           <Icon name="paintbrush" />
           {t("APPEARANCE")}
         </DropdownMenuItem>
+        {isStaff(props.user.role) && (
+          <DropdownMenuItem render={<Link href="/admin" />}>
+            <Icon name="shield-user" />
+            {t("ADMIN")}
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           disabled={logout.isPending}

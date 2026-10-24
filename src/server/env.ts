@@ -94,6 +94,13 @@ export const serverEnv = {
   get betterAuthSecret() {
     return process.env.BETTER_AUTH_SECRET ?? "";
   },
+  // Better Auth user ids that always hold every permission, whatever their stored role.
+  get adminUserIds(): string[] {
+    return (process.env.ADMIN_USER_IDS ?? "")
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean);
+  },
   get ranking(): RankingConfig {
     const marker = process.env.PROOF_MARKER_STYLE?.trim();
     return {

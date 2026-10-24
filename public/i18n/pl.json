@@ -540,6 +540,7 @@
     "MY_PROFILE": "Mój profil",
     "LOG_PICK": "Dodaj typ",
     "APPEARANCE": "Wygląd",
+    "ADMIN": "Administracja",
     "LOGOUT": "Wyloguj się",
     "LOG_IN": "Zaloguj się",
     "WITH_DISCORD": "Kontynuuj przez Discord",
@@ -729,6 +730,100 @@
     "POSTED_AT": "Pierwotnie opublikowano {time}. Zablokowany w OpenCapper w chwili importu, nigdy z datą wsteczną.",
     "FILL_HINT": "Zablokowano {time}. Kurs to cena realizacji on-chain na Polymarket ({filled}), a nie kurs bukmachera. Tego typu nie można edytować ani usunąć."
   },
+  "ADMIN": {
+    "TITLE": "Administracja",
+    "DESCRIPTION": "Moderacja i stan systemu.",
+    "LABEL": "Administracja",
+    "HEADING": "Centrum dowodzenia",
+    "SUBHEADING": "Użytkownicy, zaimportowane profile, najnowsze typy i stan systemu. Jesteś zalogowany jako {role}.",
+    "LOAD_FAILED": "Nie udało się wczytać tej sekcji.",
+    "NEVER": "Nigdy",
+    "TABS": {
+      "USERS": "Użytkownicy",
+      "IMPORTS": "Zaimportowane profile",
+      "PICKS": "Typy",
+      "SYSTEM": "System"
+    },
+    "ROLES": {
+      "USER": "Użytkownik",
+      "MODERATOR": "Moderator",
+      "ADMIN": "Administrator"
+    },
+    "USERS": {
+      "USER": "Użytkownik",
+      "PROVIDERS": "Logowania",
+      "ROLE": "Rola",
+      "STATUS": "Status",
+      "PICKS": "Typy",
+      "CREATED": "Dołączył",
+      "NO_WEB_ACCOUNT": "Tylko bot, bez logowania w sieci",
+      "BANNED": "Zbanowany",
+      "ACTIVE": "Aktywny",
+      "NO_REASON": "Nie podano powodu.",
+      "BAN_UNTIL": "Do {time}",
+      "BAN": "Zbanuj",
+      "UNBAN": "Odbanuj",
+      "BAN_BLOCKED": "Nie można zbanować administratorów, siebie ani użytkowników bez logowania w sieci.",
+      "SEARCH": "Szukaj nazwy użytkownika lub e-maila",
+      "SEARCH_GO": "Szukaj",
+      "ACTION_FAILED": "Nie udało się zapisać zmiany."
+    },
+    "BAN": {
+      "TITLE": "Zbanuj @{username}",
+      "HINT": "Zbanowani użytkownicy zostają wylogowani, nie mogą się zalogować i nie mogą dodawać typów na stronie ani przez boty.",
+      "REASON": "Powód",
+      "REASON_PLACEHOLDER": "Opcjonalnie, widoczne tylko dla zespołu",
+      "CONFIRM": "Zbanuj użytkownika"
+    },
+    "IMPORTS": {
+      "PROFILE": "Profil",
+      "PLATFORM": "Platforma",
+      "HANDLE": "Źródło",
+      "PICKS": "Typy",
+      "HISTORY": "Historia",
+      "LAST_IMPORT": "Ostatni import",
+      "EMPTY": "Brak zaimportowanych profili."
+    },
+    "PICKS": {
+      "CAPPER": "Capper",
+      "EVENT": "Wydarzenie",
+      "SELECTION": "Wybór",
+      "SOURCE": "Źródło",
+      "DIRECT": "Bezpośrednio",
+      "STATUS": "Status",
+      "LOGGED": "Dodano",
+      "HINT": "Najnowsze typy wszystkich capperów: {count, number}",
+      "EMPTY": "Brak typów."
+    },
+    "SYSTEM": {
+      "CREDITS": "Kredyty Odds API",
+      "ODDS_REMAINING": "Pozostałe kredyty",
+      "ODDS_USED": "Zużyte kredyty",
+      "ODDS_USED_HINT": "Zużyte w bieżącym okresie rozliczeniowym według Odds API.",
+      "ODDS_NOT_CONFIGURED": "Nie skonfigurowano klucza Odds API.",
+      "AS_OF": "Stan na {time}",
+      "NO_CALL_YET": "Brak wywołań Odds API od startu serwera.",
+      "BOARD_BUDGET": "Tablica dzisiaj",
+      "BOARD_BUDGET_HINT": "Kredyty wydane dziś przez tablicę typów z jej dziennego budżetu.",
+      "JOBS": "Zadania",
+      "GRADING": "Rozliczanie",
+      "IMPORT_BUDGET": "Importery mogą wydać {credits, number} kredytów dziennie; historia Polymarket obejmuje {days, number} dni.",
+      "LOG": "Rejestr typów",
+      "LOG_SIZE": "Rozmiar rejestru",
+      "LAST_ANCHOR": "Ostatnia kotwica",
+      "ANCHOR_CONFIRMED": "Potwierdzona w Bitcoinie, ostemplowana {time}",
+      "ANCHOR_PENDING": "Czeka na Bitcoina, ostemplowana {time}",
+      "NO_ANCHOR": "Brak kotwicy.",
+      "IMAGES_PENDING": "Oczekujące obrazy",
+      "IMAGES_HINT": "Zdjęcia drużyn i zawodników czekające na TheSportsDB.",
+      "IMPORTER": "Importer {platform}",
+      "RUN": "Ostatnie uruchomienie {time}: utworzono {created, number}, pominięto {skipped, number}, kredyty {credits, number}",
+      "RUN_FAILED": "Ostatnie uruchomienie {time} nie powiodło się. Sprawdź log serwera.",
+      "NO_RUN_YET": "Brak uruchomień od startu serwera.",
+      "ON": "Wł.",
+      "OFF": "Wył."
+    }
+  },
   "OG": {
     "HOME_LABEL": "Open source tracker typów",
     "POST_FROM": "Publikuj typy z",
@@ -781,6 +876,10 @@
     "NOTHING_TO_VERIFY": "Nie ma czego weryfikować.",
     "EMPTY_RESPONSE": "Serwer zwrócił pustą odpowiedź.",
     "UNEXPECTED_ERROR": "Coś poszło nie tak. Spróbuj ponownie.",
-    "LEAGUE_NOT_OFFERED": "Ta liga nie jest dostępna."
+    "LEAGUE_NOT_OFFERED": "Ta liga nie jest dostępna.",
+    "FORBIDDEN": "Nie masz uprawnień, aby to zrobić.",
+    "CANNOT_BAN_SELF": "Nie możesz zbanować samego siebie.",
+    "CANNOT_BAN_ADMIN": "Administratorów nie można zbanować.",
+    "USER_BANNED": "Twoje konto ma zablokowane dodawanie typów."
   }
 }

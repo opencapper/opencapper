@@ -540,6 +540,7 @@
     "MY_PROFILE": "Mon profil",
     "LOG_PICK": "Enregistrer un pronostic",
     "APPEARANCE": "Apparence",
+    "ADMIN": "Administration",
     "LOGOUT": "Se déconnecter",
     "LOG_IN": "Se connecter",
     "WITH_DISCORD": "Continuer avec Discord",
@@ -729,6 +730,100 @@
     "POSTED_AT": "Publié initialement {time}. Verrouillé sur OpenCapper au moment de l’import, jamais antidaté.",
     "FILL_HINT": "Verrouillé le {time}. La cote est celle de l’exécution Polymarket sur la blockchain du {filled}, pas une cote de bookmaker. Ce pronostic ne peut être ni modifié ni supprimé."
   },
+  "ADMIN": {
+    "TITLE": "Administration",
+    "DESCRIPTION": "Modération et état du système.",
+    "LABEL": "Administration",
+    "HEADING": "Salle de contrôle",
+    "SUBHEADING": "Utilisateurs, profils importés, pronostics récents et santé du système. Vous êtes connecté en tant que {role}.",
+    "LOAD_FAILED": "Impossible de charger cette section.",
+    "NEVER": "Jamais",
+    "TABS": {
+      "USERS": "Utilisateurs",
+      "IMPORTS": "Profils importés",
+      "PICKS": "Pronostics",
+      "SYSTEM": "Système"
+    },
+    "ROLES": {
+      "USER": "Utilisateur",
+      "MODERATOR": "Modérateur",
+      "ADMIN": "Administrateur"
+    },
+    "USERS": {
+      "USER": "Utilisateur",
+      "PROVIDERS": "Connexions",
+      "ROLE": "Rôle",
+      "STATUS": "Statut",
+      "PICKS": "Pronostics",
+      "CREATED": "Inscrit le",
+      "NO_WEB_ACCOUNT": "Bot uniquement, sans connexion web",
+      "BANNED": "Banni",
+      "ACTIVE": "Actif",
+      "NO_REASON": "Aucun motif indiqué.",
+      "BAN_UNTIL": "Jusqu’au {time}",
+      "BAN": "Bannir",
+      "UNBAN": "Débannir",
+      "BAN_BLOCKED": "Les administrateurs, vous même et les utilisateurs sans connexion web ne peuvent pas être bannis.",
+      "SEARCH": "Rechercher un pseudo ou un e-mail",
+      "SEARCH_GO": "Rechercher",
+      "ACTION_FAILED": "La modification n’a pas pu être enregistrée."
+    },
+    "BAN": {
+      "TITLE": "Bannir @{username}",
+      "HINT": "Les utilisateurs bannis sont déconnectés, ne peuvent plus se connecter et ne peuvent plus enregistrer de pronostics sur le site ni via les bots.",
+      "REASON": "Motif",
+      "REASON_PLACEHOLDER": "Facultatif, visible par l’équipe uniquement",
+      "CONFIRM": "Bannir l’utilisateur"
+    },
+    "IMPORTS": {
+      "PROFILE": "Profil",
+      "PLATFORM": "Plateforme",
+      "HANDLE": "Source",
+      "PICKS": "Pronostics",
+      "HISTORY": "Historique",
+      "LAST_IMPORT": "Dernier import",
+      "EMPTY": "Aucun profil importé pour l’instant."
+    },
+    "PICKS": {
+      "CAPPER": "Capper",
+      "EVENT": "Événement",
+      "SELECTION": "Sélection",
+      "SOURCE": "Source",
+      "DIRECT": "Direct",
+      "STATUS": "Statut",
+      "LOGGED": "Enregistré",
+      "HINT": "Les {count, number} derniers pronostics de tous les cappers",
+      "EMPTY": "Aucun pronostic pour l’instant."
+    },
+    "SYSTEM": {
+      "CREDITS": "Crédits Odds API",
+      "ODDS_REMAINING": "Crédits restants",
+      "ODDS_USED": "Crédits utilisés",
+      "ODDS_USED_HINT": "Utilisés sur la période de facturation en cours, selon Odds API.",
+      "ODDS_NOT_CONFIGURED": "Aucune clé Odds API n’est configurée.",
+      "AS_OF": "Au {time}",
+      "NO_CALL_YET": "Aucun appel à Odds API depuis le démarrage du serveur.",
+      "BOARD_BUDGET": "Tableau du jour",
+      "BOARD_BUDGET_HINT": "Crédits dépensés aujourd’hui par le tableau des pronostics sur son budget quotidien.",
+      "JOBS": "Tâches",
+      "GRADING": "Notation",
+      "IMPORT_BUDGET": "Les importateurs peuvent dépenser {credits, number} crédits par jour ; l’historique Polymarket couvre {days, number} jours.",
+      "LOG": "Journal des pronostics",
+      "LOG_SIZE": "Taille du journal",
+      "LAST_ANCHOR": "Dernier ancrage",
+      "ANCHOR_CONFIRMED": "Confirmé dans Bitcoin, horodaté le {time}",
+      "ANCHOR_PENDING": "En attente de Bitcoin, horodaté le {time}",
+      "NO_ANCHOR": "Aucun ancrage pour l’instant.",
+      "IMAGES_PENDING": "Images en attente",
+      "IMAGES_HINT": "Photos d’équipes et de joueurs en attente de TheSportsDB.",
+      "IMPORTER": "Importateur {platform}",
+      "RUN": "Dernière exécution {time} : {created, number} créés, {skipped, number} ignorés, {credits, number} crédits",
+      "RUN_FAILED": "La dernière exécution {time} a échoué. Consultez le journal du serveur.",
+      "NO_RUN_YET": "Aucune exécution depuis le démarrage du serveur.",
+      "ON": "Activé",
+      "OFF": "Désactivé"
+    }
+  },
   "OG": {
     "HOME_LABEL": "Suivi de pronostics open source",
     "POST_FROM": "Publiez vos pronostics depuis",
@@ -781,6 +876,10 @@
     "NOTHING_TO_VERIFY": "Rien à vérifier.",
     "EMPTY_RESPONSE": "Le serveur a renvoyé une réponse vide.",
     "UNEXPECTED_ERROR": "Une erreur s’est produite. Veuillez réessayer.",
-    "LEAGUE_NOT_OFFERED": "Cette ligue n'est pas proposée."
+    "LEAGUE_NOT_OFFERED": "Cette ligue n'est pas proposée.",
+    "FORBIDDEN": "Vous n’avez pas la permission de faire cela.",
+    "CANNOT_BAN_SELF": "Vous ne pouvez pas vous bannir vous même.",
+    "CANNOT_BAN_ADMIN": "Les administrateurs ne peuvent pas être bannis.",
+    "USER_BANNED": "Votre compte est banni de l’enregistrement de pronostics."
   }
 }

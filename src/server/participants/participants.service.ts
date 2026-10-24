@@ -324,6 +324,10 @@ export async function lookupParticipants(
   return images;
 }
 
+export function pendingLookups(): number {
+  return inflight.size;
+}
+
 export function isLookupPending(sportKey: string, name: string): boolean {
   return inflight.has(participantKey(sportKey, name));
 }

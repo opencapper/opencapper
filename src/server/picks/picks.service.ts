@@ -1,5 +1,6 @@
 import { getDb, type Db } from "@/lib/db/server/client";
 import {
+  authUser,
   pickLog,
   pickSettlements,
   pickSources,
@@ -106,6 +107,30 @@ async function resolvePicker(tx: Tx, identity: PickIdentity) {
   return row;
 }
 
+function identityMatch(identity: PickIdentity) {
+  if (identity.kind === "discord")
+    return eq(users.discordId, identity.discordId);
+  if (identity.kind === "telegram")
+    return eq(users.telegramId, identity.telegramId);
+  if (identity.kind === "user") return eq(users.id, identity.userId);
+  return null;
+}
+
+// Before odds capture so a banned caller spends no credits; a bot identity is covered once linked to a web login.
+async function assertNotBanned(identity: PickIdentity) {
+  const match = identityMatch(identity);
+  if (!match) return;
+  const [row] = await getDb()
+    .select({ banned: authUser.banned, banExpires: authUser.banExpires })
+    .from(users)
+    .innerJoin(authUser, eq(authUser.id, users.authUserId))
+    .where(match)
+    .limit(1);
+  if (!row?.banned) return;
+  if (row.banExpires && !dayjs(row.banExpires).isAfter(dayjs())) return;
+  throw new ApiError(403, "ERRORS.USER_BANNED");
+}
+
 function exchangeOdds(fill: ExchangeFill): CapturedOdds {
   const commence = dayjs(fill.commenceTime);
   if (!commence.isAfter(dayjs()))
@@ -127,6 +152,7 @@ function exchangeOdds(fill: ExchangeFill): CapturedOdds {
 }
 
 export async function createPick(input: CreatePickInput): Promise<ApiPick> {
+  await assertNotBanned(input.identity);
   const odds = input.exchangeFill
     ? exchangeOdds(input.exchangeFill)
     : await captureOdds(input, input.loadOdds);

@@ -540,6 +540,7 @@
     "MY_PROFILE": "Meu perfil",
     "LOG_PICK": "Registrar palpite",
     "APPEARANCE": "Aparência",
+    "ADMIN": "Administração",
     "LOGOUT": "Sair",
     "LOG_IN": "Entrar",
     "WITH_DISCORD": "Continuar com Discord",
@@ -729,6 +730,100 @@
     "POSTED_AT": "Postado originalmente {time}. Travado no OpenCapper no momento da importação, nunca com data retroativa.",
     "FILL_HINT": "Travado em {time}. O preço é a execução on-chain na Polymarket de {filled}, não uma odd de casa de apostas. Este palpite não pode ser editado nem apagado."
   },
+  "ADMIN": {
+    "TITLE": "Administração",
+    "DESCRIPTION": "Moderação e status do sistema.",
+    "LABEL": "Administração",
+    "HEADING": "Sala de controle",
+    "SUBHEADING": "Usuários, perfis importados, palpites recentes e saúde do sistema. Você entrou como {role}.",
+    "LOAD_FAILED": "Não foi possível carregar esta seção.",
+    "NEVER": "Nunca",
+    "TABS": {
+      "USERS": "Usuários",
+      "IMPORTS": "Perfis importados",
+      "PICKS": "Palpites",
+      "SYSTEM": "Sistema"
+    },
+    "ROLES": {
+      "USER": "Usuário",
+      "MODERATOR": "Moderador",
+      "ADMIN": "Administrador"
+    },
+    "USERS": {
+      "USER": "Usuário",
+      "PROVIDERS": "Logins",
+      "ROLE": "Função",
+      "STATUS": "Status",
+      "PICKS": "Palpites",
+      "CREATED": "Entrou em",
+      "NO_WEB_ACCOUNT": "Só bot, sem login web",
+      "BANNED": "Banido",
+      "ACTIVE": "Ativo",
+      "NO_REASON": "Nenhum motivo informado.",
+      "BAN_UNTIL": "Até {time}",
+      "BAN": "Banir",
+      "UNBAN": "Desbanir",
+      "BAN_BLOCKED": "Administradores, você mesmo e usuários sem login web não podem ser banidos.",
+      "SEARCH": "Buscar usuário ou e-mail",
+      "SEARCH_GO": "Buscar",
+      "ACTION_FAILED": "Não foi possível salvar a alteração."
+    },
+    "BAN": {
+      "TITLE": "Banir @{username}",
+      "HINT": "Usuários banidos são desconectados, não conseguem entrar e não podem registrar palpites pelo site nem pelos bots.",
+      "REASON": "Motivo",
+      "REASON_PLACEHOLDER": "Opcional, visível só para a equipe",
+      "CONFIRM": "Banir usuário"
+    },
+    "IMPORTS": {
+      "PROFILE": "Perfil",
+      "PLATFORM": "Plataforma",
+      "HANDLE": "Origem",
+      "PICKS": "Palpites",
+      "HISTORY": "Histórico",
+      "LAST_IMPORT": "Última importação",
+      "EMPTY": "Ainda não há perfis importados."
+    },
+    "PICKS": {
+      "CAPPER": "Capper",
+      "EVENT": "Evento",
+      "SELECTION": "Seleção",
+      "SOURCE": "Origem",
+      "DIRECT": "Direto",
+      "STATUS": "Status",
+      "LOGGED": "Registrado",
+      "HINT": "Os últimos {count, number} palpites de todos os cappers",
+      "EMPTY": "Ainda não há palpites."
+    },
+    "SYSTEM": {
+      "CREDITS": "Créditos da Odds API",
+      "ODDS_REMAINING": "Créditos restantes",
+      "ODDS_USED": "Créditos usados",
+      "ODDS_USED_HINT": "Usados no período de cobrança atual, segundo a Odds API.",
+      "ODDS_NOT_CONFIGURED": "Nenhuma chave da Odds API configurada.",
+      "AS_OF": "Em {time}",
+      "NO_CALL_YET": "Nenhuma chamada à Odds API desde que o servidor iniciou.",
+      "BOARD_BUDGET": "Painel de hoje",
+      "BOARD_BUDGET_HINT": "Créditos que o painel de palpites gastou hoje do orçamento diário.",
+      "JOBS": "Tarefas",
+      "GRADING": "Apuração",
+      "IMPORT_BUDGET": "Os importadores podem gastar {credits, number} créditos por dia; o histórico da Polymarket cobre {days, number} dias.",
+      "LOG": "Registro de palpites",
+      "LOG_SIZE": "Tamanho do registro",
+      "LAST_ANCHOR": "Última âncora",
+      "ANCHOR_CONFIRMED": "Confirmada no Bitcoin, carimbada {time}",
+      "ANCHOR_PENDING": "Aguardando o Bitcoin, carimbada {time}",
+      "NO_ANCHOR": "Ainda não há âncora.",
+      "IMAGES_PENDING": "Imagens pendentes",
+      "IMAGES_HINT": "Fotos de times e jogadores aguardando o TheSportsDB.",
+      "IMPORTER": "Importador {platform}",
+      "RUN": "Última execução {time}: {created, number} criados, {skipped, number} ignorados, {credits, number} créditos",
+      "RUN_FAILED": "A última execução {time} falhou. Veja o log do servidor.",
+      "NO_RUN_YET": "Nenhuma execução desde que o servidor iniciou.",
+      "ON": "Ligado",
+      "OFF": "Desligado"
+    }
+  },
   "OG": {
     "HOME_LABEL": "Rastreador de palpites de código aberto",
     "POST_FROM": "Poste palpites pelo",
@@ -781,6 +876,10 @@
     "NOTHING_TO_VERIFY": "Nada para verificar.",
     "EMPTY_RESPONSE": "O servidor enviou uma resposta vazia.",
     "UNEXPECTED_ERROR": "Algo deu errado. Tente novamente.",
-    "LEAGUE_NOT_OFFERED": "Esta liga não está disponível."
+    "LEAGUE_NOT_OFFERED": "Esta liga não está disponível.",
+    "FORBIDDEN": "Você não tem permissão para fazer isso.",
+    "CANNOT_BAN_SELF": "Você não pode banir a si mesmo.",
+    "CANNOT_BAN_ADMIN": "Administradores não podem ser banidos.",
+    "USER_BANNED": "Sua conta está banida de registrar palpites."
   }
 }

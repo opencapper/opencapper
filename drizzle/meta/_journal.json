@@ -99,6 +99,13 @@
       "when": 1792813161435,
       "tag": "0013_user_image_url",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792815723863,
+      "tag": "0014_admin_roles",
+      "breakpoints": true
     }
   ]
 }

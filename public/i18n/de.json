@@ -540,6 +540,7 @@
     "MY_PROFILE": "Mein Profil",
     "LOG_PICK": "Tipp abgeben",
     "APPEARANCE": "Darstellung",
+    "ADMIN": "Admin",
     "LOGOUT": "Abmelden",
     "LOG_IN": "Anmelden",
     "WITH_DISCORD": "Weiter mit Discord",
@@ -729,6 +730,100 @@
     "POSTED_AT": "Ursprünglich veröffentlicht {time}. Auf OpenCapper beim Import gesperrt, nie rückdatiert.",
     "FILL_HINT": "Gesperrt am {time}. Die Quote ist die On Chain Ausführung auf Polymarket vom {filled}, keine Buchmacherquote. Dieser Tipp kann weder bearbeitet noch gelöscht werden."
   },
+  "ADMIN": {
+    "TITLE": "Admin",
+    "DESCRIPTION": "Moderation und Systemstatus.",
+    "LABEL": "Admin",
+    "HEADING": "Kontrollraum",
+    "SUBHEADING": "Nutzer, importierte Profile, neue Tipps und Systemzustand. Du bist angemeldet als {role}.",
+    "LOAD_FAILED": "Dieser Bereich konnte nicht geladen werden.",
+    "NEVER": "Nie",
+    "TABS": {
+      "USERS": "Nutzer",
+      "IMPORTS": "Importierte Profile",
+      "PICKS": "Tipps",
+      "SYSTEM": "System"
+    },
+    "ROLES": {
+      "USER": "Nutzer",
+      "MODERATOR": "Moderator",
+      "ADMIN": "Admin"
+    },
+    "USERS": {
+      "USER": "Nutzer",
+      "PROVIDERS": "Logins",
+      "ROLE": "Rolle",
+      "STATUS": "Status",
+      "PICKS": "Tipps",
+      "CREATED": "Dabei seit",
+      "NO_WEB_ACCOUNT": "Nur Bot, kein Web Login",
+      "BANNED": "Gesperrt",
+      "ACTIVE": "Aktiv",
+      "NO_REASON": "Kein Grund angegeben.",
+      "BAN_UNTIL": "Bis {time}",
+      "BAN": "Sperren",
+      "UNBAN": "Entsperren",
+      "BAN_BLOCKED": "Admins, du selbst und Nutzer ohne Web Login können nicht gesperrt werden.",
+      "SEARCH": "Nutzername oder E-Mail suchen",
+      "SEARCH_GO": "Suchen",
+      "ACTION_FAILED": "Die Änderung konnte nicht gespeichert werden."
+    },
+    "BAN": {
+      "TITLE": "@{username} sperren",
+      "HINT": "Gesperrte Nutzer werden abgemeldet, können sich nicht anmelden und weder über die Website noch über die Bots Tipps eintragen.",
+      "REASON": "Grund",
+      "REASON_PLACEHOLDER": "Optional, nur für das Team sichtbar",
+      "CONFIRM": "Nutzer sperren"
+    },
+    "IMPORTS": {
+      "PROFILE": "Profil",
+      "PLATFORM": "Plattform",
+      "HANDLE": "Quelle",
+      "PICKS": "Tipps",
+      "HISTORY": "Verlauf",
+      "LAST_IMPORT": "Letzter Import",
+      "EMPTY": "Noch keine importierten Profile."
+    },
+    "PICKS": {
+      "CAPPER": "Capper",
+      "EVENT": "Spiel",
+      "SELECTION": "Auswahl",
+      "SOURCE": "Quelle",
+      "DIRECT": "Direkt",
+      "STATUS": "Status",
+      "LOGGED": "Eingetragen",
+      "HINT": "Die neuesten {count, number} Tipps aller Capper",
+      "EMPTY": "Noch keine Tipps."
+    },
+    "SYSTEM": {
+      "CREDITS": "Odds API Credits",
+      "ODDS_REMAINING": "Verbleibende Credits",
+      "ODDS_USED": "Verbrauchte Credits",
+      "ODDS_USED_HINT": "Im laufenden Abrechnungszeitraum verbraucht, laut Odds API.",
+      "ODDS_NOT_CONFIGURED": "Kein Odds API Schlüssel konfiguriert.",
+      "AS_OF": "Stand {time}",
+      "NO_CALL_YET": "Seit dem Serverstart kein Odds API Aufruf.",
+      "BOARD_BUDGET": "Tippboard heute",
+      "BOARD_BUDGET_HINT": "Credits, die das Tippboard heute von seinem Tagesbudget verbraucht hat.",
+      "JOBS": "Jobs",
+      "GRADING": "Auswertung",
+      "IMPORT_BUDGET": "Importer dürfen {credits, number} Credits pro Tag ausgeben; der Polymarket Verlauf umfasst {days, number} Tage.",
+      "LOG": "Tipp Log",
+      "LOG_SIZE": "Loggröße",
+      "LAST_ANCHOR": "Letzter Anker",
+      "ANCHOR_CONFIRMED": "In Bitcoin bestätigt, gestempelt {time}",
+      "ANCHOR_PENDING": "Wartet auf Bitcoin, gestempelt {time}",
+      "NO_ANCHOR": "Noch kein Anker.",
+      "IMAGES_PENDING": "Ausstehende Bilder",
+      "IMAGES_HINT": "Team und Spielerbilder, die auf TheSportsDB warten.",
+      "IMPORTER": "{platform} Importer",
+      "RUN": "Letzter Lauf {time}: {created, number} erstellt, {skipped, number} übersprungen, {credits, number} Credits",
+      "RUN_FAILED": "Letzter Lauf {time} fehlgeschlagen. Prüfe das Serverlog.",
+      "NO_RUN_YET": "Seit dem Serverstart kein Lauf.",
+      "ON": "An",
+      "OFF": "Aus"
+    }
+  },
   "OG": {
     "HOME_LABEL": "Open Source Tipp-Tracker",
     "POST_FROM": "Tipps abgeben über",
@@ -781,6 +876,10 @@
     "NOTHING_TO_VERIFY": "Nichts zu prüfen.",
     "EMPTY_RESPONSE": "Der Server hat eine leere Antwort gesendet.",
     "UNEXPECTED_ERROR": "Etwas ist schiefgelaufen. Bitte versuch es noch einmal.",
-    "LEAGUE_NOT_OFFERED": "Diese Liga wird nicht angeboten."
+    "LEAGUE_NOT_OFFERED": "Diese Liga wird nicht angeboten.",
+    "FORBIDDEN": "Dafür fehlt dir die Berechtigung.",
+    "CANNOT_BAN_SELF": "Du kannst dich nicht selbst sperren.",
+    "CANNOT_BAN_ADMIN": "Admins können nicht gesperrt werden.",
+    "USER_BANNED": "Dein Konto ist für das Eintragen von Tipps gesperrt."
   }
 }

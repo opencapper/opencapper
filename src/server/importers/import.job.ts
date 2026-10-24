@@ -1,3 +1,6 @@
+import type { SourcePlatform } from "@/lib/api/typebox/sources";
+import type { ImporterRun } from "@/lib/types";
+import { dayjs } from "@/lib/utils/format/date";
 import { serverEnv } from "@/server/env";
 import type { ImportReport } from "@/server/importers/import.shared";
 import { backfillPolymarketHistory } from "@/server/importers/polymarket/polymarket.history";
@@ -10,18 +13,38 @@ const IMAGE_REFRESH_MS = 24 * 60 * 60_000;
 
 declare global {
   var importJobStarted: boolean | undefined;
+  var importRuns: Partial<Record<SourcePlatform, ImporterRun>> | undefined;
+}
+
+// globalThis: the job runs in instrumentation, the admin route reads it from another module copy.
+function recordRun(name: SourcePlatform, run: Omit<ImporterRun, "at">) {
+  globalThis.importRuns = {
+    ...globalThis.importRuns,
+    [name]: { ...run, at: dayjs().toISOString() },
+  };
+}
+
+export function getImportRuns(): Partial<Record<SourcePlatform, ImporterRun>> {
+  return globalThis.importRuns ?? {};
 }
 
 let running = false;
 
-async function step(name: string, run: () => Promise<ImportReport>) {
+async function step(name: SourcePlatform, run: () => Promise<ImportReport>) {
   try {
     const report = await run();
+    recordRun(name, {
+      created: report.created.length,
+      skipped: report.skipped.length,
+      credits: report.creditsSpent,
+      failed: false,
+    });
     if (report.created.length > 0 || report.creditsSpent > 0)
       console.info(
         `import ${name}: ${report.created.length} picks, ${report.skipped.length} skipped, ${report.creditsSpent} credits`,
       );
   } catch (error) {
+    recordRun(name, { created: 0, skipped: 0, credits: 0, failed: true });
     console.error(`import ${name} failed`, error);
   }
 }

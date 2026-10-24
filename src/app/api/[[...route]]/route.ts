@@ -1,3 +1,4 @@
+import { adminRoute } from "@/server/admin/route";
 import { ApiError, errorBody } from "@/server/errors";
 import { eventsRoute } from "@/server/events/route";
 import { meRoute } from "@/server/me/route";
@@ -37,7 +38,8 @@ export const app = new Elysia({ prefix: "/api" })
   .use(usersRoute)
   .use(recapRoute)
   .use(leaderboardRoute)
-  .use(logRoute);
+  .use(logRoute)
+  .use(adminRoute);
 
 export type App = typeof app;
 

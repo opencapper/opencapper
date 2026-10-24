@@ -1,4 +1,10 @@
 import { env } from "@/lib/config/env";
+import {
+  ac,
+  roles,
+  type AuthRole,
+  type Permissions,
+} from "@/lib/config/permissions";
 import { getDb } from "@/lib/db/server/client";
 import {
   authAccount,
@@ -11,7 +17,8 @@ import {
 import type { AuthUser } from "@/lib/types";
 import { SESSION_MAX_AGE } from "@/server/constants";
 import { serverEnv } from "@/server/env";
-import { ApiError } from "@/server/errors";
+import { ApiError, englishError } from "@/server/errors";
+import type { ErrorCode } from "@/lib/utils/api-error";
 import { Type } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import { TELEGRAM_PROVIDER_ID, telegramAuth } from "@/server/auth/telegram";
@@ -24,6 +31,12 @@ import {
 } from "@/server/users/identity.service";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import {
+  APIError,
+  createAuthMiddleware,
+  getSessionFromCtx,
+} from "better-auth/api";
+import { admin } from "better-auth/plugins";
 import { and, eq, or } from "drizzle-orm";
 
 const DiscordUserSchema = Type.Object({
@@ -43,6 +56,47 @@ async function upsertDomainUser(profile: unknown) {
   });
   return { name: user.username };
 }
+
+const TargetUserBody = Type.Object({ userId: Type.String() });
+
+function forbidden(code: ErrorCode) {
+  return new APIError("FORBIDDEN", { message: englishError(code), code });
+}
+
+// Highest role wins when the plugin stores a comma separated list.
+export function effectiveRole(
+  authUserId: string,
+  stored: string | null | undefined,
+): AuthRole {
+  if (serverEnv.adminUserIds.includes(authUserId)) return "admin";
+  const list = (stored ?? "").split(",").map((role) => role.trim());
+  if (list.includes("admin")) return "admin";
+  if (list.includes("moderator")) return "moderator";
+  return "user";
+}
+
+async function storedRole(authUserId: string) {
+  const [row] = await getDb()
+    .select({ role: authUser.role })
+    .from(authUser)
+    .where(eq(authUser.id, authUserId))
+    .limit(1);
+  return row?.role;
+}
+
+// The plugin lets anyone with `ban` ban an admin and lets ADMIN_USER_IDS impersonate; both stay closed here.
+const guardAdminEndpoints = createAuthMiddleware(async (ctx) => {
+  if (ctx.path === "/admin/impersonate-user")
+    throw forbidden("ERRORS.FORBIDDEN");
+  if (ctx.path !== "/admin/ban-user") return;
+  const body: unknown = ctx.body;
+  if (!Value.Check(TargetUserBody, body)) return;
+  const session = await getSessionFromCtx(ctx);
+  if (session?.user.id === body.userId)
+    throw forbidden("ERRORS.CANNOT_BAN_SELF");
+  if (effectiveRole(body.userId, await storedRole(body.userId)) === "admin")
+    throw forbidden("ERRORS.CANNOT_BAN_ADMIN");
+});
 
 function createAuth() {
   return betterAuth({
@@ -84,7 +138,16 @@ function createAuth() {
           }
         : {}),
     },
-    plugins: [telegramAuth({ botToken: () => serverEnv.telegramBotToken })],
+    hooks: { before: guardAdminEndpoints },
+    plugins: [
+      telegramAuth({ botToken: () => serverEnv.telegramBotToken }),
+      admin({
+        ac,
+        roles,
+        defaultRole: "user",
+        adminUserIds: serverEnv.adminUserIds,
+      }),
+    ],
   });
 }
 
@@ -96,12 +159,17 @@ export function getAuth() {
   return auth;
 }
 
-function toAuthUser(user: User, image: string | null): AuthUser {
+function toAuthUser(
+  user: User,
+  image: string | null,
+  role: AuthRole,
+): AuthUser {
   return {
     id: user.id,
     discordId: user.discordId,
     username: user.username,
     avatarUrl: avatarUrl({ ...user, authImage: image }, 64),
+    role,
   };
 }
 
@@ -148,11 +216,29 @@ export async function getAuthUser(headers: Headers): Promise<AuthUser | null> {
   const session = await getAuth().api.getSession({ headers });
   if (!session) return null;
   const user = await resolveDomainUser(session.user);
-  return toAuthUser(user, session.user.image ?? null);
+  return toAuthUser(
+    user,
+    session.user.image ?? null,
+    effectiveRole(session.user.id, session.user.role),
+  );
 }
 
 export async function requireAuthUser(headers: Headers): Promise<AuthUser> {
   const user = await getAuthUser(headers);
   if (!user) throw new ApiError(401, "ERRORS.LOGIN_REQUIRED");
+  return user;
+}
+
+// Permission check through the admin plugin, so ADMIN_USER_IDS and the role table stay the single source.
+export async function requirePermission(
+  headers: Headers,
+  permissions: Permissions,
+): Promise<AuthUser> {
+  const user = await requireAuthUser(headers);
+  const result = await getAuth().api.userHasPermission({
+    headers,
+    body: { permissions },
+  });
+  if (!result.success) throw new ApiError(403, "ERRORS.FORBIDDEN");
   return user;
 }

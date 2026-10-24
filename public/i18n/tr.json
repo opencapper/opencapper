@@ -540,6 +540,7 @@
     "MY_PROFILE": "Profilim",
     "LOG_PICK": "Tahmin gir",
     "APPEARANCE": "Görünüm",
+    "ADMIN": "Yönetim",
     "LOGOUT": "Çıkış yap",
     "LOG_IN": "Giriş yap",
     "WITH_DISCORD": "Discord ile devam et",
@@ -729,6 +730,100 @@
     "POSTED_AT": "İlk paylaşım: {time}. OpenCapper'da içe aktarma anında kilitlendi, asla geriye tarihlenmedi.",
     "FILL_HINT": "Kilitlenme: {time}. Oran, bahis sitesi oranı değil, zincir üzerindeki Polymarket gerçekleşme fiyatıdır (gerçekleşme: {filled}). Bu tahmin düzenlenemez ve silinemez."
   },
+  "ADMIN": {
+    "TITLE": "Yönetim",
+    "DESCRIPTION": "Moderasyon ve sistem durumu.",
+    "LABEL": "Yönetim",
+    "HEADING": "Kontrol odası",
+    "SUBHEADING": "Kullanıcılar, içe aktarılan profiller, son tahminler ve sistem sağlığı. {role} olarak giriş yaptın.",
+    "LOAD_FAILED": "Bu bölüm yüklenemedi.",
+    "NEVER": "Hiç",
+    "TABS": {
+      "USERS": "Kullanıcılar",
+      "IMPORTS": "İçe aktarılan profiller",
+      "PICKS": "Tahminler",
+      "SYSTEM": "Sistem"
+    },
+    "ROLES": {
+      "USER": "Kullanıcı",
+      "MODERATOR": "Moderatör",
+      "ADMIN": "Yönetici"
+    },
+    "USERS": {
+      "USER": "Kullanıcı",
+      "PROVIDERS": "Girişler",
+      "ROLE": "Rol",
+      "STATUS": "Durum",
+      "PICKS": "Tahminler",
+      "CREATED": "Katılım",
+      "NO_WEB_ACCOUNT": "Yalnızca bot, web girişi yok",
+      "BANNED": "Yasaklı",
+      "ACTIVE": "Aktif",
+      "NO_REASON": "Neden belirtilmedi.",
+      "BAN_UNTIL": "{time} tarihine kadar",
+      "BAN": "Yasakla",
+      "UNBAN": "Yasağı kaldır",
+      "BAN_BLOCKED": "Yöneticiler, sen ve web girişi olmayan kullanıcılar yasaklanamaz.",
+      "SEARCH": "Kullanıcı adı veya e-posta ara",
+      "SEARCH_GO": "Ara",
+      "ACTION_FAILED": "Değişiklik kaydedilemedi."
+    },
+    "BAN": {
+      "TITLE": "@{username} kullanıcısını yasakla",
+      "HINT": "Yasaklanan kullanıcıların oturumu kapatılır, giriş yapamaz ve ne sitede ne de botlarda tahmin kaydedebilir.",
+      "REASON": "Neden",
+      "REASON_PLACEHOLDER": "İsteğe bağlı, yalnızca ekip görür",
+      "CONFIRM": "Kullanıcıyı yasakla"
+    },
+    "IMPORTS": {
+      "PROFILE": "Profil",
+      "PLATFORM": "Platform",
+      "HANDLE": "Kaynak",
+      "PICKS": "Tahminler",
+      "HISTORY": "Geçmiş",
+      "LAST_IMPORT": "Son içe aktarma",
+      "EMPTY": "Henüz içe aktarılan profil yok."
+    },
+    "PICKS": {
+      "CAPPER": "Capper",
+      "EVENT": "Etkinlik",
+      "SELECTION": "Seçim",
+      "SOURCE": "Kaynak",
+      "DIRECT": "Doğrudan",
+      "STATUS": "Durum",
+      "LOGGED": "Kaydedildi",
+      "HINT": "Tüm capper'ların son {count, number} tahmini",
+      "EMPTY": "Henüz tahmin yok."
+    },
+    "SYSTEM": {
+      "CREDITS": "Odds API kredileri",
+      "ODDS_REMAINING": "Kalan krediler",
+      "ODDS_USED": "Kullanılan krediler",
+      "ODDS_USED_HINT": "Odds API'ye göre geçerli fatura döneminde kullanılan.",
+      "ODDS_NOT_CONFIGURED": "Odds API anahtarı yapılandırılmamış.",
+      "AS_OF": "{time} itibarıyla",
+      "NO_CALL_YET": "Sunucu başladığından beri Odds API çağrısı yok.",
+      "BOARD_BUDGET": "Bugünkü tahmin panosu",
+      "BOARD_BUDGET_HINT": "Tahmin panosunun bugün günlük bütçesinden harcadığı krediler.",
+      "JOBS": "Görevler",
+      "GRADING": "Sonuçlandırma",
+      "IMPORT_BUDGET": "İçe aktarıcılar günde {credits, number} kredi harcayabilir; Polymarket geçmişi {days, number} günü kapsar.",
+      "LOG": "Tahmin kaydı",
+      "LOG_SIZE": "Kayıt boyutu",
+      "LAST_ANCHOR": "Son çapa",
+      "ANCHOR_CONFIRMED": "Bitcoin'de onaylandı, damga {time}",
+      "ANCHOR_PENDING": "Bitcoin bekleniyor, damga {time}",
+      "NO_ANCHOR": "Henüz çapa yok.",
+      "IMAGES_PENDING": "Bekleyen görseller",
+      "IMAGES_HINT": "TheSportsDB'den beklenen takım ve oyuncu görselleri.",
+      "IMPORTER": "{platform} içe aktarıcı",
+      "RUN": "Son çalışma {time}: {created, number} oluşturuldu, {skipped, number} atlandı, {credits, number} kredi",
+      "RUN_FAILED": "Son çalışma {time} başarısız oldu. Sunucu günlüğüne bak.",
+      "NO_RUN_YET": "Sunucu başladığından beri çalışma yok.",
+      "ON": "Açık",
+      "OFF": "Kapalı"
+    }
+  },
   "OG": {
     "HOME_LABEL": "Açık kaynak tahmin takipçisi",
     "POST_FROM": "Tahminlerini buradan paylaş:",
@@ -781,6 +876,10 @@
     "NOTHING_TO_VERIFY": "Doğrulanacak bir şey yok.",
     "EMPTY_RESPONSE": "Sunucu boş bir yanıt gönderdi.",
     "UNEXPECTED_ERROR": "Bir şeyler ters gitti. Lütfen tekrar dene.",
-    "LEAGUE_NOT_OFFERED": "Bu lig sunulmuyor."
+    "LEAGUE_NOT_OFFERED": "Bu lig sunulmuyor.",
+    "FORBIDDEN": "Bunu yapma yetkin yok.",
+    "CANNOT_BAN_SELF": "Kendini yasaklayamazsın.",
+    "CANNOT_BAN_ADMIN": "Yöneticiler yasaklanamaz.",
+    "USER_BANNED": "Hesabının tahmin kaydetmesi yasaklandı."
   }
 }
