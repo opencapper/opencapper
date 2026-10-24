@@ -370,7 +370,8 @@
       "UNITS": "ユニット",
       "ROI": "ROI",
       "SAMPLE": "判定済み予想",
-      "SPORTS": "スポーツ"
+      "SPORTS": "スポーツ",
+      "PROGRESS": "進捗"
     },
     "RECORD_HINT": "勝ち / 負け / プッシュ",
     "SAMPLE_HINT": "{picks, number}件中{graded, number}件判定済み",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "十分なサンプル数のある予想家はまだいません",
     "EMPTY_BODY": "選択した期間で判定済みの予想が{count, number}件に達するとランキング対象になります。運だけで上位には立てません。",
     "ERROR": "ランキングを読み込めませんでした。しばらくしてからもう一度お試しください。",
-    "PAGINATION": {
-      "PREVIOUS": "前へ",
-      "NEXT": "次へ",
-      "PAGE": "{page, number} / {pages, number}ページ"
-    },
     "METHOD": {
       "TITLE": "ランキングの仕組み",
       "SAMPLE_TITLE": "最低サンプル数",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "サンプル不足：判定済み{count, number}件のROIでは、まだほとんど何もわかりません",
       "EMPTY": "この条件で予想を登録した予想家はまだいません。"
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "合計 {count, number} 件",
+    "ROWS": "行数",
+    "SORT_ASC": "昇順",
+    "SORT_DESC": "降順",
+    "SORT_RESET": "リセット",
+    "NO_RESULTS": "結果がありません。",
+    "VIEW": "表示",
+    "TOGGLE_COLUMNS": "列の表示"
   },
   "PROFILE": {
     "LABEL": "予想家プロフィール",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "ログルートの日次OpenTimestamps証明。",
       "EMPTY": "アンカーはまだありません。最初のアンカーは最初の予想から1日以内に作成されます。",
       "ERROR": "アンカーを読み込めませんでした。しばらくしてからもう一度お試しください。",
-      "SIZE": "{count, number}件の予想",
       "PENDING": "ビットコイン待ち",
       "CONFIRMED": "ビットコインに記録済み",
       "DOWNLOAD": "証明をダウンロード",
-      "HINT": "新しい証明は、カレンダーがビットコインのブロックに取り込むまで数時間かかります。その後、OpenTimestampsクライアントでアップグレードして検証してください。ダイジェストにはルートを渡します："
+      "HINT": "新しい証明は、カレンダーがビットコインのブロックに取り込むまで数時間かかります。その後、OpenTimestampsクライアントでアップグレードして検証してください。ダイジェストにはルートを渡します：",
+      "COLUMNS": {
+        "DATE": "アンカー日時",
+        "SIZE": "予想数",
+        "STATUS": "状態",
+        "ROOT": "ログルート"
+      }
     },
     "EXPORT": {
       "TITLE": "ログ全体を再現",

@@ -370,7 +370,8 @@
       "UNITS": "Units",
       "ROI": "ROI",
       "SAMPLE": "Beoordeelde tips",
-      "SPORTS": "Sporten"
+      "SPORTS": "Sporten",
+      "PROGRESS": "Voortgang"
     },
     "RECORD_HINT": "Winst / verlies / push",
     "SAMPLE_HINT": "{graded, number} beoordeeld van {picks, number} tips",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "Nog geen tipster heeft een steekproef die groot genoeg is",
     "EMPTY_BODY": "Tipsters komen in de ranglijst na {count, number} beoordeelde tips in de gekozen periode, zodat geluk de ranglijst niet wint.",
     "ERROR": "De ranglijst kon niet worden geladen. Probeer het later opnieuw.",
-    "PAGINATION": {
-      "PREVIOUS": "Vorige",
-      "NEXT": "Volgende",
-      "PAGE": "Pagina {page, number} van {pages, number}"
-    },
     "METHOD": {
       "TITLE": "Hoe we rangschikken",
       "SAMPLE_TITLE": "Minimale steekproef",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "Kleine steekproef: ROI over {count, number} beoordeelde tips zegt nog weinig",
       "EMPTY": "Nog geen tipster heeft een tip vastgelegd in deze selectie."
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "{count, number} in totaal",
+    "ROWS": "Rijen",
+    "SORT_ASC": "Oplopend",
+    "SORT_DESC": "Aflopend",
+    "SORT_RESET": "Opnieuw instellen",
+    "NO_RESULTS": "Geen resultaten.",
+    "VIEW": "Weergave",
+    "TOGGLE_COLUMNS": "Kolommen tonen"
   },
   "PROFILE": {
     "LABEL": "Tipsterprofiel",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "Dagelijkse OpenTimestamps bewijzen van de root van het logboek.",
       "EMPTY": "Nog geen anker. Het eerste wordt binnen een dag na de eerste tip aangemaakt.",
       "ERROR": "De ankers konden niet worden geladen. Probeer het later opnieuw.",
-      "SIZE": "{count, number} tips",
       "PENDING": "Wacht op Bitcoin",
       "CONFIRMED": "In Bitcoin",
       "DOWNLOAD": "Bewijs downloaden",
-      "HINT": "Een nieuw bewijs heeft een paar uur nodig voordat de kalenders het in een Bitcoin blok hebben gezet. Daarna kun je het upgraden en verifiëren met de OpenTimestamps client, met de root als digest:"
+      "HINT": "Een nieuw bewijs heeft een paar uur nodig voordat de kalenders het in een Bitcoin blok hebben gezet. Daarna kun je het upgraden en verifiëren met de OpenTimestamps client, met de root als digest:",
+      "COLUMNS": {
+        "DATE": "Verankerd",
+        "SIZE": "Tips",
+        "STATUS": "Status",
+        "ROOT": "Logroot"
+      }
     },
     "EXPORT": {
       "TITLE": "Het volledige logboek naspelen",

@@ -148,6 +148,7 @@ export function LeaderboardToolbar(props: {
             onValueChange={(value) =>
               props.onChange({
                 sort: LEADERBOARD_SORTS.find((s) => s === value) ?? null,
+                order: null,
                 page: null,
               })
             }

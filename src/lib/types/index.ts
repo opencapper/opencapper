@@ -171,6 +171,10 @@ export type ApiHistoryPick = {
   units: number;
   result: PickResult;
   gradedAt: string;
+  homeImage?: string | null;
+  awayImage?: string | null;
+  homeCountry?: string | null;
+  awayCountry?: string | null;
 };
 
 export type RecapResponse = {

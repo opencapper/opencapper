@@ -370,7 +370,8 @@
       "UNITS": "Unidades",
       "ROI": "ROI",
       "SAMPLE": "Palpites liquidados",
-      "SPORTS": "Esportes"
+      "SPORTS": "Esportes",
+      "PROGRESS": "Progresso"
     },
     "RECORD_HINT": "Vitórias / derrotas / reembolsos",
     "SAMPLE_HINT": "{graded, number} liquidados de {picks, number} palpites",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "Nenhum tipster tem uma amostra grande o suficiente ainda",
     "EMPTY_BODY": "Os tipsters entram no ranking depois de {count, number} palpites liquidados no período selecionado, para que a sorte não decida a tabela.",
     "ERROR": "Não foi possível carregar o ranking. Tente novamente mais tarde.",
-    "PAGINATION": {
-      "PREVIOUS": "Anterior",
-      "NEXT": "Próxima",
-      "PAGE": "Página {page, number} de {pages, number}"
-    },
     "METHOD": {
       "TITLE": "Como ranqueamos",
       "SAMPLE_TITLE": "Amostra mínima",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "Amostra pequena: o ROI sobre {count, number} palpites liquidados ainda diz pouco",
       "EMPTY": "Nenhum tipster registrou um palpite nesta seleção ainda."
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "{count, number} no total",
+    "ROWS": "Linhas",
+    "SORT_ASC": "Crescente",
+    "SORT_DESC": "Decrescente",
+    "SORT_RESET": "Redefinir",
+    "NO_RESULTS": "Nenhum resultado.",
+    "VIEW": "Exibir",
+    "TOGGLE_COLUMNS": "Mostrar colunas"
   },
   "PROFILE": {
     "LABEL": "Perfil do tipster",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "Provas diárias do OpenTimestamps da raiz do registro.",
       "EMPTY": "Ainda sem âncora. A primeira é criada em até um dia após o primeiro palpite.",
       "ERROR": "Não foi possível carregar as âncoras. Tente novamente mais tarde.",
-      "SIZE": "{count, number} palpites",
       "PENDING": "Aguardando o Bitcoin",
       "CONFIRMED": "No Bitcoin",
       "DOWNLOAD": "Baixar prova",
-      "HINT": "Uma prova nova leva algumas horas até os calendários a colocarem num bloco de Bitcoin. Depois, atualize e verifique a prova com o cliente do OpenTimestamps, passando a raiz como digest:"
+      "HINT": "Uma prova nova leva algumas horas até os calendários a colocarem num bloco de Bitcoin. Depois, atualize e verifique a prova com o cliente do OpenTimestamps, passando a raiz como digest:",
+      "COLUMNS": {
+        "DATE": "Ancorado",
+        "SIZE": "Palpites",
+        "STATUS": "Status",
+        "ROOT": "Raiz do registro"
+      }
     },
     "EXPORT": {
       "TITLE": "Refazer o registro completo",

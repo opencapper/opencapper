@@ -1,10 +1,8 @@
 "use client";
 
 import { PageHeading } from "@/components/elements/page/page-heading";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useLeaderboardQuery } from "@/hooks/leaderboard/leaderboard-hook";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { useTranslations } from "next-intl";
@@ -24,12 +22,13 @@ export function Leaderboard(props: { minGraded: number }) {
     sport: filters.sport ?? undefined,
     period: filters.period,
     sort: filters.sort,
+    order: filters.order,
     scope: filters.scope,
     page: String(filters.page),
+    pageSize: String(filters.size),
   });
   const data = leaderboard.data;
   const minGraded = data?.minGraded ?? props.minGraded;
-  const pages = data ? Math.max(1, Math.ceil(data.total / data.pageSize)) : 1;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
@@ -54,7 +53,15 @@ export function Leaderboard(props: { minGraded: number }) {
       </div>
 
       <div className="mt-6">
-        {leaderboard.isPending && <Skeleton className="h-96 rounded-xl" />}
+        {leaderboard.isPending && (
+          <LeaderboardResults
+            rows={[]}
+            total={0}
+            isLoading
+            filters={filters}
+            onChange={setFilters}
+          />
+        )}
         {leaderboard.isError && (
           <Card>
             <CardContent className="text-destructive">
@@ -83,30 +90,13 @@ export function Leaderboard(props: { minGraded: number }) {
                 ? t("SCOPE_HINT_LIVE")
                 : t("SCOPE_HINT_ALL")}
             </p>
-            <LeaderboardResults rows={data.rows} />
-            {pages > 1 && (
-              <nav className="mt-4 flex items-center justify-between gap-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={data.page <= 1}
-                  onClick={() => setFilters({ page: data.page - 1 })}
-                >
-                  {t("PAGINATION.PREVIOUS")}
-                </Button>
-                <span className="text-muted-foreground tabular text-xs">
-                  {t("PAGINATION.PAGE", { page: data.page, pages })}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={data.page >= pages}
-                  onClick={() => setFilters({ page: data.page + 1 })}
-                >
-                  {t("PAGINATION.NEXT")}
-                </Button>
-              </nav>
-            )}
+            <LeaderboardResults
+              rows={data.rows}
+              total={data.total}
+              isLoading={false}
+              filters={filters}
+              onChange={setFilters}
+            />
           </>
         )}
         {data && data.unranked.length > 0 && (

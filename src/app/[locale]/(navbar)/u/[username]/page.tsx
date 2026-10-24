@@ -1,4 +1,7 @@
 import { CapperProfile } from "@/components/pages/navbar/profile/capper-profile";
+import { DataTableProvider } from "@/components/provider/state/data-table-provider";
+import { parseDataTableStores } from "@/lib/api/typebox/data-table";
+import { DATA_TABLES_COOKIE } from "@/lib/config/constants";
 import {
   buildMetadata,
   ogImage,
@@ -6,7 +9,7 @@ import {
   pickMetadata,
   profileText,
 } from "@/lib/seo/metadata";
-import { serverLocale } from "@/lib/utils/server";
+import { getCookieValue, serverLocale } from "@/lib/utils/server";
 import { serverEnv } from "@/server/env";
 import { findPick } from "@/server/picks/picks.service";
 import { getCapperStats } from "@/server/stats/stats.service";
@@ -49,11 +52,16 @@ export default async function CapperPage(props: Props) {
   setRequestLocale(await serverLocale(props));
   const username = decodeURIComponent((await props.params).username);
   const pick = (await props.searchParams).pick;
+  const tableStores = parseDataTableStores(
+    await getCookieValue<unknown>(DATA_TABLES_COOKIE),
+  );
   return (
-    <CapperProfile
-      username={username}
-      ranking={serverEnv.ranking}
-      highlightPickId={typeof pick === "string" ? pick : null}
-    />
+    <DataTableProvider data={tableStores}>
+      <CapperProfile
+        username={username}
+        ranking={serverEnv.ranking}
+        highlightPickId={typeof pick === "string" ? pick : null}
+      />
+    </DataTableProvider>
   );
 }

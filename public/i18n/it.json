@@ -370,7 +370,8 @@
       "UNITS": "Unità",
       "ROI": "ROI",
       "SAMPLE": "Pronostici refertati",
-      "SPORTS": "Sport"
+      "SPORTS": "Sport",
+      "PROGRESS": "Avanzamento"
     },
     "RECORD_HINT": "Vinti / persi / rimborsati",
     "SAMPLE_HINT": "{graded, number} refertati su {picks, number} pronostici",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "Nessun tipster ha ancora un campione abbastanza ampio",
     "EMPTY_BODY": "I tipster entrano in classifica dopo {count, number} pronostici refertati nel periodo selezionato, così non è la fortuna a vincere la classifica.",
     "ERROR": "Impossibile caricare la classifica. Riprova più tardi.",
-    "PAGINATION": {
-      "PREVIOUS": "Precedente",
-      "NEXT": "Successiva",
-      "PAGE": "Pagina {page, number} di {pages, number}"
-    },
     "METHOD": {
       "TITLE": "Come stiliamo la classifica",
       "SAMPLE_TITLE": "Campione minimo",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "Campione ridotto: un ROI su {count, number} pronostici refertati dice ancora poco",
       "EMPTY": "Nessun tipster ha ancora registrato un pronostico in questa selezione."
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "{count, number} in totale",
+    "ROWS": "Righe",
+    "SORT_ASC": "Crescente",
+    "SORT_DESC": "Decrescente",
+    "SORT_RESET": "Reimposta",
+    "NO_RESULTS": "Nessun risultato.",
+    "VIEW": "Vista",
+    "TOGGLE_COLUMNS": "Mostra colonne"
   },
   "PROFILE": {
     "LABEL": "Profilo del tipster",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "Prove giornaliere OpenTimestamps della radice del registro.",
       "EMPTY": "Ancora nessun ancoraggio. Il primo viene creato entro un giorno dal primo pronostico.",
       "ERROR": "Impossibile caricare gli ancoraggi. Riprova più tardi.",
-      "SIZE": "{count, number} pronostici",
       "PENDING": "In attesa di Bitcoin",
       "CONFIRMED": "In Bitcoin",
       "DOWNLOAD": "Scarica la prova",
-      "HINT": "Una prova appena creata richiede qualche ora prima che i calendari la inseriscano in un blocco Bitcoin. Poi aggiornala e verificala con il client OpenTimestamps, passando la radice come digest:"
+      "HINT": "Una prova appena creata richiede qualche ora prima che i calendari la inseriscano in un blocco Bitcoin. Poi aggiornala e verificala con il client OpenTimestamps, passando la radice come digest:",
+      "COLUMNS": {
+        "DATE": "Ancorato",
+        "SIZE": "Pronostici",
+        "STATUS": "Stato",
+        "ROOT": "Radice del registro"
+      }
     },
     "EXPORT": {
       "TITLE": "Ripercorri l’intero registro",

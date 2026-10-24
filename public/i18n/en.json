@@ -370,7 +370,8 @@
       "UNITS": "Units",
       "ROI": "ROI",
       "SAMPLE": "Graded picks",
-      "SPORTS": "Sports"
+      "SPORTS": "Sports",
+      "PROGRESS": "Progress"
     },
     "RECORD_HINT": "Wins / losses / pushes",
     "SAMPLE_HINT": "{graded, number} graded of {picks, number} picks",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "No capper has a large enough sample yet",
     "EMPTY_BODY": "Cappers are ranked after {count, number} graded picks in the selected period, so luck does not win the table.",
     "ERROR": "The leaderboard could not be loaded. Please try again later.",
-    "PAGINATION": {
-      "PREVIOUS": "Previous",
-      "NEXT": "Next",
-      "PAGE": "Page {page, number} of {pages, number}"
-    },
     "METHOD": {
       "TITLE": "How we rank",
       "SAMPLE_TITLE": "Minimum sample",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "Small sample: ROI over {count, number} graded picks says little yet",
       "EMPTY": "No capper has logged a pick in this selection yet."
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "{count, number} total",
+    "ROWS": "Rows",
+    "SORT_ASC": "Ascending",
+    "SORT_DESC": "Descending",
+    "SORT_RESET": "Reset",
+    "NO_RESULTS": "No results.",
+    "VIEW": "View",
+    "TOGGLE_COLUMNS": "Toggle columns"
   },
   "PROFILE": {
     "LABEL": "Capper profile",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "Daily OpenTimestamps proofs of the log root.",
       "EMPTY": "No anchor yet. The first one is created within a day of the first pick.",
       "ERROR": "The anchors could not be loaded. Please try again later.",
-      "SIZE": "{count, number} picks",
       "PENDING": "Waiting for Bitcoin",
       "CONFIRMED": "In Bitcoin",
       "DOWNLOAD": "Download proof",
-      "HINT": "A fresh proof needs a few hours until the calendars have put it into a Bitcoin block. Then upgrade and verify it with the OpenTimestamps client, passing the root as the digest:"
+      "HINT": "A fresh proof needs a few hours until the calendars have put it into a Bitcoin block. Then upgrade and verify it with the OpenTimestamps client, passing the root as the digest:",
+      "COLUMNS": {
+        "DATE": "Anchored",
+        "SIZE": "Picks",
+        "STATUS": "Status",
+        "ROOT": "Log root"
+      }
     },
     "EXPORT": {
       "TITLE": "Replay the full log",

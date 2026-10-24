@@ -370,7 +370,8 @@
       "UNITS": "Unidades",
       "ROI": "ROI",
       "SAMPLE": "Picks liquidados",
-      "SPORTS": "Deportes"
+      "SPORTS": "Deportes",
+      "PROGRESS": "Progreso"
     },
     "RECORD_HINT": "Ganados / perdidos / nulos",
     "SAMPLE_HINT": "{graded, number} liquidados de {picks, number} picks",
@@ -378,11 +379,6 @@
     "EMPTY_TITLE": "Ningún tipster tiene todavía una muestra suficiente",
     "EMPTY_BODY": "Los tipsters entran en la clasificación a partir de {count, number} picks liquidados en el periodo seleccionado, para que la suerte no gane la tabla.",
     "ERROR": "No se pudo cargar la clasificación. Inténtalo de nuevo más tarde.",
-    "PAGINATION": {
-      "PREVIOUS": "Anterior",
-      "NEXT": "Siguiente",
-      "PAGE": "Página {page, number} de {pages, number}"
-    },
     "METHOD": {
       "TITLE": "Cómo clasificamos",
       "SAMPLE_TITLE": "Muestra mínima",
@@ -407,6 +403,16 @@
       "SMALL_SAMPLE": "Muestra pequeña: el ROI sobre {count, number} picks liquidados todavía dice poco",
       "EMPTY": "Ningún tipster ha registrado todavía un pick en esta selección."
     }
+  },
+  "TABLE": {
+    "TOTAL_COUNT": "{count, number} en total",
+    "ROWS": "Filas",
+    "SORT_ASC": "Ascendente",
+    "SORT_DESC": "Descendente",
+    "SORT_RESET": "Restablecer",
+    "NO_RESULTS": "Sin resultados.",
+    "VIEW": "Vista",
+    "TOGGLE_COLUMNS": "Mostrar columnas"
   },
   "PROFILE": {
     "LABEL": "Perfil del tipster",
@@ -694,11 +700,16 @@
       "DESCRIPTION": "Pruebas diarias de OpenTimestamps de la raíz del registro.",
       "EMPTY": "Aún no hay ningún anclaje. El primero se crea dentro del día siguiente al primer pick.",
       "ERROR": "No se pudieron cargar los anclajes. Inténtalo de nuevo más tarde.",
-      "SIZE": "{count, number} picks",
       "PENDING": "Esperando a Bitcoin",
       "CONFIRMED": "En Bitcoin",
       "DOWNLOAD": "Descargar prueba",
-      "HINT": "Una prueba nueva tarda unas horas hasta que los calendarios la incluyen en un bloque de Bitcoin. Después, actualízala y verifícala con el cliente de OpenTimestamps, pasando la raíz como digest:"
+      "HINT": "Una prueba nueva tarda unas horas hasta que los calendarios la incluyen en un bloque de Bitcoin. Después, actualízala y verifícala con el cliente de OpenTimestamps, pasando la raíz como digest:",
+      "COLUMNS": {
+        "DATE": "Anclado",
+        "SIZE": "Picks",
+        "STATUS": "Estado",
+        "ROOT": "Raíz del registro"
+      }
     },
     "EXPORT": {
       "TITLE": "Reproduce el registro completo",

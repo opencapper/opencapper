@@ -1,12 +1,10 @@
 "use client";
 
-import {
-  CARD_LABEL,
-  TABLE_HEAD,
-} from "@/components/elements/page/page-heading";
+import { CARD_LABEL } from "@/components/elements/page/page-heading";
 import { PickStatusBadge } from "@/components/elements/badge/pick-status-badge";
-import { Matchup } from "@/components/elements/participant/matchup";
 import { SourceIcon } from "@/components/elements/source/source-badge";
+import { DataTable } from "@/components/elements/table/data-table";
+import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -16,15 +14,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   Tooltip,
   TooltipContent,
@@ -32,9 +21,10 @@ import {
 } from "@/components/ui/tooltip";
 import { useUserHistoryQuery } from "@/hooks/users/users-hook";
 import { MARKET_KEY } from "@/lib/config/markets";
-import type { HistoryStats } from "@/lib/types";
+import type { TableFeats } from "@/lib/config/table-features";
+import type { ApiHistoryPick, HistoryStats } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { formatDateTime } from "@/lib/utils/format/date";
+import { dayjs, formatDateTime } from "@/lib/utils/format/date";
 import { apiErrorText } from "@/lib/utils/api-error";
 import {
   formatAmericanOdds,
@@ -42,12 +32,87 @@ import {
   formatPlainUnits,
   formatUnits,
 } from "@/lib/utils/format/number";
+import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
+import { EventCell } from "./picks-table";
 
 export function HistoryTable(props: { username: string; stats: HistoryStats }) {
   const t = useTranslations();
   const locale = useLocale();
   const history = useUserHistoryQuery(props.username);
+
+  const columns: ColumnDef<TableFeats, ApiHistoryPick>[] = [
+    {
+      id: "event",
+      accessorFn: (pick) => dayjs(pick.commenceTime).valueOf(),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.EVENT" />
+      ),
+      size: 260,
+      meta: { cellClassName: "min-w-56" },
+      cell: ({ row }) => <EventCell event={row.original} />,
+    },
+    {
+      id: "market",
+      header: t("PROFILE.PICKS.MARKET"),
+      enableSorting: false,
+      size: 100,
+      cell: ({ row }) => t(MARKET_KEY[row.original.market]),
+    },
+    {
+      id: "selection",
+      header: t("PROFILE.PICKS.SELECTION"),
+      enableSorting: false,
+      size: 140,
+      cell: ({ row }) => row.original.selection,
+    },
+    {
+      id: "odds",
+      accessorFn: (pick) => pick.odds,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.ODDS" />
+      ),
+      size: 90,
+      meta: { cellClassName: "tabular" },
+      cell: ({ row }) => formatAmericanOdds(row.original.odds),
+    },
+    {
+      id: "units",
+      accessorFn: (pick) => pick.units,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="PROFILE.PICKS.UNITS"
+          className="justify-end"
+        />
+      ),
+      size: 80,
+      meta: {
+        headerClassName: "text-right",
+        cellClassName: "tabular text-right",
+      },
+      cell: ({ row }) => formatPlainUnits(row.original.units, locale),
+    },
+    {
+      id: "status",
+      header: t("PROFILE.PICKS.STATUS"),
+      enableSorting: false,
+      size: 100,
+      cell: ({ row }) => <PickStatusBadge result={row.original.result} />,
+    },
+    {
+      id: "tradedAt",
+      accessorFn: (pick) => dayjs(pick.tradedAt).valueOf(),
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="PROFILE.HISTORY.TRANSACTION"
+        />
+      ),
+      size: 170,
+      cell: ({ row }) => <TransactionCell pick={row.original} />,
+    },
+  ];
 
   return (
     <Card className="mt-6">
@@ -72,104 +137,58 @@ export function HistoryTable(props: { username: string; stats: HistoryStats }) {
         </p>
       </CardHeader>
       <CardContent>
-        {history.isPending && <Skeleton className="h-72 rounded-xl" />}
-        {history.isError && (
+        {history.isError ? (
           <p className="text-destructive text-sm">
             {apiErrorText(t, history.error, t("PROFILE.ERROR"))}
           </p>
-        )}
-        {history.data && history.data.length === 0 && (
-          <p className="text-muted-foreground text-sm">
-            {t("PROFILE.HISTORY.EMPTY")}
-          </p>
-        )}
-        {history.data && history.data.length > 0 && (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.EVENT")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.MARKET")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.SELECTION")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.ODDS")}
-                </TableHead>
-                <TableHead className={cn(TABLE_HEAD, "text-right")}>
-                  {t("PROFILE.PICKS.UNITS")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.PICKS.STATUS")}
-                </TableHead>
-                <TableHead className={TABLE_HEAD}>
-                  {t("PROFILE.HISTORY.TRANSACTION")}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {history.data.map((pick) => {
-                const traded = formatDateTime(pick.tradedAt, locale);
-                const start = formatDateTime(pick.commenceTime, locale);
-                return (
-                  <TableRow key={pick.id}>
-                    <TableCell>
-                      <Matchup event={pick} />
-                      <div className="text-muted-foreground mt-1 text-xs">
-                        {t("PROFILE.PICKS.STARTS_AT", { time: start })}
-                      </div>
-                    </TableCell>
-                    <TableCell>{t(MARKET_KEY[pick.market])}</TableCell>
-                    <TableCell>{pick.selection}</TableCell>
-                    <TableCell className="tabular">
-                      {formatAmericanOdds(pick.odds)}
-                    </TableCell>
-                    <TableCell className="tabular text-right">
-                      {formatPlainUnits(pick.units, locale)}
-                    </TableCell>
-                    <TableCell>
-                      <PickStatusBadge result={pick.result} />
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip>
-                        <TooltipTrigger
-                          render={
-                            <a
-                              href={pick.url}
-                              target="_blank"
-                              rel="noopener noreferrer nofollow"
-                              className="text-muted-foreground inline-flex items-center gap-1.5 text-xs underline-offset-4 hover:underline"
-                            />
-                          }
-                        >
-                          <SourceIcon
-                            platform={pick.platform}
-                            className="size-3"
-                          />
-                          {t("PROFILE.HISTORY.VIEW_TX")}
-                          <Icon name="arrow-up-right" className="size-3" />
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-64">
-                          {t("PROFILE.HISTORY.TRADED_HINT", {
-                            time: traded,
-                            start,
-                          })}
-                        </TooltipContent>
-                      </Tooltip>
-                      <div className="text-muted-foreground tabular mt-1 text-xs">
-                        {t("PROFILE.HISTORY.TRADED_AT", { time: traded })}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+        ) : (
+          <DataTable
+            id="PROFILE_HISTORY"
+            data={history.data ?? []}
+            columns={columns}
+            isLoading={history.isPending}
+            localSorting
+            emptyState={
+              <span className="text-muted-foreground text-sm">
+                {t("PROFILE.HISTORY.EMPTY")}
+              </span>
+            }
+          />
         )}
       </CardContent>
     </Card>
+  );
+}
+
+function TransactionCell(props: { pick: ApiHistoryPick }) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const traded = formatDateTime(props.pick.tradedAt, locale);
+  const start = formatDateTime(props.pick.commenceTime, locale);
+  return (
+    <>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <a
+              href={props.pick.url}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              className="text-muted-foreground inline-flex items-center gap-1.5 text-xs underline-offset-4 hover:underline"
+            />
+          }
+        >
+          <SourceIcon platform={props.pick.platform} className="size-3" />
+          {t("PROFILE.HISTORY.VIEW_TX")}
+          <Icon name="arrow-up-right" className="size-3" />
+        </TooltipTrigger>
+        <TooltipContent className="max-w-64">
+          {t("PROFILE.HISTORY.TRADED_HINT", { time: traded, start })}
+        </TooltipContent>
+      </Tooltip>
+      <div className="text-muted-foreground tabular mt-1 text-xs">
+        {t("PROFILE.HISTORY.TRADED_AT", { time: traded })}
+      </div>
+    </>
   );
 }

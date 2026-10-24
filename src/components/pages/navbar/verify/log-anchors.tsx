@@ -1,6 +1,7 @@
 "use client";
 
 import { CARD_LABEL } from "@/components/elements/page/page-heading";
+import { DataTable } from "@/components/elements/table/data-table";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -10,10 +11,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useLogAnchorsQuery } from "@/hooks/log/log-hook";
+import type { TableFeats } from "@/lib/config/table-features";
+import type { ApiLogAnchor } from "@/lib/types";
 import { formatDateTime } from "@/lib/utils/format/date";
 import { apiErrorText } from "@/lib/utils/api-error";
+import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
 
 export function LogAnchors() {
@@ -22,6 +25,62 @@ export function LogAnchors() {
   const locale = useLocale();
   const anchors = useLogAnchorsQuery();
 
+  const columns: ColumnDef<TableFeats, ApiLogAnchor>[] = [
+    {
+      id: "date",
+      header: t("COLUMNS.DATE"),
+      size: 150,
+      meta: { cellClassName: "tabular whitespace-nowrap" },
+      cell: ({ row }) => formatDateTime(row.original.createdAt, locale),
+    },
+    {
+      id: "size",
+      header: t("COLUMNS.SIZE"),
+      size: 70,
+      meta: {
+        headerClassName: "text-right",
+        cellClassName: "tabular text-right",
+      },
+      cell: ({ row }) => row.original.size.toLocaleString(locale),
+    },
+    {
+      id: "status",
+      header: t("COLUMNS.STATUS"),
+      size: 130,
+      cell: ({ row }) => (
+        <Badge variant="outline">
+          {row.original.upgraded ? t("CONFIRMED") : t("PENDING")}
+        </Badge>
+      ),
+    },
+    {
+      id: "root",
+      header: t("COLUMNS.ROOT"),
+      size: 320,
+      meta: {
+        cellClassName:
+          "text-muted-foreground font-mono text-xs break-all whitespace-normal",
+      },
+      cell: ({ row }) => row.original.root,
+    },
+    {
+      id: "download",
+      header: "",
+      size: 130,
+      meta: { cellClassName: "text-right" },
+      cell: ({ row }) => (
+        <a
+          href={row.original.download}
+          download
+          className="text-primary inline-flex items-center gap-1.5 text-sm whitespace-nowrap hover:underline"
+        >
+          <Icon name="download" className="size-4" />
+          {t("DOWNLOAD")}
+        </a>
+      ),
+    },
+  ];
+
   return (
     <Card className="mt-8">
       <CardHeader>
@@ -29,49 +88,22 @@ export function LogAnchors() {
         <CardDescription>{t("DESCRIPTION")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {anchors.isPending && <Skeleton className="h-20 rounded-xl" />}
-        {anchors.isError && (
+        {anchors.isError ? (
           <p className="text-destructive text-sm">
             {apiErrorText(tRoot, anchors.error, t("ERROR"))}
           </p>
-        )}
-        {anchors.data && anchors.data.length === 0 && (
-          <p className="text-muted-foreground text-sm">{t("EMPTY")}</p>
-        )}
-        {anchors.data && anchors.data.length > 0 && (
-          <ul className="divide-border divide-y">
-            {anchors.data.map((anchor) => (
-              <li
-                key={anchor.id}
-                className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 text-sm">
-                    <span className="tabular">
-                      {formatDateTime(anchor.createdAt, locale)}
-                    </span>
-                    <span className="text-muted-foreground tabular">
-                      {t("SIZE", { count: anchor.size })}
-                    </span>
-                    <Badge variant="outline">
-                      {anchor.upgraded ? t("CONFIRMED") : t("PENDING")}
-                    </Badge>
-                  </div>
-                  <p className="text-muted-foreground mt-1 font-mono text-xs break-all">
-                    {anchor.root}
-                  </p>
-                </div>
-                <a
-                  href={anchor.download}
-                  download
-                  className="text-primary inline-flex shrink-0 items-center gap-1.5 text-sm hover:underline"
-                >
-                  <Icon name="download" className="size-4" />
-                  {t("DOWNLOAD")}
-                </a>
-              </li>
-            ))}
-          </ul>
+        ) : (
+          <DataTable
+            id="LOG_ANCHORS"
+            data={anchors.data ?? []}
+            columns={columns}
+            isLoading={anchors.isPending}
+            emptyState={
+              <span className="text-muted-foreground text-sm">
+                {t("EMPTY")}
+              </span>
+            }
+          />
         )}
         <p className="text-muted-foreground text-sm">{t("HINT")}</p>
         <p className="bg-muted rounded-md px-3 py-2 font-mono text-xs break-all">

@@ -1,6 +1,7 @@
 import {
   LEADERBOARD_PAGE_SIZE,
   LEADERBOARD_UNRANKED_LIMIT,
+  type LeaderboardOrder,
   type LeaderboardPeriod,
   type LeaderboardScope,
   type LeaderboardQuery,
@@ -54,8 +55,10 @@ type Input = {
   sport?: SportGroup;
   period: LeaderboardPeriod;
   sort: LeaderboardSort;
+  order: LeaderboardOrder;
   scope: LeaderboardScope;
   page: number;
+  pageSize: number;
   minGraded: number;
 };
 
@@ -200,6 +203,11 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
     picks: sql`${rankedAgg.graded}`,
   } satisfies Record<LeaderboardSort, SQL>;
   const order = sql`${key[input.sort]} desc nulls last, ${rankedAgg.graded} desc, ${users.username} asc`;
+  // Rank stays the position in the descending table whichever way the page is read.
+  const listOrder =
+    input.order === "asc"
+      ? sql`${key[input.sort]} asc nulls last, ${rankedAgg.graded} asc, ${users.username} desc`
+      : order;
 
   const unranked = aggregate(input);
   const unrankedAgg = unranked.query
@@ -216,9 +224,9 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
       .from(rankedAgg)
       .innerJoin(users, eq(users.id, rankedAgg.userId))
       .leftJoin(authUser, eq(authUser.id, users.authUserId))
-      .orderBy(order)
-      .limit(LEADERBOARD_PAGE_SIZE)
-      .offset((input.page - 1) * LEADERBOARD_PAGE_SIZE),
+      .orderBy(listOrder)
+      .limit(input.pageSize)
+      .offset((input.page - 1) * input.pageSize),
     db
       .select(columns(unrankedAgg))
       .from(unrankedAgg)
@@ -237,7 +245,7 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
     minGraded: input.minGraded,
     total: rows[0]?.total ?? 0,
     page: input.page,
-    pageSize: LEADERBOARD_PAGE_SIZE,
+    pageSize: input.pageSize,
   };
 }
 
@@ -248,8 +256,10 @@ export async function getLeaderboard(
     sport: query.sport,
     period: query.period ?? "all",
     sort: query.sort ?? "roi",
+    order: query.order ?? "desc",
     scope: query.scope ?? "all",
     page: Number(query.page ?? "1"),
+    pageSize: Number(query.pageSize ?? LEADERBOARD_PAGE_SIZE),
     minGraded: serverEnv.ranking.leaderboardMinGradedPicks,
   };
   const cacheKey = JSON.stringify(input);
