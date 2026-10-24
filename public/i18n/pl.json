@@ -551,6 +551,17 @@
       "TRADED_HINT": "Transakcja on-chain: {time}, przed startem ({start}). Zaimportowana później, nie zapisana na żywo.",
       "TRANSACTION": "Transakcja",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "Przejęty przez @{username}",
+    "CLAIMED_PROFILES": "Przejęte zaimportowane profile:",
+    "HIDDEN": {
+      "TITLE": "Ukryty profil",
+      "HEADING": "Ten profil został ukryty na prośbę właściciela",
+      "BODY": "Nie pojawia się już w rankingu, wyszukiwarce ani podglądach. Jego typy zostają w publicznym rejestrze i nadal można je sprawdzić po identyfikatorze typu.",
+      "VERIFY_LINK": "Sprawdź typ na stronie weryfikacji",
+      "OWNER_HINT": "Ten profil został przez ciebie przejęty. W każdej chwili możesz go znowu upublicznić.",
+      "UNHIDE": "Pokaż ten profil ponownie",
+      "FAILED": "Nie udało się zapisać zmiany."
     }
   },
   "SPORTS": {
@@ -772,10 +783,21 @@
     "BANNER_TITLE": "Publiczny profil zaimportowany z {platform, select, polymarket {Polymarket} reddit {Reddita} other {innej platformy}}, nieprzejęty",
     "BANNER_BODY": "Każdy typ został zaimportowany z publicznej aktywności na {platform, select, polymarket {Polymarket} reddit {Reddicie} other {innej platformie}} przed startem wydarzenia i zablokowany w chwili importu. Ta osoba nie zarejestrowała się i nie przejrzała tej historii.",
     "BANNER_SOURCE": "Zobacz na {platform, select, polymarket {Polymarket} reddit {Reddicie} other {innej platformie}}",
-    "BANNER_CLAIM": "To ty? Przejmij profil lub zgłoś sprzeciw",
     "PICK_SOURCE": "Źródło: {platform, select, polymarket {transakcja na Polymarket} reddit {komentarz na Reddicie} other {oryginalny wpis}}",
     "POSTED_AT": "Pierwotnie opublikowano {time}. Zablokowany w OpenCapper w chwili importu, nigdy z datą wsteczną.",
-    "FILL_HINT": "Zablokowano {time}. Kurs to cena realizacji on-chain na Polymarket ({filled}), a nie kurs bukmachera. Tego typu nie można edytować ani usunąć."
+    "FILL_HINT": "Zablokowano {time}. Kurs to cena realizacji on-chain na Polymarket ({filled}), a nie kurs bukmachera. Tego typu nie można edytować ani usunąć.",
+    "PUBLIC_HINT_CLAIMED": "Publiczny profil zaimportowany z serwisu {platform}. Właściciel przejął go kontem OpenCapper.",
+    "BANNER_TITLE_CLAIMED": "Publiczny profil zaimportowany z serwisu {platform}, przejęty przez @{username}",
+    "BANNER_BODY_CLAIMED": "Właściciel udowodnił, że to konto w serwisie {platform} należy do niego. Typy są nadal importowane z publicznej aktywności przed startem każdego wydarzenia i blokowane przy imporcie.",
+    "MANUAL_CLAIM": "To ty? Na razie przejęcia profili z serwisu {platform} sprawdzamy ręcznie. Napisz do nas, a to zweryfikujemy.",
+    "OWNER_HINT": "Ten profil został przez ciebie przejęty. Ukrycie usuwa go z rankingu, wyszukiwarki i podglądów. Wpisy w rejestrze zostają.",
+    "CLAIMANT_PROFILE": "Właściciel: @{username}",
+    "CONTACT": "Skontaktuj się z nami",
+    "REMOVAL": "To nie ty? Poproś o usunięcie",
+    "CLAIM": "Przejmij ten profil",
+    "LOGIN_TO_CLAIM": "To ty? Zaloguj się, aby go przejąć.",
+    "HIDE": "Ukryj ten profil",
+    "VISIBILITY_FAILED": "Nie udało się zapisać zmiany."
   },
   "ADMIN": {
     "TITLE": "Administracja",
@@ -829,7 +851,14 @@
       "PICKS": "Typy",
       "HISTORY": "Historia",
       "LAST_IMPORT": "Ostatni import",
-      "EMPTY": "Brak zaimportowanych profili."
+      "EMPTY": "Brak zaimportowanych profili.",
+      "STATUS": "Status",
+      "HIDDEN": "Ukryty",
+      "VISIBLE": "Widoczny",
+      "HIDE": "Ukryj",
+      "UNHIDE": "Pokaż",
+      "APPROVE": "Zatwierdź przejęcie",
+      "REVOKE": "Cofnij przejęcie"
     },
     "PICKS": {
       "CAPPER": "Capper",
@@ -869,6 +898,13 @@
       "NO_RUN_YET": "Brak uruchomień od startu serwera.",
       "ON": "Wł.",
       "OFF": "Wył."
+    },
+    "CLAIM": {
+      "TITLE": "Zatwierdź przejęcie @{username}",
+      "HINT": "Tylko po ręcznym sprawdzeniu dowodu właściciela, na przykład wiadomości z konta źródłowego. Osoba przejmująca potrzebuje konta OpenCapper. Typy pozostają bez zmian.",
+      "CLAIMANT": "Nazwa użytkownika przejmującego",
+      "CLAIMANT_PLACEHOLDER": "@uzytkownik",
+      "CONFIRM": "Zatwierdź przejęcie"
     }
   },
   "OG": {
@@ -927,7 +963,19 @@
     "FORBIDDEN": "Nie masz uprawnień, aby to zrobić.",
     "CANNOT_BAN_SELF": "Nie możesz zbanować samego siebie.",
     "CANNOT_BAN_ADMIN": "Administratorów nie można zbanować.",
-    "USER_BANNED": "Twoje konto ma zablokowane dodawanie typów."
+    "USER_BANNED": "Twoje konto ma zablokowane dodawanie typów.",
+    "CLAIM_NOT_IMPORTED": "Przejąć lub ukryć można tylko zaimportowane profile publiczne.",
+    "PROFILE_ALREADY_CLAIMED": "Ten profil został już przejęty.",
+    "CLAIM_MANUAL_ONLY": "Na razie przejęcia dla tej platformy sprawdzamy ręcznie. Skontaktuj się z nami.",
+    "CLAIM_RATE_LIMITED": "Zbyt wiele prób. Odczekaj chwilę i spróbuj ponownie.",
+    "CLAIM_SOURCE_UNAVAILABLE": "Nie udało się wczytać profilu źródłowego. Spróbuj ponownie później.",
+    "CLAIM_NOT_STARTED": "Najpierw pobierz kod.",
+    "CLAIM_CODE_EXPIRED": "Kod wygasł. Pobierz nowy kod i spróbuj ponownie.",
+    "CLAIM_CODE_NOT_FOUND": "Kodu nie ma jeszcze w opisie profilu. Zapisz opis, odczekaj minutę i sprawdź ponownie.",
+    "NOT_PROFILE_OWNER": "Może to zrobić tylko osoba, która przejęła ten profil.",
+    "CLAIMANT_NOT_FOUND": "Żaden zarejestrowany użytkownik nie ma takiej nazwy.",
+    "CLAIM_NOT_FOUND": "Ten profil nie ma aktywnego przejęcia.",
+    "PROFILE_HIDDEN": "Ten profil jest ukryty na prośbę właściciela."
   },
   "LEGAL": {
     "LABEL": "Informacje prawne",
@@ -1052,5 +1100,24 @@
       "CONTACT_TITLE": "Kontakt",
       "CONTACT_BODY": "Pytania dotyczące niniejszego regulaminu: {email} lub nasz serwer Discord."
     }
+  },
+  "CLAIM": {
+    "TITLE": "Przejmij @{username}",
+    "INTRO": "Udowodnij, że to konto w serwisie {platform} należy do ciebie, wpisując jednorazowy kod w jego publicznym opisie. Hasło nie jest potrzebne.",
+    "START": "Pobierz mój kod",
+    "STEP_CODE": "1. Skopiuj swój kod",
+    "COPY": "Kopiuj",
+    "COPIED": "Kod skopiowany",
+    "STEP_BIO": "2. Wpisz go w dowolnym miejscu opisu profilu w serwisie {platform} i zapisz",
+    "OPEN_SETTINGS": "Otwórz ustawienia w serwisie {platform}",
+    "STEP_VERIFY": "3. Wróć tutaj i naciśnij Weryfikuj",
+    "EXPIRES": "Kod jest ważny do {time}. Po przejęciu możesz usunąć go z opisu.",
+    "VERIFY": "Weryfikuj",
+    "VERIFYING": "Sprawdzamy opis profilu w serwisie {platform}",
+    "NEW_CODE": "Nowy kod",
+    "SUCCESS_TITLE": "Profil przejęty",
+    "SUCCESS_BODY": "@{username} pokazuje teraz, że należy do ciebie. W każdej chwili możesz go ukryć na jego stronie.",
+    "DONE": "Gotowe",
+    "FAILED": "Nie udało się dokończyć przejęcia. Spróbuj ponownie."
   }
 }

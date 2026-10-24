@@ -159,3 +159,24 @@ export async function fetchTopLevelComments(
     ];
   });
 }
+
+const AboutSchema = Type.Object({
+  data: Type.Object({
+    subreddit: Type.Optional(
+      Type.Union([
+        Type.Object({ public_description: Type.Optional(Type.String()) }),
+        Type.Null(),
+      ]),
+    ),
+  }),
+});
+
+// The profile "About" text lives on the user's own profile subreddit.
+export async function fetchUserDescription(name: string): Promise<string> {
+  const about = await oauthGet(
+    `/user/${encodeURIComponent(name)}/about`,
+    {},
+    AboutSchema,
+  );
+  return about.data.subreddit?.public_description ?? "";
+}

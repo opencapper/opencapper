@@ -551,6 +551,17 @@
       "TRADED_HINT": "Operazione on chain {time}, prima dell’inizio alle {start}. Importata in seguito, non registrata live.",
       "TRANSACTION": "Transazione",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "Rivendicato da @{username}",
+    "CLAIMED_PROFILES": "Profili importati rivendicati:",
+    "HIDDEN": {
+      "TITLE": "Profilo nascosto",
+      "HEADING": "Questo profilo è stato nascosto su richiesta del titolare",
+      "BODY": "Non compare più in classifica, nella ricerca o nelle anteprime. I suoi pronostici restano nel registro pubblico e si possono ancora controllare tramite l’id del pronostico.",
+      "VERIFY_LINK": "Controlla un pronostico nella pagina di verifica",
+      "OWNER_HINT": "Hai rivendicato questo profilo. Puoi renderlo di nuovo pubblico in qualsiasi momento.",
+      "UNHIDE": "Mostra di nuovo questo profilo",
+      "FAILED": "Impossibile salvare la modifica."
     }
   },
   "SPORTS": {
@@ -772,10 +783,21 @@
     "BANNER_TITLE": "Profilo pubblico, importato da {platform, select, polymarket {Polymarket} reddit {Reddit} other {un’altra piattaforma}}, non rivendicato",
     "BANNER_BODY": "Ogni pronostico è stato importato dall’attività pubblica su {platform, select, polymarket {Polymarket} reddit {Reddit} other {un’altra piattaforma}} prima dell’inizio del suo evento e bloccato al momento dell’importazione. Questa persona non si è registrata e non ha controllato questo storico.",
     "BANNER_SOURCE": "Vedi su {platform, select, polymarket {Polymarket} reddit {Reddit} other {un’altra piattaforma}}",
-    "BANNER_CLAIM": "Sei tu? Rivendica o contesta",
     "PICK_SOURCE": "Fonte: {platform, select, polymarket {operazione Polymarket} reddit {commento su Reddit} other {post originale}}",
     "POSTED_AT": "Pubblicato originariamente {time}. Bloccato su OpenCapper al momento dell’importazione, mai retrodatato.",
-    "FILL_HINT": "Bloccato il {time}. Il prezzo è l’esecuzione on chain su Polymarket del {filled}, non una quota di un bookmaker. Questo pronostico non si può modificare né cancellare."
+    "FILL_HINT": "Bloccato il {time}. Il prezzo è l’esecuzione on chain su Polymarket del {filled}, non una quota di un bookmaker. Questo pronostico non si può modificare né cancellare.",
+    "PUBLIC_HINT_CLAIMED": "Profilo pubblico importato da {platform}. Il titolare l’ha rivendicato con un account OpenCapper.",
+    "BANNER_TITLE_CLAIMED": "Profilo pubblico, importato da {platform}, rivendicato da @{username}",
+    "BANNER_BODY_CLAIMED": "Il titolare ha dimostrato che questo account {platform} è suo. I pronostici vengono ancora importati dall’attività pubblica prima dell’inizio di ogni evento e bloccati al momento dell’importazione.",
+    "MANUAL_CLAIM": "Sei tu? Per ora le rivendicazioni di {platform} vengono controllate a mano. Contattaci e la verificheremo.",
+    "OWNER_HINT": "Hai rivendicato questo profilo. Nasconderlo lo rimuove da classifica, ricerca e anteprime. Le voci del registro restano.",
+    "CLAIMANT_PROFILE": "Titolare: @{username}",
+    "CONTACT": "Contattaci",
+    "REMOVAL": "Non sei tu? Chiedi la rimozione",
+    "CLAIM": "Rivendica questo profilo",
+    "LOGIN_TO_CLAIM": "Sei tu? Accedi per rivendicarlo.",
+    "HIDE": "Nascondi questo profilo",
+    "VISIBILITY_FAILED": "Impossibile salvare la modifica."
   },
   "ADMIN": {
     "TITLE": "Amministrazione",
@@ -829,7 +851,14 @@
       "PICKS": "Pronostici",
       "HISTORY": "Storico",
       "LAST_IMPORT": "Ultima importazione",
-      "EMPTY": "Ancora nessun profilo importato."
+      "EMPTY": "Ancora nessun profilo importato.",
+      "STATUS": "Stato",
+      "HIDDEN": "Nascosto",
+      "VISIBLE": "Visibile",
+      "HIDE": "Nascondi",
+      "UNHIDE": "Mostra",
+      "APPROVE": "Approva rivendicazione",
+      "REVOKE": "Revoca rivendicazione"
     },
     "PICKS": {
       "CAPPER": "Capper",
@@ -869,6 +898,13 @@
       "NO_RUN_YET": "Nessuna esecuzione dall’avvio del server.",
       "ON": "Attivo",
       "OFF": "Spento"
+    },
+    "CLAIM": {
+      "TITLE": "Approva una rivendicazione per @{username}",
+      "HINT": "Solo dopo aver controllato a mano la prova del titolare, per esempio un messaggio dall’account di origine. Chi rivendica deve avere un account OpenCapper. I pronostici restano invariati.",
+      "CLAIMANT": "Nome utente di chi rivendica",
+      "CLAIMANT_PLACEHOLDER": "@utente",
+      "CONFIRM": "Approva rivendicazione"
     }
   },
   "OG": {
@@ -927,7 +963,19 @@
     "FORBIDDEN": "Non hai il permesso di farlo.",
     "CANNOT_BAN_SELF": "Non puoi bannare te stesso.",
     "CANNOT_BAN_ADMIN": "Gli amministratori non possono essere bannati.",
-    "USER_BANNED": "Il tuo account è bannato dalla registrazione dei pronostici."
+    "USER_BANNED": "Il tuo account è bannato dalla registrazione dei pronostici.",
+    "CLAIM_NOT_IMPORTED": "Si possono rivendicare o nascondere solo profili pubblici importati.",
+    "PROFILE_ALREADY_CLAIMED": "Questo profilo è già stato rivendicato.",
+    "CLAIM_MANUAL_ONLY": "Per ora le rivendicazioni per questa piattaforma vengono controllate a mano. Contattaci.",
+    "CLAIM_RATE_LIMITED": "Troppi tentativi. Attendi un momento e riprova.",
+    "CLAIM_SOURCE_UNAVAILABLE": "Impossibile caricare il profilo di origine. Riprova più tardi.",
+    "CLAIM_NOT_STARTED": "Prima ottieni un codice.",
+    "CLAIM_CODE_EXPIRED": "Il codice è scaduto. Ottienine uno nuovo e riprova.",
+    "CLAIM_CODE_NOT_FOUND": "Il codice non è ancora nella bio del profilo. Salva la bio, attendi un minuto e verifica di nuovo.",
+    "NOT_PROFILE_OWNER": "Solo chi ha rivendicato questo profilo può farlo.",
+    "CLAIMANT_NOT_FOUND": "Nessun utente registrato ha questo nome.",
+    "CLAIM_NOT_FOUND": "Questo profilo non ha una rivendicazione attiva.",
+    "PROFILE_HIDDEN": "Questo profilo è nascosto su richiesta del titolare."
   },
   "LEGAL": {
     "LABEL": "Informazioni legali",
@@ -1052,5 +1100,24 @@
       "CONTACT_TITLE": "Contatti",
       "CONTACT_BODY": "Domande sui presenti termini: {email} oppure il nostro server Discord."
     }
+  },
+  "CLAIM": {
+    "TITLE": "Rivendica @{username}",
+    "INTRO": "Dimostra che questo account {platform} è tuo con un codice monouso nella sua bio pubblica. Nessuna password necessaria.",
+    "START": "Ottieni il mio codice",
+    "STEP_CODE": "1. Copia il tuo codice",
+    "COPY": "Copia",
+    "COPIED": "Codice copiato",
+    "STEP_BIO": "2. Aggiungilo in un punto qualsiasi della tua bio su {platform} e salva",
+    "OPEN_SETTINGS": "Apri le impostazioni di {platform}",
+    "STEP_VERIFY": "3. Torna qui e premi Verifica",
+    "EXPIRES": "Il codice è valido fino al {time}. Puoi toglierlo dalla bio quando la rivendicazione è completata.",
+    "VERIFY": "Verifica",
+    "VERIFYING": "Controllo della tua bio su {platform}",
+    "NEW_CODE": "Nuovo codice",
+    "SUCCESS_TITLE": "Profilo rivendicato",
+    "SUCCESS_BODY": "@{username} ora mostra che ti appartiene. Puoi nasconderlo dalla sua pagina in qualsiasi momento.",
+    "DONE": "Fatto",
+    "FAILED": "Impossibile completare la rivendicazione. Riprova."
   }
 }

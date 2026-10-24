@@ -551,6 +551,17 @@
       "TRADED_HINT": "On chain gehandelt am {time}, vor dem Beginn um {start}. Nachträglich importiert, nicht live erfasst.",
       "TRANSACTION": "Transaktion",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "Beansprucht von @{username}",
+    "CLAIMED_PROFILES": "Beanspruchte importierte Profile:",
+    "HIDDEN": {
+      "TITLE": "Ausgeblendetes Profil",
+      "HEADING": "Dieses Profil wurde auf Wunsch des Inhabers ausgeblendet",
+      "BODY": "Es erscheint nicht mehr in der Rangliste, in der Suche oder in Vorschauen. Seine Tipps bleiben im öffentlichen Protokoll und lassen sich weiterhin über die Tipp ID prüfen.",
+      "VERIFY_LINK": "Einen Tipp auf der Prüfseite prüfen",
+      "OWNER_HINT": "Du hast dieses Profil beansprucht. Du kannst es jederzeit wieder öffentlich machen.",
+      "UNHIDE": "Profil wieder anzeigen",
+      "FAILED": "Die Änderung konnte nicht gespeichert werden."
     }
   },
   "SPORTS": {
@@ -772,10 +783,21 @@
     "BANNER_TITLE": "Öffentliches Profil, importiert von {platform, select, polymarket {Polymarket} reddit {Reddit} other {einer anderen Plattform}}, nicht beansprucht",
     "BANNER_BODY": "Jeder Tipp wurde vor Beginn seines Spiels aus öffentlicher Aktivität auf {platform, select, polymarket {Polymarket} reddit {Reddit} other {einer anderen Plattform}} importiert und beim Import gesperrt. Diese Person hat sich nicht registriert und diese Bilanz nicht geprüft.",
     "BANNER_SOURCE": "Auf {platform, select, polymarket {Polymarket} reddit {Reddit} other {einer anderen Plattform}} ansehen",
-    "BANNER_CLAIM": "Bist du das? Profil beanspruchen oder widersprechen",
     "PICK_SOURCE": "Quelle: {platform, select, polymarket {Polymarket Trade} reddit {Reddit Kommentar} other {Originalbeitrag}}",
     "POSTED_AT": "Ursprünglich veröffentlicht {time}. Auf OpenCapper beim Import gesperrt, nie rückdatiert.",
-    "FILL_HINT": "Gesperrt am {time}. Die Quote ist die On Chain Ausführung auf Polymarket vom {filled}, keine Buchmacherquote. Dieser Tipp kann weder bearbeitet noch gelöscht werden."
+    "FILL_HINT": "Gesperrt am {time}. Die Quote ist die On Chain Ausführung auf Polymarket vom {filled}, keine Buchmacherquote. Dieser Tipp kann weder bearbeitet noch gelöscht werden.",
+    "PUBLIC_HINT_CLAIMED": "Öffentliches Profil, importiert von {platform}. Der Inhaber hat es mit einem OpenCapper Konto beansprucht.",
+    "BANNER_TITLE_CLAIMED": "Öffentliches Profil, importiert von {platform}, beansprucht von @{username}",
+    "BANNER_BODY_CLAIMED": "Der Inhaber hat nachgewiesen, dass dieses {platform} Konto ihm gehört. Tipps werden weiterhin vor Spielbeginn aus öffentlicher Aktivität importiert und beim Import gesperrt.",
+    "MANUAL_CLAIM": "Bist du das? Ansprüche auf {platform} werden vorerst von Hand geprüft. Kontaktiere uns und wir prüfen es.",
+    "OWNER_HINT": "Du hast dieses Profil beansprucht. Ausblenden entfernt es aus Rangliste, Suche und Vorschauen. Die Protokolleinträge bleiben.",
+    "CLAIMANT_PROFILE": "Inhaber: @{username}",
+    "CONTACT": "Kontakt aufnehmen",
+    "REMOVAL": "Nicht du? Entfernung beantragen",
+    "CLAIM": "Profil beanspruchen",
+    "LOGIN_TO_CLAIM": "Bist du das? Melde dich an, um es zu beanspruchen.",
+    "HIDE": "Profil ausblenden",
+    "VISIBILITY_FAILED": "Die Änderung konnte nicht gespeichert werden."
   },
   "ADMIN": {
     "TITLE": "Admin",
@@ -829,7 +851,14 @@
       "PICKS": "Tipps",
       "HISTORY": "Verlauf",
       "LAST_IMPORT": "Letzter Import",
-      "EMPTY": "Noch keine importierten Profile."
+      "EMPTY": "Noch keine importierten Profile.",
+      "STATUS": "Status",
+      "HIDDEN": "Ausgeblendet",
+      "VISIBLE": "Sichtbar",
+      "HIDE": "Ausblenden",
+      "UNHIDE": "Einblenden",
+      "APPROVE": "Anspruch bestätigen",
+      "REVOKE": "Anspruch widerrufen"
     },
     "PICKS": {
       "CAPPER": "Capper",
@@ -869,6 +898,13 @@
       "NO_RUN_YET": "Seit dem Serverstart kein Lauf.",
       "ON": "An",
       "OFF": "Aus"
+    },
+    "CLAIM": {
+      "TITLE": "Anspruch für @{username} bestätigen",
+      "HINT": "Nur nachdem du den Nachweis des Inhabers von Hand geprüft hast, zum Beispiel eine Nachricht vom Quellkonto. Die Person braucht ein OpenCapper Konto. Die Tipps bleiben unverändert.",
+      "CLAIMANT": "Nutzername der Person",
+      "CLAIMANT_PLACEHOLDER": "@nutzername",
+      "CONFIRM": "Anspruch bestätigen"
     }
   },
   "OG": {
@@ -927,7 +963,19 @@
     "FORBIDDEN": "Dafür fehlt dir die Berechtigung.",
     "CANNOT_BAN_SELF": "Du kannst dich nicht selbst sperren.",
     "CANNOT_BAN_ADMIN": "Admins können nicht gesperrt werden.",
-    "USER_BANNED": "Dein Konto ist für das Eintragen von Tipps gesperrt."
+    "USER_BANNED": "Dein Konto ist für das Eintragen von Tipps gesperrt.",
+    "CLAIM_NOT_IMPORTED": "Nur importierte öffentliche Profile können beansprucht oder ausgeblendet werden.",
+    "PROFILE_ALREADY_CLAIMED": "Dieses Profil wurde bereits beansprucht.",
+    "CLAIM_MANUAL_ONLY": "Ansprüche für diese Plattform werden vorerst von Hand geprüft. Bitte kontaktiere uns.",
+    "CLAIM_RATE_LIMITED": "Zu viele Versuche. Warte einen Moment und versuch es dann noch einmal.",
+    "CLAIM_SOURCE_UNAVAILABLE": "Das Quellprofil konnte nicht geladen werden. Bitte versuch es später noch einmal.",
+    "CLAIM_NOT_STARTED": "Hol dir zuerst einen Code.",
+    "CLAIM_CODE_EXPIRED": "Der Code ist abgelaufen. Hol dir einen neuen Code und versuch es noch einmal.",
+    "CLAIM_CODE_NOT_FOUND": "Der Code steht noch nicht in der Profilbeschreibung. Speichere sie, warte eine Minute und prüfe dann erneut.",
+    "NOT_PROFILE_OWNER": "Das kann nur die Person, die dieses Profil beansprucht hat.",
+    "CLAIMANT_NOT_FOUND": "Kein registrierter Nutzer hat diesen Namen.",
+    "CLAIM_NOT_FOUND": "Für dieses Profil gibt es keinen aktiven Anspruch.",
+    "PROFILE_HIDDEN": "Dieses Profil ist auf Wunsch des Inhabers ausgeblendet."
   },
   "LEGAL": {
     "LABEL": "Rechtliches",
@@ -1052,5 +1100,24 @@
       "CONTACT_TITLE": "Kontakt",
       "CONTACT_BODY": "Fragen zu diesen Bedingungen: {email} oder unser Discord-Server."
     }
+  },
+  "CLAIM": {
+    "TITLE": "@{username} beanspruchen",
+    "INTRO": "Weise mit einem Einmalcode in der öffentlichen Profilbeschreibung nach, dass dieses {platform} Konto dir gehört. Kein Passwort nötig.",
+    "START": "Code anfordern",
+    "STEP_CODE": "1. Kopiere deinen Code",
+    "COPY": "Kopieren",
+    "COPIED": "Code kopiert",
+    "STEP_BIO": "2. Füge ihn irgendwo in deine {platform} Beschreibung ein und speichere",
+    "OPEN_SETTINGS": "{platform} Einstellungen öffnen",
+    "STEP_VERIFY": "3. Komm hierher zurück und drück auf Prüfen",
+    "EXPIRES": "Der Code gilt bis {time}. Nach dem Anspruch kannst du ihn wieder aus deiner Beschreibung entfernen.",
+    "VERIFY": "Prüfen",
+    "VERIFYING": "Deine {platform} Beschreibung wird geprüft",
+    "NEW_CODE": "Neuer Code",
+    "SUCCESS_TITLE": "Profil beansprucht",
+    "SUCCESS_BODY": "@{username} zeigt jetzt, dass es dir gehört. Du kannst es jederzeit auf seiner Seite ausblenden.",
+    "DONE": "Fertig",
+    "FAILED": "Der Anspruch konnte nicht abgeschlossen werden. Bitte versuch es noch einmal."
   }
 }

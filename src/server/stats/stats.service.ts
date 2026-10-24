@@ -4,9 +4,15 @@ import {
   pickSettlements,
   picks,
   users,
+  type User,
 } from "@/lib/db/schema/server";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
-import type { CapperStats, HistoryStats } from "@/lib/types";
+import type { CapperStats, HistoryStats, ProfileStats } from "@/lib/types";
+import {
+  claimModeFor,
+  findClaimant,
+  listClaimedProfiles,
+} from "@/server/claims/profile-claims";
 import { getProfileAvatar } from "@/server/users/users.service";
 import {
   and,
@@ -127,22 +133,55 @@ async function getHistoryStats(name: string): Promise<HistoryStats | null> {
   };
 }
 
-export async function getCapperStats(username: string): Promise<CapperStats> {
+async function claimInfo(
+  profile: Pick<User, "id" | "sourcePlatform">,
+): Promise<Omit<ProfileStats, keyof CapperStats | "hidden">> {
+  if (!profile.sourcePlatform)
+    return {
+      claimedBy: null,
+      claimed: await listClaimedProfiles(profile.id),
+      claimMode: null,
+    };
+  const claimedBy = await findClaimant(profile.id);
+  return {
+    claimedBy,
+    claimed: [],
+    claimMode: claimedBy ? null : claimModeFor(profile.sourcePlatform),
+  };
+}
+
+export async function getCapperStats(username: string): Promise<ProfileStats> {
   const name = username.toLowerCase();
-  const [rows, history, avatarUrl] = await Promise.all([
+  const [profile] = await getDb()
+    .select({
+      id: users.id,
+      sourcePlatform: users.sourcePlatform,
+      hiddenAt: users.hiddenAt,
+    })
+    .from(users)
+    .where(eq(users.username, name))
+    .limit(1);
+  const none = { claimedBy: null, claimed: [], claimMode: null };
+  if (!profile) return { ...emptyStats(name), hidden: false, ...none };
+  if (profile.hiddenAt) return { ...emptyStats(name), hidden: true, ...none };
+
+  const [rows, history, avatarUrl, claims] = await Promise.all([
     getDb()
       .select(statColumns)
       .from(users)
       .leftJoin(picks, eq(picks.userId, users.id))
       .leftJoin(pickSettlements, eq(pickSettlements.pickId, picks.id))
-      .where(eq(users.username, name))
+      .where(eq(users.id, profile.id))
       .groupBy(users.id),
     getHistoryStats(name),
     getProfileAvatar(name),
+    claimInfo(profile),
   ]);
   const stats = {
     ...(rows[0] ? withRoi(rows[0]) : emptyStats(name)),
     avatarUrl,
+    hidden: false,
+    ...claims,
   };
   return history ? { ...stats, history } : stats;
 }

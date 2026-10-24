@@ -551,6 +551,17 @@
       "TRADED_HINT": "Traded on chain {time}, before the start at {start}. Imported later, not logged live.",
       "TRANSACTION": "Transaction",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "Claimed by @{username}",
+    "CLAIMED_PROFILES": "Claimed imported profiles:",
+    "HIDDEN": {
+      "TITLE": "Hidden profile",
+      "HEADING": "This profile was hidden at the request of its owner",
+      "BODY": "It no longer appears on the leaderboard, in search or in previews. Its picks stay in the public log and can still be checked by pick id.",
+      "VERIFY_LINK": "Check a pick on the verify page",
+      "OWNER_HINT": "You claimed this profile. You can make it public again at any time.",
+      "UNHIDE": "Show this profile again",
+      "FAILED": "The change could not be saved."
     }
   },
   "SPORTS": {
@@ -772,10 +783,21 @@
     "BANNER_TITLE": "Public profile, imported from {platform, select, polymarket {Polymarket} reddit {Reddit} other {another platform}}, not claimed",
     "BANNER_BODY": "Each pick was imported from public {platform, select, polymarket {Polymarket} reddit {Reddit} other {another platform}} activity before its event started and locked at import time. This person has not signed up and has not reviewed this record.",
     "BANNER_SOURCE": "View on {platform, select, polymarket {Polymarket} reddit {Reddit} other {another platform}}",
-    "BANNER_CLAIM": "Is this you? Claim or dispute",
     "PICK_SOURCE": "Source: {platform, select, polymarket {Polymarket trade} reddit {Reddit comment} other {original post}}",
     "POSTED_AT": "Originally posted {time}. Locked on OpenCapper at import time, never backdated.",
-    "FILL_HINT": "Locked on {time}. The price is the on chain Polymarket fill from {filled}, not a sportsbook price. This pick cannot be edited or deleted."
+    "FILL_HINT": "Locked on {time}. The price is the on chain Polymarket fill from {filled}, not a sportsbook price. This pick cannot be edited or deleted.",
+    "PUBLIC_HINT_CLAIMED": "Public profile imported from {platform}. Its owner has claimed it with an OpenCapper account.",
+    "BANNER_TITLE_CLAIMED": "Public profile, imported from {platform}, claimed by @{username}",
+    "BANNER_BODY_CLAIMED": "The owner proved this {platform} account is theirs. Picks are still imported from public activity before each event starts and locked at import time.",
+    "MANUAL_CLAIM": "Is this you? {platform} claims are reviewed by hand for now. Contact us and we will verify it.",
+    "OWNER_HINT": "You claimed this profile. Hiding it removes it from the leaderboard, search and previews. The log entries stay.",
+    "CLAIMANT_PROFILE": "Owner: @{username}",
+    "CONTACT": "Contact us",
+    "REMOVAL": "Not you? Request removal",
+    "CLAIM": "Claim this profile",
+    "LOGIN_TO_CLAIM": "Is this you? Log in to claim it.",
+    "HIDE": "Hide this profile",
+    "VISIBILITY_FAILED": "The change could not be saved."
   },
   "ADMIN": {
     "TITLE": "Admin",
@@ -829,7 +851,14 @@
       "PICKS": "Picks",
       "HISTORY": "History",
       "LAST_IMPORT": "Last import",
-      "EMPTY": "No imported profiles yet."
+      "EMPTY": "No imported profiles yet.",
+      "STATUS": "Status",
+      "HIDDEN": "Hidden",
+      "VISIBLE": "Visible",
+      "HIDE": "Hide",
+      "UNHIDE": "Unhide",
+      "APPROVE": "Approve claim",
+      "REVOKE": "Revoke claim"
     },
     "PICKS": {
       "CAPPER": "Capper",
@@ -869,6 +898,13 @@
       "NO_RUN_YET": "No run since the server started.",
       "ON": "On",
       "OFF": "Off"
+    },
+    "CLAIM": {
+      "TITLE": "Approve a claim for @{username}",
+      "HINT": "Only after checking the proof of ownership by hand, for example a message from the source account. The claimant needs an OpenCapper account. Picks stay untouched.",
+      "CLAIMANT": "Claimant username",
+      "CLAIMANT_PLACEHOLDER": "@username",
+      "CONFIRM": "Approve claim"
     }
   },
   "OG": {
@@ -927,7 +963,19 @@
     "FORBIDDEN": "You do not have permission to do that.",
     "CANNOT_BAN_SELF": "You cannot ban yourself.",
     "CANNOT_BAN_ADMIN": "Admins cannot be banned.",
-    "USER_BANNED": "Your account is banned from logging picks."
+    "USER_BANNED": "Your account is banned from logging picks.",
+    "CLAIM_NOT_IMPORTED": "Only imported public profiles can be claimed or hidden.",
+    "PROFILE_ALREADY_CLAIMED": "This profile has already been claimed.",
+    "CLAIM_MANUAL_ONLY": "Claims for this platform are reviewed by hand for now. Please contact us.",
+    "CLAIM_RATE_LIMITED": "Too many claim attempts. Please wait a moment and try again.",
+    "CLAIM_SOURCE_UNAVAILABLE": "The source profile could not be loaded. Please try again later.",
+    "CLAIM_NOT_STARTED": "Get a claim code first.",
+    "CLAIM_CODE_EXPIRED": "The claim code has expired. Get a new code and try again.",
+    "CLAIM_CODE_NOT_FOUND": "The code is not in the profile bio yet. Save the bio, wait a minute and verify again.",
+    "NOT_PROFILE_OWNER": "Only the person who claimed this profile can do that.",
+    "CLAIMANT_NOT_FOUND": "No registered user has this name.",
+    "CLAIM_NOT_FOUND": "This profile has no active claim.",
+    "PROFILE_HIDDEN": "This profile is hidden at the request of its owner."
   },
   "LEGAL": {
     "LABEL": "Legal",
@@ -1052,5 +1100,24 @@
       "CONTACT_TITLE": "Contact",
       "CONTACT_BODY": "Questions about these terms: {email} or our Discord server."
     }
+  },
+  "CLAIM": {
+    "TITLE": "Claim @{username}",
+    "INTRO": "Prove that this {platform} account is yours with a one time code in its public bio. No password needed.",
+    "START": "Get my code",
+    "STEP_CODE": "1. Copy your code",
+    "COPY": "Copy",
+    "COPIED": "Code copied",
+    "STEP_BIO": "2. Add it anywhere in your {platform} bio and save",
+    "OPEN_SETTINGS": "Open {platform} settings",
+    "STEP_VERIFY": "3. Come back here and press Verify",
+    "EXPIRES": "The code is valid until {time}. You can remove it from your bio once the claim is done.",
+    "VERIFY": "Verify",
+    "VERIFYING": "Checking your {platform} bio",
+    "NEW_CODE": "New code",
+    "SUCCESS_TITLE": "Profile claimed",
+    "SUCCESS_BODY": "@{username} now shows that it belongs to you. You can hide it from its page at any time.",
+    "DONE": "Done",
+    "FAILED": "The claim could not be completed. Please try again."
   }
 }

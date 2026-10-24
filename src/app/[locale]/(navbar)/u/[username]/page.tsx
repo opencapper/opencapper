@@ -25,14 +25,23 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const locale = await serverLocale(props);
   const username = decodeURIComponent((await props.params).username);
   const href = { pathname: "/u/[username]" as const, params: { username } };
+  const t = await getTranslations({ locale, namespace: "PROFILE" });
+  const stats = await orNull(getCapperStats(username));
+  if (stats?.hidden)
+    return buildMetadata({
+      locale,
+      href,
+      title: t("HIDDEN.TITLE"),
+      description: t("HIDDEN.BODY"),
+      image: ogImage("home", locale),
+      index: false,
+    });
   const pickId = (await props.searchParams).pick;
   if (typeof pickId === "string" && /^[1-9][0-9]{0,8}$/.test(pickId)) {
     const pick = await orNull(findPick({ pickId: Number(pickId) }));
     if (pick && pick.username === username.toLowerCase())
       return pickMetadata(locale, href, pick);
   }
-  const t = await getTranslations({ locale, namespace: "PROFILE" });
-  const stats = await orNull(getCapperStats(username));
   const text =
     stats && stats.picks > 0
       ? await profileText(locale, stats)

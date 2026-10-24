@@ -1,6 +1,7 @@
 import { OgParams, OgQuery, type OgTemplate } from "@/lib/api/typebox/og";
 import { LOCALES } from "@/lib/config/constants";
 import { findPick } from "@/server/picks/picks.service";
+import { isHiddenProfile } from "@/server/users/hidden";
 import { Elysia } from "elysia";
 import type { Locale } from "next-intl";
 import type { ReactNode } from "react";
@@ -45,7 +46,8 @@ async function card(
     : user && query.seq
       ? await findPick({ username: user, sequence: Number(query.seq) })
       : null;
-  return pick ? pickCard(locale, pick) : null;
+  if (!pick || (await isHiddenProfile(pick.username))) return null;
+  return pickCard(locale, pick);
 }
 
 export const ogRoute = new Elysia({ prefix: "/og" }).get(

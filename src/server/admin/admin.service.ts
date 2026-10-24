@@ -13,6 +13,7 @@ import {
   pickSettlements,
   pickSources,
   picks,
+  profileClaims,
   users,
 } from "@/lib/db/schema/server";
 import type {
@@ -34,8 +35,10 @@ import {
   pendingLookups,
 } from "@/server/participants/participants.service";
 import { toApiPick } from "@/server/picks/picks.mapper";
+import { activeClaim } from "@/server/claims/profile-claims";
 import { avatarColumns, avatarUrl } from "@/server/users/avatar";
 import { and, count, desc, eq, ilike, isNull, or, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 
 function pickCounts() {
   return getDb()
@@ -160,6 +163,16 @@ export async function listImportedProfiles(): Promise<AdminImportedProfile[]> {
     .innerJoin(picks, eq(picks.id, pickSources.pickId))
     .groupBy(picks.userId)
     .as("live_imports");
+  const claimant = alias(users, "claimant");
+  const claims = db
+    .select({
+      profileUserId: profileClaims.profileUserId,
+      claimant: sql<string>`${claimant.username}`.as("claimant_username"),
+    })
+    .from(profileClaims)
+    .innerJoin(claimant, eq(claimant.id, profileClaims.claimantUserId))
+    .where(activeClaim)
+    .as("active_claims");
 
   const rows = await db
     .select({
@@ -172,6 +185,8 @@ export async function listImportedProfiles(): Promise<AdminImportedProfile[]> {
       historyPicks: history.total,
       lastLive: lastLive.lastAt,
       lastHistory: history.lastAt,
+      hiddenAt: users.hiddenAt,
+      claimedBy: claims.claimant,
       ...avatarColumns,
     })
     .from(users)
@@ -179,6 +194,7 @@ export async function listImportedProfiles(): Promise<AdminImportedProfile[]> {
     .leftJoin(counts, eq(counts.userId, users.id))
     .leftJoin(history, eq(history.userId, users.id))
     .leftJoin(lastLive, eq(lastLive.userId, users.id))
+    .leftJoin(claims, eq(claims.profileUserId, users.id))
     .where(sql`${users.sourcePlatform} is not null`)
     .orderBy(desc(users.createdAt))
     .limit(ADMIN_LIST_LIMIT);
@@ -201,6 +217,8 @@ export async function listImportedProfiles(): Promise<AdminImportedProfile[]> {
         lastImportAt: times.length
           ? dayjs(Math.max(...times)).toISOString()
           : null,
+        hiddenAt: row.hiddenAt ? dayjs(row.hiddenAt).toISOString() : null,
+        claimedBy: row.claimedBy,
       },
     ];
   });

@@ -60,7 +60,7 @@ export function AdminPanel(props: { role: AuthRole; userId: number }) {
           />
         </TabsContent>
         <TabsContent value="imports">
-          <AdminImports active={filters.tab === "imports"} />
+          <AdminImports active={filters.tab === "imports"} role={props.role} />
         </TabsContent>
         <TabsContent value="picks">
           <AdminPicks active={filters.tab === "picks"} />

@@ -1,12 +1,19 @@
 import { SectionLabel } from "@/components/elements/page/page-heading";
 import { CapperAvatar } from "@/components/elements/capper/capper-avatar";
-import { PublicBadge } from "@/components/elements/source/source-badge";
+import {
+  PublicBadge,
+  SourceIcon,
+} from "@/components/elements/source/source-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
 import type { ProofMarkerStyle } from "@/lib/config/ranking";
-import type { ApiProfileSource } from "@/lib/types";
+import type {
+  ApiClaimedProfile,
+  ApiProfileClaimant,
+  ApiProfileSource,
+} from "@/lib/types";
 import { useTranslations } from "next-intl";
 
 export function ProfileHeader(props: {
@@ -16,6 +23,8 @@ export function ProfileHeader(props: {
   source: ApiProfileSource | null;
   marker: ProofMarkerStyle;
   own: boolean;
+  claimedBy: ApiProfileClaimant | null;
+  claimed: ApiClaimedProfile[];
 }) {
   const t = useTranslations("PROFILE");
 
@@ -46,11 +55,46 @@ export function ProfileHeader(props: {
                 {t("VERIFIED")}
               </Badge>
             )}
-            {props.source && <PublicBadge platform={props.source.platform} />}
+            {props.source && (
+              <PublicBadge
+                platform={props.source.platform}
+                claimed={props.claimedBy !== null}
+              />
+            )}
+            {props.claimedBy && (
+              <Link
+                href={{
+                  pathname: "/u/[username]",
+                  params: { username: props.claimedBy.username },
+                }}
+                className="text-muted-foreground inline-flex items-center gap-1 text-xs underline-offset-4 hover:underline"
+              >
+                <Icon name="user-check" className="size-3.5" />
+                {t("CLAIMED_BY", { username: props.claimedBy.username })}
+              </Link>
+            )}
           </div>
           <p className="text-foreground/60 mt-1 text-sm">
             {props.source ? t("SUBHEADING_PUBLIC") : t("SUBHEADING")}
           </p>
+          {props.claimed.length > 0 && (
+            <p className="text-muted-foreground mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+              <span>{t("CLAIMED_PROFILES")}</span>
+              {props.claimed.map((profile) => (
+                <Link
+                  key={profile.username}
+                  href={{
+                    pathname: "/u/[username]",
+                    params: { username: profile.username },
+                  }}
+                  className="text-foreground/80 inline-flex items-center gap-1 underline-offset-4 hover:underline"
+                >
+                  <SourceIcon platform={profile.platform} className="size-3" />@
+                  {profile.username}
+                </Link>
+              ))}
+            </p>
+          )}
         </div>
         {props.own && (
           <Button

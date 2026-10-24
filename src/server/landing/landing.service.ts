@@ -27,6 +27,7 @@ import { getFeaturedEvents } from "@/server/odds/board.service";
 import { listEvents } from "@/server/odds/odds.service";
 import { toAmericanOdds } from "@/server/picks/picks.mapper";
 import { getCapperStats } from "@/server/stats/stats.service";
+import { visibleUser } from "@/server/users/hidden";
 import { getUserHistory, getUserPicks } from "@/server/users/users.service";
 import { and, desc, eq, gte, inArray, isNotNull, sql } from "drizzle-orm";
 
@@ -293,6 +294,7 @@ async function loadTicker(): Promise<LandingDashTick[]> {
       })
       .from(picks)
       .innerJoin(users, eq(users.id, picks.userId))
+      .where(visibleUser)
       .orderBy(desc(picks.createdAt))
       .limit(DASH_TICKS / 2),
     db
@@ -308,6 +310,7 @@ async function loadTicker(): Promise<LandingDashTick[]> {
       .innerJoin(users, eq(users.id, picks.userId))
       .where(
         and(
+          visibleUser,
           isNotNull(pickSettlements.gradedAt),
           inArray(picks.result, [...GRADED]),
         ),

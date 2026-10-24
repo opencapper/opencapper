@@ -551,6 +551,17 @@
       "TRADED_HINT": "Transaction passée sur la blockchain {time}, avant le début à {start}. Importée ensuite, pas enregistrée en direct.",
       "TRANSACTION": "Transaction",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "Revendiqué par @{username}",
+    "CLAIMED_PROFILES": "Profils importés revendiqués :",
+    "HIDDEN": {
+      "TITLE": "Profil masqué",
+      "HEADING": "Ce profil a été masqué à la demande de son titulaire",
+      "BODY": "Il n’apparaît plus dans le classement, la recherche ni les aperçus. Ses pronostics restent dans le journal public et peuvent toujours être vérifiés par leur identifiant.",
+      "VERIFY_LINK": "Vérifier un pronostic sur la page de vérification",
+      "OWNER_HINT": "Vous avez revendiqué ce profil. Vous pouvez le rendre de nouveau public à tout moment.",
+      "UNHIDE": "Afficher de nouveau ce profil",
+      "FAILED": "La modification n’a pas pu être enregistrée."
     }
   },
   "SPORTS": {
@@ -772,10 +783,21 @@
     "BANNER_TITLE": "Profil public, importé depuis {platform, select, polymarket {Polymarket} reddit {Reddit} other {une autre plateforme}}, non revendiqué",
     "BANNER_BODY": "Chaque pronostic a été importé depuis l’activité publique sur {platform, select, polymarket {Polymarket} reddit {Reddit} other {une autre plateforme}} avant le début de son événement, et verrouillé au moment de l’import. Cette personne ne s’est pas inscrite et n’a pas vérifié cet historique.",
     "BANNER_SOURCE": "Voir sur {platform, select, polymarket {Polymarket} reddit {Reddit} other {la plateforme d’origine}}",
-    "BANNER_CLAIM": "C’est vous ? Revendiquer ou contester",
     "PICK_SOURCE": "Source : {platform, select, polymarket {transaction Polymarket} reddit {commentaire Reddit} other {publication d’origine}}",
     "POSTED_AT": "Publié initialement {time}. Verrouillé sur OpenCapper au moment de l’import, jamais antidaté.",
-    "FILL_HINT": "Verrouillé le {time}. La cote est celle de l’exécution Polymarket sur la blockchain du {filled}, pas une cote de bookmaker. Ce pronostic ne peut être ni modifié ni supprimé."
+    "FILL_HINT": "Verrouillé le {time}. La cote est celle de l’exécution Polymarket sur la blockchain du {filled}, pas une cote de bookmaker. Ce pronostic ne peut être ni modifié ni supprimé.",
+    "PUBLIC_HINT_CLAIMED": "Profil public importé depuis {platform}. Son titulaire l’a revendiqué avec un compte OpenCapper.",
+    "BANNER_TITLE_CLAIMED": "Profil public, importé depuis {platform}, revendiqué par @{username}",
+    "BANNER_BODY_CLAIMED": "Le titulaire a prouvé que ce compte {platform} lui appartient. Les pronostics sont toujours importés depuis l’activité publique avant le début de chaque événement et verrouillés à l’import.",
+    "MANUAL_CLAIM": "C’est vous ? Pour l’instant, les revendications {platform} sont vérifiées à la main. Contactez-nous et nous la vérifierons.",
+    "OWNER_HINT": "Vous avez revendiqué ce profil. Le masquer le retire du classement, de la recherche et des aperçus. Les entrées du journal restent.",
+    "CLAIMANT_PROFILE": "Titulaire : @{username}",
+    "CONTACT": "Nous contacter",
+    "REMOVAL": "Ce n’est pas vous ? Demander la suppression",
+    "CLAIM": "Revendiquer ce profil",
+    "LOGIN_TO_CLAIM": "C’est vous ? Connectez-vous pour le revendiquer.",
+    "HIDE": "Masquer ce profil",
+    "VISIBILITY_FAILED": "La modification n’a pas pu être enregistrée."
   },
   "ADMIN": {
     "TITLE": "Administration",
@@ -829,7 +851,14 @@
       "PICKS": "Pronostics",
       "HISTORY": "Historique",
       "LAST_IMPORT": "Dernier import",
-      "EMPTY": "Aucun profil importé pour l’instant."
+      "EMPTY": "Aucun profil importé pour l’instant.",
+      "STATUS": "Statut",
+      "HIDDEN": "Masqué",
+      "VISIBLE": "Visible",
+      "HIDE": "Masquer",
+      "UNHIDE": "Afficher",
+      "APPROVE": "Approuver la revendication",
+      "REVOKE": "Révoquer la revendication"
     },
     "PICKS": {
       "CAPPER": "Capper",
@@ -869,6 +898,13 @@
       "NO_RUN_YET": "Aucune exécution depuis le démarrage du serveur.",
       "ON": "Activé",
       "OFF": "Désactivé"
+    },
+    "CLAIM": {
+      "TITLE": "Approuver une revendication pour @{username}",
+      "HINT": "Uniquement après avoir vérifié à la main la preuve du titulaire, par exemple un message depuis le compte source. La personne doit avoir un compte OpenCapper. Les pronostics restent inchangés.",
+      "CLAIMANT": "Nom d’utilisateur du demandeur",
+      "CLAIMANT_PLACEHOLDER": "@utilisateur",
+      "CONFIRM": "Approuver la revendication"
     }
   },
   "OG": {
@@ -927,7 +963,19 @@
     "FORBIDDEN": "Vous n’avez pas la permission de faire cela.",
     "CANNOT_BAN_SELF": "Vous ne pouvez pas vous bannir vous même.",
     "CANNOT_BAN_ADMIN": "Les administrateurs ne peuvent pas être bannis.",
-    "USER_BANNED": "Votre compte est banni de l’enregistrement de pronostics."
+    "USER_BANNED": "Votre compte est banni de l’enregistrement de pronostics.",
+    "CLAIM_NOT_IMPORTED": "Seuls les profils publics importés peuvent être revendiqués ou masqués.",
+    "PROFILE_ALREADY_CLAIMED": "Ce profil a déjà été revendiqué.",
+    "CLAIM_MANUAL_ONLY": "Pour l’instant, les revendications pour cette plateforme sont vérifiées à la main. Veuillez nous contacter.",
+    "CLAIM_RATE_LIMITED": "Trop de tentatives. Veuillez patienter un instant et réessayer.",
+    "CLAIM_SOURCE_UNAVAILABLE": "Le profil source n’a pas pu être chargé. Veuillez réessayer plus tard.",
+    "CLAIM_NOT_STARTED": "Obtenez d’abord un code.",
+    "CLAIM_CODE_EXPIRED": "Le code a expiré. Obtenez un nouveau code et réessayez.",
+    "CLAIM_CODE_NOT_FOUND": "Le code n’apparaît pas encore dans la bio du profil. Enregistrez la bio, attendez une minute et vérifiez à nouveau.",
+    "NOT_PROFILE_OWNER": "Seule la personne qui a revendiqué ce profil peut faire cela.",
+    "CLAIMANT_NOT_FOUND": "Aucun utilisateur inscrit ne porte ce nom.",
+    "CLAIM_NOT_FOUND": "Ce profil n’a aucune revendication active.",
+    "PROFILE_HIDDEN": "Ce profil est masqué à la demande de son titulaire."
   },
   "LEGAL": {
     "LABEL": "Informations légales",
@@ -1052,5 +1100,24 @@
       "CONTACT_TITLE": "Contact",
       "CONTACT_BODY": "Questions relatives aux présentes conditions : {email} ou notre serveur Discord."
     }
+  },
+  "CLAIM": {
+    "TITLE": "Revendiquer @{username}",
+    "INTRO": "Prouvez que ce compte {platform} vous appartient grâce à un code à usage unique dans sa bio publique. Aucun mot de passe nécessaire.",
+    "START": "Obtenir mon code",
+    "STEP_CODE": "1. Copiez votre code",
+    "COPY": "Copier",
+    "COPIED": "Code copié",
+    "STEP_BIO": "2. Ajoutez-le n’importe où dans votre bio {platform} et enregistrez",
+    "OPEN_SETTINGS": "Ouvrir les paramètres de {platform}",
+    "STEP_VERIFY": "3. Revenez ici et appuyez sur Vérifier",
+    "EXPIRES": "Le code est valable jusqu’au {time}. Vous pourrez le retirer de votre bio une fois la revendication terminée.",
+    "VERIFY": "Vérifier",
+    "VERIFYING": "Vérification de votre bio {platform}",
+    "NEW_CODE": "Nouveau code",
+    "SUCCESS_TITLE": "Profil revendiqué",
+    "SUCCESS_BODY": "@{username} indique désormais qu’il vous appartient. Vous pouvez le masquer depuis sa page à tout moment.",
+    "DONE": "Terminé",
+    "FAILED": "La revendication n’a pas pu aboutir. Veuillez réessayer."
   }
 }

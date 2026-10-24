@@ -14,6 +14,8 @@ function positiveInt(raw: string | undefined, fallback: number): number {
   return Number.isInteger(n) && n > 0 ? n : fallback;
 }
 
+import { POLYMARKET_GAMMA_BASE } from "@/server/constants";
+
 export const serverEnv = {
   get databaseUrl() {
     return process.env.DATABASE_URL;
@@ -46,6 +48,13 @@ export const serverEnv = {
   // Odds API credits the pick board may spend per UTC day (2 per sport refresh); 0 lists events without prices.
   get boardOddsCreditsPerDay() {
     return nonNegativeInt(process.env.BOARD_ODDS_CREDITS_PER_DAY, 20);
+  },
+  // Override for a local stub; production always uses the public gamma API.
+  get polymarketGammaBase() {
+    return (
+      process.env.POLYMARKET_GAMMA_BASE?.trim().replace(/\/+$/, "") ||
+      POLYMARKET_GAMMA_BASE
+    );
   },
   get reddit() {
     const value = (key: string) => process.env[key]?.trim() ?? "";

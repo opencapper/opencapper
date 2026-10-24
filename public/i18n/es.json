@@ -551,6 +551,17 @@
       "TRADED_HINT": "Operado en la cadena de bloques {time}, antes del inicio ({start}). Importado después, no registrado en vivo.",
       "TRANSACTION": "Transacción",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "Reclamado por @{username}",
+    "CLAIMED_PROFILES": "Perfiles importados reclamados:",
+    "HIDDEN": {
+      "TITLE": "Perfil oculto",
+      "HEADING": "Este perfil se ocultó a petición de su titular",
+      "BODY": "Ya no aparece en la clasificación, en la búsqueda ni en las vistas previas. Sus picks siguen en el registro público y se pueden comprobar por su id.",
+      "VERIFY_LINK": "Comprobar un pick en la página de verificación",
+      "OWNER_HINT": "Reclamaste este perfil. Puedes volver a hacerlo público cuando quieras.",
+      "UNHIDE": "Volver a mostrar este perfil",
+      "FAILED": "No se pudo guardar el cambio."
     }
   },
   "SPORTS": {
@@ -772,10 +783,21 @@
     "BANNER_TITLE": "Perfil público, importado de {platform, select, polymarket {Polymarket} reddit {Reddit} other {otra plataforma}}, sin reclamar",
     "BANNER_BODY": "Cada pick se importó de la actividad pública en {platform, select, polymarket {Polymarket} reddit {Reddit} other {otra plataforma}} antes de que empezara su evento y se bloqueó en el momento de la importación. Esta persona no se ha registrado y no ha revisado este historial.",
     "BANNER_SOURCE": "Ver en {platform, select, polymarket {Polymarket} reddit {Reddit} other {otra plataforma}}",
-    "BANNER_CLAIM": "¿Eres tú? Reclámalo o impúgnalo",
     "PICK_SOURCE": "Fuente: {platform, select, polymarket {operación en Polymarket} reddit {comentario en Reddit} other {publicación original}}",
     "POSTED_AT": "Publicado originalmente {time}. Bloqueado en OpenCapper en el momento de la importación, nunca con fecha retroactiva.",
-    "FILL_HINT": "Bloqueado el {time}. La cuota es la ejecución en la cadena de bloques de Polymarket del {filled}, no una cuota de casa de apuestas. Este pick no se puede editar ni borrar."
+    "FILL_HINT": "Bloqueado el {time}. La cuota es la ejecución en la cadena de bloques de Polymarket del {filled}, no una cuota de casa de apuestas. Este pick no se puede editar ni borrar.",
+    "PUBLIC_HINT_CLAIMED": "Perfil público importado de {platform}. Su titular lo ha reclamado con una cuenta de OpenCapper.",
+    "BANNER_TITLE_CLAIMED": "Perfil público, importado de {platform}, reclamado por @{username}",
+    "BANNER_BODY_CLAIMED": "El titular demostró que esta cuenta de {platform} es suya. Los picks se siguen importando de la actividad pública antes de que empiece cada evento y se bloquean al importarlos.",
+    "MANUAL_CLAIM": "¿Eres tú? Por ahora, las reclamaciones de {platform} se revisan a mano. Escríbenos y lo verificaremos.",
+    "OWNER_HINT": "Reclamaste este perfil. Ocultarlo lo quita de la clasificación, la búsqueda y las vistas previas. Las entradas del registro se mantienen.",
+    "CLAIMANT_PROFILE": "Titular: @{username}",
+    "CONTACT": "Contactar",
+    "REMOVAL": "¿No eres tú? Solicita la eliminación",
+    "CLAIM": "Reclamar este perfil",
+    "LOGIN_TO_CLAIM": "¿Eres tú? Inicia sesión para reclamarlo.",
+    "HIDE": "Ocultar este perfil",
+    "VISIBILITY_FAILED": "No se pudo guardar el cambio."
   },
   "ADMIN": {
     "TITLE": "Administración",
@@ -829,7 +851,14 @@
       "PICKS": "Pronósticos",
       "HISTORY": "Historial",
       "LAST_IMPORT": "Última importación",
-      "EMPTY": "Aún no hay perfiles importados."
+      "EMPTY": "Aún no hay perfiles importados.",
+      "STATUS": "Estado",
+      "HIDDEN": "Oculto",
+      "VISIBLE": "Visible",
+      "HIDE": "Ocultar",
+      "UNHIDE": "Mostrar",
+      "APPROVE": "Aprobar reclamación",
+      "REVOKE": "Revocar reclamación"
     },
     "PICKS": {
       "CAPPER": "Capper",
@@ -869,6 +898,13 @@
       "NO_RUN_YET": "Ninguna ejecución desde que arrancó el servidor.",
       "ON": "Activo",
       "OFF": "Inactivo"
+    },
+    "CLAIM": {
+      "TITLE": "Aprobar una reclamación de @{username}",
+      "HINT": "Solo después de revisar a mano la prueba del titular, por ejemplo un mensaje desde la cuenta de origen. Quien reclama necesita una cuenta de OpenCapper. Los picks no se modifican.",
+      "CLAIMANT": "Usuario que reclama",
+      "CLAIMANT_PLACEHOLDER": "@usuario",
+      "CONFIRM": "Aprobar reclamación"
     }
   },
   "OG": {
@@ -927,7 +963,19 @@
     "FORBIDDEN": "No tienes permiso para hacer eso.",
     "CANNOT_BAN_SELF": "No puedes bloquearte a ti mismo.",
     "CANNOT_BAN_ADMIN": "Los administradores no se pueden bloquear.",
-    "USER_BANNED": "Tu cuenta tiene bloqueado el registro de pronósticos."
+    "USER_BANNED": "Tu cuenta tiene bloqueado el registro de pronósticos.",
+    "CLAIM_NOT_IMPORTED": "Solo se pueden reclamar u ocultar perfiles públicos importados.",
+    "PROFILE_ALREADY_CLAIMED": "Este perfil ya ha sido reclamado.",
+    "CLAIM_MANUAL_ONLY": "Por ahora, las reclamaciones de esta plataforma se revisan a mano. Ponte en contacto con nosotros.",
+    "CLAIM_RATE_LIMITED": "Demasiados intentos. Espera un momento y vuelve a intentarlo.",
+    "CLAIM_SOURCE_UNAVAILABLE": "No se pudo cargar el perfil de origen. Inténtalo de nuevo más tarde.",
+    "CLAIM_NOT_STARTED": "Primero obtén un código.",
+    "CLAIM_CODE_EXPIRED": "El código ha caducado. Obtén uno nuevo y vuelve a intentarlo.",
+    "CLAIM_CODE_NOT_FOUND": "El código aún no aparece en la biografía del perfil. Guarda la biografía, espera un minuto y vuelve a verificar.",
+    "NOT_PROFILE_OWNER": "Solo la persona que reclamó este perfil puede hacerlo.",
+    "CLAIMANT_NOT_FOUND": "Ningún usuario registrado tiene ese nombre.",
+    "CLAIM_NOT_FOUND": "Este perfil no tiene ninguna reclamación activa.",
+    "PROFILE_HIDDEN": "Este perfil está oculto a petición de su titular."
   },
   "LEGAL": {
     "LABEL": "Información legal",
@@ -1052,5 +1100,24 @@
       "CONTACT_TITLE": "Contacto",
       "CONTACT_BODY": "Preguntas sobre estas condiciones: {email} o nuestro servidor de Discord."
     }
+  },
+  "CLAIM": {
+    "TITLE": "Reclamar @{username}",
+    "INTRO": "Demuestra que esta cuenta de {platform} es tuya con un código de un solo uso en su biografía pública. No hace falta contraseña.",
+    "START": "Obtener mi código",
+    "STEP_CODE": "1. Copia tu código",
+    "COPY": "Copiar",
+    "COPIED": "Código copiado",
+    "STEP_BIO": "2. Añádelo en cualquier parte de tu biografía de {platform} y guarda",
+    "OPEN_SETTINGS": "Abrir los ajustes de {platform}",
+    "STEP_VERIFY": "3. Vuelve aquí y pulsa Verificar",
+    "EXPIRES": "El código es válido hasta el {time}. Puedes quitarlo de tu biografía cuando termine la reclamación.",
+    "VERIFY": "Verificar",
+    "VERIFYING": "Comprobando tu biografía de {platform}",
+    "NEW_CODE": "Nuevo código",
+    "SUCCESS_TITLE": "Perfil reclamado",
+    "SUCCESS_BODY": "@{username} ahora muestra que te pertenece. Puedes ocultarlo desde su página cuando quieras.",
+    "DONE": "Listo",
+    "FAILED": "No se pudo completar la reclamación. Inténtalo de nuevo."
   }
 }

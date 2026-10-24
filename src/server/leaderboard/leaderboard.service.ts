@@ -20,6 +20,7 @@ import {
   avatarUrl,
   type AvatarSource,
 } from "@/server/users/avatar";
+import { visibleUser } from "@/server/users/hidden";
 import { and, eq, sql, type SQL, type SQLWrapper } from "drizzle-orm";
 import { unionAll } from "drizzle-orm/pg-core";
 
@@ -224,6 +225,7 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
       .from(rankedAgg)
       .innerJoin(users, eq(users.id, rankedAgg.userId))
       .leftJoin(authUser, eq(authUser.id, users.authUserId))
+      .where(visibleUser)
       .orderBy(listOrder)
       .limit(input.pageSize)
       .offset((input.page - 1) * input.pageSize),
@@ -232,6 +234,7 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
       .from(unrankedAgg)
       .innerJoin(users, eq(users.id, unrankedAgg.userId))
       .leftJoin(authUser, eq(authUser.id, users.authUserId))
+      .where(visibleUser)
       .orderBy(
         sql`${unrankedAgg.graded} desc, ${unrankedAgg.picks} desc, ${users.username} asc`,
       )
@@ -247,6 +250,11 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
     page: input.page,
     pageSize: input.pageSize,
   };
+}
+
+// Hiding a profile must take it off the board now, not after the TTL.
+export function clearLeaderboardCache() {
+  cache.clear();
 }
 
 export async function getLeaderboard(

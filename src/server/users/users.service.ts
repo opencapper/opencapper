@@ -15,7 +15,8 @@ import {
 } from "@/server/participants/participants.service";
 import { toAmericanOdds, toApiPick } from "@/server/picks/picks.mapper";
 import { avatarColumns, avatarUrl } from "@/server/users/avatar";
-import { desc, eq } from "drizzle-orm";
+import { visibleUser } from "@/server/users/hidden";
+import { and, desc, eq } from "drizzle-orm";
 
 const HISTORY_LIMIT = 1000;
 
@@ -33,7 +34,7 @@ export async function getUserPicks(username: string): Promise<ApiPick[]> {
     .leftJoin(pickSettlements, eq(pickSettlements.pickId, picks.id))
     .leftJoin(pickLog, eq(pickLog.pickId, picks.id))
     .leftJoin(pickSources, eq(pickSources.pickId, picks.id))
-    .where(eq(users.username, username.toLowerCase()))
+    .where(and(eq(users.username, username.toLowerCase()), visibleUser))
     .orderBy(desc(picks.sequence))
     .limit(500);
   const images = await lookupParticipants(
@@ -61,7 +62,7 @@ export async function getUserHistory(
     .select({ pick: historyPicks })
     .from(historyPicks)
     .innerJoin(users, eq(users.id, historyPicks.userId))
-    .where(eq(users.username, username.toLowerCase()))
+    .where(and(eq(users.username, username.toLowerCase()), visibleUser))
     .orderBy(desc(historyPicks.commenceTime), desc(historyPicks.id))
     .limit(HISTORY_LIMIT);
   const images = await lookupParticipants(
@@ -102,7 +103,7 @@ export async function getProfileAvatar(
     .select(avatarColumns)
     .from(users)
     .leftJoin(authUser, eq(authUser.id, users.authUserId))
-    .where(eq(users.username, username.toLowerCase()))
+    .where(and(eq(users.username, username.toLowerCase()), visibleUser))
     .limit(1);
   return row ? avatarUrl(row, 128) : null;
 }

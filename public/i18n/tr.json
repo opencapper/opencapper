@@ -551,6 +551,17 @@
       "TRADED_HINT": "Zincir üzerindeki işlem: {time}, başlangıçtan ({start}) önce. Sonradan içe aktarıldı, canlı kaydedilmedi.",
       "TRANSACTION": "İşlem",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "Sahiplenen: @{username}",
+    "CLAIMED_PROFILES": "Sahiplenilen içe aktarılmış profiller:",
+    "HIDDEN": {
+      "TITLE": "Gizli profil",
+      "HEADING": "Bu profil sahibinin isteğiyle gizlendi",
+      "BODY": "Artık sıralamada, aramada ve önizlemelerde görünmüyor. Tahminleri herkese açık kayıt defterinde kalır ve tahmin kimliğiyle hâlâ kontrol edilebilir.",
+      "VERIFY_LINK": "Doğrulama sayfasında bir tahmini kontrol et",
+      "OWNER_HINT": "Bu profili sen sahiplendin. İstediğin zaman yeniden herkese açık yapabilirsin.",
+      "UNHIDE": "Bu profili yeniden göster",
+      "FAILED": "Değişiklik kaydedilemedi."
     }
   },
   "SPORTS": {
@@ -772,10 +783,21 @@
     "BANNER_TITLE": "Herkese açık profil, kaynak: {platform, select, polymarket {Polymarket} reddit {Reddit} other {başka bir platform}}, sahiplenilmedi",
     "BANNER_BODY": "Her tahmin, karşılaşması başlamadan önce herkese açık {platform, select, polymarket {Polymarket} reddit {Reddit} other {başka bir platform}} etkinliğinden içe aktarıldı ve içe aktarma anında kilitlendi. Bu kişi kaydolmadı ve bu sicili incelemedi.",
     "BANNER_SOURCE": "{platform, select, polymarket {Polymarket üzerinde} reddit {Reddit üzerinde} other {başka bir platformda}} görüntüle",
-    "BANNER_CLAIM": "Bu sen misin? Sahiplen veya itiraz et",
     "PICK_SOURCE": "Kaynak: {platform, select, polymarket {Polymarket işlemi} reddit {Reddit yorumu} other {orijinal gönderi}}",
     "POSTED_AT": "İlk paylaşım: {time}. OpenCapper'da içe aktarma anında kilitlendi, asla geriye tarihlenmedi.",
-    "FILL_HINT": "Kilitlenme: {time}. Oran, bahis sitesi oranı değil, zincir üzerindeki Polymarket gerçekleşme fiyatıdır (gerçekleşme: {filled}). Bu tahmin düzenlenemez ve silinemez."
+    "FILL_HINT": "Kilitlenme: {time}. Oran, bahis sitesi oranı değil, zincir üzerindeki Polymarket gerçekleşme fiyatıdır (gerçekleşme: {filled}). Bu tahmin düzenlenemez ve silinemez.",
+    "PUBLIC_HINT_CLAIMED": "Kaynağı {platform} olan, içe aktarılmış herkese açık profil. Sahibi bir OpenCapper hesabıyla sahiplendi.",
+    "BANNER_TITLE_CLAIMED": "Herkese açık profil, kaynak: {platform}, sahiplenen: @{username}",
+    "BANNER_BODY_CLAIMED": "Sahibi bu {platform} hesabının kendisine ait olduğunu kanıtladı. Tahminler her etkinlik başlamadan önce herkese açık etkinlikten içe aktarılmaya ve içe aktarma anında kilitlenmeye devam eder.",
+    "MANUAL_CLAIM": "Bu sen misin? {platform} sahiplenme talepleri şimdilik elle inceleniyor. Bize ulaş, biz doğrulayalım.",
+    "OWNER_HINT": "Bu profili sen sahiplendin. Gizlemek onu sıralamadan, aramadan ve önizlemelerden kaldırır. Kayıt defteri girdileri kalır.",
+    "CLAIMANT_PROFILE": "Sahibi: @{username}",
+    "CONTACT": "Bize ulaş",
+    "REMOVAL": "Sen değil misin? Kaldırılmasını iste",
+    "CLAIM": "Bu profili sahiplen",
+    "LOGIN_TO_CLAIM": "Bu sen misin? Sahiplenmek için giriş yap.",
+    "HIDE": "Bu profili gizle",
+    "VISIBILITY_FAILED": "Değişiklik kaydedilemedi."
   },
   "ADMIN": {
     "TITLE": "Yönetim",
@@ -829,7 +851,14 @@
       "PICKS": "Tahminler",
       "HISTORY": "Geçmiş",
       "LAST_IMPORT": "Son içe aktarma",
-      "EMPTY": "Henüz içe aktarılan profil yok."
+      "EMPTY": "Henüz içe aktarılan profil yok.",
+      "STATUS": "Durum",
+      "HIDDEN": "Gizli",
+      "VISIBLE": "Görünür",
+      "HIDE": "Gizle",
+      "UNHIDE": "Göster",
+      "APPROVE": "Sahiplenmeyi onayla",
+      "REVOKE": "Sahiplenmeyi geri al"
     },
     "PICKS": {
       "CAPPER": "Capper",
@@ -869,6 +898,13 @@
       "NO_RUN_YET": "Sunucu başladığından beri çalışma yok.",
       "ON": "Açık",
       "OFF": "Kapalı"
+    },
+    "CLAIM": {
+      "TITLE": "@{username} için sahiplenmeyi onayla",
+      "HINT": "Yalnızca sahibinin kanıtını elle kontrol ettikten sonra, örneğin kaynak hesaptan gelen bir mesaj. Sahiplenen kişinin bir OpenCapper hesabı olmalı. Tahminler değişmez.",
+      "CLAIMANT": "Sahiplenen kullanıcı adı",
+      "CLAIMANT_PLACEHOLDER": "@kullaniciadi",
+      "CONFIRM": "Sahiplenmeyi onayla"
     }
   },
   "OG": {
@@ -927,7 +963,19 @@
     "FORBIDDEN": "Bunu yapma yetkin yok.",
     "CANNOT_BAN_SELF": "Kendini yasaklayamazsın.",
     "CANNOT_BAN_ADMIN": "Yöneticiler yasaklanamaz.",
-    "USER_BANNED": "Hesabının tahmin kaydetmesi yasaklandı."
+    "USER_BANNED": "Hesabının tahmin kaydetmesi yasaklandı.",
+    "CLAIM_NOT_IMPORTED": "Yalnızca içe aktarılmış herkese açık profiller sahiplenilebilir veya gizlenebilir.",
+    "PROFILE_ALREADY_CLAIMED": "Bu profil zaten sahiplenildi.",
+    "CLAIM_MANUAL_ONLY": "Bu platformdaki sahiplenme talepleri şimdilik elle inceleniyor. Lütfen bize ulaş.",
+    "CLAIM_RATE_LIMITED": "Çok fazla deneme. Lütfen biraz bekleyip tekrar dene.",
+    "CLAIM_SOURCE_UNAVAILABLE": "Kaynak profil yüklenemedi. Lütfen daha sonra tekrar dene.",
+    "CLAIM_NOT_STARTED": "Önce bir kod al.",
+    "CLAIM_CODE_EXPIRED": "Kodun süresi doldu. Yeni bir kod alıp tekrar dene.",
+    "CLAIM_CODE_NOT_FOUND": "Kod henüz profil açıklamasında yok. Açıklamayı kaydet, bir dakika bekle ve tekrar doğrula.",
+    "NOT_PROFILE_OWNER": "Bunu yalnızca bu profili sahiplenen kişi yapabilir.",
+    "CLAIMANT_NOT_FOUND": "Bu ada sahip kayıtlı bir kullanıcı yok.",
+    "CLAIM_NOT_FOUND": "Bu profilin etkin bir sahiplenmesi yok.",
+    "PROFILE_HIDDEN": "Bu profil sahibinin isteğiyle gizlendi."
   },
   "LEGAL": {
     "LABEL": "Yasal",
@@ -1052,5 +1100,24 @@
       "CONTACT_TITLE": "İletişim",
       "CONTACT_BODY": "Bu koşullarla ilgili sorular: {email} veya Discord sunucumuz."
     }
+  },
+  "CLAIM": {
+    "TITLE": "@{username} profilini sahiplen",
+    "INTRO": "Herkese açık açıklamasına tek kullanımlık bir kod ekleyerek bu {platform} hesabının sana ait olduğunu kanıtla. Şifre gerekmez.",
+    "START": "Kodumu al",
+    "STEP_CODE": "1. Kodunu kopyala",
+    "COPY": "Kopyala",
+    "COPIED": "Kod kopyalandı",
+    "STEP_BIO": "2. Kodu {platform} açıklamanın herhangi bir yerine ekle ve kaydet",
+    "OPEN_SETTINGS": "{platform} ayarlarını aç",
+    "STEP_VERIFY": "3. Buraya dön ve Doğrula'ya bas",
+    "EXPIRES": "Kod {time} tarihine kadar geçerli. Sahiplenme bitince açıklamandan kaldırabilirsin.",
+    "VERIFY": "Doğrula",
+    "VERIFYING": "{platform} açıklaman kontrol ediliyor",
+    "NEW_CODE": "Yeni kod",
+    "SUCCESS_TITLE": "Profil sahiplenildi",
+    "SUCCESS_BODY": "@{username} artık sana ait olduğunu gösteriyor. İstediğin zaman sayfasından gizleyebilirsin.",
+    "DONE": "Tamam",
+    "FAILED": "Sahiplenme tamamlanamadı. Lütfen tekrar dene."
   }
 }

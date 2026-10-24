@@ -9,6 +9,7 @@ import { useAuthUser } from "@/hooks/auth/auth-hook";
 import { useUserPicksQuery, useUserStatsQuery } from "@/hooks/users/users-hook";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { useTranslations } from "next-intl";
+import { HiddenProfile } from "./hidden-profile";
 import { HistoryTable } from "./history-table";
 import { PicksTable } from "./picks-table";
 import { ProfileHeader } from "./profile-header";
@@ -32,6 +33,8 @@ export function CapperProfile(props: {
   const own = useAuthUser()?.username === props.username.toLowerCase();
   const history = stats.data?.history;
 
+  if (stats.data?.hidden) return <HiddenProfile username={props.username} />;
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <ProfileHeader
@@ -41,9 +44,18 @@ export function CapperProfile(props: {
         source={source}
         marker={props.ranking.proofMarkerStyle}
         own={own}
+        claimedBy={stats.data?.claimedBy ?? null}
+        claimed={stats.data?.claimed ?? []}
       />
 
-      {source && <SourceBanner username={props.username} source={source} />}
+      {source && (
+        <SourceBanner
+          username={props.username}
+          source={source}
+          claimedBy={stats.data?.claimedBy ?? null}
+          claimMode={stats.data?.claimMode ?? null}
+        />
+      )}
 
       {stats.isPending && (
         <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-6">

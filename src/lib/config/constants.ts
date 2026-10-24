@@ -66,6 +66,3 @@ export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const;
 
 // Shown as "last updated" on the legal pages; bump it with every content change.
 export const LEGAL_UPDATED = "2026-10-24";
-
-export const CLAIM_ISSUE_URL =
-  "https://github.com/opencapper/opencapper/issues/new";

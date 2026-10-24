@@ -551,6 +551,17 @@
       "TRADED_HINT": "Operado on-chain {time}, antes do início às {start}. Importado depois, não registrado ao vivo.",
       "TRANSACTION": "Transação",
       "VIEW_TX": "Polygonscan"
+    },
+    "CLAIMED_BY": "Reivindicado por @{username}",
+    "CLAIMED_PROFILES": "Perfis importados reivindicados:",
+    "HIDDEN": {
+      "TITLE": "Perfil oculto",
+      "HEADING": "Este perfil foi ocultado a pedido do titular",
+      "BODY": "Ele não aparece mais no ranking, na busca nem nas prévias. Os palpites continuam no registro público e ainda podem ser conferidos pelo id do palpite.",
+      "VERIFY_LINK": "Conferir um palpite na página de verificação",
+      "OWNER_HINT": "Você reivindicou este perfil. Pode torná-lo público de novo quando quiser.",
+      "UNHIDE": "Mostrar este perfil de novo",
+      "FAILED": "Não foi possível salvar a alteração."
     }
   },
   "SPORTS": {
@@ -772,10 +783,21 @@
     "BANNER_TITLE": "Perfil público, importado de {platform, select, polymarket {Polymarket} reddit {Reddit} other {outra plataforma}}, não reivindicado",
     "BANNER_BODY": "Cada palpite foi importado da atividade pública em {platform, select, polymarket {Polymarket} reddit {Reddit} other {outra plataforma}} antes do início do evento e travado no momento da importação. Esta pessoa não se cadastrou e não revisou este histórico.",
     "BANNER_SOURCE": "Ver em {platform, select, polymarket {Polymarket} reddit {Reddit} other {outra plataforma}}",
-    "BANNER_CLAIM": "É você? Reivindique ou conteste",
     "PICK_SOURCE": "Fonte: {platform, select, polymarket {operação na Polymarket} reddit {comentário no Reddit} other {post original}}",
     "POSTED_AT": "Postado originalmente {time}. Travado no OpenCapper no momento da importação, nunca com data retroativa.",
-    "FILL_HINT": "Travado em {time}. O preço é a execução on-chain na Polymarket de {filled}, não uma odd de casa de apostas. Este palpite não pode ser editado nem apagado."
+    "FILL_HINT": "Travado em {time}. O preço é a execução on-chain na Polymarket de {filled}, não uma odd de casa de apostas. Este palpite não pode ser editado nem apagado.",
+    "PUBLIC_HINT_CLAIMED": "Perfil público importado de {platform}. O titular o reivindicou com uma conta no OpenCapper.",
+    "BANNER_TITLE_CLAIMED": "Perfil público, importado de {platform}, reivindicado por @{username}",
+    "BANNER_BODY_CLAIMED": "O titular provou que esta conta da plataforma {platform} é dele. Os palpites continuam sendo importados da atividade pública antes do início de cada evento e travados na importação.",
+    "MANUAL_CLAIM": "É você? Por enquanto, reivindicações da plataforma {platform} são analisadas manualmente. Fale com a gente e nós verificamos.",
+    "OWNER_HINT": "Você reivindicou este perfil. Ocultá-lo remove o perfil do ranking, da busca e das prévias. As entradas do registro permanecem.",
+    "CLAIMANT_PROFILE": "Titular: @{username}",
+    "CONTACT": "Fale com a gente",
+    "REMOVAL": "Não é você? Peça a remoção",
+    "CLAIM": "Reivindicar este perfil",
+    "LOGIN_TO_CLAIM": "É você? Entre para reivindicar.",
+    "HIDE": "Ocultar este perfil",
+    "VISIBILITY_FAILED": "Não foi possível salvar a alteração."
   },
   "ADMIN": {
     "TITLE": "Administração",
@@ -829,7 +851,14 @@
       "PICKS": "Palpites",
       "HISTORY": "Histórico",
       "LAST_IMPORT": "Última importação",
-      "EMPTY": "Ainda não há perfis importados."
+      "EMPTY": "Ainda não há perfis importados.",
+      "STATUS": "Status",
+      "HIDDEN": "Oculto",
+      "VISIBLE": "Visível",
+      "HIDE": "Ocultar",
+      "UNHIDE": "Mostrar",
+      "APPROVE": "Aprovar reivindicação",
+      "REVOKE": "Revogar reivindicação"
     },
     "PICKS": {
       "CAPPER": "Capper",
@@ -869,6 +898,13 @@
       "NO_RUN_YET": "Nenhuma execução desde que o servidor iniciou.",
       "ON": "Ligado",
       "OFF": "Desligado"
+    },
+    "CLAIM": {
+      "TITLE": "Aprovar uma reivindicação de @{username}",
+      "HINT": "Só depois de conferir manualmente a prova do titular, por exemplo uma mensagem da conta de origem. Quem reivindica precisa de uma conta no OpenCapper. Os palpites não são alterados.",
+      "CLAIMANT": "Usuário que reivindica",
+      "CLAIMANT_PLACEHOLDER": "@usuario",
+      "CONFIRM": "Aprovar reivindicação"
     }
   },
   "OG": {
@@ -927,7 +963,19 @@
     "FORBIDDEN": "Você não tem permissão para fazer isso.",
     "CANNOT_BAN_SELF": "Você não pode banir a si mesmo.",
     "CANNOT_BAN_ADMIN": "Administradores não podem ser banidos.",
-    "USER_BANNED": "Sua conta está banida de registrar palpites."
+    "USER_BANNED": "Sua conta está banida de registrar palpites.",
+    "CLAIM_NOT_IMPORTED": "Só perfis públicos importados podem ser reivindicados ou ocultados.",
+    "PROFILE_ALREADY_CLAIMED": "Este perfil já foi reivindicado.",
+    "CLAIM_MANUAL_ONLY": "Por enquanto, reivindicações desta plataforma são analisadas manualmente. Entre em contato com a gente.",
+    "CLAIM_RATE_LIMITED": "Tentativas demais. Aguarde um momento e tente novamente.",
+    "CLAIM_SOURCE_UNAVAILABLE": "Não foi possível carregar o perfil de origem. Tente novamente mais tarde.",
+    "CLAIM_NOT_STARTED": "Gere um código primeiro.",
+    "CLAIM_CODE_EXPIRED": "O código expirou. Gere um novo código e tente novamente.",
+    "CLAIM_CODE_NOT_FOUND": "O código ainda não está na bio do perfil. Salve a bio, aguarde um minuto e verifique de novo.",
+    "NOT_PROFILE_OWNER": "Só quem reivindicou este perfil pode fazer isso.",
+    "CLAIMANT_NOT_FOUND": "Nenhum usuário cadastrado tem esse nome.",
+    "CLAIM_NOT_FOUND": "Este perfil não tem reivindicação ativa.",
+    "PROFILE_HIDDEN": "Este perfil está oculto a pedido do titular."
   },
   "LEGAL": {
     "LABEL": "Informações legais",
@@ -1052,5 +1100,24 @@
       "CONTACT_TITLE": "Contato",
       "CONTACT_BODY": "Dúvidas sobre estes termos: {email} ou nosso servidor do Discord."
     }
+  },
+  "CLAIM": {
+    "TITLE": "Reivindicar @{username}",
+    "INTRO": "Prove que esta conta da plataforma {platform} é sua com um código de uso único na bio pública. Não precisa de senha.",
+    "START": "Gerar meu código",
+    "STEP_CODE": "1. Copie seu código",
+    "COPY": "Copiar",
+    "COPIED": "Código copiado",
+    "STEP_BIO": "2. Coloque o código em qualquer parte da sua bio na plataforma {platform} e salve",
+    "OPEN_SETTINGS": "Abrir configurações da plataforma {platform}",
+    "STEP_VERIFY": "3. Volte aqui e toque em Verificar",
+    "EXPIRES": "O código vale até {time}. Você pode tirá-lo da bio depois que a reivindicação terminar.",
+    "VERIFY": "Verificar",
+    "VERIFYING": "Conferindo sua bio na plataforma {platform}",
+    "NEW_CODE": "Novo código",
+    "SUCCESS_TITLE": "Perfil reivindicado",
+    "SUCCESS_BODY": "@{username} agora mostra que pertence a você. Você pode ocultá-lo na página dele quando quiser.",
+    "DONE": "Pronto",
+    "FAILED": "Não foi possível concluir a reivindicação. Tente novamente."
   }
 }
