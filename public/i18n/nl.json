@@ -8,7 +8,8 @@
     "LEADERBOARD": "Ranglijst",
     "GITHUB": "GitHub",
     "MENU": "Menu",
-    "VERIFY": "Verifiëren"
+    "VERIFY": "Verifiëren",
+    "DISCORD": "Discord"
   },
   "THEME": {
     "TOGGLE": "Thema wisselen",
@@ -141,8 +142,8 @@
     "COPYRIGHT": "© {year} {appName}"
   },
   "LANDING": {
-    "ANNOUNCEMENT_LABEL": "Open source",
-    "ANNOUNCEMENT": "Gelicenseerd onder AGPLv3",
+    "ANNOUNCEMENT_LABEL": "Live demo",
+    "ANNOUNCEMENT": "Word lid van onze Discord-server",
     "HEADLINE": "Elke tip vastgelegd. Vergrendeld vóór de aftrap.",
     "SUBHEADLINE": "Een eerlijk, automatisch track record van elke tip, waar je hem ook plaatst. Discord, Telegram, het web of je eigen app.",
     "CTA_TRACK": "Volg je tips",
@@ -162,7 +163,8 @@
         "USED": "Je gebruikte",
         "APP": "App",
         "TODAY": "Vandaag",
-        "AUTHOR": "Nieuwe tip van jou"
+        "AUTHOR": "Nieuwe tip van jou",
+        "TRY": "Probeer het in onze demoserver"
       },
       "TELEGRAM": {
         "BOT": "bot",

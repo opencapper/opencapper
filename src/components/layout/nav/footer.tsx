@@ -50,6 +50,15 @@ export function Footer() {
             })}
           </span>
           <a
+            href={env.discordInviteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t("NAV.DISCORD")}
+            className="text-foreground/50 hover:text-foreground/80 transition-colors"
+          >
+            <Icon name="brand-discord" className="size-3.5" />
+          </a>
+          <a
             href={env.githubUrl}
             target="_blank"
             rel="noopener noreferrer"

@@ -3,9 +3,10 @@
 import { CompanyName, LogoImage } from "@/components/elements/brand/brand";
 import { LanguageToggle } from "@/components/toggle/language-toggle";
 import { ThemeToggle } from "@/components/toggle/theme-toggle";
+import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
+import { useAuthUser } from "@/hooks/auth/auth-hook";
 import { Link, usePathname } from "@/i18n/navigation";
-import { env } from "@/lib/config/env";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { MobileNav } from "./mobile-nav";
@@ -64,20 +65,7 @@ export function Navbar() {
             </PrefetchLink>
           );
         })}
-        <a
-          href={env.githubUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={cn(TAB, "hover:bg-foreground/3")}
-        >
-          <span className="label-mono text-foreground/50 group-hover/tab:text-foreground/80 text-xs whitespace-nowrap transition-colors">
-            {t("NAV.GITHUB")}
-          </span>
-          <Icon
-            name="arrow-up-right"
-            className="text-foreground/40 size-3 transition-transform group-hover/tab:translate-x-0.5 group-hover/tab:-translate-y-0.5"
-          />
-        </a>
+        <NewPickButton />
         <div className="border-foreground/6 flex items-center gap-1 border-r px-2">
           <LanguageToggle />
           <ThemeToggle />
@@ -88,9 +76,33 @@ export function Navbar() {
       </div>
 
       <div className="bg-background border-foreground/6 flex items-center gap-1 border-b pr-2 lg:hidden">
+        <NewPickButton compact />
         <UserMenu />
         <MobileNav />
       </div>
     </nav>
+  );
+}
+
+function NewPickButton(props: { compact?: boolean }) {
+  const t = useTranslations();
+  const user = useAuthUser();
+  if (!user) return null;
+  const button = (
+    <Button
+      size={props.compact ? "icon-sm" : "sm"}
+      nativeButton={false}
+      render={<Link href="/picks/new" />}
+      aria-label={t("PICK_NEW.LABEL")}
+    >
+      <Icon name="plus" />
+      {!props.compact && t("PICK_NEW.LABEL")}
+    </Button>
+  );
+  if (props.compact) return button;
+  return (
+    <div className="border-foreground/6 flex items-center border-r px-3">
+      {button}
+    </div>
   );
 }

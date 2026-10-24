@@ -174,8 +174,15 @@ export async function getFeaturedEvents(
       });
     }),
   );
-  return perLeague
-    .flat()
-    .toSorted((a, b) => b.offer.books - a.offer.books)
-    .slice(0, limit);
+  // Round robin over leagues so European soccer, quoted by the most books, does not fill every slot.
+  const queues = perLeague.map((rows) =>
+    rows.toSorted((a, b) => b.offer.books - a.offer.books),
+  );
+  const picked: FeaturedEvent[] = [];
+  for (let round = 0; picked.length < limit; round++) {
+    const layer = queues.flatMap((rows) => rows.slice(round, round + 1));
+    if (layer.length === 0) break;
+    picked.push(...layer.toSorted((a, b) => b.offer.books - a.offer.books));
+  }
+  return picked.slice(0, limit);
 }

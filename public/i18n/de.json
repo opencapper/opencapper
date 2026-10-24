@@ -8,7 +8,8 @@
     "LEADERBOARD": "Rangliste",
     "GITHUB": "GitHub",
     "MENU": "Menü",
-    "VERIFY": "Prüfen"
+    "VERIFY": "Prüfen",
+    "DISCORD": "Discord"
   },
   "THEME": {
     "TOGGLE": "Design wechseln",
@@ -141,8 +142,8 @@
     "COPYRIGHT": "© {year} {appName}"
   },
   "LANDING": {
-    "ANNOUNCEMENT_LABEL": "Open Source",
-    "ANNOUNCEMENT": "Lizenziert unter AGPLv3",
+    "ANNOUNCEMENT_LABEL": "Live-Demo",
+    "ANNOUNCEMENT": "Tritt unserem Discord-Server bei",
     "HEADLINE": "Jeder Tipp im Protokoll. Gesperrt vor dem Anpfiff.",
     "SUBHEADLINE": "Eine ehrliche, automatische Bilanz jedes Tipps, egal wo du ihn abgibst. Discord, Telegram, im Web oder in deiner eigenen App.",
     "CTA_TRACK": "Tipps erfassen",
@@ -162,7 +163,8 @@
         "USED": "Du hast verwendet",
         "APP": "App",
         "TODAY": "Heute",
-        "AUTHOR": "Neuer Tipp von dir"
+        "AUTHOR": "Neuer Tipp von dir",
+        "TRY": "Probier es auf unserem Demo-Server aus"
       },
       "TELEGRAM": {
         "BOT": "Bot",

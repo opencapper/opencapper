@@ -8,7 +8,8 @@
     "LEADERBOARD": "Classifica",
     "GITHUB": "GitHub",
     "MENU": "Menu",
-    "VERIFY": "Verifica"
+    "VERIFY": "Verifica",
+    "DISCORD": "Discord"
   },
   "THEME": {
     "TOGGLE": "Cambia tema",
@@ -141,8 +142,8 @@
     "COPYRIGHT": "© {year} {appName}"
   },
   "LANDING": {
-    "ANNOUNCEMENT_LABEL": "Open source",
-    "ANNOUNCEMENT": "Rilasciato con licenza AGPLv3",
+    "ANNOUNCEMENT_LABEL": "Demo dal vivo",
+    "ANNOUNCEMENT": "Entra nel nostro server Discord",
     "HEADLINE": "Ogni pronostico resta nello storico. Bloccato prima del fischio d’inizio.",
     "SUBHEADLINE": "Uno storico onesto e automatico di ogni pronostico, ovunque tu lo pubblichi. Discord, Telegram, il web o la tua app.",
     "CTA_TRACK": "Registra i tuoi pronostici",
@@ -162,7 +163,8 @@
         "USED": "Hai usato",
         "APP": "App",
         "TODAY": "Oggi",
-        "AUTHOR": "Nuovo pronostico da te"
+        "AUTHOR": "Nuovo pronostico da te",
+        "TRY": "Provalo nel nostro server demo"
       },
       "TELEGRAM": {
         "BOT": "bot",

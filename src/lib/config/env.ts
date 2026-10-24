@@ -6,5 +6,6 @@ export const env = {
   appUrl,
   siteOrigin: new URL(appUrl).origin,
   githubUrl: "https://github.com/opencapper/opencapper",
+  discordInviteUrl: "https://discord.gg/YQhcPDrUJC",
   releaseVersion: process.env.NEXT_PUBLIC_RELEASE_VERSION ?? "dev",
 } as const;

@@ -8,7 +8,8 @@
     "LEADERBOARD": "Sıralama",
     "GITHUB": "GitHub",
     "MENU": "Menü",
-    "VERIFY": "Doğrula"
+    "VERIFY": "Doğrula",
+    "DISCORD": "Discord"
   },
   "THEME": {
     "TOGGLE": "Temayı değiştir",
@@ -141,8 +142,8 @@
     "COPYRIGHT": "© {year} {appName}"
   },
   "LANDING": {
-    "ANNOUNCEMENT_LABEL": "Açık kaynak",
-    "ANNOUNCEMENT": "AGPLv3 lisanslı",
+    "ANNOUNCEMENT_LABEL": "Canlı demo",
+    "ANNOUNCEMENT": "Discord sunucumuza katıl",
     "HEADLINE": "Her tahmin kayıtta. Maç başlamadan kilitli.",
     "SUBHEADLINE": "Nerede paylaşırsan paylaş, her tahminin için dürüst ve otomatik bir sicil. Discord, Telegram, web ya da kendi uygulaman.",
     "CTA_TRACK": "Tahminlerini takip et",
@@ -162,7 +163,8 @@
         "USED": "Kullandığın komut:",
         "APP": "Uygulama",
         "TODAY": "Bugün",
-        "AUTHOR": "Senden yeni tahmin"
+        "AUTHOR": "Senden yeni tahmin",
+        "TRY": "Demo sunucumuzda dene"
       },
       "TELEGRAM": {
         "BOT": "bot",

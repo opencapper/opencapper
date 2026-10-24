@@ -8,7 +8,8 @@
     "LEADERBOARD": "ランキング",
     "GITHUB": "GitHub",
     "MENU": "メニュー",
-    "VERIFY": "検証"
+    "VERIFY": "検証",
+    "DISCORD": "Discord"
   },
   "THEME": {
     "TOGGLE": "テーマを切り替え",
@@ -141,8 +142,8 @@
     "COPYRIGHT": "© {year} {appName}"
   },
   "LANDING": {
-    "ANNOUNCEMENT_LABEL": "オープンソース",
-    "ANNOUNCEMENT": "AGPLv3ライセンスで公開",
+    "ANNOUNCEMENT_LABEL": "ライブデモ",
+    "ANNOUNCEMENT": "Discordサーバーに参加",
     "HEADLINE": "すべての予想を記録に。キックオフ前に確定。",
     "SUBHEADLINE": "どこに投稿しても、すべての予想を誠実に自動で記録。Discord、Telegram、Web、あなたのアプリからも。",
     "CTA_TRACK": "予想を記録する",
@@ -162,7 +163,8 @@
         "USED": "使用したコマンド",
         "APP": "アプリ",
         "TODAY": "今日",
-        "AUTHOR": "あなたの新しい予想"
+        "AUTHOR": "あなたの新しい予想",
+        "TRY": "デモサーバーで試す"
       },
       "TELEGRAM": {
         "BOT": "ボット",

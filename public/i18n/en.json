@@ -8,7 +8,8 @@
     "LEADERBOARD": "Leaderboard",
     "GITHUB": "GitHub",
     "MENU": "Menu",
-    "VERIFY": "Verify"
+    "VERIFY": "Verify",
+    "DISCORD": "Discord"
   },
   "THEME": {
     "TOGGLE": "Toggle theme",
@@ -141,8 +142,8 @@
     "COPYRIGHT": "© {year} {appName}"
   },
   "LANDING": {
-    "ANNOUNCEMENT_LABEL": "Open source",
-    "ANNOUNCEMENT": "Licensed under AGPLv3",
+    "ANNOUNCEMENT_LABEL": "Live demo",
+    "ANNOUNCEMENT": "Join our Discord server",
     "HEADLINE": "Every pick on the record. Locked before kickoff.",
     "SUBHEADLINE": "An honest, automatic record of every pick, wherever you post it. Discord, Telegram, the web or your own app.",
     "CTA_TRACK": "Track your picks",
@@ -162,7 +163,8 @@
         "USED": "You used",
         "APP": "App",
         "TODAY": "Today",
-        "AUTHOR": "New pick from you"
+        "AUTHOR": "New pick from you",
+        "TRY": "Try it in our demo server"
       },
       "TELEGRAM": {
         "BOT": "bot",

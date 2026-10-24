@@ -8,7 +8,8 @@
     "LEADERBOARD": "Ranking",
     "GITHUB": "GitHub",
     "MENU": "Menu",
-    "VERIFY": "Weryfikuj"
+    "VERIFY": "Weryfikuj",
+    "DISCORD": "Discord"
   },
   "THEME": {
     "TOGGLE": "Przełącz motyw",
@@ -141,8 +142,8 @@
     "COPYRIGHT": "© {year} {appName}"
   },
   "LANDING": {
-    "ANNOUNCEMENT_LABEL": "Open source",
-    "ANNOUNCEMENT": "Na licencji AGPLv3",
+    "ANNOUNCEMENT_LABEL": "Demo na żywo",
+    "ANNOUNCEMENT": "Dołącz do naszego serwera Discord",
     "HEADLINE": "Każdy typ w historii. Zablokowany przed pierwszym gwizdkiem.",
     "SUBHEADLINE": "Uczciwa, automatyczna historia każdego twojego typu, gdziekolwiek go publikujesz. Discord, Telegram, strona WWW albo twoja własna aplikacja.",
     "CTA_TRACK": "Śledź swoje typy",
@@ -162,7 +163,8 @@
         "USED": "Użyto",
         "APP": "Aplikacja",
         "TODAY": "Dzisiaj",
-        "AUTHOR": "Twój nowy typ"
+        "AUTHOR": "Twój nowy typ",
+        "TRY": "Wypróbuj na naszym serwerze demo"
       },
       "TELEGRAM": {
         "BOT": "bot",

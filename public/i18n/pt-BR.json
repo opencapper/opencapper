@@ -8,7 +8,8 @@
     "LEADERBOARD": "Ranking",
     "GITHUB": "GitHub",
     "MENU": "Menu",
-    "VERIFY": "Verificar"
+    "VERIFY": "Verificar",
+    "DISCORD": "Discord"
   },
   "THEME": {
     "TOGGLE": "Alternar tema",
@@ -141,8 +142,8 @@
     "COPYRIGHT": "© {year} {appName}"
   },
   "LANDING": {
-    "ANNOUNCEMENT_LABEL": "Código aberto",
-    "ANNOUNCEMENT": "Licenciado sob AGPLv3",
+    "ANNOUNCEMENT_LABEL": "Demo ao vivo",
+    "ANNOUNCEMENT": "Entre no nosso servidor do Discord",
     "HEADLINE": "Todo palpite no histórico. Travado antes do apito inicial.",
     "SUBHEADLINE": "Um histórico honesto e automático de cada palpite, onde quer que você poste. Discord, Telegram, a web ou o seu próprio app.",
     "CTA_TRACK": "Acompanhe seus palpites",
@@ -162,7 +163,8 @@
         "USED": "Você usou",
         "APP": "App",
         "TODAY": "Hoje",
-        "AUTHOR": "Novo palpite seu"
+        "AUTHOR": "Novo palpite seu",
+        "TRY": "Experimente no nosso servidor de demonstração"
       },
       "TELEGRAM": {
         "BOT": "bot",

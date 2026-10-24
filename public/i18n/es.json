@@ -8,7 +8,8 @@
     "LEADERBOARD": "Clasificación",
     "GITHUB": "GitHub",
     "MENU": "Menú",
-    "VERIFY": "Verificar"
+    "VERIFY": "Verificar",
+    "DISCORD": "Discord"
   },
   "THEME": {
     "TOGGLE": "Cambiar tema",
@@ -141,8 +142,8 @@
     "COPYRIGHT": "© {year} {appName}"
   },
   "LANDING": {
-    "ANNOUNCEMENT_LABEL": "Código abierto",
-    "ANNOUNCEMENT": "Con licencia AGPLv3",
+    "ANNOUNCEMENT_LABEL": "Demo en vivo",
+    "ANNOUNCEMENT": "Únete a nuestro servidor de Discord",
     "HEADLINE": "Cada pick, registrado. Bloqueado antes del inicio.",
     "SUBHEADLINE": "Un historial honesto y automático de cada pick, publiques donde publiques. Discord, Telegram, la web o tu propia app.",
     "CTA_TRACK": "Registra tus picks",
@@ -162,7 +163,8 @@
         "USED": "Has usado",
         "APP": "App",
         "TODAY": "Hoy",
-        "AUTHOR": "Nuevo pick tuyo"
+        "AUTHOR": "Nuevo pick tuyo",
+        "TRY": "Pruébalo en nuestro servidor de demostración"
       },
       "TELEGRAM": {
         "BOT": "bot",

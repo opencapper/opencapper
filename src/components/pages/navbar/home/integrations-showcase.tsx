@@ -158,7 +158,21 @@ export function IntegrationsShowcase(props: {
         key={current?.event.id}
         className="bg-muted/25 animate-fade-in min-h-[300px] px-4 py-5 sm:px-6"
       >
-        {mode === "discord" && <DiscordMock sample={sample} />}
+        {mode === "discord" && (
+          <>
+            <DiscordMock sample={sample} />
+            <a
+              href={env.discordInviteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground/55 hover:text-foreground/85 mx-auto mt-4 flex w-fit items-center gap-1.5 text-xs transition-colors"
+            >
+              <Icon name="brand-discord" className="size-3.5" />
+              {t("LANDING.SHOWCASE.DISCORD.TRY")}
+              <Icon name="arrow-up-right" className="size-3" />
+            </a>
+          </>
+        )}
         {mode === "telegram" && <TelegramMock sample={sample} />}
         {mode === "web" && <WebMock sample={sample} />}
         {mode === "api" && <ApiSnippet username={props.username} />}

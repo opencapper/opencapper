@@ -24,12 +24,12 @@ export async function LandingHero() {
       <div className="animate-fade-in pointer-events-none relative z-2 flex h-full w-full flex-col justify-center py-16 lg:py-0">
         <div className="pointer-events-auto">
           <a
-            href={env.githubUrl}
+            href={env.discordInviteUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="group/badge bg-input/80 hover:bg-input relative inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 backdrop-blur-sm transition-colors"
           >
-            <Icon name="brand-github" className="text-foreground/80 size-3.5" />
+            <Icon name="brand-discord" className="size-3.5 text-[#5865F2]" />
             <span className="text-foreground/70 text-xs font-light sm:text-sm">
               {t("ANNOUNCEMENT_LABEL")}{" "}
               <span className="text-foreground/90 font-medium">

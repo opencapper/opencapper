@@ -12,7 +12,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Link, usePathname } from "@/i18n/navigation";
-import { env } from "@/lib/config/env";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -78,19 +77,6 @@ export function MobileNav() {
               </PrefetchLink>
             );
           })}
-          <a
-            href={env.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setOpen(false)}
-            className={cn(ROW, "text-foreground/50 hover:text-foreground/80")}
-          >
-            <span className="text-foreground/30 font-mono text-[10px] tabular-nums">
-              {String(navigation.length + 1).padStart(2, "0")}
-            </span>
-            <span className="label-mono">{t("NAV.GITHUB")}</span>
-            <Icon name="arrow-up-right" className="ml-auto size-3.5" />
-          </a>
         </nav>
 
         <div className="border-foreground/6 mt-auto flex items-center gap-2 border-t px-4 py-3">
