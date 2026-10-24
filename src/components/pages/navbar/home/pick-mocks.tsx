@@ -56,7 +56,7 @@ export function DiscordMock(props: { sample: PickSample }) {
   const t = useTranslations("LANDING.SHOWCASE");
 
   return (
-    <div className="flex gap-3">
+    <div className="mx-auto flex max-w-lg gap-3">
       <BotAvatar />
       <div className="min-w-0 flex-1">
         <p className="text-foreground/45 mb-1 flex items-center gap-1 text-[11px]">
