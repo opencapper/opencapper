@@ -31,17 +31,21 @@ export function LeaderboardUnranked(props: {
         {t("LEADERBOARD.UNRANKED.COUNT", { total: props.rows.length })}
       </p>
       <Card className="gap-0 py-0">
-        <ol>
+        <ol className="md:grid md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.2fr)_repeat(3,minmax(0,0.7fr))_auto] md:gap-x-6">
           {props.rows.map((row) => {
             const share = Math.min(1, row.graded / props.minGraded);
             return (
               <li
                 key={row.username}
-                className="border-foreground/8 grid gap-3 border-b px-4 py-3 last:border-b-0 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1.2fr)_repeat(3,minmax(0,0.7fr))_auto] md:items-center"
+                className="border-foreground/8 grid gap-3 border-b px-4 py-3 last:border-b-0 md:col-span-full md:grid-cols-subgrid md:items-center"
               >
                 <div className="flex min-w-0 flex-col gap-1">
                   <span className="truncate">
-                    <CapperCell username={row.username} source={row.source} />
+                    <CapperCell
+                      username={row.username}
+                      source={row.source}
+                      avatarUrl={row.avatarUrl}
+                    />
                   </span>
                   <span className="text-muted-foreground tabular text-xs">
                     {t("LEADERBOARD.UNRANKED.PICKS", { count: row.picks })}

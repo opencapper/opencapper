@@ -1,5 +1,6 @@
 import { getDb } from "@/lib/db/server/client";
 import {
+  authUser,
   historyPicks,
   pickLog,
   pickSettlements,
@@ -8,9 +9,9 @@ import {
   users,
 } from "@/lib/db/schema/server";
 import type { ApiHistoryPick, ApiPick } from "@/lib/types";
-import { DISCORD_CDN_BASE } from "@/server/constants";
 import { lookupParticipants } from "@/server/participants/participants.service";
 import { toAmericanOdds, toApiPick } from "@/server/picks/picks.mapper";
+import { avatarColumns, avatarUrl } from "@/server/users/avatar";
 import { desc, eq } from "drizzle-orm";
 
 const HISTORY_LIMIT = 1000;
@@ -83,11 +84,10 @@ export async function getProfileAvatar(
   username: string,
 ): Promise<string | null> {
   const [row] = await getDb()
-    .select({ discordId: users.discordId, avatar: users.avatar })
+    .select(avatarColumns)
     .from(users)
+    .leftJoin(authUser, eq(authUser.id, users.authUserId))
     .where(eq(users.username, username.toLowerCase()))
     .limit(1);
-  return row?.discordId && row.avatar
-    ? `${DISCORD_CDN_BASE}/avatars/${row.discordId}/${row.avatar}.png?size=128`
-    : null;
+  return row ? avatarUrl(row, 128) : null;
 }

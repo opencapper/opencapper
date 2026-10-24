@@ -9,12 +9,13 @@ import {
   type User,
 } from "@/lib/db/schema/server";
 import type { AuthUser } from "@/lib/types";
-import { DISCORD_CDN_BASE, SESSION_MAX_AGE } from "@/server/constants";
+import { SESSION_MAX_AGE } from "@/server/constants";
 import { serverEnv } from "@/server/env";
 import { ApiError } from "@/server/errors";
 import { Type } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import { TELEGRAM_PROVIDER_ID, telegramAuth } from "@/server/auth/telegram";
+import { avatarUrl } from "@/server/users/avatar";
 import {
   createAuthDomainUser,
   findUserByAuthId,
@@ -100,10 +101,7 @@ function toAuthUser(user: User, image: string | null): AuthUser {
     id: user.id,
     discordId: user.discordId,
     username: user.username,
-    avatarUrl:
-      user.discordId && user.avatar
-        ? `${DISCORD_CDN_BASE}/avatars/${user.discordId}/${user.avatar}.png?size=64`
-        : image,
+    avatarUrl: avatarUrl({ ...user, authImage: image }, 64),
   };
 }
 

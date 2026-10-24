@@ -7,13 +7,18 @@ import {
   type LeaderboardSort,
 } from "@/lib/api/typebox/leaderboard";
 import { getDb } from "@/lib/db/server/client";
-import { historyPicks, picks, users } from "@/lib/db/schema/server";
+import { authUser, historyPicks, picks, users } from "@/lib/db/schema/server";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
 import { sportGroup, type SportGroup } from "@/lib/config/sports";
 import type { LeaderboardResponse, UnrankedRow } from "@/lib/types";
 import { dayjs } from "@/lib/utils/format/date";
 import { serverEnv } from "@/server/env";
 import { netOf, riskedOf } from "@/server/stats/stats.service";
+import {
+  avatarColumns,
+  avatarUrl,
+  type AvatarSource,
+} from "@/server/users/avatar";
 import { and, eq, sql, type SQL, type SQLWrapper } from "drizzle-orm";
 import { unionAll } from "drizzle-orm/pg-core";
 
@@ -134,7 +139,7 @@ function aggregate(input: Input) {
   };
 }
 
-type AggRow = {
+type AggRow = AvatarSource & {
   username: string;
   picks: number;
   graded: number;
@@ -163,6 +168,7 @@ function toRow(row: AggRow): UnrankedRow {
     roi: row.unitsRisked > 0 ? row.units / row.unitsRisked : 0,
     sports: sportGroups(row.prefixes),
     source: row.source,
+    avatarUrl: avatarUrl(row, 64),
   };
 }
 
@@ -184,6 +190,7 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
     unitsRisked: agg.unitsRisked,
     prefixes: agg.prefixes,
     source: users.sourcePlatform,
+    ...avatarColumns,
   });
 
   const roi = sql`${rankedAgg.units} / nullif(${rankedAgg.unitsRisked}, 0)`;
@@ -208,6 +215,7 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
       })
       .from(rankedAgg)
       .innerJoin(users, eq(users.id, rankedAgg.userId))
+      .leftJoin(authUser, eq(authUser.id, users.authUserId))
       .orderBy(order)
       .limit(LEADERBOARD_PAGE_SIZE)
       .offset((input.page - 1) * LEADERBOARD_PAGE_SIZE),
@@ -215,6 +223,7 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
       .select(columns(unrankedAgg))
       .from(unrankedAgg)
       .innerJoin(users, eq(users.id, unrankedAgg.userId))
+      .leftJoin(authUser, eq(authUser.id, users.authUserId))
       .orderBy(
         sql`${unrankedAgg.graded} desc, ${unrankedAgg.picks} desc, ${users.username} asc`,
       )

@@ -2,9 +2,11 @@ import { serverEnv } from "@/server/env";
 import type { ImportReport } from "@/server/importers/import.shared";
 import { backfillPolymarketHistory } from "@/server/importers/polymarket/polymarket.history";
 import { importPolymarket } from "@/server/importers/polymarket/polymarket.importer";
+import { refreshPolymarketImages } from "@/server/importers/polymarket/polymarket.profiles";
 import { importReddit } from "@/server/importers/reddit/reddit.importer";
 
 const TICK_MS = 10 * 60_000;
+const IMAGE_REFRESH_MS = 24 * 60 * 60_000;
 
 declare global {
   var importJobStarted: boolean | undefined;
@@ -51,6 +53,15 @@ async function backfillHistory() {
   }
 }
 
+async function refreshImages() {
+  if (!serverEnv.importPolymarketEnabled) return;
+  try {
+    await refreshPolymarketImages();
+  } catch (error) {
+    console.error("import polymarket images failed", error);
+  }
+}
+
 export function startImportJob() {
   if (
     globalThis.importJobStarted ||
@@ -59,5 +70,7 @@ export function startImportJob() {
     return;
   globalThis.importJobStarted = true;
   setInterval(() => void tick(), TICK_MS).unref();
+  setInterval(() => void refreshImages(), IMAGE_REFRESH_MS).unref();
+  void refreshImages();
   void tick().then(backfillHistory);
 }

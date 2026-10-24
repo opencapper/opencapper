@@ -92,6 +92,13 @@
       "when": 1792807052714,
       "tag": "0012_history_picks_append_only",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792813161435,
+      "tag": "0013_user_image_url",
+      "breakpoints": true
     }
   ]
 }

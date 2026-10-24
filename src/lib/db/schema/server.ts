@@ -42,6 +42,8 @@ export const users = pgTable(
       .references(() => authUser.id, { onDelete: "set null" }),
     username: text("username").notNull().unique(),
     avatar: text("avatar"),
+    // Full picture URL for imported profiles; Discord keeps only its hash in `avatar`.
+    imageUrl: text("image_url"),
     // Unclaimed public profile imported from another platform; no auth link until claimed.
     sourcePlatform: text("source_platform").$type<SourcePlatform>(),
     sourceHandle: text("source_handle"),

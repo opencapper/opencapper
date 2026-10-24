@@ -139,6 +139,7 @@ export type CapperStats = {
   clv?: number;
   clvSample?: number;
   source: ApiProfileSource | null;
+  avatarUrl?: string | null;
   history?: HistoryStats;
 };
 
@@ -224,6 +225,7 @@ export type LeaderboardRow = {
   roi: number;
   sports: SportGroup[];
   source: SourcePlatform | null;
+  avatarUrl: string | null;
   gradedLive: number;
   gradedHistory: number;
 };

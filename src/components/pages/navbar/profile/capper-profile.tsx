@@ -36,6 +36,7 @@ export function CapperProfile(props: {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <ProfileHeader
         username={props.username}
+        avatarUrl={stats.data?.avatarUrl}
         verified={known && source === null}
         source={source}
         marker={props.ranking.proofMarkerStyle}

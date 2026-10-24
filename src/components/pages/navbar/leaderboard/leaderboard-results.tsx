@@ -71,7 +71,11 @@ export function LeaderboardResults(props: { rows: LeaderboardRow[] }) {
                 <div className="flex min-w-0 items-center gap-3">
                   <RankCell rank={row.rank} />
                   <span className="truncate">
-                    <CapperCell username={row.username} source={row.source} />
+                    <CapperCell
+                      username={row.username}
+                      source={row.source}
+                      avatarUrl={row.avatarUrl}
+                    />
                   </span>
                 </div>
                 <SportsCell row={row} ctx={ctx} />

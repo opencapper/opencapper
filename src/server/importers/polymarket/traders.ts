@@ -49,7 +49,8 @@ export const POLYMARKET_TRADERS: PolymarketTrader[] = [
   {
     wallet: "0x2a69660046d7acc4ab204d7cc5ba78b0776cd2f7",
     name: "UpTheBlues",
-    reason: "leaderboard #10 (+$860K month), Brasileirao; off: about 199k trades exceed the data API page cap, so its history would be partial",
+    reason:
+      "leaderboard #10 (+$860K month), Brasileirao; off: about 199k trades exceed the data API page cap, so its history would be partial",
     enabled: false,
   },
   {

@@ -1,6 +1,6 @@
 import { SectionLabel } from "@/components/elements/page/page-heading";
+import { CapperAvatar } from "@/components/elements/capper/capper-avatar";
 import { PublicBadge } from "@/components/elements/source/source-badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 
 export function ProfileHeader(props: {
   username: string;
+  avatarUrl: string | null | undefined;
   verified: boolean;
   source: ApiProfileSource | null;
   marker: ProofMarkerStyle;
@@ -22,11 +23,11 @@ export function ProfileHeader(props: {
     <header>
       <SectionLabel as="p">{t("LABEL")}</SectionLabel>
       <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
-        <Avatar className="size-14">
-          <AvatarFallback className="bg-foreground/5 text-foreground/80 font-display text-xl font-medium">
-            {props.username.slice(0, 1).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
+        <CapperAvatar
+          username={props.username}
+          imageUrl={props.avatarUrl}
+          className="size-14"
+        />
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-medium tracking-tight sm:text-3xl">

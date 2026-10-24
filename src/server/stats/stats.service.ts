@@ -7,6 +7,7 @@ import {
 } from "@/lib/db/schema/server";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
 import type { CapperStats, HistoryStats } from "@/lib/types";
+import { getProfileAvatar } from "@/server/users/users.service";
 import {
   and,
   desc,
@@ -128,7 +129,7 @@ async function getHistoryStats(name: string): Promise<HistoryStats | null> {
 
 export async function getCapperStats(username: string): Promise<CapperStats> {
   const name = username.toLowerCase();
-  const [rows, history] = await Promise.all([
+  const [rows, history, avatarUrl] = await Promise.all([
     getDb()
       .select(statColumns)
       .from(users)
@@ -137,8 +138,12 @@ export async function getCapperStats(username: string): Promise<CapperStats> {
       .where(eq(users.username, name))
       .groupBy(users.id),
     getHistoryStats(name),
+    getProfileAvatar(name),
   ]);
-  const stats = rows[0] ? withRoi(rows[0]) : emptyStats(name);
+  const stats = {
+    ...(rows[0] ? withRoi(rows[0]) : emptyStats(name)),
+    avatarUrl,
+  };
   return history ? { ...stats, history } : stats;
 }
 

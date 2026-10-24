@@ -44,6 +44,10 @@ const MarketSchema = Type.Object({
 
 const StringList = Type.Array(Type.String());
 
+const ProfileSchema = Type.Object({
+  profileImage: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+});
+
 export type PolymarketTrade = Static<typeof TradeSchema>;
 export type PolymarketMarket = Static<typeof MarketSchema>;
 
@@ -88,6 +92,13 @@ export function fetchTrades(wallet: string, limit = 500) {
   url.searchParams.set("limit", String(limit));
   url.searchParams.set("takerOnly", "true");
   return getJson(url, Type.Array(TradeSchema));
+}
+
+export async function fetchProfileImage(wallet: string) {
+  const url = new URL(`${POLYMARKET_GAMMA_BASE}/public-profile`);
+  url.searchParams.set("address", wallet);
+  const profile = await getJson(url, ProfileSchema);
+  return profile.profileImage || null;
 }
 
 function tradeKey(trade: PolymarketTrade) {

@@ -1,4 +1,5 @@
 import { PublicBadge } from "@/components/elements/source/source-badge";
+import { CapperAvatar } from "@/components/elements/capper/capper-avatar";
 import {
   SportIcon,
   sportLabelKey,
@@ -47,9 +48,15 @@ export function RankCell(props: { rank: number }) {
 export function CapperCell(props: {
   username: string;
   source: LeaderboardRow["source"];
+  avatarUrl: string | null;
 }) {
   return (
-    <span className="inline-flex items-center gap-2">
+    <span className="inline-flex min-w-0 items-center gap-2">
+      <CapperAvatar
+        username={props.username}
+        imageUrl={props.avatarUrl}
+        size="sm"
+      />
       <Link
         href={{
           pathname: "/u/[username]",
@@ -141,7 +148,13 @@ export const LEADERBOARD_COLUMNS: LeaderboardColumn[] = [
   {
     id: "capper",
     header: msg("LEADERBOARD.COLUMNS.CAPPER"),
-    cell: (row) => <CapperCell username={row.username} source={row.source} />,
+    cell: (row) => (
+      <CapperCell
+        username={row.username}
+        source={row.source}
+        avatarUrl={row.avatarUrl}
+      />
+    ),
   },
   {
     id: "record",
