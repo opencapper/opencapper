@@ -2,6 +2,8 @@ import {
   SportIcon,
   sportLabelKey,
 } from "@/components/elements/sport/sport-icon";
+import { Link } from "@/i18n/navigation";
+import { sportGroup } from "@/lib/config/sports";
 import { getTranslations } from "next-intl/server";
 
 // Beachhead order: MMA first, then traffic leagues.
@@ -26,6 +28,7 @@ export async function SportsMarquee() {
   const t = await getTranslations();
   const row = SPORT_KEYS.map((sportKey) => ({
     sportKey,
+    group: sportGroup(sportKey) ?? undefined,
     label: t(sportLabelKey(sportKey)),
   }));
 
@@ -44,13 +47,18 @@ export async function SportsMarquee() {
         <ul className="animate-marquee flex w-max hover:[animation-play-state:paused]">
           {[0, 1].map((copy) =>
             row.map((sport) => (
-              <li
-                key={`${copy}-${sport.sportKey}`}
-                aria-hidden={copy === 1}
-                className="text-foreground/55 hover:text-foreground/85 flex items-center gap-2 px-6 py-2 text-sm whitespace-nowrap transition-colors"
-              >
-                <SportIcon sportKey={sport.sportKey} className="size-4" />
-                {sport.label}
+              <li key={`${copy}-${sport.sportKey}`} aria-hidden={copy === 1}>
+                <Link
+                  href={{
+                    pathname: "/leaderboard",
+                    query: { sport: sport.group },
+                  }}
+                  tabIndex={copy === 1 ? -1 : undefined}
+                  className="text-foreground/55 hover:text-foreground/85 flex items-center gap-2 px-6 py-2 text-sm whitespace-nowrap transition-colors"
+                >
+                  <SportIcon sportKey={sport.sportKey} className="size-4" />
+                  {sport.label}
+                </Link>
               </li>
             )),
           )}
