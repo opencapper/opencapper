@@ -1,5 +1,5 @@
 import { PAGE_SIZE_OPTIONS } from "@/lib/config/constants";
-import { SPORT_GROUPS } from "@/lib/config/sports";
+import { SPORT_GROUPS, type SportGroup } from "@/lib/config/sports";
 import { t } from "elysia";
 
 export const LeaderboardPeriod = t.Union([
@@ -12,10 +12,16 @@ export type LeaderboardPeriod = typeof LeaderboardPeriod.static;
 
 export const LEADERBOARD_PERIODS = LeaderboardPeriod.anyOf.map((l) => l.const);
 
+// `rank` orders by the ranking key (ROI); `last` is the latest locked or traded pick.
 export const LeaderboardSort = t.Union([
   t.Literal("roi"),
   t.Literal("units"),
   t.Literal("picks"),
+  t.Literal("rank"),
+  t.Literal("capper"),
+  t.Literal("record"),
+  t.Literal("sports"),
+  t.Literal("last"),
 ]);
 export type LeaderboardSort = typeof LeaderboardSort.static;
 
@@ -32,7 +38,21 @@ export type LeaderboardScope = typeof LeaderboardScope.static;
 
 export const LEADERBOARD_SCOPES = LeaderboardScope.anyOf.map((l) => l.const);
 
-export const LeaderboardSport = t.Union(SPORT_GROUPS.map((g) => t.Literal(g)));
+const SPORT_GROUP_PATTERN = `(${SPORT_GROUPS.join("|")})`;
+
+// One sport group or a comma list ("mma" or "mma,boxing").
+export const LeaderboardSport = t.String({
+  pattern: `^${SPORT_GROUP_PATTERN}(,${SPORT_GROUP_PATTERN}){0,${SPORT_GROUPS.length - 1}}$`,
+});
+
+export function parseSportList(value: string | undefined): SportGroup[] {
+  const out: SportGroup[] = [];
+  for (const part of value?.split(",") ?? []) {
+    const group = SPORT_GROUPS.find((g) => g === part);
+    if (group && !out.includes(group)) out.push(group);
+  }
+  return out;
+}
 
 export const LEADERBOARD_PAGE_SIZE = 50;
 export const LEADERBOARD_UNRANKED_LIMIT = 100;

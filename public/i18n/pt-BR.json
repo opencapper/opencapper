@@ -398,6 +398,7 @@
     "FILTERS": {
       "SPORT": "Esporte",
       "ALL_SPORTS": "Todos os esportes",
+      "SPORTS_SELECTED": "{count} selecionados",
       "PERIOD": "Período",
       "SORT": "Ordenar por",
       "PERIOD_30D": "30 dias",
@@ -419,7 +420,8 @@
       "ROI": "ROI",
       "SAMPLE": "Palpites liquidados",
       "SPORTS": "Esportes",
-      "PROGRESS": "Progresso"
+      "PROGRESS": "Progresso",
+      "LAST_PICK": "Último palpite"
     },
     "RECORD_HINT": "Vitórias / derrotas / reembolsos",
     "SAMPLE_HINT": "{graded, number} liquidados de {picks, number} palpites",

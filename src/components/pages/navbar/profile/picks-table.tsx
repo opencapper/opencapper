@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { CARD_LABEL } from "@/components/elements/page/page-heading";
 import { PickStatusBadge } from "@/components/elements/badge/pick-status-badge";
 import { Matchup } from "@/components/elements/participant/matchup";
@@ -84,8 +85,10 @@ export function PicksTable(props: {
     },
     {
       id: "market",
-      header: t("PROFILE.PICKS.MARKET"),
-      enableSorting: false,
+      accessorFn: (pick) => pick.market,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.MARKET" />
+      ),
       size: 100,
       cell: ({ row }) =>
         isMarket(row.original.market)
@@ -94,8 +97,13 @@ export function PicksTable(props: {
     },
     {
       id: "selection",
-      header: t("PROFILE.PICKS.SELECTION"),
-      enableSorting: false,
+      accessorFn: (pick) => pick.selection,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="PROFILE.PICKS.SELECTION"
+        />
+      ),
       size: 140,
       cell: ({ row }) => (
         <>
@@ -151,8 +159,10 @@ export function PicksTable(props: {
     },
     {
       id: "status",
-      header: t("PROFILE.PICKS.STATUS"),
-      enableSorting: false,
+      accessorFn: (pick) => pick.result,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.STATUS" />
+      ),
       size: 100,
       cell: ({ row }) => <PickStatusBadge result={row.original.result} />,
     },
@@ -215,6 +225,7 @@ export function EventCell(props: {
 }) {
   const t = useTranslations();
   const locale = useLocale();
+  const local = useHydrated();
   const label = t(sportLabelKey(props.event.sportKey));
   return (
     <>
@@ -237,7 +248,7 @@ export function EventCell(props: {
       </div>
       <div className="text-muted-foreground mt-1 text-xs">
         {t("PROFILE.PICKS.STARTS_AT", {
-          time: formatDateTime(props.event.commenceTime, locale),
+          time: formatDateTime(props.event.commenceTime, locale, local),
         })}
       </div>
     </>
@@ -247,8 +258,9 @@ export function EventCell(props: {
 function LockedCell(props: { pick: ApiPick; marker: ProofMarkerStyle }) {
   const t = useTranslations();
   const locale = useLocale();
+  const local = useHydrated();
   const pick = props.pick;
-  const lockedAt = formatDateTime(pick.createdAt, locale);
+  const lockedAt = formatDateTime(pick.createdAt, locale, local);
   return (
     <>
       <Tooltip>

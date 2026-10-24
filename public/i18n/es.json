@@ -398,6 +398,7 @@
     "FILTERS": {
       "SPORT": "Deporte",
       "ALL_SPORTS": "Todos los deportes",
+      "SPORTS_SELECTED": "{count} seleccionados",
       "PERIOD": "Periodo",
       "SORT": "Ordenar por",
       "PERIOD_30D": "30 días",
@@ -419,7 +420,8 @@
       "ROI": "ROI",
       "SAMPLE": "Picks liquidados",
       "SPORTS": "Deportes",
-      "PROGRESS": "Progreso"
+      "PROGRESS": "Progreso",
+      "LAST_PICK": "Último pick"
     },
     "RECORD_HINT": "Ganados / perdidos / nulos",
     "SAMPLE_HINT": "{graded, number} liquidados de {picks, number} picks",

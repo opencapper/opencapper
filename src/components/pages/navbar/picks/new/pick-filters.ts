@@ -1,13 +1,6 @@
-import { PICK_LEAGUE_KEYS } from "@/lib/config/sports";
-import { parseAsString, parseAsStringLiteral, useQueryStates } from "nuqs";
-
-const PARSERS = {
-  league: parseAsStringLiteral(PICK_LEAGUE_KEYS).withDefault(
-    "americanfootball_nfl",
-  ),
-  q: parseAsString.withDefault(""),
-};
+import { useQueryStates } from "nuqs";
+import { PICK_PARSERS } from "./pick-params";
 
 export function usePickFilters() {
-  return useQueryStates(PARSERS);
+  return useQueryStates(PICK_PARSERS);
 }

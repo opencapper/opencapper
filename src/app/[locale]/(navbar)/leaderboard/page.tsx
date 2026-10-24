@@ -1,10 +1,16 @@
 import { Leaderboard } from "@/components/pages/navbar/leaderboard/leaderboard";
-import { LEADERBOARD_PERIODS } from "@/lib/api/typebox/leaderboard";
+import {
+  leaderboardQuery,
+  loadLeaderboardFilters,
+} from "@/components/pages/navbar/leaderboard/leaderboard-params";
 import { APP_VALUES } from "@/lib/config/constants";
-import { SPORT_GROUPS } from "@/lib/config/sports";
+import getQueryClient from "@/lib/react-query/client";
+import { queryKeys } from "@/lib/react-query/keys";
+import { prefetchElysia, serverRpc } from "@/lib/react-query/prefetch";
 import { buildMetadata, leaderboardFilters, ogImage } from "@/lib/seo/metadata";
 import { serverLocale } from "@/lib/utils/server";
 import { serverEnv } from "@/server/env";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
@@ -17,29 +23,42 @@ type Props = {
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const locale = await serverLocale(props);
   const t = await getTranslations({ locale });
-  const query = await props.searchParams;
-  const sport = SPORT_GROUPS.find((g) => g === query.sport);
-  const period = LEADERBOARD_PERIODS.find((p) => p === query.period);
-  const filtered = Boolean(sport || (period && period !== "all"));
+  const filters = await loadLeaderboardFilters(props.searchParams);
+  const sports = filters.sport;
+  const period = filters.period;
+  const filtered = sports.length > 0 || period !== "all";
   return buildMetadata({
     locale,
     href: "/leaderboard",
     title: filtered
       ? t("OG.LEADERBOARD_TITLE", {
           ...APP_VALUES,
-          filters: await leaderboardFilters(locale, sport, period),
+          filters: await leaderboardFilters(locale, sports, period),
         })
       : t("LEADERBOARD.TITLE"),
     description: t("LEADERBOARD.DESCRIPTION"),
-    image: ogImage("leaderboard", locale, { sport, period }),
+    image: ogImage("leaderboard", locale, {
+      sport: sports.length > 0 ? sports.join(",") : undefined,
+      period: period === "all" ? undefined : period,
+    }),
   });
 }
 
 export default async function LeaderboardPage(props: Props) {
   setRequestLocale(await serverLocale(props));
+  const queryClient = getQueryClient();
+  const query = leaderboardQuery(
+    await loadLeaderboardFilters(props.searchParams),
+  );
+  await prefetchElysia(queryClient, queryKeys.leaderboard(query), (headers) =>
+    serverRpc.api.leaderboard.get({ ...headers, query }),
+  );
+
   return (
-    <Suspense>
-      <Leaderboard minGraded={serverEnv.ranking.leaderboardMinGradedPicks} />
-    </Suspense>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense>
+        <Leaderboard minGraded={serverEnv.ranking.leaderboardMinGradedPicks} />
+      </Suspense>
+    </HydrationBoundary>
   );
 }

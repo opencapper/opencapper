@@ -15,7 +15,9 @@ import type { TableFeats } from "@/lib/config/table-features";
 import type { LeaderboardRow, UnrankedRow } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { formatPercent, formatUnits } from "@/lib/utils/format/number";
-import type { ColumnDef } from "@tanstack/react-table";
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
+import { dayjs, formatDate } from "@/lib/utils/format/date";
+import type { ColumnDef, Row } from "@tanstack/react-table";
 import type { useTranslations } from "next-intl";
 
 export type CellContext = {
@@ -129,6 +131,39 @@ export function RecordCell(props: { row: UnrankedRow; ctx: CellContext }) {
   );
 }
 
+function winRate(row: UnrankedRow): number {
+  const decided = row.wins + row.losses;
+  return decided > 0 ? row.wins / decided : -1;
+}
+
+// Win rate, then wins; the same order the server applies for `sort=record`.
+function recordSort(
+  a: Row<TableFeats, UnrankedRow>,
+  b: Row<TableFeats, UnrankedRow>,
+) {
+  return (
+    winRate(a.original) - winRate(b.original) ||
+    a.original.wins - b.original.wins
+  );
+}
+
+function lastPickValue(row: UnrankedRow): number | undefined {
+  return row.lastPickAt ? dayjs(row.lastPickAt).valueOf() : undefined;
+}
+
+export function LastPickCell(props: { at: string | null; ctx: CellContext }) {
+  const local = useHydrated();
+  if (!props.at) return <span className="text-muted-foreground">-</span>;
+  return (
+    <time
+      dateTime={props.at}
+      className="text-muted-foreground tabular text-xs whitespace-nowrap"
+    >
+      {formatDate(props.at, props.ctx.locale, local)}
+    </time>
+  );
+}
+
 // Sortable ids are the server `sort` values; ROI and units sit first for phones.
 export function buildLeaderboardColumns(
   ctx: CellContext,
@@ -136,15 +171,25 @@ export function buildLeaderboardColumns(
   return [
     {
       id: "rank",
-      header: ctx.t("LEADERBOARD.COLUMNS.RANK"),
-      enableSorting: false,
-      size: 60,
+      accessorFn: (row) => row.rank,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.RANK"
+        />
+      ),
+      size: 80,
       cell: ({ row }) => <RankCell rank={row.original.rank} />,
     },
     {
       id: "capper",
-      header: ctx.t("LEADERBOARD.COLUMNS.CAPPER"),
-      enableSorting: false,
+      accessorFn: (row) => row.username,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.CAPPER"
+        />
+      ),
       size: 240,
       meta: { cellClassName: "min-w-44" },
       cell: ({ row }) => (
@@ -195,9 +240,14 @@ export function buildLeaderboardColumns(
     },
     {
       id: "record",
-      header: ctx.t("LEADERBOARD.COLUMNS.RECORD"),
-      enableSorting: false,
-      size: 120,
+      accessorFn: winRate,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.RECORD"
+        />
+      ),
+      size: 140,
       cell: ({ row }) => <RecordCell row={row.original} ctx={ctx} />,
     },
     {
@@ -216,11 +266,30 @@ export function buildLeaderboardColumns(
     },
     {
       id: "sports",
-      header: ctx.t("LEADERBOARD.COLUMNS.SPORTS"),
-      enableSorting: false,
+      accessorFn: (row) => row.sports.length,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.SPORTS"
+        />
+      ),
       size: 130,
       meta: { cellClassName: "min-w-32" },
       cell: ({ row }) => <SportsCell row={row.original} ctx={ctx} />,
+    },
+    {
+      id: "last",
+      accessorFn: lastPickValue,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.LAST_PICK"
+        />
+      ),
+      size: 150,
+      cell: ({ row }) => (
+        <LastPickCell at={row.original.lastPickAt} ctx={ctx} />
+      ),
     },
   ];
 }
@@ -232,7 +301,13 @@ export function buildUnrankedColumns(
   return [
     {
       id: "capper",
-      header: ctx.t("LEADERBOARD.COLUMNS.CAPPER"),
+      accessorFn: (row) => row.username,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.CAPPER"
+        />
+      ),
       size: 240,
       meta: { cellClassName: "min-w-44" },
       cell: ({ row }) => (
@@ -254,7 +329,13 @@ export function buildUnrankedColumns(
     },
     {
       id: "progress",
-      header: ctx.t("LEADERBOARD.COLUMNS.PROGRESS"),
+      accessorFn: (row) => row.graded,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.PROGRESS"
+        />
+      ),
       size: 180,
       meta: { cellClassName: "min-w-36" },
       cell: ({ row }) => {
@@ -288,13 +369,27 @@ export function buildUnrankedColumns(
     },
     {
       id: "record",
-      header: ctx.t("LEADERBOARD.COLUMNS.RECORD"),
-      size: 120,
+      accessorFn: winRate,
+      sortFn: recordSort,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.RECORD"
+        />
+      ),
+      size: 140,
       cell: ({ row }) => <RecordCell row={row.original} ctx={ctx} />,
     },
     {
       id: "units",
-      header: ctx.t("LEADERBOARD.COLUMNS.UNITS"),
+      accessorFn: (row) => row.units,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.UNITS"
+          className="justify-end"
+        />
+      ),
       size: 100,
       meta: RIGHT,
       cell: ({ row }) => (
@@ -305,7 +400,15 @@ export function buildUnrankedColumns(
     },
     {
       id: "roi",
-      header: ctx.t("LEADERBOARD.COLUMNS.ROI"),
+      accessorFn: (row) => (row.unitsRisked > 0 ? row.roi : undefined),
+      sortUndefined: "last",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.ROI"
+          className="justify-end"
+        />
+      ),
       size: 100,
       meta: RIGHT,
       cell: ({ row }) => (
@@ -326,7 +429,13 @@ export function buildUnrankedColumns(
     },
     {
       id: "sports",
-      header: ctx.t("LEADERBOARD.COLUMNS.SPORTS"),
+      accessorFn: (row) => row.sports.length,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.SPORTS"
+        />
+      ),
       size: 150,
       meta: { cellClassName: "min-w-32" },
       cell: ({ row }) => (
@@ -336,6 +445,21 @@ export function buildUnrankedColumns(
             <SampleCell row={row.original} ctx={ctx} />
           )}
         </div>
+      ),
+    },
+    {
+      id: "last",
+      accessorFn: lastPickValue,
+      sortUndefined: "last",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="LEADERBOARD.COLUMNS.LAST_PICK"
+        />
+      ),
+      size: 150,
+      cell: ({ row }) => (
+        <LastPickCell at={row.original.lastPickAt} ctx={ctx} />
       ),
     },
   ];

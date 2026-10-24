@@ -4,31 +4,30 @@ import {
   SportIcon,
   sportLabelKey,
 } from "@/components/elements/sport/sport-icon";
+import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Icon } from "@/components/ui/icon";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   LEADERBOARD_PERIODS,
   LEADERBOARD_SCOPES,
-  LEADERBOARD_SORTS,
   type LeaderboardPeriod,
   type LeaderboardScope,
-  type LeaderboardSort,
 } from "@/lib/api/typebox/leaderboard";
 import { msg } from "@/lib/config/constants";
-import { SPORT_GROUPS } from "@/lib/config/sports";
+import { SPORT_GROUPS, type SportGroup } from "@/lib/config/sports";
 import { useTranslations } from "next-intl";
-import type {
-  LeaderboardFilterState,
-  SetLeaderboardFilters,
-} from "./leaderboard-filters";
+import type { SetLeaderboardFilters } from "./leaderboard-filters";
+import type { LeaderboardFilterState } from "./leaderboard-params";
 
-const ALL_SPORTS = "all";
+// The other sorts are column headers only.
+const TOOLBAR_SORTS = ["roi", "units", "picks"] as const;
 
 const PERIOD_LABELS = {
   "30d": msg("LEADERBOARD.FILTERS.PERIOD_30D"),
@@ -41,7 +40,7 @@ const SORT_LABELS = {
   roi: msg("LEADERBOARD.FILTERS.SORT_ROI"),
   units: msg("LEADERBOARD.FILTERS.SORT_UNITS"),
   picks: msg("LEADERBOARD.FILTERS.SORT_PICKS"),
-} satisfies Record<LeaderboardSort, string>;
+} satisfies Record<(typeof TOOLBAR_SORTS)[number], string>;
 
 const SCOPE_LABELS = {
   all: msg("LEADERBOARD.FILTERS.SCOPE_ALL"),
@@ -53,46 +52,58 @@ export function LeaderboardToolbar(props: {
   onChange: SetLeaderboardFilters;
 }) {
   const t = useTranslations();
-  const sportLabel = (value: unknown) => {
-    const group = SPORT_GROUPS.find((g) => g === value);
-    return group ? (
-      <>
-        <SportIcon sportKey={group} />
-        {t(sportLabelKey(group))}
-      </>
-    ) : (
-      t("LEADERBOARD.FILTERS.ALL_SPORTS")
+  const selected = props.filters.sport;
+  const toggle = (group: SportGroup, checked: boolean) => {
+    const next = SPORT_GROUPS.filter((g) =>
+      g === group ? checked : selected.includes(g),
     );
+    props.onChange({ sport: next.length > 0 ? next : null, page: null });
   };
 
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-      <label className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1.5">
         <span className="label-mono text-foreground/45 text-[10px]">
           {t("LEADERBOARD.FILTERS.SPORT")}
         </span>
-        <Select
-          value={props.filters.sport ?? ALL_SPORTS}
-          onValueChange={(value) =>
-            props.onChange({
-              sport: SPORT_GROUPS.find((g) => g === value) ?? null,
-              page: null,
-            })
-          }
-        >
-          <SelectTrigger className="w-full sm:w-56">
-            <SelectValue>{sportLabel}</SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={ALL_SPORTS}>{sportLabel(ALL_SPORTS)}</SelectItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="outline"
+                className="w-full justify-between font-normal sm:w-56"
+              />
+            }
+          >
+            <SportSummary sports={selected} />
+            <Icon
+              name="chevron-down"
+              className="text-muted-foreground size-4"
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-(--anchor-width) min-w-56">
+            <DropdownMenuCheckboxItem
+              checked={selected.length === 0}
+              onCheckedChange={() =>
+                props.onChange({ sport: null, page: null })
+              }
+            >
+              {t("LEADERBOARD.FILTERS.ALL_SPORTS")}
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuSeparator />
             {SPORT_GROUPS.map((group) => (
-              <SelectItem key={group} value={group}>
-                {sportLabel(group)}
-              </SelectItem>
+              <DropdownMenuCheckboxItem
+                key={group}
+                checked={selected.includes(group)}
+                onCheckedChange={(checked) => toggle(group, checked)}
+              >
+                <SportIcon sportKey={group} />
+                {t(sportLabelKey(group))}
+              </DropdownMenuCheckboxItem>
             ))}
-          </SelectContent>
-        </Select>
-      </label>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end">
         <div className="flex flex-col gap-1.5">
@@ -147,14 +158,14 @@ export function LeaderboardToolbar(props: {
             value={props.filters.sort}
             onValueChange={(value) =>
               props.onChange({
-                sort: LEADERBOARD_SORTS.find((s) => s === value) ?? null,
+                sort: TOOLBAR_SORTS.find((s) => s === value) ?? null,
                 order: null,
                 page: null,
               })
             }
           >
             <TabsList>
-              {LEADERBOARD_SORTS.map((sort) => (
+              {TOOLBAR_SORTS.map((sort) => (
                 <TabsTrigger key={sort} value={sort}>
                   {t(SORT_LABELS[sort])}
                 </TabsTrigger>
@@ -164,5 +175,32 @@ export function LeaderboardToolbar(props: {
         </div>
       </div>
     </div>
+  );
+}
+
+function SportSummary(props: { sports: SportGroup[] }) {
+  const t = useTranslations();
+  const first = props.sports[0];
+  if (!first) return <span>{t("LEADERBOARD.FILTERS.ALL_SPORTS")}</span>;
+  if (props.sports.length === 1)
+    return (
+      <span className="flex min-w-0 items-center gap-1.5">
+        <SportIcon sportKey={first} />
+        <span className="truncate">{t(sportLabelKey(first))}</span>
+      </span>
+    );
+  return (
+    <span className="flex min-w-0 items-center gap-1.5">
+      <span className="text-muted-foreground flex items-center gap-1">
+        {props.sports.slice(0, 4).map((group) => (
+          <SportIcon key={group} sportKey={group} />
+        ))}
+      </span>
+      <span className="truncate">
+        {t("LEADERBOARD.FILTERS.SPORTS_SELECTED", {
+          count: String(props.sports.length),
+        })}
+      </span>
+    </span>
   );
 }

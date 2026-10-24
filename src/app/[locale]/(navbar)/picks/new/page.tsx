@@ -1,14 +1,22 @@
 import { LoginButton } from "@/components/layout/nav/user-menu";
 import { PickForm } from "@/components/pages/navbar/picks/new/pick-form";
+import { loadPickFilters } from "@/components/pages/navbar/picks/new/pick-params";
 import { getPathname } from "@/i18n/navigation";
 import getQueryClient from "@/lib/react-query/client";
-import { prefetchAuth } from "@/lib/react-query/prefetch";
+import { queryKeys } from "@/lib/react-query/keys";
+import {
+  prefetchAuth,
+  prefetchElysia,
+  serverRpc,
+} from "@/lib/react-query/prefetch";
 import { serverLocale } from "@/lib/utils/server";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 type Props = {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
@@ -24,7 +32,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function NewPickPage(props: Props) {
   const locale = await serverLocale(props);
   setRequestLocale(locale);
-  const user = await prefetchAuth(getQueryClient());
+  const queryClient = getQueryClient();
+  const user = await prefetchAuth(queryClient);
   if (!user) {
     const t = await getTranslations({ locale, namespace: "PICK_NEW" });
     return (
@@ -38,5 +47,19 @@ export default async function NewPickPage(props: Props) {
       </div>
     );
   }
-  return <PickForm />;
+  const league = (await loadPickFilters(props.searchParams)).league;
+  // The board call is the one the form makes on mount anyway, under the same budget and cache.
+  await Promise.all([
+    prefetchElysia(queryClient, queryKeys.eventBoard(league), (headers) =>
+      serverRpc.api.events.board.get({ ...headers, query: { sport: league } }),
+    ),
+    prefetchElysia(queryClient, queryKeys.eventLeagues(), (headers) =>
+      serverRpc.api.events.leagues.get(headers),
+    ),
+  ]);
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <PickForm />
+    </HydrationBoundary>
+  );
 }

@@ -398,6 +398,7 @@
     "FILTERS": {
       "SPORT": "スポーツ",
       "ALL_SPORTS": "すべてのスポーツ",
+      "SPORTS_SELECTED": "{count}件選択中",
       "PERIOD": "期間",
       "SORT": "並び替え",
       "PERIOD_30D": "30日",
@@ -419,7 +420,8 @@
       "ROI": "ROI",
       "SAMPLE": "判定済み予想",
       "SPORTS": "スポーツ",
-      "PROGRESS": "進捗"
+      "PROGRESS": "進捗",
+      "LAST_PICK": "最新の予想"
     },
     "RECORD_HINT": "勝ち / 負け / プッシュ",
     "SAMPLE_HINT": "{picks, number}件中{graded, number}件判定済み",

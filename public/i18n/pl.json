@@ -398,6 +398,7 @@
     "FILTERS": {
       "SPORT": "Dyscyplina",
       "ALL_SPORTS": "Wszystkie dyscypliny",
+      "SPORTS_SELECTED": "Wybrano: {count}",
       "PERIOD": "Okres",
       "SORT": "Sortuj według",
       "PERIOD_30D": "30 dni",
@@ -419,7 +420,8 @@
       "ROI": "ROI",
       "SAMPLE": "Rozliczone typy",
       "SPORTS": "Dyscypliny",
-      "PROGRESS": "Postęp"
+      "PROGRESS": "Postęp",
+      "LAST_PICK": "Ostatni typ"
     },
     "RECORD_HINT": "Wygrane / przegrane / zwroty",
     "SAMPLE_HINT": "Rozliczone: {graded, number} z {picks, number}",

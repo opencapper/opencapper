@@ -9,10 +9,18 @@ import {
   pickMetadata,
   profileText,
 } from "@/lib/seo/metadata";
+import getQueryClient from "@/lib/react-query/client";
+import { queryKeys } from "@/lib/react-query/keys";
+import {
+  prefetchAuth,
+  prefetchElysia,
+  serverRpc,
+} from "@/lib/react-query/prefetch";
 import { getCookieValue, serverLocale } from "@/lib/utils/server";
 import { serverEnv } from "@/server/env";
 import { findPick } from "@/server/picks/picks.service";
 import { getCapperStats } from "@/server/stats/stats.service";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -64,13 +72,44 @@ export default async function CapperPage(props: Props) {
   const tableStores = parseDataTableStores(
     await getCookieValue<unknown>(DATA_TABLES_COOKIE),
   );
+  const queryClient = getQueryClient();
+  const user = serverRpc.api.users({ username });
+  const loaded = await Promise.all([
+    prefetchElysia(queryClient, queryKeys.userStats(username), (headers) =>
+      user.stats.get(headers),
+    ),
+    prefetchElysia(queryClient, queryKeys.userPicks(username), (headers) =>
+      user.picks.get(headers),
+    ),
+  ]);
+  const stats = loaded[0];
+  const picks = loaded[1];
+  const viewer = stats?.hidden ? await prefetchAuth(queryClient) : null;
+  // The history tab opens first only without live picks; the claims list renders only on a hidden profile.
+  await Promise.all([
+    stats?.history && picks?.length === 0
+      ? prefetchElysia(
+          queryClient,
+          queryKeys.userHistory(username),
+          (headers) => user.history.get(headers),
+        )
+      : null,
+    viewer
+      ? prefetchElysia(queryClient, queryKeys.myClaims(), (headers) =>
+          serverRpc.api.me.claims.get(headers),
+        )
+      : null,
+  ]);
+
   return (
-    <DataTableProvider data={tableStores}>
-      <CapperProfile
-        username={username}
-        ranking={serverEnv.ranking}
-        highlightPickId={typeof pick === "string" ? pick : null}
-      />
-    </DataTableProvider>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <DataTableProvider data={tableStores}>
+        <CapperProfile
+          username={username}
+          ranking={serverEnv.ranking}
+          highlightPickId={typeof pick === "string" ? pick : null}
+        />
+      </DataTableProvider>
+    </HydrationBoundary>
   );
 }

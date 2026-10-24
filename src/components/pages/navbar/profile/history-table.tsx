@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { CARD_LABEL } from "@/components/elements/page/page-heading";
 import { PickStatusBadge } from "@/components/elements/badge/pick-status-badge";
 import { SourceIcon } from "@/components/elements/source/source-badge";
@@ -54,15 +55,22 @@ export function HistoryTable(props: { username: string; stats: HistoryStats }) {
     },
     {
       id: "market",
-      header: t("PROFILE.PICKS.MARKET"),
-      enableSorting: false,
+      accessorFn: (pick) => pick.market,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.MARKET" />
+      ),
       size: 100,
       cell: ({ row }) => t(MARKET_KEY[row.original.market]),
     },
     {
       id: "selection",
-      header: t("PROFILE.PICKS.SELECTION"),
-      enableSorting: false,
+      accessorFn: (pick) => pick.selection,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="PROFILE.PICKS.SELECTION"
+        />
+      ),
       size: 140,
       cell: ({ row }) => row.original.selection,
     },
@@ -95,8 +103,10 @@ export function HistoryTable(props: { username: string; stats: HistoryStats }) {
     },
     {
       id: "status",
-      header: t("PROFILE.PICKS.STATUS"),
-      enableSorting: false,
+      accessorFn: (pick) => pick.result,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="PROFILE.PICKS.STATUS" />
+      ),
       size: 100,
       cell: ({ row }) => <PickStatusBadge result={row.original.result} />,
     },
@@ -163,8 +173,9 @@ export function HistoryTable(props: { username: string; stats: HistoryStats }) {
 function TransactionCell(props: { pick: ApiHistoryPick }) {
   const t = useTranslations();
   const locale = useLocale();
-  const traded = formatDateTime(props.pick.tradedAt, locale);
-  const start = formatDateTime(props.pick.commenceTime, locale);
+  const local = useHydrated();
+  const traded = formatDateTime(props.pick.tradedAt, locale, local);
+  const start = formatDateTime(props.pick.commenceTime, locale, local);
   return (
     <>
       <Tooltip>

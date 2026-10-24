@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { ParticipantAvatar } from "@/components/elements/participant/participant-avatar";
 import { VendorLogo } from "@/components/elements/vendor/vendor-logo";
 import { Button } from "@/components/ui/button";
@@ -31,14 +32,14 @@ function fold(value: string): string {
     .toLowerCase();
 }
 
-function groupByDay(events: ApiBoardEvent[]) {
+function groupByDay(events: ApiBoardEvent[], local: boolean) {
   const days: { key: string; events: ApiBoardEvent[] }[] = [];
   // Eden revives ISO strings into Dates, so compare as timestamps.
   const sorted = events.toSorted(
     (a, b) => dayjs(a.commenceTime).valueOf() - dayjs(b.commenceTime).valueOf(),
   );
   for (const event of sorted) {
-    const key = dayKey(event.commenceTime);
+    const key = dayKey(event.commenceTime, local);
     const last = days.at(-1);
     if (last && last.key === key) last.events.push(event);
     else days.push({ key, events: [event] });
@@ -60,11 +61,12 @@ export function EventBoard(props: {
 }) {
   const t = useTranslations("PICK_NEW.BOARD");
   const locale = useLocale();
+  const local = useHydrated();
   const query = fold(props.search.trim());
   const events = (props.board?.events ?? []).filter(
     (e) => !query || fold(`${e.home} ${e.away}`).includes(query),
   );
-  const days = groupByDay(events);
+  const days = groupByDay(events, local);
 
   return (
     <section className="flex flex-col gap-4">
@@ -118,7 +120,11 @@ export function EventBoard(props: {
         <div key={day.key} className="flex flex-col gap-2">
           <h3 className="flex items-baseline justify-between gap-3">
             <span className="label-mono text-foreground/80 text-[11px]">
-              <DayHeading value={day.events[0].commenceTime} locale={locale} />
+              <DayHeading
+                value={day.events[0].commenceTime}
+                locale={locale}
+                local={local}
+              />
             </span>
             <span className="text-muted-foreground tabular text-xs">
               {t("EVENT_COUNT", { count: day.events.length })}
@@ -145,7 +151,7 @@ export function EventBoard(props: {
       ))}
 
       {props.board && props.board.events.length > 0 && (
-        <p className="text-muted-foreground text-xs">
+        <p className="text-muted-foreground text-xs" suppressHydrationWarning>
           {props.board.pricedAt
             ? t("PRICES_NOTE", {
                 relative: formatRelative(props.board.pricedAt, locale),
@@ -157,10 +163,10 @@ export function EventBoard(props: {
   );
 }
 
-function DayHeading(props: { value: string; locale: string }) {
+function DayHeading(props: { value: string; locale: string; local: boolean }) {
   const t = useTranslations("PICK_NEW.BOARD");
-  const offset = daysFromToday(props.value);
-  const date = formatDayHeading(props.value, props.locale);
+  const offset = daysFromToday(props.value, props.local);
+  const date = formatDayHeading(props.value, props.locale, props.local);
   if (offset === 0) return <>{`${t("TODAY")}, ${date}`}</>;
   if (offset === 1) return <>{`${t("TOMORROW")}, ${date}`}</>;
   return <>{date}</>;
@@ -175,6 +181,7 @@ function EventRow(props: {
 }) {
   const t = useTranslations("PICK_NEW.BOARD");
   const locale = useLocale();
+  const local = useHydrated();
   const fighters = isFighterGroup(sportGroup(props.sportKey));
   const line = props.event.moneyline;
   const isPicked = (name: string) =>
@@ -206,9 +213,12 @@ function EventRow(props: {
     >
       <div className="flex flex-col pt-1.5">
         <span className="tabular text-sm font-medium">
-          {formatTime(props.event.commenceTime, locale)}
+          {formatTime(props.event.commenceTime, locale, local)}
         </span>
-        <span className="text-muted-foreground text-xs">
+        <span
+          className="text-muted-foreground text-xs"
+          suppressHydrationWarning
+        >
           {formatRelative(props.event.commenceTime, locale)}
         </span>
       </div>

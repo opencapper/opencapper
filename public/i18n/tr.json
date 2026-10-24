@@ -398,6 +398,7 @@
     "FILTERS": {
       "SPORT": "Spor",
       "ALL_SPORTS": "Tüm sporlar",
+      "SPORTS_SELECTED": "{count} seçili",
       "PERIOD": "Dönem",
       "SORT": "Sırala",
       "PERIOD_30D": "30 gün",
@@ -419,7 +420,8 @@
       "ROI": "ROI",
       "SAMPLE": "Sonuçlanan tahmin",
       "SPORTS": "Sporlar",
-      "PROGRESS": "İlerleme"
+      "PROGRESS": "İlerleme",
+      "LAST_PICK": "Son tahmin"
     },
     "RECORD_HINT": "Kazanç / kayıp / iade",
     "SAMPLE_HINT": "{picks, number} tahminden {graded, number} tanesi sonuçlandı",

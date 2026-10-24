@@ -6,10 +6,8 @@ import type { LeaderboardRow } from "@/lib/types";
 import { PAGE_SIZE_OPTIONS } from "@/lib/config/constants";
 import type { PaginationState, SortingState } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
-import type {
-  LeaderboardFilterState,
-  SetLeaderboardFilters,
-} from "./leaderboard-filters";
+import type { SetLeaderboardFilters } from "./leaderboard-filters";
+import type { LeaderboardFilterState } from "./leaderboard-params";
 import { buildLeaderboardColumns } from "./leaderboard-columns";
 
 export function LeaderboardResults(props: {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { CARD_LABEL } from "@/components/elements/page/page-heading";
 import {
   Card,
@@ -32,6 +33,7 @@ function netUnits(pick: ApiPick): number {
 export function UnitsChart(props: { picks: ApiPick[] }) {
   const t = useTranslations("PROFILE.CHART");
   const locale = useLocale();
+  const local = useHydrated();
 
   const graded = props.picks
     .filter((pick) => pick.result !== "pending" && pick.result !== "void")
@@ -42,7 +44,7 @@ export function UnitsChart(props: { picks: ApiPick[] }) {
     const previous = acc.at(-1)?.units ?? 0;
     acc.push({
       sequence: pick.sequence,
-      date: formatShortDate(pick.commenceTime, locale),
+      date: formatShortDate(pick.commenceTime, locale, local),
       units: Math.round((previous + netUnits(pick)) * 100) / 100,
     });
     return acc;

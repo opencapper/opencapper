@@ -1,4 +1,7 @@
-import type { LeaderboardQuery } from "@/lib/api/typebox/leaderboard";
+import {
+  parseSportList,
+  type LeaderboardQuery,
+} from "@/lib/api/typebox/leaderboard";
 import { leaderboardFilters } from "@/lib/seo/metadata";
 import {
   formatPercent,
@@ -38,7 +41,7 @@ export async function leaderboardCard(
   const [t, board, filters] = await Promise.all([
     getTranslations({ locale }),
     getLeaderboard({ sport: query.sport, period: query.period, sort: "roi" }),
-    leaderboardFilters(locale, query.sport, query.period),
+    leaderboardFilters(locale, parseSportList(query.sport), query.period),
   ]);
   const rows = board.rows.slice(0, TOP);
   const sources = await Promise.all(

@@ -29,6 +29,7 @@ export function LeaderboardUnranked(props: {
         id="LEADERBOARD_UNRANKED"
         data={props.rows}
         columns={columns}
+        localSorting
       />
     </section>
   );

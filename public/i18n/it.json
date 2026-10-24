@@ -398,6 +398,7 @@
     "FILTERS": {
       "SPORT": "Sport",
       "ALL_SPORTS": "Tutti gli sport",
+      "SPORTS_SELECTED": "{count} selezionati",
       "PERIOD": "Periodo",
       "SORT": "Ordina per",
       "PERIOD_30D": "30 giorni",
@@ -419,7 +420,8 @@
       "ROI": "ROI",
       "SAMPLE": "Pronostici refertati",
       "SPORTS": "Sport",
-      "PROGRESS": "Avanzamento"
+      "PROGRESS": "Avanzamento",
+      "LAST_PICK": "Ultimo pronostico"
     },
     "RECORD_HINT": "Vinti / persi / rimborsati",
     "SAMPLE_HINT": "{graded, number} refertati su {picks, number} pronostici",

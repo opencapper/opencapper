@@ -398,6 +398,7 @@
     "FILTERS": {
       "SPORT": "Sport",
       "ALL_SPORTS": "Alle sporten",
+      "SPORTS_SELECTED": "{count} geselecteerd",
       "PERIOD": "Periode",
       "SORT": "Sorteren op",
       "PERIOD_30D": "30 dagen",
@@ -419,7 +420,8 @@
       "ROI": "ROI",
       "SAMPLE": "Beoordeelde tips",
       "SPORTS": "Sporten",
-      "PROGRESS": "Voortgang"
+      "PROGRESS": "Voortgang",
+      "LAST_PICK": "Laatste tip"
     },
     "RECORD_HINT": "Winst / verlies / push",
     "SAMPLE_HINT": "{graded, number} beoordeeld van {picks, number} tips",

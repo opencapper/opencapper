@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { PickStatusBadge } from "@/components/elements/badge/pick-status-badge";
 import { CapperAvatar } from "@/components/elements/capper/capper-avatar";
 import { SourceIcon } from "@/components/elements/source/source-badge";
@@ -23,6 +24,7 @@ import { useLocale, useTranslations } from "next-intl";
 export function AdminPicks(props: { active: boolean }) {
   const t = useTranslations();
   const locale = useLocale();
+  const local = useHydrated();
   const picks = useAdminPicksQuery(props.active);
 
   const columns: ColumnDef<TableFeats, AdminPick>[] = [
@@ -57,16 +59,20 @@ export function AdminPicks(props: { active: boolean }) {
     },
     {
       id: "event",
-      header: t("ADMIN.PICKS.EVENT"),
-      enableSorting: false,
+      accessorFn: (row) => dayjs(row.commenceTime).valueOf(),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.PICKS.EVENT" />
+      ),
       size: 260,
       meta: { cellClassName: "min-w-56" },
       cell: ({ row }) => <EventCell event={row.original} />,
     },
     {
       id: "selection",
-      header: t("ADMIN.PICKS.SELECTION"),
-      enableSorting: false,
+      accessorFn: (row) => row.selection,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.PICKS.SELECTION" />
+      ),
       size: 150,
       cell: ({ row }) => (
         <>
@@ -81,8 +87,11 @@ export function AdminPicks(props: { active: boolean }) {
     },
     {
       id: "source",
-      header: t("ADMIN.PICKS.SOURCE"),
-      enableSorting: false,
+      accessorFn: (row) => row.source?.platform,
+      sortUndefined: "last",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.PICKS.SOURCE" />
+      ),
       size: 110,
       cell: ({ row }) =>
         row.original.source ? (
@@ -122,7 +131,7 @@ export function AdminPicks(props: { active: boolean }) {
       size: 160,
       cell: ({ row }) => (
         <span className="text-muted-foreground tabular text-xs">
-          {formatDateTime(row.original.createdAt, locale)}
+          {formatDateTime(row.original.createdAt, locale, local)}
         </span>
       ),
     },

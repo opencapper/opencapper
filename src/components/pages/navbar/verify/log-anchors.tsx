@@ -1,7 +1,9 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { CARD_LABEL } from "@/components/elements/page/page-heading";
 import { DataTable } from "@/components/elements/table/data-table";
+import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -14,7 +16,7 @@ import { Icon } from "@/components/ui/icon";
 import { useLogAnchorsQuery } from "@/hooks/log/log-hook";
 import type { TableFeats } from "@/lib/config/table-features";
 import type { ApiLogAnchor } from "@/lib/types";
-import { formatDateTime } from "@/lib/utils/format/date";
+import { dayjs, formatDateTime } from "@/lib/utils/format/date";
 import { apiErrorText } from "@/lib/utils/api-error";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
@@ -23,19 +25,33 @@ export function LogAnchors() {
   const t = useTranslations("VERIFY.ANCHORS");
   const tRoot = useTranslations();
   const locale = useLocale();
+  const local = useHydrated();
   const anchors = useLogAnchorsQuery();
 
   const columns: ColumnDef<TableFeats, ApiLogAnchor>[] = [
     {
       id: "date",
-      header: t("COLUMNS.DATE"),
+      accessorFn: (row) => dayjs(row.createdAt).valueOf(),
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="VERIFY.ANCHORS.COLUMNS.DATE"
+        />
+      ),
       size: 150,
       meta: { cellClassName: "tabular whitespace-nowrap" },
-      cell: ({ row }) => formatDateTime(row.original.createdAt, locale),
+      cell: ({ row }) => formatDateTime(row.original.createdAt, locale, local),
     },
     {
       id: "size",
-      header: t("COLUMNS.SIZE"),
+      accessorFn: (row) => row.size,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="VERIFY.ANCHORS.COLUMNS.SIZE"
+          className="justify-end"
+        />
+      ),
       size: 70,
       meta: {
         headerClassName: "text-right",
@@ -45,7 +61,13 @@ export function LogAnchors() {
     },
     {
       id: "status",
-      header: t("COLUMNS.STATUS"),
+      accessorFn: (row) => (row.upgraded ? 1 : 0),
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="VERIFY.ANCHORS.COLUMNS.STATUS"
+        />
+      ),
       size: 130,
       cell: ({ row }) => (
         <Badge variant="outline">
@@ -55,7 +77,13 @@ export function LogAnchors() {
     },
     {
       id: "root",
-      header: t("COLUMNS.ROOT"),
+      accessorFn: (row) => row.root,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="VERIFY.ANCHORS.COLUMNS.ROOT"
+        />
+      ),
       size: 320,
       meta: {
         cellClassName:
@@ -98,6 +126,7 @@ export function LogAnchors() {
             data={anchors.data ?? []}
             columns={columns}
             isLoading={anchors.isPending}
+            localSorting
             emptyState={
               <span className="text-muted-foreground text-sm">
                 {t("EMPTY")}

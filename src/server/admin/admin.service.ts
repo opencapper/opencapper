@@ -2,6 +2,7 @@ import {
   ADMIN_LIST_LIMIT,
   ADMIN_USERS_PAGE_SIZE,
   type AdminUsersQuery,
+  type AdminUsersSort,
 } from "@/lib/api/typebox/admin";
 import { SOURCE_PLATFORMS } from "@/lib/api/typebox/sources";
 import { getDb } from "@/lib/db/server/client";
@@ -37,7 +38,17 @@ import {
 import { toApiPick } from "@/server/picks/picks.mapper";
 import { activeClaim } from "@/server/claims/profile-claims";
 import { avatarColumns, avatarUrl } from "@/server/users/avatar";
-import { and, count, desc, eq, ilike, isNull, or, sql } from "drizzle-orm";
+import {
+  and,
+  count,
+  desc,
+  eq,
+  ilike,
+  isNull,
+  or,
+  sql,
+  type SQL,
+} from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 
 function pickCounts() {
@@ -50,6 +61,22 @@ function pickCounts() {
 
 function escapeLike(value: string) {
   return value.replace(/[\\%_]/g, (char) => `\\${char}`);
+}
+
+function userSortKey(
+  sort: AdminUsersSort,
+  counts: ReturnType<typeof pickCounts>,
+  providers: { list: SQL.Aliased<string[]> },
+): SQL {
+  const keys = {
+    user: sql`${users.username}`,
+    providers: sql`coalesce(array_length(${providers.list}, 1), 0)`,
+    role: sql`${authUser.role}`,
+    status: sql`coalesce(${authUser.banned}, false)`,
+    picks: sql`coalesce(${counts.total}, 0)`,
+    created: sql`${users.createdAt}`,
+  } satisfies Record<AdminUsersSort, SQL>;
+  return keys[sort];
 }
 
 export async function listAdminUsers(
@@ -101,7 +128,10 @@ export async function listAdminUsers(
       .leftJoin(providers, eq(providers.userId, users.authUserId))
       .leftJoin(counts, eq(counts.userId, users.id))
       .where(where)
-      .orderBy(desc(users.createdAt), desc(users.id))
+      .orderBy(
+        sql`${userSortKey(query.sort ?? "created", counts, providers)} ${sql.raw(query.order === "asc" ? "asc" : "desc")} nulls last`,
+        desc(users.id),
+      )
       .limit(pageSize)
       .offset((page - 1) * pageSize),
     db

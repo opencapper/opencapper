@@ -22,3 +22,12 @@ export const getCookieValue = async <T>(
     return undefined;
   }
 };
+
+// Server prefetches call the API in process; the session cookie is what makes them the viewer's calls.
+export const serverRequestHeaders = async () => {
+  const cookie = (await cookies())
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+  return { headers: { cookie } };
+};

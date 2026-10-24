@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLogAnchorsQuery, useLogHeadQuery } from "@/hooks/log/log-hook";
 import type { ApiLogAnchor } from "@/lib/types";
@@ -10,17 +11,17 @@ function stampText(
   t: ReturnType<typeof useTranslations<"VERIFY.STATS">>,
   anchor: ApiLogAnchor | undefined,
   locale: string,
+  local: boolean,
 ): string {
   if (!anchor) return t("NO_STAMP");
-  const date = formatDate(anchor.createdAt, locale);
-  return anchor.upgraded
-    ? t("STAMP", { date })
-    : t("STAMP_PENDING", { date });
+  const date = formatDate(anchor.createdAt, locale, local);
+  return anchor.upgraded ? t("STAMP", { date }) : t("STAMP_PENDING", { date });
 }
 
 export function LogStats() {
   const t = useTranslations("VERIFY.STATS");
   const locale = useLocale();
+  const local = useHydrated();
   const head = useLogHeadQuery();
   const anchors = useLogAnchorsQuery();
 
@@ -31,10 +32,13 @@ export function LogStats() {
     parts.push(
       t("LAST", { time: formatRelative(head.data.updatedAt, locale) }),
     );
-  if (anchors.data) parts.push(stampText(t, anchors.data[0], locale));
+  if (anchors.data) parts.push(stampText(t, anchors.data[0], locale, local));
 
   return (
-    <p className="text-foreground/70 text-sm leading-relaxed">
+    <p
+      className="text-foreground/70 text-sm leading-relaxed"
+      suppressHydrationWarning
+    >
       {parts.join(", ")}
     </p>
   );

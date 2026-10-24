@@ -398,6 +398,7 @@
     "FILTERS": {
       "SPORT": "Sport",
       "ALL_SPORTS": "All sports",
+      "SPORTS_SELECTED": "{count} selected",
       "PERIOD": "Period",
       "SORT": "Sort by",
       "PERIOD_30D": "30 days",
@@ -419,7 +420,8 @@
       "ROI": "ROI",
       "SAMPLE": "Graded picks",
       "SPORTS": "Sports",
-      "PROGRESS": "Progress"
+      "PROGRESS": "Progress",
+      "LAST_PICK": "Last pick"
     },
     "RECORD_HINT": "Wins / losses / pushes",
     "SAMPLE_HINT": "{graded, number} graded of {picks, number} picks",

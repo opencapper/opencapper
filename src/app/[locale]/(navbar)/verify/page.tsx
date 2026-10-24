@@ -1,4 +1,8 @@
+import { parseSearch } from "@/components/pages/navbar/verify/search-target";
 import { VerifyLog } from "@/components/pages/navbar/verify/verify-log";
+import getQueryClient from "@/lib/react-query/client";
+import { queryKeys } from "@/lib/react-query/keys";
+import { prefetchElysia, serverRpc } from "@/lib/react-query/prefetch";
 import {
   buildMetadata,
   ogImage,
@@ -7,6 +11,7 @@ import {
 } from "@/lib/seo/metadata";
 import { serverLocale } from "@/lib/utils/server";
 import { findPick, type PickRef } from "@/server/picks/picks.service";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
@@ -53,5 +58,34 @@ export default async function VerifyPage(props: Props) {
   const user = single(query.user);
   const seq = single(query.seq);
   const initial = pick || (user && seq ? `${user}#${seq}` : user);
-  return <VerifyLog initial={initial} />;
+  const queryClient = getQueryClient();
+  const username = await searchedUsername(initial);
+  // The log entry check itself stays in the browser: it hashes the entry there.
+  await Promise.all([
+    prefetchElysia(queryClient, queryKeys.logHead(), (headers) =>
+      serverRpc.api.log.head.get(headers),
+    ),
+    prefetchElysia(queryClient, queryKeys.logAnchors(), (headers) =>
+      serverRpc.api.log.anchors.get(headers),
+    ),
+    username
+      ? prefetchElysia(queryClient, queryKeys.userPicks(username), (headers) =>
+          serverRpc.api.users({ username }).picks.get(headers),
+        )
+      : null,
+  ]);
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <VerifyLog initial={initial} />
+    </HydrationBoundary>
+  );
+}
+
+// The capper whose picks the search results list, lowercased like the client's key.
+async function searchedUsername(initial: string): Promise<string | null> {
+  const target = parseSearch(initial);
+  if (!target) return null;
+  if (target.kind !== "pick") return target.username.toLowerCase();
+  const found = await orNull(findPick({ pickId: target.pickId }));
+  return found ? found.username.toLowerCase() : null;
 }

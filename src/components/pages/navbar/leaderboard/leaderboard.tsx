@@ -8,6 +8,7 @@ import { apiErrorText } from "@/lib/utils/api-error";
 import { useTranslations } from "next-intl";
 import { useLeaderboardFilters } from "./leaderboard-filters";
 import { LeaderboardMethod } from "./leaderboard-method";
+import { leaderboardQuery } from "./leaderboard-params";
 import { LeaderboardResults } from "./leaderboard-results";
 import { LeaderboardToolbar } from "./leaderboard-toolbar";
 import { LeaderboardUnranked } from "./leaderboard-unranked";
@@ -18,15 +19,7 @@ export function Leaderboard(props: { minGraded: number }) {
   const filterState = useLeaderboardFilters();
   const filters = filterState[0];
   const setFilters = filterState[1];
-  const leaderboard = useLeaderboardQuery({
-    sport: filters.sport ?? undefined,
-    period: filters.period,
-    sort: filters.sort,
-    order: filters.order,
-    scope: filters.scope,
-    page: String(filters.page),
-    pageSize: String(filters.size),
-  });
+  const leaderboard = useLeaderboardQuery(leaderboardQuery(filters));
   const data = leaderboard.data;
   const minGraded = data?.minGraded ?? props.minGraded;
 

@@ -13,6 +13,7 @@ import {
   useAdminImportsQuery,
   useAdminRevokeClaimMutation,
 } from "@/hooks/admin/admin-hook";
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { Link } from "@/i18n/navigation";
 import { can, type AuthRole } from "@/lib/config/permissions";
 import type { TableFeats } from "@/lib/config/table-features";
@@ -27,6 +28,7 @@ import { ClaimSheet } from "./claim-sheet";
 export function AdminImports(props: { active: boolean; role: AuthRole }) {
   const t = useTranslations();
   const locale = useLocale();
+  const local = useHydrated();
   const imports = useAdminImportsQuery(props.active);
   const hide = useAdminHideProfileMutation();
   const revoke = useAdminRevokeClaimMutation();
@@ -79,8 +81,10 @@ export function AdminImports(props: { active: boolean; role: AuthRole }) {
     },
     {
       id: "handle",
-      header: t("ADMIN.IMPORTS.HANDLE"),
-      enableSorting: false,
+      accessorFn: (row) => row.handle,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.IMPORTS.HANDLE" />
+      ),
       size: 200,
       cell: ({ row }) => (
         <a
@@ -139,15 +143,18 @@ export function AdminImports(props: { active: boolean; role: AuthRole }) {
       cell: ({ row }) => (
         <span className="text-muted-foreground tabular text-xs">
           {row.original.lastImportAt
-            ? formatDateTime(row.original.lastImportAt, locale)
+            ? formatDateTime(row.original.lastImportAt, locale, local)
             : t("ADMIN.NEVER")}
         </span>
       ),
     },
     {
       id: "status",
-      header: t("ADMIN.IMPORTS.STATUS"),
-      enableSorting: false,
+      // Hidden first, then claimed, then visible.
+      accessorFn: (row) => (row.hiddenAt ? 2 : row.claimedBy ? 1 : 0),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.IMPORTS.STATUS" />
+      ),
       size: 190,
       cell: ({ row }) => (
         <div className="flex flex-wrap items-center gap-1.5 text-xs">

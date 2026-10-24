@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { Matchup } from "@/components/elements/participant/matchup";
 import {
   SportIcon,
@@ -79,10 +80,7 @@ export function SealBadge(props: { state: SealState }) {
     >
       <Icon
         name={seal.icon}
-        className={cn(
-          "size-5",
-          props.state === "checking" && "animate-spin",
-        )}
+        className={cn("size-5", props.state === "checking" && "animate-spin")}
       />
       {t(seal.key)}
     </span>
@@ -92,6 +90,7 @@ export function SealBadge(props: { state: SealState }) {
 export function PickCheckCard(props: { pick: ApiPick }) {
   const t = useTranslations();
   const locale = useLocale();
+  const local = useHydrated();
   const logged = props.pick.logSeq != null;
   const check = useLogVerifyQuery(
     logged ? { kind: "pick", pickId: Number(props.pick.id) } : null,
@@ -126,7 +125,7 @@ export function PickCheckCard(props: { pick: ApiPick }) {
           <span className="tabular inline-flex items-center gap-1.5">
             <Icon name="lock" className="size-3.5" />
             {t("VERIFY.CARD.LOCKED", {
-              time: formatDateTime(props.pick.createdAt, locale),
+              time: formatDateTime(props.pick.createdAt, locale, local),
             })}
           </span>
           <Link

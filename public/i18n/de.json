@@ -398,6 +398,7 @@
     "FILTERS": {
       "SPORT": "Sportart",
       "ALL_SPORTS": "Alle Sportarten",
+      "SPORTS_SELECTED": "{count} ausgewählt",
       "PERIOD": "Zeitraum",
       "SORT": "Sortieren nach",
       "PERIOD_30D": "30 Tage",
@@ -419,7 +420,8 @@
       "ROI": "ROI",
       "SAMPLE": "Gewertete Tipps",
       "SPORTS": "Sportarten",
-      "PROGRESS": "Fortschritt"
+      "PROGRESS": "Fortschritt",
+      "LAST_PICK": "Letzter Tipp"
     },
     "RECORD_HINT": "Siege / Niederlagen / Pushes",
     "SAMPLE_HINT": "{graded, number} gewertet von {picks, number} Tipps",

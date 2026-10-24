@@ -170,12 +170,15 @@ const PERIOD_KEY = {
 
 export async function leaderboardFilters(
   locale: Locale,
-  sport: SportGroup | undefined,
+  sports: SportGroup[],
   period: LeaderboardPeriod | undefined,
 ): Promise<string> {
   const t = await getTranslations({ locale });
+  const list = new Intl.ListFormat(locale, { type: "conjunction" });
   return [
     t(PERIOD_KEY[period ?? "all"]),
-    sport ? t(sportLabelKey(sport)) : t("LEADERBOARD.FILTERS.ALL_SPORTS"),
+    sports.length > 0
+      ? list.format(sports.map((sport) => t(sportLabelKey(sport))))
+      : t("LEADERBOARD.FILTERS.ALL_SPORTS"),
   ].join(", ");
 }

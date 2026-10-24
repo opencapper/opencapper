@@ -6,6 +6,7 @@ import {
   type LeaderboardScope,
   type LeaderboardQuery,
   type LeaderboardSort,
+  parseSportList,
 } from "@/lib/api/typebox/leaderboard";
 import { getDb } from "@/lib/db/server/client";
 import { authUser, historyPicks, picks, users } from "@/lib/db/schema/server";
@@ -21,7 +22,7 @@ import {
   type AvatarSource,
 } from "@/server/users/avatar";
 import { visibleUser } from "@/server/users/hidden";
-import { and, eq, sql, type SQL, type SQLWrapper } from "drizzle-orm";
+import { and, eq, inArray, sql, type SQL, type SQLWrapper } from "drizzle-orm";
 import { unionAll } from "drizzle-orm/pg-core";
 
 const CACHE_TTL_MS = 60_000;
@@ -39,8 +40,11 @@ const PERIOD_DAYS = {
 const GRADED = sql.raw("('win', 'loss', 'push')");
 
 // Rugby keys are rugbyleague_* and rugbyunion_*, every other group is `<group>_*`.
-function sportFilter(column: SQLWrapper, group: SportGroup): SQL {
-  return sql`${column} like ${group === "rugby" ? "rugby%" : `${group}\\_%`}`;
+function sportFilter(column: SQLWrapper, groups: SportGroup[]): SQL {
+  const prefixes = groups.flatMap((group) =>
+    group === "rugby" ? ["rugbyleague", "rugbyunion"] : [group],
+  );
+  return inArray(sql`split_part(${column}, '_', 1)`, prefixes);
 }
 
 function sportGroups(prefixes: string[]): SportGroup[] {
@@ -53,7 +57,7 @@ function sportGroups(prefixes: string[]): SportGroup[] {
 }
 
 type Input = {
-  sport?: SportGroup;
+  sports: SportGroup[];
   period: LeaderboardPeriod;
   sort: LeaderboardSort;
   order: LeaderboardOrder;
@@ -73,7 +77,8 @@ function filtersFor(
     filters.push(
       sql`${columns.commenceTime} >= ${dayjs().subtract(days, "day").toISOString()}`,
     );
-  if (input.sport) filters.push(sportFilter(columns.sportKey, input.sport));
+  if (input.sports.length > 0)
+    filters.push(sportFilter(columns.sportKey, input.sports));
   return filters;
 }
 
@@ -87,6 +92,7 @@ function aggregate(input: Input) {
       result: picks.result,
       units: picks.units,
       oddsDecimal: picks.oddsDecimal,
+      at: picks.createdAt,
       live: sql<boolean>`true`.as("live"),
     })
     .from(picks)
@@ -98,6 +104,7 @@ function aggregate(input: Input) {
       result: historyPicks.result,
       units: historyPicks.units,
       oddsDecimal: historyPicks.oddsDecimal,
+      at: historyPicks.tradedAt,
       live: sql<boolean>`false`.as("live"),
     })
     .from(historyPicks)
@@ -109,6 +116,7 @@ function aggregate(input: Input) {
     );
   const src = unionAll(live, history).as("src");
   const graded = sql`count(*) filter (where ${src.result} in ${GRADED})::int`;
+  const prefix = sql`split_part(${src.sportKey}, '_', 1)`;
 
   return {
     graded,
@@ -137,6 +145,13 @@ function aggregate(input: Input) {
         >`array_agg(distinct split_part(${src.sportKey}, '_', 1))`.as(
           "prefixes",
         ),
+        sportCount:
+          sql`count(distinct case when ${prefix} like 'rugby%' then 'rugby' else ${prefix} end)::int`
+            .mapWith(Number)
+            .as("sport_count"),
+        lastPickAt: sql<Date | string | null>`max(${src.at})`.as(
+          "last_pick_at",
+        ),
       })
       .from(src)
       .groupBy(src.userId),
@@ -154,6 +169,7 @@ type AggRow = AvatarSource & {
   units: number;
   unitsRisked: number;
   prefixes: string[];
+  lastPickAt: Date | string | null;
   source: SourcePlatform | null;
 };
 
@@ -171,6 +187,7 @@ function toRow(row: AggRow): UnrankedRow {
     unitsRisked: row.unitsRisked,
     roi: row.unitsRisked > 0 ? row.units / row.unitsRisked : 0,
     sports: sportGroups(row.prefixes),
+    lastPickAt: row.lastPickAt ? dayjs(row.lastPickAt).toISOString() : null,
     source: row.source,
     avatarUrl: avatarUrl(row, 64),
   };
@@ -193,22 +210,34 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
     units: agg.units,
     unitsRisked: agg.unitsRisked,
     prefixes: agg.prefixes,
+    lastPickAt: agg.lastPickAt,
     source: users.sourcePlatform,
     ...avatarColumns,
   });
 
   const roi = sql`${rankedAgg.units} / nullif(${rankedAgg.unitsRisked}, 0)`;
-  const key = {
+  const metric = {
     roi,
     units: sql`${rankedAgg.units}`,
     picks: sql`${rankedAgg.graded}`,
+  };
+  // Rank is the position by the chosen metric; every other column ranks by ROI.
+  const rankKey =
+    input.sort === "units" || input.sort === "picks" ? metric[input.sort] : roi;
+  const order = sql`${rankKey} desc nulls last, ${rankedAgg.graded} desc, ${users.username} asc`;
+  const reversed = sql`${rankKey} asc nulls first, ${rankedAgg.graded} asc, ${users.username} desc`;
+  const dir = sql.raw(input.order === "asc" ? "asc" : "desc");
+  const listOrder = {
+    roi: input.order === "asc" ? reversed : order,
+    units: input.order === "asc" ? reversed : order,
+    picks: input.order === "asc" ? reversed : order,
+    // Rank 1 heads the descending table, so ascending rank is that order.
+    rank: input.order === "asc" ? order : reversed,
+    capper: sql`${users.username} ${dir}`,
+    record: sql`${rankedAgg.wins}::float / nullif(${rankedAgg.wins} + ${rankedAgg.losses}, 0) ${dir} nulls last, ${rankedAgg.wins} ${dir}, ${users.username} asc`,
+    sports: sql`${rankedAgg.sportCount} ${dir}, ${order}`,
+    last: sql`${rankedAgg.lastPickAt} ${dir} nulls last, ${users.username} asc`,
   } satisfies Record<LeaderboardSort, SQL>;
-  const order = sql`${key[input.sort]} desc nulls last, ${rankedAgg.graded} desc, ${users.username} asc`;
-  // Rank stays the position in the descending table whichever way the page is read.
-  const listOrder =
-    input.order === "asc"
-      ? sql`${key[input.sort]} asc nulls last, ${rankedAgg.graded} asc, ${users.username} desc`
-      : order;
 
   const unranked = aggregate(input);
   const unrankedAgg = unranked.query
@@ -226,7 +255,7 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
       .innerJoin(users, eq(users.id, rankedAgg.userId))
       .leftJoin(authUser, eq(authUser.id, users.authUserId))
       .where(visibleUser)
-      .orderBy(listOrder)
+      .orderBy(listOrder[input.sort])
       .limit(input.pageSize)
       .offset((input.page - 1) * input.pageSize),
     db
@@ -261,7 +290,7 @@ export async function getLeaderboard(
   query: LeaderboardQuery,
 ): Promise<LeaderboardResponse> {
   const input = {
-    sport: query.sport,
+    sports: parseSportList(query.sport).toSorted(),
     period: query.period ?? "all",
     sort: query.sort ?? "roi",
     order: query.order ?? "desc",

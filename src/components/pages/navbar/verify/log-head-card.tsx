@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { CARD_LABEL } from "@/components/elements/page/page-heading";
 import {
   Card,
@@ -19,6 +20,7 @@ export function LogHeadCard() {
   const t = useTranslations("VERIFY.HEAD");
   const tRoot = useTranslations();
   const locale = useLocale();
+  const local = useHydrated();
   const head = useLogHeadQuery();
 
   return (
@@ -47,7 +49,7 @@ export function LogHeadCard() {
               <dt className="text-muted-foreground text-sm">{t("UPDATED")}</dt>
               <dd className="tabular text-sm">
                 {head.data.updatedAt
-                  ? formatDateTime(head.data.updatedAt, locale)
+                  ? formatDateTime(head.data.updatedAt, locale, local)
                   : t("EMPTY")}
               </dd>
             </div>

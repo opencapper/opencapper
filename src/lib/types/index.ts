@@ -266,6 +266,7 @@ export type LeaderboardRow = {
   unitsRisked: number;
   roi: number;
   sports: SportGroup[];
+  lastPickAt: string | null;
   source: SourcePlatform | null;
   avatarUrl: string | null;
   gradedLive: number;

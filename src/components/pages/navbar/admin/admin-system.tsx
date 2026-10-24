@@ -1,5 +1,6 @@
 "use client";
 
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import {
   CARD_LABEL,
   SectionLabel,
@@ -42,6 +43,7 @@ export function AdminSystem(props: { active: boolean }) {
 function SystemCards(props: { system: System }) {
   const t = useTranslations();
   const locale = useLocale();
+  const local = useHydrated();
   const system = props.system;
   const credits = system.oddsCredits;
   const anchor = system.log.lastAnchor;
@@ -59,7 +61,7 @@ function SystemCards(props: { system: System }) {
                 ? t("ADMIN.SYSTEM.ODDS_NOT_CONFIGURED")
                 : credits.updatedAt
                   ? t("ADMIN.SYSTEM.AS_OF", {
-                      time: formatDateTime(credits.updatedAt, locale),
+                      time: formatDateTime(credits.updatedAt, locale, local),
                     })
                   : t("ADMIN.SYSTEM.NO_CALL_YET")
             }
@@ -117,10 +119,10 @@ function SystemCards(props: { system: System }) {
                 ? t("ADMIN.SYSTEM.NO_ANCHOR")
                 : anchor.upgraded
                   ? t("ADMIN.SYSTEM.ANCHOR_CONFIRMED", {
-                      time: formatDateTime(anchor.createdAt, locale),
+                      time: formatDateTime(anchor.createdAt, locale, local),
                     })
                   : t("ADMIN.SYSTEM.ANCHOR_PENDING", {
-                      time: formatDateTime(anchor.createdAt, locale),
+                      time: formatDateTime(anchor.createdAt, locale, local),
                     })
             }
           />
@@ -138,6 +140,7 @@ function SystemCards(props: { system: System }) {
 function ImporterCard(props: { importer: AdminImporterStatus }) {
   const t = useTranslations();
   const locale = useLocale();
+  const local = useHydrated();
   const run = props.importer.lastRun;
   return (
     <StatCard
@@ -153,10 +156,10 @@ function ImporterCard(props: { importer: AdminImporterStatus }) {
           ? t("ADMIN.SYSTEM.NO_RUN_YET")
           : run.failed
             ? t("ADMIN.SYSTEM.RUN_FAILED", {
-                time: formatDateTime(run.at, locale),
+                time: formatDateTime(run.at, locale, local),
               })
             : t("ADMIN.SYSTEM.RUN", {
-                time: formatDateTime(run.at, locale),
+                time: formatDateTime(run.at, locale, local),
                 created: run.created,
                 skipped: run.skipped,
                 credits: run.credits,

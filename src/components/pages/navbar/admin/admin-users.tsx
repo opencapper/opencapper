@@ -2,6 +2,7 @@
 
 import { CapperAvatar } from "@/components/elements/capper/capper-avatar";
 import { DataTable } from "@/components/elements/table/data-table";
+import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,18 +25,25 @@ import {
   useSetRoleMutation,
   useUnbanUserMutation,
 } from "@/hooks/admin/admin-hook";
+import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { Link } from "@/i18n/navigation";
+import { ADMIN_USERS_SORTS } from "@/lib/api/typebox/admin";
 import { PAGE_SIZE_OPTIONS } from "@/lib/config/constants";
 import type { IconName } from "@/lib/config/icon-map";
 import { AUTH_ROLES, can, type AuthRole } from "@/lib/config/permissions";
 import type { TableFeats } from "@/lib/config/table-features";
 import type { AdminUser } from "@/lib/types";
 import { apiErrorText } from "@/lib/utils/api-error";
-import { formatDate, formatDateTime } from "@/lib/utils/format/date";
-import type { ColumnDef, PaginationState } from "@tanstack/react-table";
+import { dayjs, formatDate, formatDateTime } from "@/lib/utils/format/date";
+import type {
+  ColumnDef,
+  PaginationState,
+  SortingState,
+} from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
-import type { AdminFilterState, SetAdminFilters } from "./admin-filters";
+import type { SetAdminFilters } from "./admin-filters";
+import { adminUsersQuery, type AdminFilterState } from "./admin-params";
 import { ROLE_LABELS } from "./admin-labels";
 import { BanSheet } from "./ban-sheet";
 
@@ -53,11 +61,8 @@ export function AdminUsers(props: {
 }) {
   const t = useTranslations();
   const locale = useLocale();
-  const users = useAdminUsersQuery({
-    q: props.filters.q || undefined,
-    page: String(props.filters.page),
-    pageSize: String(props.filters.size),
-  });
+  const local = useHydrated();
+  const users = useAdminUsersQuery(adminUsersQuery(props.filters));
   const setRole = useSetRoleMutation();
   const unban = useUnbanUserMutation();
   const banTarget = useState<AdminUser | null>(null);
@@ -66,6 +71,9 @@ export function AdminUsers(props: {
   const canBan = can(props.role, { user: ["ban"] });
   const mutationError = setRole.error ?? unban.error;
 
+  const sorting: SortingState = [
+    { id: props.filters.sort, desc: props.filters.order === "desc" },
+  ];
   const pagination: PaginationState = {
     pageIndex: props.filters.page - 1,
     pageSize: props.filters.size,
@@ -74,7 +82,10 @@ export function AdminUsers(props: {
   const columns: ColumnDef<TableFeats, AdminUser>[] = [
     {
       id: "user",
-      header: t("ADMIN.USERS.USER"),
+      accessorFn: (row) => row.username,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.USERS.USER" />
+      ),
       size: 240,
       meta: { cellClassName: "min-w-52" },
       cell: ({ row }) => (
@@ -103,7 +114,10 @@ export function AdminUsers(props: {
     },
     {
       id: "providers",
-      header: t("ADMIN.USERS.PROVIDERS"),
+      accessorFn: (row) => row.providers.length,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.USERS.PROVIDERS" />
+      ),
       size: 110,
       cell: ({ row }) => (
         <div className="text-muted-foreground flex items-center gap-1.5">
@@ -125,7 +139,10 @@ export function AdminUsers(props: {
     },
     {
       id: "role",
-      header: t("ADMIN.USERS.ROLE"),
+      accessorFn: (row) => row.role,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.USERS.ROLE" />
+      ),
       size: 150,
       cell: ({ row }) => {
         const target = row.original;
@@ -166,7 +183,10 @@ export function AdminUsers(props: {
     },
     {
       id: "status",
-      header: t("ADMIN.USERS.STATUS"),
+      accessorFn: (row) => (row.banned ? 1 : 0),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.USERS.STATUS" />
+      ),
       size: 110,
       cell: ({ row }) =>
         row.original.banned ? (
@@ -201,18 +221,28 @@ export function AdminUsers(props: {
     },
     {
       id: "picks",
-      header: t("ADMIN.USERS.PICKS"),
+      accessorFn: (row) => row.picks,
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="ADMIN.USERS.PICKS"
+          className="justify-end"
+        />
+      ),
       size: 70,
       meta: { headerClassName: "text-right", cellClassName: "text-right" },
       cell: ({ row }) => <span className="tabular">{row.original.picks}</span>,
     },
     {
       id: "created",
-      header: t("ADMIN.USERS.CREATED"),
+      accessorFn: (row) => dayjs(row.createdAt).valueOf(),
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ADMIN.USERS.CREATED" />
+      ),
       size: 120,
       cell: ({ row }) => (
         <span className="text-muted-foreground tabular text-xs">
-          {formatDate(row.original.createdAt, locale)}
+          {formatDate(row.original.createdAt, locale, local)}
         </span>
       ),
     },
@@ -299,6 +329,17 @@ export function AdminUsers(props: {
           columns={columns}
           total={users.data?.total ?? 0}
           isLoading={users.isPending}
+          sorting={sorting}
+          onSortingChange={(updater) => {
+            const next =
+              typeof updater === "function" ? updater(sorting) : updater;
+            const first = next[0];
+            props.onChange({
+              sort: ADMIN_USERS_SORTS.find((s) => s === first?.id) ?? null,
+              order: first && !first.desc ? "asc" : null,
+              page: null,
+            });
+          }}
           pagination={pagination}
           onPaginationChange={(updater) => {
             const next =
