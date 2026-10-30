@@ -7,6 +7,7 @@ import { meRoute } from "@/server/me/route";
 import { leaderboardRoute } from "@/server/leaderboard/route";
 import { logRoute } from "@/server/log/route";
 import { opsDomainRoute } from "@/server/ops/route";
+import { paymentsRoute } from "@/server/payments/route";
 import { picksRoute } from "@/server/picks/route";
 import { recapRoute } from "@/server/recap/route";
 import { usersRoute } from "@/server/users/route";
@@ -40,6 +41,7 @@ export const app = new Elysia({ prefix: "/api" })
   .use(usersRoute)
   .use(checkRoute)
   .use(claimsRoute)
+  .use(paymentsRoute)
   .use(recapRoute)
   .use(leaderboardRoute)
   .use(logRoute)
@@ -49,3 +51,4 @@ export type App = typeof app;
 
 export const GET = app.handle;
 export const POST = app.handle;
+export const PUT = app.handle;

@@ -2,6 +2,11 @@ import type { PickMarket, PickResult } from "@/lib/api/typebox/picks";
 import type { LeaderboardScope } from "@/lib/api/typebox/leaderboard";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
 import type { CheckMatchKind, CheckStatus } from "@/lib/api/typebox/check";
+import type {
+  PaymentProvider,
+  PayoutAccountStatus,
+  PlanInterval,
+} from "@/lib/api/typebox/payments";
 import type { SportGroup } from "@/lib/config/sports";
 import type { AuthRole } from "@/lib/config/permissions";
 import type { Messages, useTranslations } from "next-intl";
@@ -490,4 +495,27 @@ export type AdminSystem = {
   importers: AdminImporterStatus[];
   log: { head: LogHead; lastAnchor: ApiLogAnchor | null };
   imagesPending: number;
+};
+
+export type ApiCapperPlan = {
+  priceCents: number;
+  currency: "usd";
+  interval: PlanInterval;
+  active: boolean;
+};
+
+export type MyPayments = {
+  enabled: boolean;
+  feeBps: number;
+  minGradedPicks: number;
+  gradedPicks: number;
+  eligible: boolean;
+  account: { provider: PaymentProvider; status: PayoutAccountStatus } | null;
+  plan: ApiCapperPlan | null;
+};
+
+export type PublicCapperPlan = {
+  plan: Omit<ApiCapperPlan, "active"> | null;
+  subscribed: boolean;
+  feeBps: number;
 };

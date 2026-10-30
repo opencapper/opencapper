@@ -110,6 +110,24 @@ export const serverEnv = {
       .map((id) => id.trim())
       .filter(Boolean);
   },
+  // Whop API key permissions: create child companies, update child company fees, company balance read,
+  // every payout permission (payout accounts, payout destinations, transfers, withdrawals), checkout
+  // configurations, plans, products. Never transfer_ownership. Without key and secret selling is hidden.
+  get payments() {
+    const apiKey = process.env.WHOP_API_KEY?.trim() ?? "";
+    const webhookSecret = process.env.WHOP_WEBHOOK_SECRET?.trim() ?? "";
+    return {
+      enabled: Boolean(apiKey && webhookSecret),
+      whopApiKey: apiKey,
+      whopWebhookSecret: webhookSecret,
+      // Basis points of each sale OpenCapper keeps (500 = 5%).
+      feeBps: Math.min(
+        nonNegativeInt(process.env.WHOP_PLATFORM_FEE_BPS, 500),
+        5000,
+      ),
+      minGradedPicks: positiveInt(process.env.MIN_GRADED_PICKS_TO_SELL, 30),
+    };
+  },
   get ranking(): RankingConfig {
     const marker = process.env.PROOF_MARKER_STYLE?.trim();
     return {
