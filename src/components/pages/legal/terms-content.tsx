@@ -19,6 +19,7 @@ export async function TermsContent(props: { locale: Locale }) {
         { title: t("PICKS_TITLE"), body: [t("PICKS_BODY")] },
         { title: t("ACCURACY_TITLE"), body: [t("ACCURACY_BODY")] },
         { title: t("IMPORTED_TITLE"), body: [t("IMPORTED_BODY", v)] },
+        { title: t("SALES_TITLE"), body: [t("SALES_BODY", v)] },
         {
           title: t("CONDUCT_TITLE"),
           body: [t("CONDUCT_INTRO")],

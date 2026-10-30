@@ -1,7 +1,4 @@
-import {
-  LegalDoc,
-  LegalIdentity,
-} from "@/components/pages/legal/legal-doc";
+import { LegalDoc, LegalIdentity } from "@/components/pages/legal/legal-doc";
 import { LEGAL_VALUES } from "@/components/pages/legal/legal-page";
 import type { Locale } from "next-intl";
 import { getTranslations } from "next-intl/server";
@@ -79,6 +76,14 @@ export async function PrivacyContent(props: { locale: Locale }) {
             t("EXTERNAL_FONTS"),
           ],
           after: [t("EXTERNAL_BASIS")],
+        },
+        {
+          title: t("PAYMENTS_TITLE"),
+          body: [
+            t("PAYMENTS_SELLER"),
+            t("PAYMENTS_BUYER"),
+            t("PAYMENTS_BASIS"),
+          ],
         },
         { title: t("RECIPIENTS_TITLE"), body: [t("RECIPIENTS_BODY")] },
         {

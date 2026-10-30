@@ -31,6 +31,7 @@ Base `/api`. Errors return a non 2xx status with `{ "error": "message" }`.
 | GET    | `/users/:username/picks`         |                                         | `ApiPick[]`        |
 | GET    | `/users/:username/stats`         |                                         | `CapperStats`      |
 | GET    | `/recap?guildId=&from=&to=`      |                                         | `RecapResponse`    |
+| GET    | `/payments/:username/plan`       | optional session                        | `PublicCapperPlan` |
 
 Shapes live in `src/lib/types/index.ts`.
 
