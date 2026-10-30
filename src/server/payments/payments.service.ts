@@ -30,6 +30,7 @@ import {
   createCheckout,
   createConnectedAccount,
   createOnboardingLink,
+  createProduct,
   fetchAccountStatus,
   verifyWhopWebhook,
 } from "@/server/payments/whop.client";
@@ -316,6 +317,23 @@ export async function getCapperPlan(
   };
 }
 
+async function ensureProduct(
+  account: CapperPayoutAccount,
+  seller: { id: number; username: string },
+): Promise<string> {
+  if (account.externalProductId) return account.externalProductId;
+  const productId = await createProduct({
+    accountId: account.externalAccountId,
+    title: `@${seller.username} picks`,
+    userId: seller.id,
+  });
+  await getDb()
+    .update(capperPayoutAccounts)
+    .set({ externalProductId: productId, updatedAt: new Date() })
+    .where(eq(capperPayoutAccounts.id, account.id));
+  return productId;
+}
+
 export async function startCheckout(
   buyer: AuthUser,
   username: string,
@@ -331,8 +349,10 @@ export async function startCheckout(
   if (await hasActiveSubscription(buyer.id, seller.id))
     throw new ApiError(409, "ERRORS.PAYMENTS_ALREADY_SUBSCRIBED");
   providerLimit(`checkout:${buyer.id}`);
+  const productId = await ensureProduct(offer.account, seller);
   const url = await createCheckout({
     accountId: offer.account.externalAccountId,
+    productId,
     priceCents: offer.plan.priceCents,
     feeCents: platformFeeCents(offer.plan.priceCents, payments.feeBps),
     interval: offer.plan.interval,

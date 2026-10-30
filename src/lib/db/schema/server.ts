@@ -348,6 +348,7 @@ export const capperPayoutAccounts = pgTable(
       .references(() => users.id),
     provider: text("provider").$type<PaymentProvider>().notNull(),
     externalAccountId: text("external_account_id").notNull(),
+    externalProductId: text("external_product_id"),
     status: text("status")
       .$type<PayoutAccountStatus>()
       .notNull()

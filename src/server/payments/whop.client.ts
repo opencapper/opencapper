@@ -76,6 +76,22 @@ export async function fetchAccountStatus(
     : "pending";
 }
 
+// Whop refuses a renewal variant without a product, so every capper gets one to hang plans on.
+export async function createProduct(input: {
+  accountId: string;
+  title: string;
+  userId: number;
+}): Promise<string> {
+  const product = await call("products.create", () =>
+    whop().products.create({
+      account_id: input.accountId,
+      title: input.title,
+      metadata: { opencapper_user_id: String(input.userId) },
+    }),
+  );
+  return product.id;
+}
+
 const BILLING: Record<
   PlanInterval,
   Pick<
@@ -99,6 +115,7 @@ type FeeVariant = Whop.CreateCheckoutConfigurationsRequest.Variant & {
 
 export async function createCheckout(input: {
   accountId: string;
+  productId: string;
   priceCents: number;
   feeCents: number;
   interval: PlanInterval;
@@ -110,6 +127,7 @@ export async function createCheckout(input: {
   const billing = BILLING[input.interval];
   const variant: FeeVariant = {
     ...billing,
+    product_id: input.productId,
     // A renewal variant charges renewal_price each period; initial_price would be charged on top.
     ...(billing.billing_type === "renewal"
       ? { renewal_price: price }

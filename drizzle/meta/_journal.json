@@ -120,6 +120,13 @@
       "when": 1793393278300,
       "tag": "0016_capper_payments",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1793394108032,
+      "tag": "0017_capper_payout_product",
+      "breakpoints": true
     }
   ]
 }
