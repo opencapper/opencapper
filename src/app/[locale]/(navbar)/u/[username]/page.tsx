@@ -85,13 +85,18 @@ export default async function CapperPage(props: Props) {
   const stats = loaded[0];
   const picks = loaded[1];
   const viewer = stats?.hidden ? await prefetchAuth(queryClient) : null;
-  // The history tab opens first only without live picks; the claims list renders only on a hidden profile.
+  // The history tab opens first only without live picks; the claims list renders only on a hidden profile; imported profiles never sell.
   await Promise.all([
     stats?.history && picks?.length === 0
       ? prefetchElysia(
           queryClient,
           queryKeys.userHistory(username),
           (headers) => user.history.get(headers),
+        )
+      : null,
+    stats && !stats.hidden && !stats.source
+      ? prefetchElysia(queryClient, queryKeys.capperPlan(username), (headers) =>
+          serverRpc.api.payments({ username }).plan.get(headers),
         )
       : null,
     viewer

@@ -9,11 +9,13 @@ import { useAuthUser } from "@/hooks/auth/auth-hook";
 import { useUserPicksQuery, useUserStatsQuery } from "@/hooks/users/users-hook";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { useTranslations } from "next-intl";
+import { GetPicks } from "./get-picks";
 import { HiddenProfile } from "./hidden-profile";
 import { HistoryTable } from "./history-table";
 import { PicksTable } from "./picks-table";
 import { ProfileHeader } from "./profile-header";
 import { ProfileStats } from "./profile-stats";
+import { SellPicks } from "./sell-picks";
 import { ShareRecord } from "./share-record";
 import { SourceBanner } from "./source-banner";
 import { UnitsChart } from "./units-chart";
@@ -81,9 +83,13 @@ export function CapperProfile(props: {
           minPicksForRoi={props.ranking.profileMinPicksForRoi}
         />
       )}
+      {stats.data && known && source === null && !own && (
+        <GetPicks username={props.username} />
+      )}
       {stats.data && (own || claimant) && (
         <ShareRecord username={stats.data.username} />
       )}
+      {stats.data && own && <SellPicks username={props.username} />}
 
       {known && (
         <>
