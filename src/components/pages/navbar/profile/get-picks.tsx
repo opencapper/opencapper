@@ -10,6 +10,7 @@ import {
   useCapperPlanQuery,
   useCheckoutMutation,
 } from "@/hooks/payments/payments-hook";
+import { env } from "@/lib/config/env";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { useLocale, useTranslations } from "next-intl";
 import { PRICE_LABELS, formatFeeShare, formatUsd } from "./payment-labels";
@@ -36,7 +37,10 @@ export function GetPicks(props: { username: string }) {
             {t("GET.BODY", { username: props.username })}
           </p>
           <p className="text-muted-foreground text-xs">
-            {t("FEE", { percent: formatFeeShare(offer.data.feeBps, locale) })}
+            {t("FEE", {
+              appName: env.appName,
+              percent: formatFeeShare(offer.data.feeBps, locale),
+            })}
           </p>
           {checkout.isError && (
             <p className="text-destructive">

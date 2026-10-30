@@ -82,7 +82,7 @@ export async function PrivacyContent(props: { locale: Locale }) {
           body: [
             t("PAYMENTS_SELLER"),
             t("PAYMENTS_BUYER"),
-            t("PAYMENTS_BASIS"),
+            t("PAYMENTS_BASIS", v),
           ],
         },
         { title: t("RECIPIENTS_TITLE"), body: [t("RECIPIENTS_BODY")] },

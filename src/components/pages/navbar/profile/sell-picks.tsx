@@ -32,6 +32,7 @@ import {
   type PlanInterval,
 } from "@/lib/api/typebox/payments";
 import type { ApiCapperPlan, MyPayments } from "@/lib/types";
+import { env } from "@/lib/config/env";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
@@ -68,7 +69,10 @@ export function SellPicks(props: { username: string }) {
           />
         )}
         <p className="text-muted-foreground text-xs">
-          {t("FEE", { percent: formatFeeShare(data.feeBps, locale) })}
+          {t("FEE", {
+            appName: env.appName,
+            percent: formatFeeShare(data.feeBps, locale),
+          })}
         </p>
       </CardContent>
     </Card>
