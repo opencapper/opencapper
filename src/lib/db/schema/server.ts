@@ -6,6 +6,18 @@ import { SOURCE_PLATFORMS } from "@/lib/api/typebox/sources";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
 import { CLAIM_METHODS } from "@/lib/api/typebox/claims";
 import type { ClaimMethod } from "@/lib/api/typebox/claims";
+import {
+  PAYMENT_PROVIDERS,
+  PAYOUT_ACCOUNT_STATUSES,
+  PLAN_INTERVALS,
+  SUBSCRIPTION_STATUSES,
+} from "@/lib/api/typebox/payments";
+import type {
+  PaymentProvider,
+  PayoutAccountStatus,
+  PlanInterval,
+  SubscriptionStatus,
+} from "@/lib/api/typebox/payments";
 import { sql } from "drizzle-orm";
 import {
   bigint,
@@ -14,6 +26,7 @@ import {
   customType,
   index,
   integer,
+  jsonb,
   numeric,
   pgTable,
   serial,
@@ -326,6 +339,148 @@ export const claimChallenges = pgTable(
   ],
 );
 
+export const capperPayoutAccounts = pgTable(
+  "capper_payout_accounts",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    provider: text("provider").$type<PaymentProvider>().notNull(),
+    externalAccountId: text("external_account_id").notNull(),
+    status: text("status")
+      .$type<PayoutAccountStatus>()
+      .notNull()
+      .default("pending"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("capper_payout_accounts_user_provider_idx").on(
+      table.userId,
+      table.provider,
+    ),
+    uniqueIndex("capper_payout_accounts_external_idx").on(
+      table.provider,
+      table.externalAccountId,
+    ),
+    check(
+      "capper_payout_accounts_provider_check",
+      sql`${table.provider} in (${sqlList(PAYMENT_PROVIDERS)})`,
+    ),
+    check(
+      "capper_payout_accounts_status_check",
+      sql`${table.status} in (${sqlList(PAYOUT_ACCOUNT_STATUSES)})`,
+    ),
+  ],
+);
+
+// One plan per capper; the price is in cents of `currency`.
+export const capperPlans = pgTable(
+  "capper_plans",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id")
+      .notNull()
+      .unique()
+      .references(() => users.id),
+    priceCents: integer("price_cents").notNull(),
+    currency: text("currency").notNull().default("usd"),
+    interval: text("interval").$type<PlanInterval>().notNull(),
+    active: boolean("active").notNull().default(true),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    check(
+      "capper_plans_interval_check",
+      sql`${table.interval} in (${sqlList(PLAN_INTERVALS)})`,
+    ),
+    check("capper_plans_currency_check", sql`${table.currency} = 'usd'`),
+    check("capper_plans_price_check", sql`${table.priceCents} > 0`),
+  ],
+);
+
+// Provider neutral: every access decision reads this table, never a provider API.
+export const subscriptions = pgTable(
+  "subscriptions",
+  {
+    id: serial("id").primaryKey(),
+    buyerUserId: integer("buyer_user_id")
+      .notNull()
+      .references(() => users.id),
+    capperUserId: integer("capper_user_id")
+      .notNull()
+      .references(() => users.id),
+    provider: text("provider").$type<PaymentProvider>().notNull(),
+    externalMembershipId: text("external_membership_id").notNull(),
+    status: text("status").$type<SubscriptionStatus>().notNull(),
+    currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }),
+    // The provider's own update time, so a late, older event never overwrites a newer state.
+    providerUpdatedAt: timestamp("provider_updated_at", {
+      withTimezone: true,
+    }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("subscriptions_external_idx").on(
+      table.provider,
+      table.externalMembershipId,
+    ),
+    index("subscriptions_buyer_capper_idx").on(
+      table.buyerUserId,
+      table.capperUserId,
+    ),
+    index("subscriptions_capper_idx").on(table.capperUserId),
+    check(
+      "subscriptions_provider_check",
+      sql`${table.provider} in (${sqlList(PAYMENT_PROVIDERS)})`,
+    ),
+    check(
+      "subscriptions_status_check",
+      sql`${table.status} in (${sqlList(SUBSCRIPTION_STATUSES)})`,
+    ),
+  ],
+);
+
+// Raw provider webhooks, deduped on the provider's event id.
+export const paymentEvents = pgTable(
+  "payment_events",
+  {
+    id: serial("id").primaryKey(),
+    provider: text("provider").$type<PaymentProvider>().notNull(),
+    eventId: text("event_id").notNull(),
+    type: text("type").notNull(),
+    payload: jsonb("payload").$type<unknown>().notNull(),
+    receivedAt: timestamp("received_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("payment_events_provider_event_idx").on(
+      table.provider,
+      table.eventId,
+    ),
+    check(
+      "payment_events_provider_check",
+      sql`${table.provider} in (${sqlList(PAYMENT_PROVIDERS)})`,
+    ),
+  ],
+);
+
 export const participants = pgTable(
   "participants",
   {
@@ -477,3 +632,6 @@ export type ProfileClaim = typeof profileClaims.$inferSelect;
 export type Participant = typeof participants.$inferSelect;
 export type PickLogEntry = typeof pickLog.$inferSelect;
 export type LogAnchor = typeof logAnchors.$inferSelect;
+export type CapperPayoutAccount = typeof capperPayoutAccounts.$inferSelect;
+export type CapperPlan = typeof capperPlans.$inferSelect;
+export type Subscription = typeof subscriptions.$inferSelect;

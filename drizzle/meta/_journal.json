@@ -113,6 +113,13 @@
       "when": 1792842198532,
       "tag": "0015_profile_claims",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1793393278300,
+      "tag": "0016_capper_payments",
+      "breakpoints": true
     }
   ]
 }
