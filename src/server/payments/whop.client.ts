@@ -7,6 +7,9 @@ import { serverEnv } from "@/server/env";
 import { WhopClient, WhopError, type Whop } from "@whop/sdk";
 import { unwrapWebhook } from "@whop/sdk/helpers";
 
+// The version SDK 2.7.0 ships with; pinned so a server side default cannot change request shapes.
+const WHOP_API_VERSION = "2026-10-28";
+
 let client: WhopClient | null = null;
 let clientKey = "";
 
@@ -14,20 +17,27 @@ function whop(): WhopClient {
   const payments = serverEnv.payments;
   if (!payments.enabled) throw new ApiError(503, "ERRORS.PAYMENTS_DISABLED");
   if (client && clientKey === payments.whopApiKey) return client;
-  client = new WhopClient({ token: payments.whopApiKey, maxRetries: 1 });
+  client = new WhopClient({
+    token: payments.whopApiKey,
+    apiVersionDate: WHOP_API_VERSION,
+    maxRetries: 1,
+  });
   clientKey = payments.whopApiKey;
   return client;
 }
 
-// Only status and message reach the log: a response body can echo bearer links.
+// Never the error message: it carries the response body, which can echo bearer links or personal data.
 async function call<T>(label: string, request: () => Promise<T>): Promise<T> {
   try {
     return await request();
   } catch (error) {
     if (error instanceof ApiError) throw error;
-    const status = error instanceof WhopError ? error.statusCode : undefined;
-    const message = error instanceof Error ? error.message : "unknown";
-    console.error(`whop ${label} failed`, status ?? "", message.slice(0, 200));
+    const whopError = error instanceof WhopError ? error : null;
+    console.error(
+      `whop ${label} failed`,
+      whopError?.statusCode ?? "no status",
+      whopError?.requestId ?? "no request id",
+    );
     throw new ApiError(502, "ERRORS.PAYMENTS_PROVIDER_FAILED");
   }
 }
@@ -39,11 +49,14 @@ export async function createConnectedAccount(input: {
   userId: number;
 }): Promise<string> {
   const account = await call("accounts.create", () =>
-    whop().accounts.create({
-      email: input.email,
-      title: input.title,
-      metadata: { external_id: String(input.userId) },
-    }),
+    whop().accounts.create(
+      {
+        email: input.email,
+        title: input.title,
+        metadata: { external_id: String(input.userId) },
+      },
+      { idempotencyKey: `opencapper-account-${input.userId}` },
+    ),
   );
   return account.id;
 }
@@ -83,11 +96,14 @@ export async function createProduct(input: {
   userId: number;
 }): Promise<string> {
   const product = await call("products.create", () =>
-    whop().products.create({
-      account_id: input.accountId,
-      title: input.title,
-      metadata: { opencapper_user_id: String(input.userId) },
-    }),
+    whop().products.create(
+      {
+        account_id: input.accountId,
+        title: input.title,
+        metadata: { opencapper_user_id: String(input.userId) },
+      },
+      { idempotencyKey: `opencapper-product-${input.userId}` },
+    ),
   );
   return product.id;
 }
@@ -134,7 +150,8 @@ export async function createCheckout(input: {
       : { initial_price: price }),
     currency: "usd",
     title: input.title,
-    metadata: input.metadata,
+    // Hidden and free of per buyer metadata, so Whop reuses one matching variant instead of listing a new one per checkout.
+    visibility: "hidden",
     ...(input.feeCents > 0
       ? { application_fee_amount: dollars(input.feeCents) }
       : {}),

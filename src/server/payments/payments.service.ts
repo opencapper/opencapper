@@ -34,6 +34,7 @@ import {
   fetchAccountStatus,
   verifyWhopWebhook,
 } from "@/server/payments/whop.client";
+import { minimizeWhopEvent } from "@/server/payments/whop.events";
 import { createRateLimiter } from "@/server/rate-limit";
 import { visibleUser } from "@/server/users/hidden";
 import { Value } from "@sinclair/typebox/value";
@@ -126,6 +127,11 @@ async function refreshedAccount(
   try {
     return await storeStatus(account);
   } catch {
+    // A Whop outage still waits a full refresh interval before the next call.
+    await getDb()
+      .update(capperPayoutAccounts)
+      .set({ updatedAt: new Date() })
+      .where(eq(capperPayoutAccounts.id, account.id));
     return account;
   }
 }
@@ -173,25 +179,49 @@ async function sellerEmail(userId: number): Promise<string> {
   return email;
 }
 
+// The user row lock serialises concurrent connects, so only one of them ever calls Whop to create the account.
+async function createPayoutAccount(
+  user: AuthUser,
+): Promise<CapperPayoutAccount> {
+  const email = await sellerEmail(user.id);
+  return getDb().transaction(async (tx) => {
+    await tx
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.id, user.id))
+      .for("update");
+    const [existing] = await tx
+      .select()
+      .from(capperPayoutAccounts)
+      .where(
+        and(
+          eq(capperPayoutAccounts.userId, user.id),
+          eq(capperPayoutAccounts.provider, PROVIDER),
+        ),
+      )
+      .limit(1);
+    if (existing) return existing;
+    const externalAccountId = await createConnectedAccount({
+      email,
+      title: user.username,
+      userId: user.id,
+    });
+    const [row] = await tx
+      .insert(capperPayoutAccounts)
+      .values({ userId: user.id, provider: PROVIDER, externalAccountId })
+      .returning();
+    if (!row) throw new ApiError(500, "ERRORS.INTERNAL");
+    return row;
+  });
+}
+
 export async function connectWhop(
   user: AuthUser,
 ): Promise<{ url: string; status: CapperPayoutAccount["status"] }> {
   await assertEligible(user.id);
   providerLimit(`connect:${user.id}`);
-  let account = await payoutAccount(user.id);
-  if (!account) {
-    const externalAccountId = await createConnectedAccount({
-      email: await sellerEmail(user.id),
-      title: user.username,
-      userId: user.id,
-    });
-    await getDb()
-      .insert(capperPayoutAccounts)
-      .values({ userId: user.id, provider: PROVIDER, externalAccountId })
-      .onConflictDoNothing();
-    account = await payoutAccount(user.id);
-    if (!account) throw new ApiError(500, "ERRORS.INTERNAL");
-  }
+  const account =
+    (await payoutAccount(user.id)) ?? (await createPayoutAccount(user));
   const url = await createOnboardingLink({
     accountId: account.externalAccountId,
     returnUrl: profileUrl(user.username),
@@ -263,28 +293,36 @@ export async function hasActiveSubscription(
   return row !== undefined;
 }
 
-// Sellers are signed up users only: imported and hidden profiles never sell.
+// Same rule as the pick ban: a ban without expiry, or one that has not expired yet.
+const notBanned = sql`(not coalesce(${authUser.banned}, false) or ${authUser.banExpires} <= now())`;
+
+// Sellers are signed up, unbanned users only: imported, hidden and banned profiles never sell.
 async function sellerByName(username: string) {
   const [row] = await getDb()
     .select({ id: users.id, username: users.username })
     .from(users)
+    .innerJoin(authUser, eq(authUser.id, users.authUserId))
     .where(
       and(
         eq(users.username, username.toLowerCase()),
         isNull(users.sourcePlatform),
         visibleUser,
+        notBanned,
       ),
     )
     .limit(1);
   return row ?? null;
 }
 
+// Eligibility is rechecked here, so a plan stops selling if the record requirement rises.
 async function sellableOffer(capperUserId: number) {
-  const [plan, account] = await Promise.all([
+  const [plan, account, graded] = await Promise.all([
     planOf(capperUserId),
     payoutAccount(capperUserId),
+    gradedPickCount(capperUserId),
   ]);
   if (!plan?.active || account?.status !== "active") return null;
+  if (graded < serverEnv.payments.minGradedPicks) return null;
   return { plan, account };
 }
 
@@ -324,14 +362,28 @@ async function ensureProduct(
   if (account.externalProductId) return account.externalProductId;
   const productId = await createProduct({
     accountId: account.externalAccountId,
-    title: `@${seller.username} picks`,
+    title: `@${seller.username} subscription`,
     userId: seller.id,
   });
-  await getDb()
+  const [stored] = await getDb()
     .update(capperPayoutAccounts)
     .set({ externalProductId: productId, updatedAt: new Date() })
-    .where(eq(capperPayoutAccounts.id, account.id));
-  return productId;
+    .where(
+      and(
+        eq(capperPayoutAccounts.id, account.id),
+        isNull(capperPayoutAccounts.externalProductId),
+      ),
+    )
+    .returning({ productId: capperPayoutAccounts.externalProductId });
+  if (stored?.productId) return stored.productId;
+  // A concurrent checkout stored its product first; use that one.
+  const [current] = await getDb()
+    .select({ productId: capperPayoutAccounts.externalProductId })
+    .from(capperPayoutAccounts)
+    .where(eq(capperPayoutAccounts.id, account.id))
+    .limit(1);
+  if (!current?.productId) throw new ApiError(500, "ERRORS.INTERNAL");
+  return current.productId;
 }
 
 export async function startCheckout(
@@ -356,7 +408,7 @@ export async function startCheckout(
     priceCents: offer.plan.priceCents,
     feeCents: platformFeeCents(offer.plan.priceCents, payments.feeBps),
     interval: offer.plan.interval,
-    title: `@${seller.username} picks`,
+    title: `@${seller.username} subscription`,
     metadata: {
       buyer_user_id: String(buyer.id),
       capper_user_id: String(seller.id),
@@ -397,7 +449,10 @@ async function upsertMembership(tx: Tx, event: unknown) {
   if (!status || !buyerUserId || !capperUserId) return;
   if (!updatedAt.isValid() || (periodEnd && !periodEnd.isValid())) return;
   const [capper] = await tx
-    .select({ id: capperPayoutAccounts.id })
+    .select({
+      accountId: capperPayoutAccounts.externalAccountId,
+      productId: capperPayoutAccounts.externalProductId,
+    })
     .from(capperPayoutAccounts)
     .where(
       and(
@@ -412,6 +467,8 @@ async function upsertMembership(tx: Tx, event: unknown) {
     .where(eq(users.id, buyerUserId))
     .limit(1);
   if (!capper || !buyer) return;
+  if (membership.account.id !== capper.accountId) return;
+  if (capper.productId && membership.product_id !== capper.productId) return;
   const state = {
     status,
     currentPeriodEnd: periodEnd ? periodEnd.toDate() : null,
@@ -446,9 +503,17 @@ export async function handleWhopWebhook(
   } catch {
     throw new ApiError(401, "ERRORS.WEBHOOK_SIGNATURE_INVALID");
   }
-  if (!Value.Check(WhopEventEnvelope, event))
-    throw new ApiError(400, "ERRORS.INVALID_REQUEST", { path: "body" });
-  const envelope = { id: event.id, type: event.type };
+  // A signed event we cannot read is still kept and acknowledged, keyed on the signed message id, so Whop stops retrying.
+  const envelope: { id: string; type: string; valid: boolean } = Value.Check(
+    WhopEventEnvelope,
+    event,
+  )
+    ? { id: event.id, type: event.type, valid: true }
+    : {
+        id: `msg:${headers.get("webhook-id") ?? ""}`,
+        type: "invalid",
+        valid: false,
+      };
   await getDb().transaction(async (tx) => {
     const [stored] = await tx
       .insert(paymentEvents)
@@ -456,11 +521,11 @@ export async function handleWhopWebhook(
         provider: PROVIDER,
         eventId: envelope.id,
         type: envelope.type,
-        payload: event,
+        payload: minimizeWhopEvent(event),
       })
       .onConflictDoNothing()
       .returning({ id: paymentEvents.id });
-    if (!stored) return;
+    if (!stored || !envelope.valid) return;
     if (envelope.type.startsWith("membership."))
       await upsertMembership(tx, event);
   });

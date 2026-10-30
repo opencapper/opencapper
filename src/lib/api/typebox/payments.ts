@@ -57,6 +57,9 @@ export const WhopMembershipEvent = t.Object({
     current_period_end: t.Union([t.String(), t.Null()]),
     updated_at: t.String(),
     metadata: t.Record(t.String(), t.Unknown()),
+    // Checked against the capper's stored Whop ids: metadata alone is not proof of who sold it.
+    account: t.Object({ id: t.String({ minLength: 1 }) }),
+    product_id: t.Optional(t.Union([t.String(), t.Null()])),
   }),
 });
 
