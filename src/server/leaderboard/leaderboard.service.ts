@@ -10,12 +10,20 @@ import {
 } from "@/lib/api/typebox/leaderboard";
 import { getDb } from "@/lib/db/server/client";
 import { authUser, historyPicks, picks, users } from "@/lib/db/schema/server";
+import type { PickResult } from "@/lib/api/typebox/picks";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
 import { sportGroup, type SportGroup } from "@/lib/config/sports";
 import type { LeaderboardResponse, UnrankedRow } from "@/lib/types";
 import { dayjs } from "@/lib/utils/format/date";
 import { serverEnv } from "@/server/env";
-import { netOf, riskedOf } from "@/server/stats/stats.service";
+import {
+  countedPick,
+  gradedIn,
+  historyResult,
+  netOf,
+  recordCount,
+  riskedOf,
+} from "@/server/stats/stats.service";
 import {
   avatarColumns,
   avatarUrl,
@@ -36,8 +44,6 @@ const PERIOD_DAYS = {
   "1y": 365,
   all: null,
 } satisfies Record<LeaderboardPeriod, number | null>;
-
-const GRADED = sql.raw("('win', 'loss', 'push')");
 
 // Rugby keys are rugbyleague_* and rugbyunion_*, every other group is `<group>_*`.
 function sportFilter(column: SQLWrapper, groups: SportGroup[]): SQL {
@@ -96,12 +102,12 @@ function aggregate(input: Input) {
       live: sql<boolean>`true`.as("live"),
     })
     .from(picks)
-    .where(and(...filtersFor(input, picks)));
+    .where(and(...filtersFor(input, picks), countedPick));
   const history = db
     .select({
       userId: historyPicks.userId,
       sportKey: historyPicks.sportKey,
-      result: historyPicks.result,
+      result: sql<PickResult>`${historyResult}`.as("result"),
       units: historyPicks.units,
       oddsDecimal: historyPicks.oddsDecimal,
       at: historyPicks.tradedAt,
@@ -115,7 +121,7 @@ function aggregate(input: Input) {
       ),
     );
   const src = unionAll(live, history).as("src");
-  const graded = sql`count(*) filter (where ${src.result} in ${GRADED})::int`;
+  const graded = sql`count(*) filter (where ${gradedIn(src.result)})::int`;
   const prefix = sql`split_part(${src.sportKey}, '_', 1)`;
 
   return {
@@ -126,18 +132,12 @@ function aggregate(input: Input) {
         picks: sql`count(*)::int`.mapWith(Number).as("picks"),
         graded: graded.mapWith(Number).as("graded"),
         gradedLive:
-          sql`count(*) filter (where ${src.result} in ${GRADED} and ${src.live})::int`
+          sql`count(*) filter (where ${gradedIn(src.result)} and ${src.live})::int`
             .mapWith(Number)
             .as("graded_live"),
-        wins: sql`count(*) filter (where ${src.result} = 'win')::int`
-          .mapWith(Number)
-          .as("wins"),
-        losses: sql`count(*) filter (where ${src.result} = 'loss')::int`
-          .mapWith(Number)
-          .as("losses"),
-        pushes: sql`count(*) filter (where ${src.result} = 'push')::int`
-          .mapWith(Number)
-          .as("pushes"),
+        wins: recordCount(src.result, "win").as("wins"),
+        losses: recordCount(src.result, "loss").as("losses"),
+        pushes: recordCount(src.result, "push").as("pushes"),
         units: netOf(src.result, src.units, src.oddsDecimal).as("units"),
         unitsRisked: riskedOf(src.result, src.units).as("units_risked"),
         prefixes: sql<

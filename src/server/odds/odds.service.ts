@@ -149,6 +149,17 @@ export async function listEvents(sportKey: string): Promise<ApiEvent[]> {
   }));
 }
 
+export type EventStart = Static<typeof EventSchema>;
+
+// Free like listEvents, but keeps games already in play: the importer cross checks start times with it.
+export function listEventStarts(sportKey: string): Promise<EventStart[]> {
+  return oddsApi(
+    `/sports/${encodeURIComponent(sportKey)}/events`,
+    {},
+    Type.Array(EventSchema),
+  );
+}
+
 export function fetchEventOdds(input: {
   sportKey: string;
   eventId: string;

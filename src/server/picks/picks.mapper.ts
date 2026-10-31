@@ -1,5 +1,10 @@
 import { dayjs } from "@/lib/utils/format/date";
-import type { Pick, PickSettlement, PickSource } from "@/lib/db/schema/server";
+import type {
+  Pick,
+  PickDisqualification,
+  PickSettlement,
+  PickSource,
+} from "@/lib/db/schema/server";
 import type { ApiPick } from "@/lib/types";
 import {
   participantFields,
@@ -19,6 +24,7 @@ export function toApiPick(
   settlement?: PickSettlement | null,
   logSeq: number | null = null,
   source: PickSource | null = null,
+  disqualification: PickDisqualification | null = null,
 ): ApiPick {
   const closing = settlement?.closingOddsDecimal ?? null;
   const clv = settlement?.clv ?? null;
@@ -50,6 +56,13 @@ export function toApiPick(
             platform: source.platform,
             url: source.url,
             postedAt: dayjs(source.postedAt).toISOString(),
+          },
+        }),
+    ...(disqualification === null
+      ? {}
+      : {
+          disqualified: {
+            actualStart: dayjs(disqualification.actualStart).toISOString(),
           },
         }),
   };

@@ -12,6 +12,7 @@ import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import { Col, Eyebrow, Frame, Img, Row, Stat } from "../elements/frame";
 import { Sparkline } from "../elements/sparkline";
+import { americanToDecimal, netUnits, RECORD_OF } from "@/lib/config/results";
 import { FONT_MONO, remoteImage, vendorImage } from "../lib/assets";
 import { sportIcon } from "../lib/icons";
 import { C, signColor } from "../lib/theme";
@@ -20,19 +21,13 @@ const AVATAR = 104;
 const SPORT_ICON = 30;
 const MAX_SPORTS = 6;
 
-function decimalOdds(american: number): number {
-  return american > 0 ? 1 + american / 100 : 1 + 100 / -american;
-}
-
 function runningUnits(picks: ApiPick[]): number[] {
   let total = 0;
   return picks
-    .filter((pick) => pick.result !== "pending" && pick.result !== "void")
+    .filter((pick) => RECORD_OF[pick.result] !== null && !pick.disqualified)
     .toSorted((a, b) => a.sequence - b.sequence)
     .map((pick) => {
-      if (pick.result === "win")
-        total += pick.units * (decimalOdds(pick.odds) - 1);
-      if (pick.result === "loss") total -= pick.units;
+      total += netUnits(pick.result, pick.units, americanToDecimal(pick.odds));
       return total;
     });
 }

@@ -540,7 +540,10 @@
       "WIN": "的中",
       "LOSS": "不的中",
       "PUSH": "プッシュ",
-      "VOID": "無効"
+      "VOID": "無効",
+      "HALF_WIN": "半勝ち",
+      "HALF_LOSS": "半負け",
+      "SPLIT": "50/50"
     },
     "MARKET": {
       "H2H": "マネーライン",
@@ -978,6 +981,8 @@
       "NO_ANCHOR": "アンカーはまだありません。",
       "IMAGES_PENDING": "待機中の画像",
       "IMAGES_HINT": "TheSportsDB 待ちのチームと選手の画像。",
+      "GRADING_BACKLOG": "期限超過のピック",
+      "GRADING_BACKLOG_HINT": "開始済みで結果が出ていないピック。タイムアウトで無効 {timedOut, number} 件、実際の開始後に置かれたもの {disqualified, number} 件。",
       "IMPORTER": "{platform} インポーター",
       "RUN": "最終実行 {time}：作成 {created, number}、スキップ {skipped, number}、クレジット {credits, number}",
       "RUN_FAILED": "最終実行 {time} は失敗しました。サーバーログを確認してください。",

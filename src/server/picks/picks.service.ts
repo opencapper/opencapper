@@ -1,6 +1,7 @@
 import { getDb, type Db } from "@/lib/db/server/client";
 import {
   authUser,
+  pickDisqualifications,
   pickLog,
   pickSettlements,
   pickSources,
@@ -293,12 +294,14 @@ export async function findPick(ref: PickRef): Promise<ApiPick | null> {
       settlement: pickSettlements,
       logSeq: pickLog.seq,
       source: pickSources,
+      disqualification: pickDisqualifications,
     })
     .from(picks)
     .innerJoin(users, eq(users.id, picks.userId))
     .leftJoin(pickSettlements, eq(pickSettlements.pickId, picks.id))
     .leftJoin(pickLog, eq(pickLog.pickId, picks.id))
     .leftJoin(pickSources, eq(pickSources.pickId, picks.id))
+    .leftJoin(pickDisqualifications, eq(pickDisqualifications.pickId, picks.id))
     .where(
       "pickId" in ref
         ? eq(picks.id, ref.pickId)
@@ -320,5 +323,6 @@ export async function findPick(ref: PickRef): Promise<ApiPick | null> {
     row.settlement,
     row.logSeq,
     row.source,
+    row.disqualification,
   );
 }

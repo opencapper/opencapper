@@ -93,6 +93,14 @@ function SystemCards(props: { system: System }) {
               days: system.historyDays,
             })}
           />
+          <StatCard
+            label={t("ADMIN.SYSTEM.GRADING_BACKLOG")}
+            value={system.grading.overdue}
+            note={t("ADMIN.SYSTEM.GRADING_BACKLOG_HINT", {
+              timedOut: system.grading.timedOut,
+              disqualified: system.grading.disqualified,
+            })}
+          />
         </div>
       </section>
 

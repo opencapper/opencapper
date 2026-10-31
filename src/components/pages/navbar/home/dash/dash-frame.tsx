@@ -5,6 +5,7 @@ import { msg } from "@/lib/config/constants";
 import { env } from "@/lib/config/env";
 import type { IconName } from "@/lib/config/icon-map";
 import { PICK_STATUS_KEY } from "@/lib/config/markets";
+import type { PickResult } from "@/lib/api/typebox/picks";
 import type {
   LandingDash,
   LandingDashTick,
@@ -38,7 +39,10 @@ const RESULT_DOT = {
   loss: "bg-pick-loss",
   push: "bg-pick-push",
   void: "bg-pick-void",
-};
+  half_win: "bg-pick-win",
+  half_loss: "bg-pick-loss",
+  split: "bg-pick-push",
+} satisfies Record<PickResult, string>;
 
 const EDGE_MASK =
   "linear-gradient(to right, transparent, black 8%, black 92%, transparent)";

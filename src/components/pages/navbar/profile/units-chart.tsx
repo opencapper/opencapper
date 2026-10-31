@@ -17,18 +17,9 @@ import {
 } from "@/components/ui/chart";
 import type { ApiPick } from "@/lib/types";
 import { formatShortDate } from "@/lib/utils/format/date";
+import { americanToDecimal, netUnits, RECORD_OF } from "@/lib/config/results";
 import { useLocale, useTranslations } from "next-intl";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-
-function decimalOdds(american: number): number {
-  return american > 0 ? 1 + american / 100 : 1 + 100 / -american;
-}
-
-function netUnits(pick: ApiPick): number {
-  if (pick.result === "win") return pick.units * (decimalOdds(pick.odds) - 1);
-  if (pick.result === "loss") return -pick.units;
-  return 0;
-}
 
 export function UnitsChart(props: { picks: ApiPick[] }) {
   const t = useTranslations("PROFILE.CHART");
@@ -36,7 +27,7 @@ export function UnitsChart(props: { picks: ApiPick[] }) {
   const local = useHydrated();
 
   const graded = props.picks
-    .filter((pick) => pick.result !== "pending" && pick.result !== "void")
+    .filter((pick) => RECORD_OF[pick.result] !== null && !pick.disqualified)
     .toSorted((a, b) => a.sequence - b.sequence);
   const points = graded.reduce<
     { sequence: number; date: string; units: number }[]
@@ -45,7 +36,12 @@ export function UnitsChart(props: { picks: ApiPick[] }) {
     acc.push({
       sequence: pick.sequence,
       date: formatShortDate(pick.commenceTime, locale, local),
-      units: Math.round((previous + netUnits(pick)) * 100) / 100,
+      units:
+        Math.round(
+          (previous +
+            netUnits(pick.result, pick.units, americanToDecimal(pick.odds))) *
+            100,
+        ) / 100,
     });
     return acc;
   }, []);

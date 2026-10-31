@@ -92,6 +92,8 @@ export type ApiPick = {
   clv?: number;
   logSeq?: number | null;
   source?: ApiPickSource;
+  // Ordered at or after the real start: listed, never counted in a record.
+  disqualified?: { actualStart: string };
 };
 
 export type LogHead = {
@@ -495,6 +497,11 @@ export type AdminSystem = {
   importers: AdminImporterStatus[];
   log: { head: LogHead; lastAnchor: ApiLogAnchor | null };
   imagesPending: number;
+  grading: {
+    overdue: number;
+    timedOut: number;
+    disqualified: number;
+  };
 };
 
 export type ApiCapperPlan = {

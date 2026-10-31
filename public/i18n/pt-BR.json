@@ -540,7 +540,10 @@
       "WIN": "Vitória",
       "LOSS": "Derrota",
       "PUSH": "Reembolso",
-      "VOID": "Anulado"
+      "VOID": "Anulado",
+      "HALF_WIN": "Meio ganho",
+      "HALF_LOSS": "Meia perda",
+      "SPLIT": "50/50"
     },
     "MARKET": {
       "H2H": "Moneyline",
@@ -978,6 +981,8 @@
       "NO_ANCHOR": "Ainda não há âncora.",
       "IMAGES_PENDING": "Imagens pendentes",
       "IMAGES_HINT": "Fotos de times e jogadores aguardando o TheSportsDB.",
+      "GRADING_BACKLOG": "Picks atrasados",
+      "GRADING_BACKLOG_HINT": "Picks já iniciados ainda sem resultado. {timedOut, number} anulados por tempo esgotado, {disqualified, number} feitos depois do início real.",
       "IMPORTER": "Importador {platform}",
       "RUN": "Última execução {time}: {created, number} criados, {skipped, number} ignorados, {credits, number} créditos",
       "RUN_FAILED": "A última execução {time} falhou. Veja o log do servidor.",

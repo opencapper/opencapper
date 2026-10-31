@@ -1,4 +1,5 @@
 import { PICK_MARKETS, PICK_RESULTS } from "@/lib/api/typebox/picks";
+import { FINAL_RESULTS } from "@/lib/config/results";
 import type { PickMarket, PickResult } from "@/lib/api/typebox/picks";
 import { PARTICIPANT_KINDS } from "@/lib/api/typebox/participants";
 import type { ParticipantKind } from "@/lib/api/typebox/participants";
@@ -40,6 +41,9 @@ const bytea = customType<{ data: Buffer; driverData: Buffer }>({
     return "bytea";
   },
 });
+
+export const VOID_REASONS = ["postponed", "timeout"] as const;
+export type VoidReason = (typeof VOID_REASONS)[number];
 
 function sqlList(values: readonly string[]) {
   return sql.raw(values.map((v) => `'${v}'`).join(", "));
@@ -163,6 +167,8 @@ export const pickSettlements = pgTable(
     closingBookmaker: text("closing_bookmaker"),
     closingCapturedAt: timestamp("closing_captured_at", { withTimezone: true }),
     clv: numeric("clv", { precision: 10, scale: 6, mode: "number" }),
+    // Why a pick was voided without a result: the feed confirmed a postponement, or staff gave up waiting.
+    voidReason: text("void_reason").$type<VoidReason>(),
   },
   (table) => [
     index("pick_settlements_graded_at_idx").on(table.gradedAt),
@@ -173,6 +179,67 @@ export const pickSettlements = pgTable(
     check(
       "pick_settlements_closing_odds_check",
       sql`${table.closingOddsDecimal} > 1`,
+    ),
+    check(
+      "pick_settlements_void_reason_check",
+      sql`${table.voidReason} in (${sqlList(VOID_REASONS)})`,
+    ),
+  ],
+);
+
+export const DISQUALIFY_SOURCES = ["import", "grading", "repair"] as const;
+export type DisqualifySource = (typeof DISQUALIFY_SOURCES)[number];
+
+// A pick whose order turned out to be at or after the real start. Append only; stats leave these picks out.
+export const pickDisqualifications = pgTable(
+  "pick_disqualifications",
+  {
+    pickId: integer("pick_id")
+      .primaryKey()
+      .references(() => picks.id),
+    actualStart: timestamp("actual_start", { withTimezone: true }).notNull(),
+    detectedBy: text("detected_by").$type<DisqualifySource>().notNull(),
+    evidence: text("evidence").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    check(
+      "pick_disqualifications_detected_by_check",
+      sql`${table.detectedBy} in (${sqlList(DISQUALIFY_SOURCES)})`,
+    ),
+  ],
+);
+
+// Every change of a final result. Append only; the picks trigger only lets a final result change with a row from the same transaction.
+export const pickResultChanges = pgTable(
+  "pick_result_changes",
+  {
+    id: serial("id").primaryKey(),
+    pickId: integer("pick_id")
+      .notNull()
+      .references(() => picks.id),
+    fromResult: text("from_result").$type<PickResult>().notNull(),
+    toResult: text("to_result").$type<PickResult>().notNull(),
+    reason: text("reason").notNull(),
+    actor: text("actor").notNull(),
+    txid: bigint("txid", { mode: "number" })
+      .notNull()
+      .default(sql`txid_current()`),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index("pick_result_changes_pick_idx").on(table.pickId),
+    check(
+      "pick_result_changes_from_check",
+      sql`${table.fromResult} in (${sqlList(PICK_RESULTS)})`,
+    ),
+    check(
+      "pick_result_changes_to_check",
+      sql`${table.toResult} in (${sqlList(PICK_RESULTS)})`,
     ),
   ],
 );
@@ -261,7 +328,7 @@ export const historyPicks = pgTable(
     ),
     check(
       "history_picks_result_check",
-      sql`${table.result} in ('win', 'loss', 'push', 'void')`,
+      sql`${table.result} in (${sqlList(FINAL_RESULTS)})`,
     ),
     check(
       "history_picks_market_check",
@@ -628,6 +695,7 @@ export type User = typeof users.$inferSelect;
 export type Pick = typeof picks.$inferSelect;
 export type PickSettlement = typeof pickSettlements.$inferSelect;
 export type PickSource = typeof pickSources.$inferSelect;
+export type PickDisqualification = typeof pickDisqualifications.$inferSelect;
 export type HistoryPick = typeof historyPicks.$inferSelect;
 export type ProfileClaim = typeof profileClaims.$inferSelect;
 export type Participant = typeof participants.$inferSelect;

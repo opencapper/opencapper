@@ -540,7 +540,10 @@
       "WIN": "Gewonnen",
       "LOSS": "Verloren",
       "PUSH": "Push",
-      "VOID": "Geannuleerd"
+      "VOID": "Geannuleerd",
+      "HALF_WIN": "Half gewonnen",
+      "HALF_LOSS": "Half verloren",
+      "SPLIT": "50/50"
     },
     "MARKET": {
       "H2H": "Moneyline",
@@ -978,6 +981,8 @@
       "NO_ANCHOR": "Nog geen anker.",
       "IMAGES_PENDING": "Afbeeldingen in wachtrij",
       "IMAGES_HINT": "Team en spelersfoto's die op TheSportsDB wachten.",
+      "GRADING_BACKLOG": "Achterstallige picks",
+      "GRADING_BACKLOG_HINT": "Gestarte picks nog zonder uitslag. {timedOut, number} geannuleerd na een time-out, {disqualified, number} geplaatst na de echte start.",
       "IMPORTER": "{platform} importeur",
       "RUN": "Laatste run {time}: {created, number} aangemaakt, {skipped, number} overgeslagen, {credits, number} credits",
       "RUN_FAILED": "Laatste run {time} is mislukt. Bekijk het serverlog.",

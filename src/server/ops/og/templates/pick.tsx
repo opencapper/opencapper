@@ -1,5 +1,6 @@
 import { sportLabelKey } from "@/components/elements/sport/sport-icon";
 import { isMarket, MARKET_KEY, PICK_STATUS_KEY } from "@/lib/config/markets";
+import { RECORD_OF } from "@/lib/config/results";
 import { vendorName } from "@/lib/config/vendor-registry";
 import type { ApiPick } from "@/lib/types";
 import { formatUtcDateTime } from "@/lib/utils/format/date";
@@ -61,7 +62,8 @@ export async function pickCard(
     sportIcon(pick.sportKey, 26, C.soft),
   ]);
   const color = resultColor(pick.result);
-  const tinted = pick.result === "win" || pick.result === "loss";
+  const tinted =
+    RECORD_OF[pick.result] === "win" || RECORD_OF[pick.result] === "loss";
 
   return (
     <Frame

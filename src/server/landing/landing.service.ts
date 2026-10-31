@@ -6,6 +6,13 @@ import {
   users,
 } from "@/lib/db/schema/server";
 import { TELEGRAM_CHAT_PREFIX, type PickResult } from "@/lib/api/typebox/picks";
+import {
+  americanToDecimal,
+  FINAL_RESULTS,
+  netUnits,
+  RECORD_OF,
+  type RecordColumn,
+} from "@/lib/config/results";
 import { PICK_LEAGUES, sportGroup } from "@/lib/config/sports";
 import type {
   DashSource,
@@ -26,7 +33,11 @@ import { getHeadRow, getLogHead, getPickEntry } from "@/server/log/log.service";
 import { getFeaturedEvents } from "@/server/odds/board.service";
 import { listEvents } from "@/server/odds/odds.service";
 import { toAmericanOdds } from "@/server/picks/picks.mapper";
-import { getCapperStats } from "@/server/stats/stats.service";
+import {
+  countedPick,
+  getCapperStats,
+  recordCount,
+} from "@/server/stats/stats.service";
 import { visibleUser } from "@/server/users/hidden";
 import { getUserHistory, getUserPicks } from "@/server/users/users.service";
 import { and, desc, eq, gte, inArray, isNotNull, sql } from "drizzle-orm";
@@ -120,14 +131,14 @@ const landingFeatured = cached(async () => ({
   expires: Date.now() + FEATURED_TTL_MS,
 }));
 
-const GRADED = ["win", "loss", "push", "void"] as const;
-
 async function loadStats(): Promise<LandingStats> {
   const db = getDb();
-  const countOf = (result: string) =>
-    sql`count(*) filter (where ${picks.result} = ${result})::int`.mapWith(
-      Number,
-    );
+  const countOf = (column: RecordColumn | "void") =>
+    column === "void"
+      ? sql`count(*) filter (where ${picks.result} = 'void')::int`.mapWith(
+          Number,
+        )
+      : recordCount(picks.result, column);
   const [totalsRows, clvRows, gradedRows, head, headRow, board] =
     await Promise.all([
       db
@@ -137,7 +148,8 @@ async function loadStats(): Promise<LandingStats> {
           push: countOf("push"),
           void: countOf("void"),
         })
-        .from(picks),
+        .from(picks)
+        .where(countedPick),
       db
         .select({
           taken: picks.oddsDecimal,
@@ -165,7 +177,7 @@ async function loadStats(): Promise<LandingStats> {
         .where(
           and(
             isNotNull(pickSettlements.gradedAt),
-            inArray(picks.result, [...GRADED]),
+            inArray(picks.result, FINAL_RESULTS),
           ),
         )
         .orderBy(desc(pickSettlements.gradedAt))
@@ -187,12 +199,7 @@ async function loadStats(): Promise<LandingStats> {
     lastResult: graded
       ? {
           result: graded.result,
-          units:
-            graded.result === "win"
-              ? graded.units * (graded.oddsDecimal - 1)
-              : graded.result === "loss"
-                ? -graded.units
-                : 0,
+          units: netUnits(graded.result, graded.units, graded.oddsDecimal),
         }
       : null,
     head,
@@ -226,18 +233,12 @@ type GradedLike = {
   at: string;
 };
 
-function decimalOdds(american: number): number {
-  return american > 0 ? 1 + american / 100 : 1 + 100 / -american;
+function pickNet(pick: GradedLike): number {
+  return netUnits(pick.result, pick.units, americanToDecimal(pick.odds));
 }
 
-function netUnits(pick: GradedLike): number {
-  if (pick.result === "win") return pick.units * (decimalOdds(pick.odds) - 1);
-  if (pick.result === "loss") return -pick.units;
-  return 0;
-}
-
-function isSettled(result: PickResult) {
-  return result === "win" || result === "loss" || result === "push";
+function isSettled(pick: { result: PickResult; disqualified?: unknown }) {
+  return RECORD_OF[pick.result] !== null && !pick.disqualified;
 }
 
 function curveOf(graded: GradedLike[]): LandingDashPoint[] {
@@ -246,7 +247,7 @@ function curveOf(graded: GradedLike[]): LandingDashPoint[] {
   );
   let total = 0;
   const points = ordered.map((pick) => {
-    total += netUnits(pick);
+    total += pickNet(pick);
     return { at: pick.at, units: Math.round(total * 100) / 100 };
   });
   if (points.length <= CURVE_MAX_POINTS) return points;
@@ -269,9 +270,9 @@ function sportsOf(graded: GradedLike[]): LandingDashSport[] {
       units: 0,
     };
     entry.graded += 1;
-    if (pick.result === "win") entry.wins += 1;
-    if (pick.result === "loss") entry.losses += 1;
-    entry.units = Math.round((entry.units + netUnits(pick)) * 100) / 100;
+    if (RECORD_OF[pick.result] === "win") entry.wins += 1;
+    if (RECORD_OF[pick.result] === "loss") entry.losses += 1;
+    entry.units = Math.round((entry.units + pickNet(pick)) * 100) / 100;
     groups.set(key, entry);
   }
   return [...groups.values()]
@@ -312,7 +313,7 @@ async function loadTicker(): Promise<LandingDashTick[]> {
         and(
           visibleUser,
           isNotNull(pickSettlements.gradedAt),
-          inArray(picks.result, [...GRADED]),
+          inArray(picks.result, FINAL_RESULTS),
         ),
       )
       .orderBy(desc(pickSettlements.gradedAt))
@@ -388,7 +389,7 @@ async function loadGradedToday(): Promise<number> {
     .where(
       and(
         gte(pickSettlements.gradedAt, dayjs.utc().startOf("day").toDate()),
-        inArray(picks.result, [...GRADED]),
+        inArray(picks.result, FINAL_RESULTS),
       ),
     );
   return row?.count ?? 0;
@@ -411,10 +412,10 @@ async function loadDash(): Promise<LandingDash | null> {
       loadSources(),
     ]);
   const liveGraded = live
-    .filter((pick) => isSettled(pick.result))
+    .filter((pick) => isSettled(pick))
     .map((pick) => ({ ...pick, at: pick.commenceTime }));
   const historyGraded = history
-    .filter((pick) => isSettled(pick.result))
+    .filter((pick) => isSettled(pick))
     .map((pick) => ({ ...pick, at: pick.gradedAt }));
   const curveLive = liveGraded.length >= 2 || historyGraded.length === 0;
   const anchor = anchors[0];

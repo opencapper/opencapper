@@ -25,6 +25,18 @@ const STATUS = {
     key: msg("PROFILE.STATUS.VOID"),
     className: "bg-pick-void/15 text-pick-void",
   },
+  half_win: {
+    key: msg("PROFILE.STATUS.HALF_WIN"),
+    className: "bg-pick-win/15 text-pick-win",
+  },
+  half_loss: {
+    key: msg("PROFILE.STATUS.HALF_LOSS"),
+    className: "bg-pick-loss/15 text-pick-loss",
+  },
+  split: {
+    key: msg("PROFILE.STATUS.SPLIT"),
+    className: "bg-pick-push/15 text-pick-push",
+  },
 } satisfies Record<PickResult, { key: string; className: string }>;
 
 export function PickStatusBadge(props: { result: PickResult }) {

@@ -35,6 +35,8 @@ const MarketSchema = Type.Object({
         slug: Type.String(),
         title: Type.String(),
         startTime: Type.Optional(Type.String()),
+        live: Type.Optional(Type.Boolean()),
+        ended: Type.Optional(Type.Boolean()),
       }),
     ),
   ),
@@ -183,17 +185,31 @@ export function marketPrices(market: PolymarketMarket): number[] | null {
   return prices && prices.every(Number.isFinite) ? prices : null;
 }
 
-// Gamma writes "2026-10-24 02:00:00+00" on markets and ISO on events.
-export function marketStart(market: PolymarketMarket): Date | null {
-  const raw =
-    market.events?.[0]?.startTime ??
-    market.gameStartTime?.replace(" ", "T").replace(/([+-]\d{2})$/, "$1:00");
+function parseStart(raw: string | undefined): Date | null {
   if (!raw) return null;
   const date = new Date(raw);
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
-export type MarketResolution = "win" | "loss" | "void";
+// Gamma writes "2026-10-24 02:00:00+00" on markets and ISO on events; the two drift apart when a game moves, the earlier one wins.
+export function marketStart(market: PolymarketMarket): Date | null {
+  const starts = [
+    parseStart(market.events?.[0]?.startTime),
+    parseStart(
+      market.gameStartTime?.replace(" ", "T").replace(/([+-]\d{2})$/, "$1:00"),
+    ),
+  ].filter((date) => date !== null);
+  if (starts.length === 0) return null;
+  return new Date(Math.min(...starts.map((date) => date.getTime())));
+}
+
+// Gamma flags a game in play or over, whatever start time it still shows.
+export function marketStarted(market: PolymarketMarket): boolean {
+  const event = market.events?.[0];
+  return Boolean(event?.live || event?.ended);
+}
+
+export type MarketResolution = "win" | "loss" | "split";
 
 export function resolveOutcome(
   market: PolymarketMarket,
@@ -203,6 +219,6 @@ export function resolveOutcome(
   const price = marketPrices(market)?.[outcomeIndex];
   if (price === 1) return "win";
   if (price === 0) return "loss";
-  if (price === 0.5) return "void";
+  if (price === 0.5) return "split";
   return null;
 }

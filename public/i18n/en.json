@@ -540,7 +540,10 @@
       "WIN": "Won",
       "LOSS": "Lost",
       "PUSH": "Push",
-      "VOID": "Void"
+      "VOID": "Void",
+      "HALF_WIN": "Half won",
+      "HALF_LOSS": "Half lost",
+      "SPLIT": "50/50"
     },
     "MARKET": {
       "H2H": "Moneyline",
@@ -978,6 +981,8 @@
       "NO_ANCHOR": "No anchor yet.",
       "IMAGES_PENDING": "Images pending",
       "IMAGES_HINT": "Team and player pictures waiting for TheSportsDB.",
+      "GRADING_BACKLOG": "Overdue picks",
+      "GRADING_BACKLOG_HINT": "Started picks still without a result. {timedOut, number} voided after a timeout, {disqualified, number} placed after the real start.",
       "IMPORTER": "{platform} importer",
       "RUN": "Last run {time}: {created, number} created, {skipped, number} skipped, {credits, number} credits",
       "RUN_FAILED": "Last run {time} failed. Check the server log.",
