@@ -17,6 +17,8 @@ import {
   type inferParserType,
 } from "nuqs/server";
 
+const MAX_PAGE = 999;
+
 // Shared by the client hook and the server prefetch, so both build the same query key.
 export const LEADERBOARD_PARSERS = {
   // A comma list; a single value (`?sport=mma`) still parses.
@@ -48,7 +50,8 @@ export function leaderboardQuery(
     sort: filters.sort,
     order: filters.order,
     scope: filters.scope,
-    page: String(filters.page),
+    // A hand edited `?page=0` or `?page=-3` would fail validation; clamp to what the API accepts.
+    page: String(Math.min(Math.max(filters.page, 1), MAX_PAGE)),
     pageSize: String(filters.size),
   };
 }

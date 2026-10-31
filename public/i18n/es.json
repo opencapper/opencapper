@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName}: picks deportivos verificados con un historial honesto",
-    "DESCRIPTION": "Cada pick queda registrado con fecha y hora y bloqueado antes del partido. La plataforma captura las cuotas, los historiales se clasifican por ROI y no hay acuerdos de afiliación con casas de apuestas."
+    "TITLE": "{appName}: picks deportivos con un historial que nadie puede editar",
+    "DESCRIPTION": "Picks bloqueados antes del partido y liquidados automáticamente. Las cuotas vienen del mercado o de operaciones en cadena, nunca del capper. Historiales clasificados por ROI, sin acuerdos de afiliación con casas de apuestas."
   },
   "NAV": {
     "HOME": "Cómo funciona",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "Vende con un historial verificado",
       "GROUP_SELL_BODY": "Mantén la tienda que ya tienes. OpenCapper le añade un historial verificado.",
       "GROUP_HISTORY_TITLE": "Trae tu historial",
-      "GROUP_HISTORY_BODY": "Las importaciones se muestran aparte y se marcan como no verificadas, salvo que la fuente se pueda comprobar, como Polymarket en la cadena de bloques.",
+      "GROUP_HISTORY_BODY": "Las operaciones pasadas solo cuentan si se pueden comprobar, como las de Polymarket en la cadena de bloques. Se importan después, se muestran como historial en la cadena de bloques y nunca se mezclan con el registro en vivo.",
       "GROUP_BOOKS_TITLE": "Apuesta donde quieras",
       "GROUP_BOOKS_BODY": "Solo enlaces directos. Sin acuerdos de afiliación.",
       "BOOKS_BODY": "Con un toque abres el pick en una casa de apuestas con licencia en tu región. OpenCapper no gana nada con ello.",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "Cada pronosticador tiene su panel",
-      "BODY": "Este es el perfil del pronosticador mejor clasificado ahora mismo, construido con los mismos registros que la página pública: cuotas capturadas por nosotros, calificación automática y el registro encadenado por hash.",
+      "BODY": "Este es el perfil del capper mejor clasificado ahora mismo, con los mismos números que la página pública. Hoy la mayoría de los cappers clasificados son cuentas públicas de Polymarket: sus picks en vivo se importan de operaciones en cadena y se bloquean aquí antes de que empiece cada partido, y sus operaciones anteriores cuentan como historial en la cadena de bloques, importado después.",
       "FOOTNOTE": "Datos reales, actualizados cada minuto. Las pestañas solo cambian esta vista previa; el perfil completo muestra cada pick.",
       "EMPTY_TITLE": "Todavía no hay historial",
       "EMPTY_BODY": "En cuanto se califiquen los primeros picks, aquí aparecerá el panel del mejor pronosticador con números reales.",
@@ -312,8 +312,8 @@
     "FEATURES": {
       "TITLE": "Funciones",
       "ODDS_LABEL": "Cuotas",
-      "ODDS_TITLE": "Cuotas capturadas por nosotros.",
-      "ODDS_BODY": "La cuota, la casa de apuestas y la hora salen del mercado, nunca del tipster.",
+      "ODDS_TITLE": "Cuotas que el capper no puede elegir.",
+      "ODDS_BODY": "Los picks hechos aquí reciben la cuota del mercado, la casa y la hora al bloquearse. Los picks importados de Polymarket usan el precio de ejecución en cadena. El capper nunca escribe una cuota.",
       "LOCKED_LABEL": "Momento",
       "LOCKED_TITLE": "Bloqueado antes del inicio.",
       "LOCKED_BODY": "Un pick solo se acepta mientras el evento no ha empezado. Después ya no se puede editar ni borrar.",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "Clasificación",
     "TITLE": "Clasificación",
-    "DESCRIPTION": "Tipsters clasificados por ROI verificado en OpenCapper.",
+    "DESCRIPTION": "Cappers clasificados por ROI en OpenCapper, a partir de picks bloqueados antes del partido y del historial en la cadena de bloques.",
     "HEADING": "Clasificación",
-    "SUBHEADING": "Clasificación por ROI sobre picks verificados y bloqueados.",
+    "SUBHEADING": "Clasificación por ROI sobre picks liquidados: picks en vivo bloqueados aquí antes del partido más el historial de Polymarket en la cadena de bloques, importado después. Solo en vivo deja fuera el historial.",
     "MIN_PICKS": "Un tipster entra en la clasificación a partir de {count, number} picks liquidados, para que una semana de suerte no lo lleve a lo más alto.",
     "RANKED_COUNT": "{total, plural, one {# tipster clasificado} other {# tipsters clasificados}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "ROI, nunca dinero",
       "ROI_BODY": "El orden predeterminado es el retorno de la inversión: unidades ganadas por unidad apostada. El beneficio en dinero solo premia los stakes más altos, así que nunca clasificamos por él.",
       "GRADED_TITLE": "Solo picks liquidados",
-      "GRADED_BODY": "Cuentan los ganados, los perdidos y los nulos. Los pendientes y los anulados, no. Cada cuota la capturamos nosotros cuando se bloqueó el pick.",
+      "GRADED_BODY": "Cuentan los ganados, perdidos y nulos. Los pendientes y anulados no. Un pick en vivo lleva la cuota fijada al bloquearse aquí: del proveedor de cuotas para los picks hechos en OpenCapper, la ejecución en cadena para los picks importados de Polymarket. El historial en la cadena de bloques usa el precio de ejecución de cada operación.",
       "PERIOD_TITLE": "El mismo periodo para todos",
       "PERIOD_BODY": "El periodo se aplica igual a todos los tipsters, según la hora de inicio del evento. Nadie puede elegir una racha que le favorezca."
     },
-    "SCOPE_HINT_ALL": "Incluye el historial de Polymarket en la cadena de bloques: operaciones hechas antes del inicio, verificadas en la cadena, importadas después y liquidadas según la resolución del mercado. Cambia a solo en vivo para ver únicamente los picks registrados aquí antes del partido.",
+    "SCOPE_HINT_ALL": "En vivo e historial: picks en vivo bloqueados aquí antes del partido, más el historial de Polymarket en la cadena de bloques, es decir, operaciones hechas antes del inicio, importadas después y liquidadas según la resolución del mercado. Solo en vivo deja fuera el historial.",
     "SCOPE_HINT_LIVE": "Solo en vivo: cada pick se registró aquí antes del partido. El historial en la cadena de bloques queda fuera.",
     "SPLIT": "{graded, number} liquidados: {live, number} en vivo, {history, number} del historial en la cadena de bloques",
     "SPLIT_SHORT": "{live, number} en vivo, {history, number} historial",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "Muestra pequeña: el ROI sobre {count, number} picks liquidados todavía dice poco",
       "EMPTY": "Ningún tipster ha registrado todavía un pick en esta selección."
     },
-    "CHECK_LINK": "Comprobar un tipster"
+    "CHECK_LINK": "Comprobar un tipster",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "Esta página está más allá del final de la tabla",
+    "PAST_END_BODY": "Con estos filtros hay {total, plural, one {# capper clasificado} other {# cappers clasificados}}.",
+    "PAST_END_BACK": "Volver a la primera página"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} en total",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "Perfil del tipster",
     "TITLE": "{username} en OpenCapper",
-    "DESCRIPTION": "Historial verificado de picks de {username}: cada pick bloqueado antes del partido y clasificado por ROI.",
+    "DESCRIPTION": "Historial de picks de {username} en OpenCapper, liquidado automáticamente y clasificado por ROI.",
     "HEADING": "@{username}",
     "SUBHEADING": "Historial verificado. Los picks no se pueden editar ni borrar.",
     "SUBHEADING_PUBLIC": "Historial público creado a partir de picks importados. Los picks no se pueden editar ni borrar.",
     "VERIFIED": "Historial verificado",
     "LOADING": "Cargando historial",
-    "NOT_FOUND": "Ningún tipster con este nombre ha registrado todavía un pick.",
     "ERROR": "No se pudo cargar el historial. Inténtalo de nuevo más tarde.",
     "STATS": {
       "PICKS": "Picks",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "Stakes en picks ganados, perdidos y nulos",
       "ROI_SMALL_SAMPLE": "Muestra pequeña: {count, number} de {min, number} picks liquidados",
       "CLV": "CLV",
-      "CLV_HINT": "Media de {count, number} picks con cuota de cierre",
+      "CLV_HINT": "Media de {count, plural, one {# pick} other {# picks}} con cuota de cierre",
       "NO_CLV": "Aún no hay cuotas de cierre",
       "CLV_BEAT": "Superó la cuota de cierre en {value} de media.",
       "CLV_MISSED": "Quedó por debajo de la cuota de cierre en {value} de media.",
       "CLV_EVEN": "Igualó la cuota de cierre de media.",
-      "CLV_NONE": "El CLV (valor frente a la cuota de cierre) compara la cuota bloqueada con la última cuota antes del inicio."
+      "CLV_NONE": "El CLV (valor frente a la cuota de cierre) compara la cuota bloqueada con la última cuota antes del inicio.",
+      "NO_ROI_SHORT": "n/d",
+      "SCOPE_SUMMARY": "{record}, {units}u",
+      "SCOPE_LIVE_ONLY": "Picks en vivo registrados aquí",
+      "SCOPE_SPLIT": "En vivo: {live}. Historial en la cadena de bloques: {history}.",
+      "CLV_HINT_LIVE": "Solo picks en vivo: media de {count, plural, one {# pick} other {# picks}} con cuota de cierre"
     },
     "CHART": {
       "TITLE": "Unidades a lo largo del tiempo",
@@ -700,14 +708,14 @@
   "VERIFY": {
     "LABEL": "Verificar",
     "TITLE": "Comprueba cualquier pick",
-    "DESCRIPTION": "Cada pick de OpenCapper se sella en el momento en que se hace, así que nadie puede cambiarlo después. Compruébalo tú mismo.",
+    "DESCRIPTION": "Cada pick de OpenCapper se sella en el momento en que se registra aquí, para que nadie pueda cambiarlo después. Compruébalo tú mismo.",
     "HEADING": "Comprueba cualquier pick",
-    "SUBHEADING": "Cada pick se sella en el momento en que se hace, así que nadie, ni siquiera nosotros, puede cambiarlo después. Puedes comprobarlo tú mismo.",
+    "SUBHEADING": "Cada pick se sella en el momento en que se registra aquí, para que nadie, ni siquiera nosotros, pueda cambiarlo después. Puedes comprobarlo tú mismo.",
     "SEARCH": {
       "LABEL": "Nombre del tipster o enlace del pick",
-      "PLACEHOLDER": "razor, razor#12 o un enlace de pick pegado",
+      "PLACEHOLDER": "razor, razor#12, un id de pick o un enlace pegado",
       "SUBMIT": "Comprobar",
-      "INVALID": "Introduce el nombre de un tipster, un número de pick como razor#12 o pega el enlace de un pick.",
+      "INVALID": "Escribe el nombre de un capper, un número de pick del capper como razor#12, un id de pick como 1053, o pega un enlace a un pick.",
       "NOT_FOUND": "No hemos encontrado este pick.",
       "NO_PICKS": "No se encontraron picks de {username}.",
       "LATEST": "Últimos picks de {username}",
@@ -721,16 +729,25 @@
       "CHECKING": "Comprobando",
       "UNSEALED": "Aún sin sellar",
       "ERROR": "No se pudo comprobar",
-      "LOCKED": "Bloqueado {time}",
       "BY": "de {username}",
-      "NUMBER": "Pick {seq, number}",
+      "NUMBER": "Pick n.º {seq, number} del capper, id del pick {id}",
       "UNITS": "{count, plural, one {# unidad} other {# unidades}}",
-      "FALLBACK": "Pick {id} de {username}"
+      "STARTS": "Inicio del evento",
+      "LOCKED_AT": "Bloqueado aquí",
+      "IMPORTED": "Importado y bloqueado aquí",
+      "LEAD": "{duration} antes del inicio",
+      "AFTER_START": "{duration} después del inicio",
+      "ODDS": "Cuota",
+      "EXCHANGE_PRICE": "ejecución en cadena en Polymarket",
+      "RESULT": "Resultado",
+      "SOURCE": "Fuente y hora de la operación",
+      "PROOF_NOTE": "El sello cubre el pick tal como se registró, incluida la hora de bloqueo. La hora de inicio viene del proveedor de cuotas y no forma parte del sello, así que compara tú mismo las dos horas.",
+      "PROOF_NOTE_IMPORTED": "Este pick se importó de una operación pública en {platform}. El sello lo cubre desde el momento en que se bloqueó aquí al importarlo, nunca antes. El enlace de la fuente muestra la operación original y su propia hora; la hora de inicio no forma parte del sello."
     },
     "HOW": {
       "TITLE": "Cómo funciona",
-      "STEP_1_TITLE": "Sellado al crearse",
-      "STEP_1_BODY": "En el momento en que un tipster crea un pick, lo sellamos: el partido, la selección, la cuota, el stake y la hora.",
+      "STEP_1_TITLE": "Sellado al registrarse",
+      "STEP_1_BODY": "En cuanto se registra un pick aquí, por parte de un capper o por la importación de una operación en cadena, sellamos el partido, la selección, la cuota, el stake y la hora de bloqueo. La hora de inicio del partido no forma parte del sello; cada tarjeta de pick la muestra junto a la hora de bloqueo.",
       "STEP_2_TITLE": "Enlazado con todos los picks anteriores",
       "STEP_2_BODY": "Cada pick nuevo se enlaza con todos los anteriores. Cambiar un pick antiguo rompería esa cadena, y todo el mundo lo vería.",
       "STEP_3_TITLE": "Sellado en Bitcoin cada día",
@@ -808,7 +825,7 @@
   "CHECK": {
     "LABEL": "Comprobar un tipster",
     "TITLE": "Comprobar un tipster",
-    "DESCRIPTION": "Busca cualquier tipster por su nombre en OpenCapper, Discord, Telegram o Polymarket y mira su historial verificado, o el aviso de que no tiene ninguno.",
+    "DESCRIPTION": "Busca cualquier capper por su nombre en OpenCapper, Discord, Telegram o Polymarket y mira su historial, o el aviso de que no tiene ninguno.",
     "HEADING": "¿Este tipster es real?",
     "SUBHEADING": "Los estafadores copian el nombre y la foto de tipsters conocidos y venden accesos VIP falsos por DM. Un historial real está en OpenCapper y no se puede editar. Búscalo antes de pagarle a nadie.",
     "ERROR": "La búsqueda falló. Inténtalo de nuevo más tarde.",
@@ -851,7 +868,7 @@
       "UNITS": "{units} unidades"
     },
     "NONE": {
-      "TITLE": "No hay historial verificado para {query}",
+      "TITLE": "No hay historial para {query}",
       "BODY": "Quien vende picks sin un historial público no puede demostrarlo. Pide su enlace de OpenCapper.",
       "TIP_1": "Los tipsters reales comparten su enlace sin problema. Quien se niega tiene sus motivos.",
       "TIP_2": "Las capturas de boletos y rachas se falsifican en segundos. Un historial bloqueado y con fecha no.",
@@ -862,7 +879,7 @@
       "STEP_1_TITLE": "Busca el nombre",
       "STEP_1_BODY": "Busca el nombre exacto que usa en Discord, Telegram o Polymarket, o pega su ID de Discord.",
       "STEP_2_TITLE": "Abre el historial",
-      "STEP_2_BODY": "Cada pick del historial se bloqueó antes del partido con cuotas que capturó la plataforma. Nada se puede editar ni borrar.",
+      "STEP_2_BODY": "Los picks en vivo se bloquearon aquí antes del partido, a la cuota del mercado o, en los picks importados de Polymarket, al precio de ejecución en cadena. El historial en la cadena de bloques aparece marcado como tal. Nada se puede editar ni borrar.",
       "STEP_3_TITLE": "Sin historial, sin confianza",
       "STEP_3_BODY": "Si no aparece ningún historial, el tipster no puede demostrar ni un solo acierto. Pide su enlace de OpenCapper antes de pagar."
     }
@@ -1013,11 +1030,17 @@
     "LAST_STAMP": "Último sello en Bitcoin",
     "NO_STAMP": "Ninguno todavía",
     "LOG_ROOT": "Raíz actual",
-    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "Historial de {username}: {wins, number} ganados, {losses, number} perdidos y {pushes, number} nulos en {picks, plural, one {# pick} other {# picks}}, todos bloqueados antes del partido.",
+    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi}, {scope} | {appName}",
+    "PROFILE_DESCRIPTION": "Historial de {username}: {record} en {picks, plural, one {# pick} other {# picks}} registrados aquí antes del partido y liquidados automáticamente.",
     "PICK_TITLE": "{username} #{seq}: {selection} {odds}, {units}u | {appName}",
     "PICK_DESCRIPTION": "{away} visita a {home}. Bloqueado {time} a cuota {odds} con {bookmaker}. Estado: {status}.",
-    "LEADERBOARD_TITLE": "Clasificación: {filters} | {appName}"
+    "LEADERBOARD_TITLE": "Clasificación: {filters} | {appName}",
+    "SCOPE_ALL": "en vivo e historial en la cadena de bloques",
+    "SCOPE_LIVE": "picks en vivo",
+    "PROFILE_TITLE_UNGRADED": "{username}: todavía sin picks liquidados | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "Historial de {username}, en vivo e historial en la cadena de bloques: {record}. Picks en vivo registrados aquí antes del partido: {live}. Operaciones de Polymarket importadas después desde la cadena de bloques: {history}.",
+    "SCOPE_SPLIT": "En vivo {live} + historial en cadena {history}",
+    "SCOPE_LIVE_LINE": "Picks en vivo registrados aquí"
   },
   "ERRORS": {
     "UNAUTHORIZED": "No autorizado.",
@@ -1080,7 +1103,9 @@
     "OUTCOME_NOT_IN_EVENT": "Elige {home}, {away} o empate (Draw) para este evento.",
     "PRICE_UNRELIABLE": "Ahora mismo ninguna casa de apuestas ofrece una cuota fiable para esta selección. Vuelve a intentarlo más cerca del partido.",
     "PICK_DUPLICATE": "Ya tienes una selección en este mercado para este evento.",
-    "UNITS_INVALID": "Las unidades deben estar entre {min} y {max}, en pasos de {step}."
+    "UNITS_INVALID": "Las unidades deben estar entre {min} y {max}, en pasos de {step}.",
+    "CAPPER_NOT_FOUND": "No existe ningún capper con este nombre.",
+    "PICK_NOT_FOUND": "Este pick no existe."
   },
   "LEGAL": {
     "LABEL": "Información legal",
@@ -1273,5 +1298,12 @@
       "LOGIN": "Inicia sesión para suscribirte",
       "FAILED": "No se pudo iniciar el pago."
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "Esta página no existe",
+    "BODY": "Puede que el enlace esté roto o que ningún capper tenga este nombre. Un capper real siempre puede compartir un enlace de perfil que funcione; revisa la ortografía o busca el nombre.",
+    "HOME": "Inicio",
+    "CHECK": "Comprobar un capper"
   }
 }

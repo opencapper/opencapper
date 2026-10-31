@@ -21,3 +21,18 @@ export function useUserHistoryQuery(username: string) {
     rpc.api.users({ username }).history.get(),
   );
 }
+
+export function useUserPickQuery(username: string, seq: number) {
+  return useElysiaQuery(queryKeys.userPick(username, seq), () =>
+    rpc.api
+      .users({ username })
+      .picks({ seq: String(seq) })
+      .get(),
+  );
+}
+
+export function usePickQuery(pickId: number) {
+  return useElysiaQuery(queryKeys.pick(pickId), () =>
+    rpc.api.picks({ id: String(pickId) }).get(),
+  );
+}

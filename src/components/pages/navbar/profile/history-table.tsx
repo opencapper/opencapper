@@ -156,6 +156,7 @@ export function HistoryTable(props: { username: string; stats: HistoryStats }) {
             id="PROFILE_HISTORY"
             data={history.data ?? []}
             columns={columns}
+            total={history.data?.length ?? 0}
             isLoading={history.isPending}
             localSorting
             emptyState={

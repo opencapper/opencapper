@@ -39,10 +39,15 @@ export function formatShortUnits(value: number, locale: string): string {
   }).format(value);
 }
 
-export function formatRecord(record: {
-  wins: number;
-  losses: number;
-  pushes: number;
-}): string {
-  return `${record.wins}-${record.losses}-${record.pushes}`;
+export function formatCount(value: number, locale: string): string {
+  return new Intl.NumberFormat(locale).format(value);
+}
+
+export function formatRecord(
+  record: { wins: number; losses: number; pushes: number },
+  locale?: string,
+): string {
+  const count = (value: number) =>
+    locale ? formatCount(value, locale) : String(value);
+  return `${count(record.wins)}-${count(record.losses)}-${count(record.pushes)}`;
 }

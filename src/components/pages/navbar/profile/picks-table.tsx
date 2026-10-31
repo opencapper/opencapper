@@ -40,9 +40,11 @@ import {
   formatPlainPercent,
   formatPlainUnits,
 } from "@/lib/utils/format/number";
-import type { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+const PAGE_SIZE = 20;
 
 export function PicksTable(props: {
   picks: ApiPick[];
@@ -52,6 +54,14 @@ export function PicksTable(props: {
   const t = useTranslations();
   const locale = useLocale();
   const highlightId = props.highlightPickId ?? null;
+  // Paged so a capper with hundreds of picks does not render every row; a linked pick opens on its page.
+  const highlightIndex = props.picks.findIndex(
+    (pick) => pick.id === highlightId,
+  );
+  const paginationState = useState<PaginationState>({
+    pageIndex: highlightIndex > 0 ? Math.floor(highlightIndex / PAGE_SIZE) : 0,
+    pageSize: PAGE_SIZE,
+  });
 
   useEffect(() => {
     if (!highlightId) return;
@@ -193,6 +203,9 @@ export function PicksTable(props: {
           id="PROFILE_PICKS"
           data={props.picks}
           columns={columns}
+          total={props.picks.length}
+          pagination={paginationState[0]}
+          onPaginationChange={paginationState[1]}
           localSorting
           rowClassName={(row) =>
             row.original.id === highlightId

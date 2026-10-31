@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { formatAmericanOdds } from "@/lib/utils/format/number";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { Ago, selectionText } from "./dash-parts";
+import { Ago } from "./dash-parts";
 import { HistoryView, OverviewView, PicksView, VerifyView } from "./dash-views";
 
 type Tab = "overview" | "picks" | "history" | "verify";
@@ -53,7 +53,7 @@ function TickText(props: { tick: LandingDashTick }) {
   if (tick.kind === "locked")
     return t("LANDING.DASH.TICK_LOCKED", {
       username: tick.username,
-      selection: selectionText(tick),
+      selection: tick.selection,
       odds: formatAmericanOdds(tick.odds),
     });
   if (tick.kind === "graded")

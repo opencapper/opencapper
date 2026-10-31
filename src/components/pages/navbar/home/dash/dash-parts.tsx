@@ -39,19 +39,6 @@ export function Panel(props: {
   );
 }
 
-export function selectionText(pick: {
-  market: string;
-  selection: string;
-  point: number | null;
-}) {
-  if (pick.point === null) return pick.selection;
-  const point =
-    pick.market === "spreads" && pick.point > 0
-      ? `+${pick.point}`
-      : String(pick.point);
-  return `${pick.selection} ${point}`;
-}
-
 export function MarketLabel(props: { market: string }) {
   const t = useTranslations();
   return (

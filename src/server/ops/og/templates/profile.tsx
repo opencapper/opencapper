@@ -1,12 +1,26 @@
 import { sportGroup, type SportGroup } from "@/lib/config/sports";
-import type { ApiPick } from "@/lib/types";
+import type { ApiHistoryPick, ApiPick } from "@/lib/types";
+import { dayjs } from "@/lib/utils/format/date";
 import {
+  formatCount,
   formatPercent,
   formatRecord,
+  formatShortUnits,
   formatUnits,
 } from "@/lib/utils/format/number";
+import {
+  defaultScope,
+  historyRecord,
+  liveRecord,
+  scopedRecord,
+  type ScopedRecord,
+} from "@/lib/utils/stats";
 import { getCapperStats } from "@/server/stats/stats.service";
-import { getProfileAvatar, getUserPicks } from "@/server/users/users.service";
+import {
+  getProfileAvatar,
+  getUserHistory,
+  getUserPicks,
+} from "@/server/users/users.service";
 import type { Locale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
@@ -21,11 +35,29 @@ const AVATAR = 104;
 const SPORT_ICON = 30;
 const MAX_SPORTS = 6;
 
-function runningUnits(picks: ApiPick[]): number[] {
+type Graded = Pick<ApiPick, "result" | "units" | "odds"> & {
+  at: number;
+  disqualified: boolean;
+};
+
+// Live picks and on chain history in time order, the same scope as the headline numbers.
+function runningUnits(picks: ApiPick[], history: ApiHistoryPick[]): number[] {
   let total = 0;
-  return picks
+  const all: Graded[] = [
+    ...picks.map((pick) => ({
+      ...pick,
+      at: dayjs(pick.createdAt).valueOf(),
+      disqualified: Boolean(pick.disqualified),
+    })),
+    ...history.map((pick) => ({
+      ...pick,
+      at: dayjs(pick.tradedAt).valueOf(),
+      disqualified: false,
+    })),
+  ];
+  return all
     .filter((pick) => RECORD_OF[pick.result] !== null && !pick.disqualified)
-    .toSorted((a, b) => a.sequence - b.sequence)
+    .toSorted((a, b) => a.at - b.at)
     .map((pick) => {
       total += netUnits(pick.result, pick.units, americanToDecimal(pick.odds));
       return total;
@@ -53,20 +85,26 @@ export async function profileCard(
   locale: Locale,
   username: string,
 ): Promise<ReactNode | null> {
-  const [t, stats, picks, avatarUrl] = await Promise.all([
+  const [t, stats, picks, history, avatarUrl] = await Promise.all([
     getTranslations({ locale }),
     getCapperStats(username),
     getUserPicks(username),
+    getUserHistory(username),
     getProfileAvatar(username),
   ]);
   if (stats.hidden) return null;
+  const scope = defaultScope(stats);
+  const record = scopedRecord(stats, scope);
+  const past = historyRecord(stats);
+  const summary = (r: ScopedRecord) =>
+    `${formatRecord(r, locale)} ${formatShortUnits(r.units, locale)}u`;
   const sports = topSports(picks);
   const [avatar, sourceLogo, ...icons] = await Promise.all([
     remoteImage(avatarUrl, AVATAR),
     stats.source ? vendorImage(stats.source.platform, AVATAR) : null,
     ...sports.map((key) => sportIcon(key, SPORT_ICON, C.soft)),
   ]);
-  const series = runningUnits(picks);
+  const series = runningUnits(picks, scope === "all" ? history : []);
 
   return (
     <Frame label={t("PROFILE.LABEL")}>
@@ -100,30 +138,47 @@ export async function profileCard(
             ))}
           </Row>
         </Row>
-        <Row style={{ justifyContent: "space-between" }}>
-          <Stat label={t("PROFILE.STATS.RECORD")} value={formatRecord(stats)} />
-          <Stat
-            label={t("PROFILE.STATS.UNITS")}
-            value={formatUnits(stats.units, locale)}
-            color={signColor(stats.units)}
-          />
-          <Stat
-            label={t("PROFILE.STATS.ROI")}
-            value={formatPercent(stats.roi, locale)}
-            color={signColor(stats.roi)}
-          />
-          {stats.clv !== undefined && (
+        <Col style={{ gap: 18, paddingTop: 24 }}>
+          <Eyebrow color={C.soft}>
+            {scope === "all" && past
+              ? t("OG.SCOPE_SPLIT", {
+                  live: summary(liveRecord(stats)),
+                  history: summary(past),
+                })
+              : t("OG.SCOPE_LIVE_LINE")}
+          </Eyebrow>
+          <Row style={{ justifyContent: "space-between" }}>
             <Stat
-              label={t("PROFILE.STATS.CLV")}
-              value={formatPercent(stats.clv, locale)}
-              color={signColor(stats.clv)}
+              label={t("PROFILE.STATS.RECORD")}
+              value={formatRecord(record, locale)}
             />
-          )}
-          <Stat
-            label={t("PROFILE.STATS.PICKS")}
-            value={new Intl.NumberFormat(locale).format(stats.picks)}
-          />
-        </Row>
+            <Stat
+              label={t("PROFILE.STATS.UNITS")}
+              value={formatUnits(record.units, locale)}
+              color={signColor(record.units)}
+            />
+            <Stat
+              label={t("PROFILE.STATS.ROI")}
+              value={
+                record.graded > 0
+                  ? formatPercent(record.roi, locale)
+                  : t("PROFILE.STATS.NO_ROI_SHORT")
+              }
+              color={record.graded > 0 ? signColor(record.roi) : C.muted}
+            />
+            {scope === "live" && stats.clv !== undefined && (
+              <Stat
+                label={t("PROFILE.STATS.CLV")}
+                value={formatPercent(stats.clv, locale)}
+                color={signColor(stats.clv)}
+              />
+            )}
+            <Stat
+              label={t("PROFILE.STATS.PICKS")}
+              value={formatCount(record.picks, locale)}
+            />
+          </Row>
+        </Col>
         <Row
           style={{
             height: 96,

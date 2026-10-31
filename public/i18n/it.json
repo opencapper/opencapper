@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName}: pronostici sportivi verificati con uno storico onesto",
-    "DESCRIPTION": "Ogni pronostico registrato con data e ora e bloccato prima della partita. Quote rilevate dalla piattaforma, storici classificati per ROI, nessun accordo di affiliazione con i bookmaker."
+    "TITLE": "{appName}: pronostici sportivi con uno storico che nessuno può modificare",
+    "DESCRIPTION": "Pronostici bloccati prima della partita e refertati automaticamente. Le quote arrivano dal mercato o da operazioni on chain, mai dal capper. Storici classificati per ROI, nessun accordo di affiliazione con i bookmaker."
   },
   "NAV": {
     "HOME": "Come funziona",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "Vendi con uno storico verificato",
       "GROUP_SELL_BODY": "Tieni il negozio che hai già. OpenCapper ci aggiunge uno storico verificato.",
       "GROUP_HISTORY_TITLE": "Porta il tuo storico",
-      "GROUP_HISTORY_BODY": "Le importazioni sono mostrate a parte e segnate come non verificate, a meno che la fonte non si possa controllare, come Polymarket on chain.",
+      "GROUP_HISTORY_BODY": "Le operazioni passate contano solo se verificabili, come quelle di Polymarket on chain. Vengono importate in seguito, mostrate come storico on chain e mai mescolate al registro live.",
       "GROUP_BOOKS_TITLE": "Gioca dove vuoi",
       "GROUP_BOOKS_BODY": "Solo deep link. Nessun accordo di affiliazione.",
       "BOOKS_BODY": "Con un tocco apri il pronostico su un bookmaker autorizzato nella tua zona. OpenCapper non ci guadagna nulla.",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "Ogni tipster ha la sua dashboard",
-      "BODY": "Questo è il profilo del tipster primo in classifica in questo momento, costruito con gli stessi dati della pagina pubblica: quote rilevate da noi, valutazione automatica e il registro concatenato con hash.",
+      "BODY": "Questo è il profilo del capper primo in classifica in questo momento, con gli stessi numeri della pagina pubblica. Oggi la maggior parte dei capper in classifica sono account pubblici di Polymarket: i loro pronostici live vengono importati da operazioni on chain e bloccati qui prima dell’inizio di ogni partita, mentre le operazioni più vecchie contano come storico on chain, importato in seguito.",
       "FOOTNOTE": "Dati reali, aggiornati ogni minuto. Le schede cambiano solo questa anteprima; il profilo completo elenca ogni pronostico.",
       "EMPTY_TITLE": "Ancora nessuno storico",
       "EMPTY_BODY": "Appena i primi pronostici vengono valutati, qui compare la dashboard del miglior tipster con numeri reali.",
@@ -312,8 +312,8 @@
     "FEATURES": {
       "TITLE": "Funzionalità",
       "ODDS_LABEL": "Quote",
-      "ODDS_TITLE": "Quote rilevate da noi.",
-      "ODDS_BODY": "La quota, il bookmaker e l’orario vengono dal mercato, mai dal tipster.",
+      "ODDS_TITLE": "Quote che il capper non può scegliere.",
+      "ODDS_BODY": "I pronostici fatti qui ricevono la quota di mercato, il bookmaker e l’ora al momento del blocco. I pronostici importati da Polymarket usano il prezzo di esecuzione on chain. Il capper non scrive mai una quota.",
       "LOCKED_LABEL": "Tempistica",
       "LOCKED_TITLE": "Bloccato prima del fischio d’inizio.",
       "LOCKED_BODY": "Un pronostico viene accettato solo finché l’evento non è iniziato. Dopo non si può più modificare né cancellare.",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "Classifica",
     "TITLE": "Classifica",
-    "DESCRIPTION": "Tipster classificati per ROI verificato su OpenCapper.",
+    "DESCRIPTION": "Capper classificati per ROI su OpenCapper, da pronostici bloccati prima della partita e dallo storico on chain.",
     "HEADING": "Classifica",
-    "SUBHEADING": "Classifica per ROI su pronostici verificati e bloccati.",
+    "SUBHEADING": "Classifica per ROI sui pronostici refertati: pronostici live bloccati qui prima della partita più lo storico on chain di Polymarket importato in seguito. Solo live esclude lo storico.",
     "MIN_PICKS": "Un tipster entra in classifica dopo {count, number} pronostici refertati, così una settimana fortunata non basta per arrivare in vetta.",
     "RANKED_COUNT": "{total, plural, one {# tipster in classifica} other {# tipster in classifica}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "ROI, mai soldi",
       "ROI_BODY": "L’ordine predefinito è il ritorno sull’investimento: unità vinte per unità giocata. Il profitto in euro premia solo le puntate più alte, quindi non lo usiamo mai per la classifica.",
       "GRADED_TITLE": "Solo pronostici refertati",
-      "GRADED_BODY": "Contano vinti, persi e rimborsati. In attesa e annullati no. Ogni quota è stata rilevata da noi nel momento in cui il pronostico è stato bloccato.",
+      "GRADED_BODY": "Contano vinti, persi e rimborsati. I pronostici in attesa e annullati no. Un pronostico live porta la quota fissata quando è stato bloccato qui: dal feed delle quote per i pronostici fatti su OpenCapper, l’esecuzione on chain per quelli importati da Polymarket. Lo storico on chain usa il prezzo di esecuzione di ogni operazione.",
       "PERIOD_TITLE": "Un’unica finestra per tutti",
       "PERIOD_BODY": "Il periodo vale allo stesso modo per ogni tipster, in base all’orario di inizio dell’evento. Nessuno può scegliersi una striscia favorevole."
     },
-    "SCOPE_HINT_ALL": "Include lo storico on chain di Polymarket: operazioni piazzate prima dell’inizio, verificate on chain, importate in seguito e refertate in base alla risoluzione del mercato. Passa a solo live per i pronostici registrati qui prima della partita.",
+    "SCOPE_HINT_ALL": "Live e storico importato: pronostici live bloccati qui prima della partita più lo storico on chain di Polymarket, cioè operazioni piazzate prima dell’inizio, importate in seguito dalla blockchain e refertate in base alla risoluzione del mercato. Solo live esclude lo storico.",
     "SCOPE_HINT_LIVE": "Solo live: ogni pronostico è stato registrato qui prima della partita. Lo storico on chain è escluso.",
     "SPLIT": "{graded, number} refertati: {live, number} live, {history, number} da storico on chain",
     "SPLIT_SHORT": "{live, number} live, {history, number} storico",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "Campione ridotto: un ROI su {count, number} pronostici refertati dice ancora poco",
       "EMPTY": "Nessun tipster ha ancora registrato un pronostico in questa selezione."
     },
-    "CHECK_LINK": "Verifica un tipster"
+    "CHECK_LINK": "Verifica un tipster",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "Questa pagina è oltre la fine della classifica",
+    "PAST_END_BODY": "Con questi filtri {total, plural, one {è in classifica # capper} other {sono in classifica # capper}}.",
+    "PAST_END_BACK": "Torna alla prima pagina"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} in totale",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "Profilo del tipster",
     "TITLE": "{username} su OpenCapper",
-    "DESCRIPTION": "Storico verificato dei pronostici di {username}: ogni pronostico bloccato prima della partita, classificato per ROI.",
+    "DESCRIPTION": "Storico dei pronostici di {username} su OpenCapper, refertati automaticamente e classificati per ROI.",
     "HEADING": "@{username}",
     "SUBHEADING": "Storico verificato. I pronostici non si possono modificare né cancellare.",
     "SUBHEADING_PUBLIC": "Storico pubblico costruito da pronostici importati. I pronostici non si possono modificare né cancellare.",
     "VERIFIED": "Storico verificato",
     "LOADING": "Caricamento dello storico",
-    "NOT_FOUND": "Nessun tipster con questo nome ha ancora registrato un pronostico.",
     "ERROR": "Impossibile caricare lo storico. Riprova più tardi.",
     "STATS": {
       "PICKS": "Pronostici",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "Puntate su vinti, persi e rimborsati",
       "ROI_SMALL_SAMPLE": "Campione ridotto: {count, number} su {min, number} pronostici refertati",
       "CLV": "CLV",
-      "CLV_HINT": "Media su {count, number} pronostici con quota di chiusura",
+      "CLV_HINT": "Media su {count, plural, one {# pronostico} other {# pronostici}} con quota di chiusura",
       "NO_CLV": "Ancora nessuna quota di chiusura",
       "CLV_BEAT": "In media ha battuto la quota di chiusura di {value}.",
       "CLV_MISSED": "In media è rimasto sotto la quota di chiusura di {value}.",
       "CLV_EVEN": "In media ha eguagliato la quota di chiusura.",
-      "CLV_NONE": "Il valore rispetto alla quota di chiusura confronta la quota bloccata con l’ultima quota prima dell’inizio."
+      "CLV_NONE": "Il valore rispetto alla quota di chiusura confronta la quota bloccata con l’ultima quota prima dell’inizio.",
+      "NO_ROI_SHORT": "n/d",
+      "SCOPE_SUMMARY": "{record}, {units}u",
+      "SCOPE_LIVE_ONLY": "Pronostici live registrati qui",
+      "SCOPE_SPLIT": "Live: {live}. Storico on chain: {history}.",
+      "CLV_HINT_LIVE": "Solo pronostici live: media su {count, plural, one {# pronostico} other {# pronostici}} con quota di chiusura"
     },
     "CHART": {
       "TITLE": "Unità nel tempo",
@@ -700,14 +708,14 @@
   "VERIFY": {
     "LABEL": "Verifica",
     "TITLE": "Controlla qualsiasi pronostico",
-    "DESCRIPTION": "Ogni pronostico su OpenCapper viene sigillato nel momento in cui viene creato, così nessuno può modificarlo dopo. Controllalo tu stesso.",
+    "DESCRIPTION": "Ogni pronostico di OpenCapper viene sigillato nel momento in cui è registrato qui, così nessuno può modificarlo in seguito. Controlla tu stesso.",
     "HEADING": "Controlla qualsiasi pronostico",
-    "SUBHEADING": "Ogni pronostico viene sigillato nel momento in cui viene creato, così nessuno, nemmeno noi, può modificarlo dopo. Puoi controllarlo tu stesso.",
+    "SUBHEADING": "Ogni pronostico viene sigillato nel momento in cui è registrato qui, così nessuno, nemmeno noi, può modificarlo in seguito. Puoi verificarlo tu stesso.",
     "SEARCH": {
       "LABEL": "Nome del tipster o link del pronostico",
-      "PLACEHOLDER": "razor, razor#12 o un link incollato",
+      "PLACEHOLDER": "razor, razor#12, un id pronostico o un link incollato",
       "SUBMIT": "Controlla",
-      "INVALID": "Inserisci il nome di un tipster, un numero di pronostico come razor#12, oppure incolla il link di un pronostico.",
+      "INVALID": "Inserisci il nome di un capper, un numero di pronostico del capper come razor#12, un id pronostico come 1053, oppure incolla un link a un pronostico.",
       "NOT_FOUND": "Non abbiamo trovato questo pronostico.",
       "NO_PICKS": "Nessun pronostico trovato per {username}.",
       "LATEST": "Ultimi pronostici di {username}",
@@ -721,16 +729,25 @@
       "CHECKING": "Controllo in corso",
       "UNSEALED": "Non ancora sigillato",
       "ERROR": "Impossibile controllarlo",
-      "LOCKED": "Bloccato {time}",
       "BY": "di {username}",
-      "NUMBER": "Pronostico {seq, number}",
+      "NUMBER": "Pronostico n. {seq, number} del capper, id pronostico {id}",
       "UNITS": "{count, plural, one {# unità} other {# unità}}",
-      "FALLBACK": "Pronostico {id} di {username}"
+      "STARTS": "Inizio dell’evento",
+      "LOCKED_AT": "Bloccato qui",
+      "IMPORTED": "Importato e bloccato qui",
+      "LEAD": "{duration} prima dell’inizio",
+      "AFTER_START": "{duration} dopo l’inizio",
+      "ODDS": "Quota",
+      "EXCHANGE_PRICE": "esecuzione on chain su Polymarket",
+      "RESULT": "Risultato",
+      "SOURCE": "Fonte e ora dell’operazione",
+      "PROOF_NOTE": "Il sigillo copre il pronostico così come è stato registrato, ora del blocco inclusa. L’ora di inizio arriva dal feed delle quote e non fa parte del sigillo, quindi confronta tu stesso i due orari.",
+      "PROOF_NOTE_IMPORTED": "Questo pronostico è stato importato da un’operazione pubblica su {platform}. Il sigillo lo copre dal momento in cui è stato bloccato qui durante l’importazione, mai prima. Il link alla fonte mostra l’operazione originale con il suo orario; l’ora di inizio non fa parte del sigillo."
     },
     "HOW": {
       "TITLE": "Come funziona",
-      "STEP_1_TITLE": "Sigillato alla creazione",
-      "STEP_1_BODY": "Nel momento in cui un tipster crea un pronostico, lo sigilliamo: la partita, la selezione, la quota, la puntata e l’orario.",
+      "STEP_1_TITLE": "Sigillato alla registrazione",
+      "STEP_1_BODY": "Appena un pronostico viene registrato qui, da un capper o tramite l’importazione di un’operazione on chain, sigilliamo la partita, la selezione, la quota, la puntata e l’ora del blocco. L’ora di inizio della partita non fa parte del sigillo; ogni scheda del pronostico la mostra accanto all’ora del blocco.",
       "STEP_2_TITLE": "Collegato a tutti i pronostici precedenti",
       "STEP_2_BODY": "Ogni nuovo pronostico è collegato a tutti quelli prima. Modificare un vecchio pronostico spezzerebbe la catena, e tutti lo vedrebbero.",
       "STEP_3_TITLE": "Marcato in Bitcoin ogni giorno",
@@ -808,7 +825,7 @@
   "CHECK": {
     "LABEL": "Verifica un tipster",
     "TITLE": "Verifica un tipster",
-    "DESCRIPTION": "Cerca qualsiasi tipster per nome su OpenCapper, Discord, Telegram o Polymarket e guarda il suo storico verificato, o l'avviso che non ne ha uno.",
+    "DESCRIPTION": "Cerca qualsiasi capper per nome su OpenCapper, Discord, Telegram o Polymarket e guarda lo storico, oppure l’avviso che non ne ha uno.",
     "HEADING": "Questo tipster è reale?",
     "SUBHEADING": "I truffatori copiano nomi e foto di tipster noti e vendono falsi accessi VIP in DM. Uno storico vero sta su OpenCapper e non può essere modificato. Controllalo prima di pagare chiunque.",
     "ERROR": "La ricerca non è riuscita. Riprova più tardi.",
@@ -851,7 +868,7 @@
       "UNITS": "{units} unità"
     },
     "NONE": {
-      "TITLE": "Nessuno storico verificato per {query}",
+      "TITLE": "Nessuno storico per {query}",
       "BODY": "Chi vende pronostici senza uno storico pubblico non può dimostrarlo. Chiedi il suo link OpenCapper.",
       "TIP_1": "I tipster veri condividono apertamente il link al loro storico. Chi si rifiuta ha un motivo.",
       "TIP_2": "Gli screenshot di schedine e serie vincenti si falsificano in pochi secondi. Uno storico bloccato e con data no.",
@@ -862,7 +879,7 @@
       "STEP_1_TITLE": "Cerca il nome",
       "STEP_1_BODY": "Cerca il nome esatto che usa su Discord, Telegram o Polymarket, oppure incolla il suo ID Discord.",
       "STEP_2_TITLE": "Apri lo storico",
-      "STEP_2_BODY": "Ogni pronostico dello storico è stato bloccato prima della partita a quote rilevate dalla piattaforma. Niente si può modificare o cancellare.",
+      "STEP_2_BODY": "I pronostici live sono stati bloccati qui prima della partita, alla quota di mercato o, per quelli importati da Polymarket, al prezzo di esecuzione on chain. Lo storico on chain è indicato come tale. Nulla può essere modificato o cancellato.",
       "STEP_3_TITLE": "Nessuno storico, nessuna fiducia",
       "STEP_3_BODY": "Se non compare alcuno storico, il tipster non può dimostrare nemmeno una vincita. Chiedi il suo link OpenCapper prima di pagare."
     }
@@ -1013,11 +1030,17 @@
     "LAST_STAMP": "Ultima marcatura in Bitcoin",
     "NO_STAMP": "Ancora nessuna",
     "LOG_ROOT": "Radice attuale",
-    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "Storico di {username}: {wins, number} vinti, {losses, number} persi e {pushes, number} rimborsati su {picks, plural, one {# pronostico} other {# pronostici}}, tutti bloccati prima della partita.",
+    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi}, {scope} | {appName}",
+    "PROFILE_DESCRIPTION": "Storico di {username}: {record} su {picks, plural, one {# pronostico} other {# pronostici}} registrati qui prima della partita e refertati automaticamente.",
     "PICK_TITLE": "{username} #{seq}: {selection} {odds}, {units}u | {appName}",
     "PICK_DESCRIPTION": "{away} in casa di {home}. Bloccato {time} a quota {odds} con {bookmaker}. Stato: {status}.",
-    "LEADERBOARD_TITLE": "Classifica: {filters} | {appName}"
+    "LEADERBOARD_TITLE": "Classifica: {filters} | {appName}",
+    "SCOPE_ALL": "live e storico on chain",
+    "SCOPE_LIVE": "pronostici live",
+    "PROFILE_TITLE_UNGRADED": "{username}: ancora nessun pronostico refertato | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "Storico di {username}, live e on chain: {record}. Pronostici live registrati qui prima della partita: {live}. Operazioni Polymarket importate in seguito dalla blockchain: {history}.",
+    "SCOPE_SPLIT": "Live {live} + storico on chain {history}",
+    "SCOPE_LIVE_LINE": "Pronostici live registrati qui"
   },
   "ERRORS": {
     "UNAUTHORIZED": "Non autorizzato.",
@@ -1080,7 +1103,9 @@
     "OUTCOME_NOT_IN_EVENT": "Scegli {home}, {away} o il pareggio (Draw) per questo evento.",
     "PRICE_UNRELIABLE": "Al momento nessun bookmaker offre una quota affidabile per questo pronostico. Riprova più vicino alla partita.",
     "PICK_DUPLICATE": "Hai già un pronostico su questo mercato per questo evento.",
-    "UNITS_INVALID": "Le unità devono essere tra {min} e {max}, a passi di {step}."
+    "UNITS_INVALID": "Le unità devono essere tra {min} e {max}, a passi di {step}.",
+    "CAPPER_NOT_FOUND": "Non esiste nessun capper con questo nome.",
+    "PICK_NOT_FOUND": "Questo pronostico non esiste."
   },
   "LEGAL": {
     "LABEL": "Informazioni legali",
@@ -1273,5 +1298,12 @@
       "LOGIN": "Accedi per abbonarti",
       "FAILED": "Impossibile avviare il pagamento."
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "Questa pagina non esiste",
+    "BODY": "Il link potrebbe essere rotto, oppure nessun capper ha questo nome. Un capper vero può sempre condividere un link al profilo funzionante; controlla l’ortografia o cerca il nome.",
+    "HOME": "Home",
+    "CHECK": "Controlla un capper"
   }
 }

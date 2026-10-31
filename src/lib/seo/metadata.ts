@@ -21,6 +21,13 @@ import {
   formatRecord,
   formatShortUnits,
 } from "@/lib/utils/format/number";
+import {
+  defaultScope,
+  historyRecord,
+  liveRecord,
+  scopedRecord,
+  type ScopedRecord,
+} from "@/lib/utils/stats";
 import type { Metadata } from "next";
 import type { Locale } from "next-intl";
 import { getTranslations } from "next-intl/server";
@@ -108,26 +115,45 @@ export async function orNull<T>(promise: Promise<T>): Promise<T | null> {
   }
 }
 
+// Same default scope as the leaderboard, named in the text so a number never travels without it.
 export async function profileText(
   locale: Locale,
   stats: CapperStats,
 ): Promise<{ title: string; description: string }> {
   const t = await getTranslations({ locale, namespace: "OG" });
+  const scope = defaultScope(stats);
+  const record = scopedRecord(stats, scope);
+  const summary = (r: ScopedRecord) =>
+    `${formatRecord(r, locale)}, ${formatShortUnits(r.units, locale)}u`;
+  const history = historyRecord(stats);
   return {
-    title: t("PROFILE_TITLE", {
-      ...APP_VALUES,
-      username: stats.username,
-      record: formatRecord(stats),
-      units: formatShortUnits(stats.units, locale),
-      roi: formatPercent(stats.roi, locale),
-    }),
-    description: t("PROFILE_DESCRIPTION", {
-      username: stats.username,
-      wins: stats.wins,
-      losses: stats.losses,
-      pushes: stats.pushes,
-      picks: stats.picks,
-    }),
+    title:
+      record.graded > 0
+        ? t("PROFILE_TITLE", {
+            ...APP_VALUES,
+            username: stats.username,
+            record: formatRecord(record, locale),
+            units: formatShortUnits(record.units, locale),
+            roi: formatPercent(record.roi, locale),
+            scope: t(scope === "all" ? "SCOPE_ALL" : "SCOPE_LIVE"),
+          })
+        : t("PROFILE_TITLE_UNGRADED", {
+            ...APP_VALUES,
+            username: stats.username,
+          }),
+    description:
+      scope === "all" && history
+        ? t("PROFILE_DESCRIPTION_ALL", {
+            username: stats.username,
+            record: summary(record),
+            live: summary(liveRecord(stats)),
+            history: summary(history),
+          })
+        : t("PROFILE_DESCRIPTION", {
+            username: stats.username,
+            record: summary(record),
+            picks: record.picks,
+          }),
   };
 }
 

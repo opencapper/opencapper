@@ -16,7 +16,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import type { ApiPick } from "@/lib/types";
-import { formatShortDate } from "@/lib/utils/format/date";
+import { dayjs, formatShortDate } from "@/lib/utils/format/date";
 import { americanToDecimal, netUnits, RECORD_OF } from "@/lib/config/results";
 import { useLocale, useTranslations } from "next-intl";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
@@ -28,23 +28,24 @@ export function UnitsChart(props: { picks: ApiPick[] }) {
 
   const graded = props.picks
     .filter((pick) => RECORD_OF[pick.result] !== null && !pick.disqualified)
-    .toSorted((a, b) => a.sequence - b.sequence);
-  const points = graded.reduce<
-    { sequence: number; date: string; units: number }[]
-  >((acc, pick) => {
-    const previous = acc.at(-1)?.units ?? 0;
-    acc.push({
-      sequence: pick.sequence,
-      date: formatShortDate(pick.commenceTime, locale, local),
-      units:
-        Math.round(
-          (previous +
-            netUnits(pick.result, pick.units, americanToDecimal(pick.odds))) *
-            100,
-        ) / 100,
-    });
-    return acc;
-  }, []);
+    .toSorted(
+      (a, b) =>
+        dayjs(a.commenceTime).valueOf() - dayjs(b.commenceTime).valueOf() ||
+        a.sequence - b.sequence,
+    );
+  // One point per day: several picks on one date would repeat the axis label and draw bumps between them.
+  const points = graded.reduce<{ date: string; units: number }[]>(
+    (acc, pick) => {
+      const last = acc.at(-1);
+      const date = formatShortDate(pick.commenceTime, locale, local);
+      const units =
+        Math.round(((last?.units ?? 0) + netUnits(pick.result, pick.units, americanToDecimal(pick.odds))) * 100) / 100;
+      if (last && last.date === date) last.units = units;
+      else acc.push({ date, units });
+      return acc;
+    },
+    [],
+  );
 
   const final = points.at(-1)?.units ?? 0;
   const config = {
@@ -80,7 +81,7 @@ export function UnitsChart(props: { picks: ApiPick[] }) {
               <ChartTooltip content={<ChartTooltipContent />} />
               <Area
                 dataKey="units"
-                type="monotone"
+                type="linear"
                 stroke="var(--color-units)"
                 fill="var(--color-units)"
                 fillOpacity={0.15}

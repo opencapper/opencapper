@@ -72,6 +72,15 @@ export function formatUtcShortDateTime(
   return `${text} UTC`;
 }
 
+// Unsigned span such as "3 hours"; dayjs names pt-BR "pt-br".
+export function formatDuration(
+  from: string | Date,
+  to: string | Date,
+  locale: string,
+): string {
+  return dayjs(to).locale(locale.toLowerCase()).from(dayjs(from), true);
+}
+
 export function formatRelative(value: string | Date, locale: string): string {
   return dayjs(value).locale(locale).fromNow();
 }

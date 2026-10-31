@@ -14,7 +14,12 @@ import { Link } from "@/i18n/navigation";
 import type { TableFeats } from "@/lib/config/table-features";
 import type { LeaderboardRow, UnrankedRow } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { formatPercent, formatUnits } from "@/lib/utils/format/number";
+import {
+  formatCount,
+  formatPercent,
+  formatRecord,
+  formatUnits,
+} from "@/lib/utils/format/number";
 import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { dayjs, formatDate } from "@/lib/utils/format/date";
 import type { ColumnDef, Row } from "@tanstack/react-table";
@@ -103,7 +108,9 @@ export function SampleCell(props: { row: UnrankedRow; ctx: CellContext }) {
         }),
       ].join(". ")}
     >
-      <span className="tabular">{props.row.graded}</span>
+      <span className="tabular">
+        {formatCount(props.row.graded, props.ctx.locale)}
+      </span>
       {props.row.gradedHistory > 0 && (
         <span className="text-muted-foreground tabular text-[11px] whitespace-nowrap">
           {props.ctx.t("LEADERBOARD.SPLIT_SHORT", {
@@ -122,11 +129,17 @@ export function RecordCell(props: { row: UnrankedRow; ctx: CellContext }) {
       className="tabular whitespace-nowrap"
       title={props.ctx.t("LEADERBOARD.RECORD_HINT")}
     >
-      <span className="text-pick-win">{props.row.wins}</span>
+      <span className="text-pick-win">
+        {formatCount(props.row.wins, props.ctx.locale)}
+      </span>
       <span className="text-muted-foreground"> / </span>
-      <span className="text-pick-loss">{props.row.losses}</span>
+      <span className="text-pick-loss">
+        {formatCount(props.row.losses, props.ctx.locale)}
+      </span>
       <span className="text-muted-foreground"> / </span>
-      <span className="text-pick-push">{props.row.pushes}</span>
+      <span className="text-pick-push">
+        {formatCount(props.row.pushes, props.ctx.locale)}
+      </span>
     </span>
   );
 }
@@ -178,7 +191,7 @@ export function buildLeaderboardColumns(
           title="LEADERBOARD.COLUMNS.RANK"
         />
       ),
-      size: 80,
+      size: 64,
       cell: ({ row }) => <RankCell rank={row.original.rank} />,
     },
     {
@@ -191,13 +204,24 @@ export function buildLeaderboardColumns(
         />
       ),
       size: 240,
-      meta: { cellClassName: "min-w-44" },
+      meta: { cellClassName: "min-w-40 sm:min-w-44" },
       cell: ({ row }) => (
-        <CapperCell
-          username={row.original.username}
-          source={row.original.source}
-          avatarUrl={row.original.avatarUrl}
-        />
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <CapperCell
+            username={row.original.username}
+            source={row.original.source}
+            avatarUrl={row.original.avatarUrl}
+          />
+          {/* Phones see only the first columns, so the record and ROI ride along under the name. */}
+          <span className="tabular text-muted-foreground pl-8 text-xs whitespace-nowrap sm:hidden">
+            {formatRecord(row.original, ctx.locale)},{" "}
+            <span className={signTone(row.original.roi)}>
+              {ctx.t("LEADERBOARD.MOBILE_ROI", {
+                roi: formatPercent(row.original.roi, ctx.locale),
+              })}
+            </span>
+          </span>
+        </div>
       ),
     },
     {

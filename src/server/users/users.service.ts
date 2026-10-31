@@ -15,11 +15,22 @@ import {
   participantFields,
 } from "@/server/participants/participants.service";
 import { toAmericanOdds, toApiPick } from "@/server/picks/picks.mapper";
+import { ApiError } from "@/server/errors";
 import { avatarColumns, avatarUrl } from "@/server/users/avatar";
 import { visibleUser } from "@/server/users/hidden";
 import { and, desc, eq } from "drizzle-orm";
 
 const HISTORY_LIMIT = 1000;
+
+// Hidden profiles exist and answer empty; only a name nobody has is a 404.
+export async function assertProfileExists(username: string): Promise<void> {
+  const [row] = await getDb()
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.username, username.toLowerCase()))
+    .limit(1);
+  if (!row) throw new ApiError(404, "ERRORS.CAPPER_NOT_FOUND");
+}
 
 export async function getUserPicks(username: string): Promise<ApiPick[]> {
   const rows = await getDb()

@@ -28,10 +28,15 @@ function roiText(roi: number): string {
   return `${roi > 0 ? "+" : ""}${percent}%`;
 }
 
-export function badgeValue(record: CheckRecord | null): string {
-  if (!record) return "no record";
+export type BadgeRecord = { total: CheckRecord; withHistory: boolean };
+
+// The scope is spelled out so the badge never shows a bigger number than the profile without saying why.
+export function badgeValue(badge: BadgeRecord | null): string {
+  if (!badge) return "no record";
+  const record = badge.total;
   if (record.graded === 0) return "no graded picks";
-  return `${record.wins}-${record.losses}-${record.pushes} | ROI ${roiText(record.roi)}`;
+  const scope = badge.withHistory ? "live + on chain history" : "live";
+  return `${record.wins}-${record.losses}-${record.pushes} | ROI ${roiText(record.roi)} | ${scope}`;
 }
 
 function segment(text: string, x: number, fill: string, color: string) {
@@ -41,14 +46,14 @@ function segment(text: string, x: number, fill: string, color: string) {
   return { width, body };
 }
 
-export function badgeSvg(username: string, record: CheckRecord | null) {
+export function badgeSvg(username: string, record: BadgeRecord | null) {
   const value = badgeValue(record);
   const label = segment(LABEL, 0, COLORS.label, COLORS.muted);
   const right = segment(
     value,
     label.width,
     COLORS.value,
-    record && record.graded > 0 ? COLORS.text : COLORS.muted,
+    record && record.total.graded > 0 ? COLORS.text : COLORS.muted,
   );
   const width = label.width + right.width;
   const title = escapeXml(`OpenCapper record of @${username}: ${value}`);
