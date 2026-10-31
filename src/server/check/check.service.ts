@@ -212,10 +212,12 @@ export async function checkDiscordUser(
 // One capper's combined record for the badge; null when unknown or hidden.
 export async function badgeRecord(
   username: string,
-): Promise<CheckRecord | null> {
+): Promise<{ total: CheckRecord; withHistory: boolean } | null> {
   const rows = await findRows(eq(users.username, username.toLowerCase()));
   const row = rows[0];
   if (!row) return null;
   const matches = await toMatches([{ row, kind: "username" }]);
-  return matches[0]?.total ?? null;
+  const match = matches[0];
+  if (!match) return null;
+  return { total: match.total, withHistory: (match.history?.graded ?? 0) > 0 };
 }

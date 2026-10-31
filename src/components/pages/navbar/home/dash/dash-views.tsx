@@ -36,7 +36,6 @@ import {
   HAIRLINE_GRID,
   MarketLabel,
   Panel,
-  selectionText,
 } from "./dash-parts";
 
 const SOURCE_LABEL = {
@@ -148,7 +147,7 @@ function StatGrid(props: { dash: LandingDash }) {
       <Stat
         icon="scale"
         label={t("PROFILE.STATS.RECORD")}
-        value={formatRecord(capper)}
+        value={formatRecord(capper, locale)}
         hint={t("PROFILE.STATS.RECORD_HINT")}
       />
       <Stat
@@ -254,7 +253,7 @@ function PickRows(props: { picks: ApiPick[]; full?: boolean }) {
             </td>
             <td className={cn(TD, "hidden @md:table-cell")}>
               <div className="text-foreground/85 truncate">
-                {selectionText(pick)}
+                {pick.selection}
               </div>
               <MarketLabel market={pick.market} />
             </td>
@@ -321,7 +320,7 @@ function HistoryRows(props: { picks: ApiHistoryPick[] }) {
             </td>
             <td className={cn(TD, "hidden @md:table-cell")}>
               <div className="text-foreground/85 truncate">
-                {selectionText(pick)}
+                {pick.selection}
               </div>
               <MarketLabel market={pick.market} />
             </td>

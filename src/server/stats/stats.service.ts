@@ -13,6 +13,7 @@ import {
   findClaimant,
   listClaimedProfiles,
 } from "@/server/claims/profile-claims";
+import { ApiError } from "@/server/errors";
 import { getProfileAvatar } from "@/server/users/users.service";
 import {
   and,
@@ -162,7 +163,7 @@ export async function getCapperStats(username: string): Promise<ProfileStats> {
     .where(eq(users.username, name))
     .limit(1);
   const none = { claimedBy: null, claimed: [], claimMode: null };
-  if (!profile) return { ...emptyStats(name), hidden: false, ...none };
+  if (!profile) throw new ApiError(404, "ERRORS.CAPPER_NOT_FOUND");
   if (profile.hiddenAt) return { ...emptyStats(name), hidden: true, ...none };
 
   const [rows, history, avatarUrl, claims] = await Promise.all([

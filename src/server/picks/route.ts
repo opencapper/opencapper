@@ -6,6 +6,7 @@ import {
 } from "@/lib/api/typebox/picks";
 import { assertBotToken } from "@/server/auth/bot-token";
 import { ApiError } from "@/server/errors";
+import { getPublicPick } from "@/server/picks/lookup.service";
 import {
   createPick,
   getSettledPicks,
@@ -77,4 +78,7 @@ export const picksRoute = new Elysia({ prefix: "/picks" })
       return getSettledPicks(ctx.query);
     },
     { query: SettledPicksQuery },
-  );
+  )
+  .get("/:id", async (ctx) => getPublicPick({ pickId: ctx.params.id }), {
+    params: t.Object({ id: t.Numeric({ minimum: 1, multipleOf: 1 }) }),
+  });

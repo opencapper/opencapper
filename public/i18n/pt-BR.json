@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName}: palpites esportivos verificados com histórico honesto",
-    "DESCRIPTION": "Cada palpite registrado com data e hora e travado antes do jogo. Odds capturadas pela plataforma, históricos ranqueados por ROI, nenhum acordo de afiliado com casas de apostas."
+    "TITLE": "{appName}: palpites esportivos com um histórico que ninguém pode editar",
+    "DESCRIPTION": "Palpites travados antes do jogo e liquidados automaticamente. As odds vêm do mercado ou de operações on-chain, nunca do capper. Históricos classificados por ROI, sem acordos de afiliação com casas de apostas."
   },
   "NAV": {
     "HOME": "Como funciona",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "Venda com um histórico verificado",
       "GROUP_SELL_BODY": "Mantenha a loja que você já tem. O OpenCapper adiciona um histórico verificado a ela.",
       "GROUP_HISTORY_TITLE": "Traga o seu histórico",
-      "GROUP_HISTORY_BODY": "As importações aparecem separadas e marcadas como não verificadas, a menos que a fonte possa ser conferida, como a Polymarket on-chain.",
+      "GROUP_HISTORY_BODY": "Operações antigas só contam quando podem ser verificadas, como as da Polymarket on-chain. Elas são importadas depois, aparecem como histórico on-chain e nunca se misturam ao registro ao vivo.",
       "GROUP_BOOKS_TITLE": "Aposte onde quiser",
       "GROUP_BOOKS_BODY": "Só links diretos. Nenhum acordo de afiliado.",
       "BOOKS_BODY": "Um toque abre o palpite numa casa de apostas licenciada na sua região. O OpenCapper não ganha nada com isso.",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "Todo tipster ganha um painel",
-      "BODY": "Este é o perfil do tipster mais bem classificado agora, montado com os mesmos registros da página pública: odds capturadas por nós, correção automática e o log encadeado por hash.",
+      "BODY": "Este é o perfil do capper mais bem classificado agora, com os mesmos números da página pública. Hoje, a maioria dos cappers classificados são contas públicas da Polymarket: os palpites ao vivo são importados de operações on-chain e travados aqui antes de cada jogo começar, e as operações mais antigas contam como histórico on-chain, importado depois.",
       "FOOTNOTE": "Dados reais, atualizados a cada minuto. As abas só trocam esta prévia; o perfil completo lista todos os palpites.",
       "EMPTY_TITLE": "Ainda não há histórico",
       "EMPTY_BODY": "Assim que os primeiros palpites forem corrigidos, o painel do melhor tipster aparece aqui com números reais.",
@@ -312,8 +312,8 @@
     "FEATURES": {
       "TITLE": "Recursos",
       "ODDS_LABEL": "Odds",
-      "ODDS_TITLE": "Odds capturadas por nós.",
-      "ODDS_BODY": "A odd, a casa de apostas e o horário vêm do mercado, nunca do tipster.",
+      "ODDS_TITLE": "Odds que o capper não escolhe.",
+      "ODDS_BODY": "Palpites feitos aqui recebem a odd do mercado, a casa e o horário quando são travados. Palpites importados da Polymarket usam o preço de execução on-chain. O capper nunca digita uma odd.",
       "LOCKED_LABEL": "Horário",
       "LOCKED_TITLE": "Travado antes do apito inicial.",
       "LOCKED_BODY": "Um palpite só é aceito enquanto o evento não começou. Depois disso, não pode ser editado nem apagado.",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "Ranking",
     "TITLE": "Ranking",
-    "DESCRIPTION": "Tipsters ranqueados por ROI verificado no OpenCapper.",
+    "DESCRIPTION": "Cappers classificados por ROI no OpenCapper, com palpites travados antes do jogo e histórico on-chain.",
     "HEADING": "Ranking",
-    "SUBHEADING": "Classificação por ROI sobre palpites verificados e travados.",
+    "SUBHEADING": "Classificação por ROI sobre palpites liquidados: palpites ao vivo travados aqui antes do jogo, mais o histórico on-chain da Polymarket importado depois. Só ao vivo deixa o histórico de fora.",
     "MIN_PICKS": "Um tipster entra no ranking depois de {count, number} palpites liquidados, para que uma semana de sorte não chegue ao topo.",
     "RANKED_COUNT": "{total, plural, one {# tipster no ranking} other {# tipsters no ranking}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "ROI, nunca dinheiro",
       "ROI_BODY": "A ordem padrão é o retorno sobre o investimento: unidades ganhas por unidade arriscada. Lucro em dinheiro só premia stakes maiores, então nunca ranqueamos por ele.",
       "GRADED_TITLE": "Só palpites liquidados",
-      "GRADED_BODY": "Vitórias, derrotas e reembolsos contam. Palpites pendentes e anulados não. Toda odd foi capturada por nós no momento em que o palpite foi travado.",
+      "GRADED_BODY": "Contam vitórias, derrotas e reembolsos. Pendentes e anulados não. Um palpite ao vivo leva a odd fixada quando foi travado aqui: do feed de odds para palpites feitos no OpenCapper, a execução on-chain para palpites importados da Polymarket. O histórico on-chain usa o preço de execução de cada operação.",
       "PERIOD_TITLE": "A mesma janela para todos",
       "PERIOD_BODY": "O período vale igualmente para todos os tipsters, pelo horário de início do evento. Ninguém escolhe uma sequência favorável."
     },
-    "SCOPE_HINT_ALL": "Inclui o histórico on-chain da Polymarket: operações feitas antes do início, verificadas on-chain, importadas depois e liquidadas pela resolução do mercado. Mude para só ao vivo para ver apenas palpites registrados aqui antes do jogo.",
+    "SCOPE_HINT_ALL": "Ao vivo e histórico: palpites ao vivo travados aqui antes do jogo, mais o histórico on-chain da Polymarket, ou seja, operações feitas antes do início, importadas depois da blockchain e liquidadas pela resolução do mercado. Só ao vivo deixa o histórico de fora.",
     "SCOPE_HINT_LIVE": "Só ao vivo: todo palpite foi registrado aqui antes do jogo. O histórico on-chain fica de fora.",
     "SPLIT": "{graded, number} liquidados: {live, number} ao vivo, {history, number} de histórico on-chain",
     "SPLIT_SHORT": "{live, number} ao vivo, {history, number} de histórico",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "Amostra pequena: o ROI sobre {count, number} palpites liquidados ainda diz pouco",
       "EMPTY": "Nenhum tipster registrou um palpite nesta seleção ainda."
     },
-    "CHECK_LINK": "Consultar um tipster"
+    "CHECK_LINK": "Consultar um tipster",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "Esta página fica depois do fim da tabela",
+    "PAST_END_BODY": "Com esses filtros há {total, plural, one {# capper classificado} other {# cappers classificados}}.",
+    "PAST_END_BACK": "Voltar à primeira página"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} no total",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "Perfil do tipster",
     "TITLE": "{username} no OpenCapper",
-    "DESCRIPTION": "Histórico verificado de palpites de {username}: cada palpite travado antes do jogo, avaliado por ROI.",
+    "DESCRIPTION": "Histórico de palpites de {username} no OpenCapper, liquidado automaticamente e classificado por ROI.",
     "HEADING": "@{username}",
     "SUBHEADING": "Histórico verificado. Os palpites não podem ser editados nem apagados.",
     "SUBHEADING_PUBLIC": "Histórico público montado a partir de palpites importados. Os palpites não podem ser editados nem apagados.",
     "VERIFIED": "Histórico verificado",
     "LOADING": "Carregando histórico",
-    "NOT_FOUND": "Nenhum tipster com esse nome registrou um palpite ainda.",
     "ERROR": "Não foi possível carregar o histórico. Tente novamente mais tarde.",
     "STATS": {
       "PICKS": "Palpites",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "Stakes em vitórias, derrotas e reembolsos",
       "ROI_SMALL_SAMPLE": "Amostra pequena: {count, number} de {min, number} palpites liquidados",
       "CLV": "CLV",
-      "CLV_HINT": "Média de {count, number} palpites com odd de fechamento",
+      "CLV_HINT": "Média de {count, plural, one {# palpite} other {# palpites}} com odd de fechamento",
       "NO_CLV": "Ainda sem odds de fechamento",
       "CLV_BEAT": "Bateu a odd de fechamento em {value}, em média.",
       "CLV_MISSED": "Ficou abaixo da odd de fechamento em {value}, em média.",
       "CLV_EVEN": "Igualou a odd de fechamento, em média.",
-      "CLV_NONE": "O valor da linha de fechamento compara a odd travada com a última odd antes do início."
+      "CLV_NONE": "O valor da linha de fechamento compara a odd travada com a última odd antes do início.",
+      "NO_ROI_SHORT": "n/d",
+      "SCOPE_SUMMARY": "{record}, {units}u",
+      "SCOPE_LIVE_ONLY": "Palpites ao vivo registrados aqui",
+      "SCOPE_SPLIT": "Ao vivo: {live}. Histórico on-chain: {history}.",
+      "CLV_HINT_LIVE": "Só palpites ao vivo: média de {count, plural, one {# palpite} other {# palpites}} com odd de fechamento"
     },
     "CHART": {
       "TITLE": "Unidades ao longo do tempo",
@@ -696,14 +704,14 @@
   "VERIFY": {
     "LABEL": "Verificar",
     "TITLE": "Confira qualquer palpite",
-    "DESCRIPTION": "Todo palpite do OpenCapper é selado no momento em que é feito, então ninguém pode alterá-lo depois. Confira você mesmo.",
+    "DESCRIPTION": "Cada palpite do OpenCapper é selado no momento em que é registrado aqui, para que ninguém possa alterá-lo depois. Confira você mesmo.",
     "HEADING": "Confira qualquer palpite",
-    "SUBHEADING": "Todo palpite é selado no momento em que é feito, então ninguém, nem nós, pode alterá-lo depois. Você mesmo pode conferir.",
+    "SUBHEADING": "Cada palpite é selado no momento em que é registrado aqui, para que ninguém, nem mesmo nós, possa alterá-lo depois. Você pode conferir isso.",
     "SEARCH": {
       "LABEL": "Nome do tipster ou link do palpite",
-      "PLACEHOLDER": "razor, razor#12 ou um link de palpite colado",
+      "PLACEHOLDER": "razor, razor#12, um id de palpite ou um link colado",
       "SUBMIT": "Conferir",
-      "INVALID": "Informe o nome de um tipster, um número de palpite como razor#12 ou cole o link de um palpite.",
+      "INVALID": "Digite o nome de um capper, um número de palpite do capper como razor#12, um id de palpite como 1053, ou cole um link para um palpite.",
       "NOT_FOUND": "Não encontramos este palpite.",
       "NO_PICKS": "Nenhum palpite encontrado para {username}.",
       "LATEST": "Últimos palpites de {username}",
@@ -717,16 +725,25 @@
       "CHECKING": "Conferindo",
       "UNSEALED": "Ainda não selado",
       "ERROR": "Não foi possível conferir",
-      "LOCKED": "Travado {time}",
       "BY": "por {username}",
-      "NUMBER": "Palpite {seq, number}",
+      "NUMBER": "Palpite n.º {seq, number} do capper, id do palpite {id}",
       "UNITS": "{count, plural, one {# unidade} other {# unidades}}",
-      "FALLBACK": "Palpite {id} de {username}"
+      "STARTS": "Início do evento",
+      "LOCKED_AT": "Travado aqui",
+      "IMPORTED": "Importado e travado aqui",
+      "LEAD": "{duration} antes do início",
+      "AFTER_START": "{duration} depois do início",
+      "ODDS": "Odd",
+      "EXCHANGE_PRICE": "execução on-chain na Polymarket",
+      "RESULT": "Resultado",
+      "SOURCE": "Fonte e horário da operação",
+      "PROOF_NOTE": "O selo cobre o palpite como foi registrado, incluindo o horário em que foi travado. O horário de início vem do feed de odds e não faz parte do selo, então compare os dois horários você mesmo.",
+      "PROOF_NOTE_IMPORTED": "Este palpite foi importado de uma operação pública na {platform}. O selo o cobre a partir do momento em que foi travado aqui na importação, nunca antes. O link da fonte mostra a operação original e o horário dela; o horário de início não faz parte do selo."
     },
     "HOW": {
       "TITLE": "Como funciona",
-      "STEP_1_TITLE": "Selado ao ser feito",
-      "STEP_1_BODY": "No momento em que um tipster faz um palpite, nós o selamos: o jogo, a seleção, a odd, a stake e o horário.",
+      "STEP_1_TITLE": "Selado ao ser registrado",
+      "STEP_1_BODY": "Assim que um palpite é registrado aqui, por um capper ou pela importação de uma operação on-chain, selamos o jogo, a seleção, a odd, a stake e o horário em que foi travado. O horário de início do jogo não faz parte do selo; cada cartão de palpite o mostra ao lado desse horário.",
       "STEP_2_TITLE": "Ligado a todos os palpites anteriores",
       "STEP_2_BODY": "Cada novo palpite é ligado a todos os palpites antes dele. Alterar um palpite antigo quebraria essa cadeia, e todo mundo veria.",
       "STEP_3_TITLE": "Carimbado no Bitcoin todo dia",
@@ -804,7 +821,7 @@
   "CHECK": {
     "LABEL": "Consultar um tipster",
     "TITLE": "Consultar um tipster",
-    "DESCRIPTION": "Pesquise qualquer tipster pelo nome no OpenCapper, Discord, Telegram ou Polymarket e veja o histórico verificado, ou o aviso de que não existe nenhum.",
+    "DESCRIPTION": "Procure qualquer capper pelo nome no OpenCapper, Discord, Telegram ou Polymarket e veja o histórico, ou o aviso de que não há nenhum.",
     "HEADING": "Esse tipster é real?",
     "SUBHEADING": "Golpistas copiam o nome e a foto de tipsters conhecidos e vendem acessos VIP falsos pela DM. Um histórico real fica no OpenCapper e não pode ser editado. Consulte antes de pagar qualquer pessoa.",
     "ERROR": "A consulta falhou. Tente novamente mais tarde.",
@@ -847,7 +864,7 @@
       "UNITS": "{units} unidades"
     },
     "NONE": {
-      "TITLE": "Nenhum histórico verificado para {query}",
+      "TITLE": "Nenhum histórico para {query}",
       "BODY": "Quem vende palpites sem um histórico público não tem como provar. Peça o link do OpenCapper.",
       "TIP_1": "Tipsters de verdade compartilham o link do histórico sem problema. Quem se recusa tem um motivo.",
       "TIP_2": "Prints de bilhetes e sequências de vitórias são falsificados em segundos. Um histórico travado e com data e hora, não.",
@@ -858,7 +875,7 @@
       "STEP_1_TITLE": "Pesquise o nome",
       "STEP_1_BODY": "Pesquise o nome exato que ele usa no Discord, Telegram ou Polymarket, ou cole o ID do Discord dele.",
       "STEP_2_TITLE": "Abra o histórico",
-      "STEP_2_BODY": "Cada palpite do histórico foi travado antes do jogo com odds capturadas pela plataforma. Nada pode ser editado ou apagado.",
+      "STEP_2_BODY": "Os palpites ao vivo foram travados aqui antes do jogo, na odd do mercado ou, nos palpites importados da Polymarket, no preço de execução on-chain. O histórico on-chain é identificado como tal. Nada pode ser editado ou apagado.",
       "STEP_3_TITLE": "Sem histórico, sem confiança",
       "STEP_3_BODY": "Se nenhum histórico aparecer, o tipster não consegue provar nem um acerto. Peça o link do OpenCapper antes de pagar."
     }
@@ -1007,11 +1024,17 @@
     "LAST_STAMP": "Último carimbo no Bitcoin",
     "NO_STAMP": "Nenhum ainda",
     "LOG_ROOT": "Raiz atual",
-    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "Histórico de {username}: {wins, number} vitórias, {losses, number} derrotas e {pushes, number} reembolsos em {picks, plural, one {# palpite} other {# palpites}}, todos travados antes do jogo.",
+    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi}, {scope} | {appName}",
+    "PROFILE_DESCRIPTION": "Histórico de {username}: {record} em {picks, plural, one {# palpite} other {# palpites}} registrados aqui antes do jogo e liquidados automaticamente.",
     "PICK_TITLE": "{username} #{seq}: {selection} {odds}, {units}u | {appName}",
     "PICK_DESCRIPTION": "{away} x {home}. Travado {time} na odd {odds} com {bookmaker}. Status: {status}.",
-    "LEADERBOARD_TITLE": "Ranking: {filters} | {appName}"
+    "LEADERBOARD_TITLE": "Ranking: {filters} | {appName}",
+    "SCOPE_ALL": "ao vivo e histórico on-chain",
+    "SCOPE_LIVE": "palpites ao vivo",
+    "PROFILE_TITLE_UNGRADED": "{username}: ainda sem palpites liquidados | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "Histórico de {username}, ao vivo e on-chain: {record}. Palpites ao vivo registrados aqui antes do jogo: {live}. Operações da Polymarket importadas depois da blockchain: {history}.",
+    "SCOPE_SPLIT": "Ao vivo {live} + histórico on-chain {history}",
+    "SCOPE_LIVE_LINE": "Palpites ao vivo registrados aqui"
   },
   "ERRORS": {
     "UNAUTHORIZED": "Não autorizado.",
@@ -1070,7 +1093,9 @@
     "PAYMENTS_NO_PLAN": "Este capper não oferece assinatura no momento.",
     "PAYMENTS_OWN_PLAN": "Você não pode assinar a si mesmo.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Você já tem uma assinatura ativa deste capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "A assinatura do webhook é inválida."
+    "WEBHOOK_SIGNATURE_INVALID": "A assinatura do webhook é inválida.",
+    "CAPPER_NOT_FOUND": "Não existe nenhum capper com esse nome.",
+    "PICK_NOT_FOUND": "Este palpite não existe."
   },
   "LEGAL": {
     "LABEL": "Informações legais",
@@ -1263,5 +1288,12 @@
       "LOGIN": "Entre para assinar",
       "FAILED": "Não foi possível iniciar o pagamento."
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "Esta página não existe",
+    "BODY": "O link pode estar quebrado ou nenhum capper tem esse nome. Um capper de verdade sempre pode compartilhar um link de perfil que funciona; confira a grafia ou pesquise o nome.",
+    "HOME": "Início",
+    "CHECK": "Consultar um capper"
   }
 }

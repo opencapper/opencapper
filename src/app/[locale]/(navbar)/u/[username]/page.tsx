@@ -18,11 +18,24 @@ import {
 } from "@/lib/react-query/prefetch";
 import { getCookieValue, serverLocale } from "@/lib/utils/server";
 import { serverEnv } from "@/server/env";
+import { ApiError } from "@/server/errors";
 import { findPick } from "@/server/picks/picks.service";
 import { getCapperStats } from "@/server/stats/stats.service";
+import { assertProfileExists } from "@/server/users/users.service";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
+
+// A made up name is a 404, never a "verified" page; a database outage still renders.
+async function orNotFound<T>(promise: Promise<T>): Promise<T | null> {
+  try {
+    return await promise;
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) notFound();
+    return null;
+  }
+}
 
 type Props = {
   params: Promise<{ locale: string; username: string }>;
@@ -34,7 +47,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const username = decodeURIComponent((await props.params).username);
   const href = { pathname: "/u/[username]" as const, params: { username } };
   const t = await getTranslations({ locale, namespace: "PROFILE" });
-  const stats = await orNull(getCapperStats(username));
+  const stats = await orNotFound(getCapperStats(username));
   if (stats?.hidden)
     return buildMetadata({
       locale,
@@ -51,7 +64,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       return pickMetadata(locale, href, pick);
   }
   const text =
-    stats && stats.picks > 0
+    stats && (stats.picks > 0 || stats.history)
       ? await profileText(locale, stats)
       : {
           title: t("TITLE", { username }),
@@ -84,6 +97,7 @@ export default async function CapperPage(props: Props) {
   ]);
   const stats = loaded[0];
   const picks = loaded[1];
+  if (!stats) await orNotFound(assertProfileExists(username));
   const viewer = stats?.hidden ? await prefetchAuth(queryClient) : null;
   // The history tab opens first only without live picks; the claims list renders only on a hidden profile; imported profiles never sell.
   await Promise.all([

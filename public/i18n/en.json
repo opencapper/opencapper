@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName}: verified sports picks with an honest record",
-    "DESCRIPTION": "Every pick timestamped and locked before the game. Odds captured by the platform, records ranked by ROI, no sportsbook affiliate deals."
+    "TITLE": "{appName}: sports picks with a record nobody can edit",
+    "DESCRIPTION": "Picks locked before the game and graded automatically. Prices come from the market or from on chain trades, never from the capper. Records ranked by ROI, no sportsbook affiliate deals."
   },
   "NAV": {
     "HOME": "How it works",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "Sell with a verified record",
       "GROUP_SELL_BODY": "Keep the store you have. OpenCapper adds a verified record to it.",
       "GROUP_HISTORY_TITLE": "Bring your history",
-      "GROUP_HISTORY_BODY": "Imports are shown separately and marked unverified, unless the source can be checked, like Polymarket on chain.",
+      "GROUP_HISTORY_BODY": "Past trades count only when they can be checked, like Polymarket trades on chain. They are imported later, shown as on chain history and never mixed into the live log.",
       "GROUP_BOOKS_TITLE": "Bet where you want",
       "GROUP_BOOKS_BODY": "Deep links only. No affiliate deals.",
       "BOOKS_BODY": "One tap opens the pick at a licensed book in your region. OpenCapper earns nothing from it.",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "Every capper gets a dashboard",
-      "BODY": "This is the profile of the top ranked capper right now, built from the same records as the public page: prices we captured, automatic grading and the hash chained log.",
+      "BODY": "This is the profile of the top ranked capper right now, with the same numbers as the public page. Most ranked cappers today are public Polymarket accounts: their live picks are imported from on chain trades and locked here before each game starts, and their older trades count as on chain history, imported later.",
       "FOOTNOTE": "Real data, refreshed every minute. The tabs only switch this preview; the full profile lists every pick.",
       "EMPTY_TITLE": "No record to show yet",
       "EMPTY_BODY": "Once the first picks are graded, the dashboard of the top capper appears here with real numbers.",
@@ -312,8 +312,8 @@
     "FEATURES": {
       "TITLE": "Features",
       "ODDS_LABEL": "Odds",
-      "ODDS_TITLE": "Odds captured by us.",
-      "ODDS_BODY": "The price, the bookmaker and the time come from the market, never from the capper.",
+      "ODDS_TITLE": "Prices the capper cannot pick.",
+      "ODDS_BODY": "Picks made here get the market price, bookmaker and time when they are locked. Imported Polymarket picks use the on chain fill price. The capper never types a price.",
       "LOCKED_LABEL": "Timing",
       "LOCKED_TITLE": "Locked before kickoff.",
       "LOCKED_BODY": "A pick is accepted only while the event has not started. After that it cannot be edited or deleted.",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "Leaderboard",
     "TITLE": "Leaderboard",
-    "DESCRIPTION": "Cappers ranked by verified ROI on OpenCapper.",
+    "DESCRIPTION": "Cappers ranked by ROI on OpenCapper, from picks locked before the game and from on chain history.",
     "HEADING": "Leaderboard",
-    "SUBHEADING": "Rankings by ROI over verified, locked picks.",
+    "SUBHEADING": "Ranked by ROI over graded picks: live picks locked here before the game, plus on chain Polymarket history imported later. Live only leaves the history out.",
     "MIN_PICKS": "A capper is ranked after {count, number} graded picks, so a lucky week cannot top the table.",
     "RANKED_COUNT": "{total, plural, one {# capper ranked} other {# cappers ranked}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "ROI, never money",
       "ROI_BODY": "The default order is return on investment: units won per unit risked. Dollar profit only rewards bigger stakes, so we never rank by it.",
       "GRADED_TITLE": "Graded picks only",
-      "GRADED_BODY": "Wins, losses and pushes count. Pending and void picks do not. Every price was captured by us when the pick was locked.",
+      "GRADED_BODY": "Wins, losses and pushes count. Pending and void picks do not. A live pick carries the price fixed when it was locked here: from the odds feed for picks made on OpenCapper, the on chain fill for imported Polymarket picks. On chain history uses the fill price of each trade.",
       "PERIOD_TITLE": "One window for everyone",
       "PERIOD_BODY": "The period applies to every capper alike, by event start time. Nobody gets to choose a flattering streak."
     },
-    "SCOPE_HINT_ALL": "Includes on chain Polymarket history: trades placed before the start, verified on chain, imported later and graded by market resolution. Switch to live only for picks logged here before the game.",
+    "SCOPE_HINT_ALL": "Live and history: live picks locked here before the game, plus on chain Polymarket history, meaning trades placed before the start, imported later from the blockchain and graded by market resolution. Live only leaves the history out.",
     "SCOPE_HINT_LIVE": "Live only: every pick was logged here before the game. On chain history is left out.",
     "SPLIT": "{graded, number} graded: {live, number} live, {history, number} on chain history",
     "SPLIT_SHORT": "{live, number} live, {history, number} history",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "Small sample: ROI over {count, number} graded picks says little yet",
       "EMPTY": "No capper has logged a pick in this selection yet."
     },
-    "CHECK_LINK": "Check a capper"
+    "CHECK_LINK": "Check a capper",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "This page is past the end of the table",
+    "PAST_END_BODY": "{total, plural, one {# capper is} other {# cappers are}} ranked with these filters.",
+    "PAST_END_BACK": "Back to the first page"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} total",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "Capper profile",
     "TITLE": "{username} on OpenCapper",
-    "DESCRIPTION": "Verified pick history of {username}: every pick locked before the game, graded by ROI.",
+    "DESCRIPTION": "Pick record of {username} on OpenCapper, graded automatically and ranked by ROI.",
     "HEADING": "@{username}",
     "SUBHEADING": "Verified record. Picks cannot be edited or deleted.",
     "SUBHEADING_PUBLIC": "Public record built from imported picks. Picks cannot be edited or deleted.",
     "VERIFIED": "Verified record",
     "LOADING": "Loading record",
-    "NOT_FOUND": "No capper with this name has logged a pick yet.",
     "ERROR": "The record could not be loaded. Please try again later.",
     "STATS": {
       "PICKS": "Picks",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "Stakes on wins, losses and pushes",
       "ROI_SMALL_SAMPLE": "Small sample: {count, number} of {min, number} graded picks",
       "CLV": "CLV",
-      "CLV_HINT": "Average over {count, number} picks with a closing price",
+      "CLV_HINT": "Average over {count, plural, one {# pick} other {# picks}} with a closing price",
       "NO_CLV": "No closing prices yet",
       "CLV_BEAT": "Beat the closing price by {value} on average.",
       "CLV_MISSED": "Missed the closing price by {value} on average.",
       "CLV_EVEN": "Matched the closing price on average.",
-      "CLV_NONE": "Closing line value compares the locked price with the last price before the start."
+      "CLV_NONE": "Closing line value compares the locked price with the last price before the start.",
+      "NO_ROI_SHORT": "n/a",
+      "SCOPE_SUMMARY": "{record}, {units}u",
+      "SCOPE_LIVE_ONLY": "Live picks logged here",
+      "SCOPE_SPLIT": "Live: {live}. On chain history: {history}.",
+      "CLV_HINT_LIVE": "Live picks only: average over {count, plural, one {# pick} other {# picks}} with a closing price"
     },
     "CHART": {
       "TITLE": "Units over time",
@@ -696,14 +704,14 @@
   "VERIFY": {
     "LABEL": "Verify",
     "TITLE": "Check any pick",
-    "DESCRIPTION": "Every OpenCapper pick is sealed the moment it is made, so nobody can change it afterwards. Check it yourself.",
+    "DESCRIPTION": "Every OpenCapper pick is sealed the moment it is logged here, so nobody can change it afterwards. Check it yourself.",
     "HEADING": "Check any pick",
-    "SUBHEADING": "Every pick is sealed the moment it is made, so nobody, including us, can change it afterwards. You can check that yourself.",
+    "SUBHEADING": "Every pick is sealed the moment it is logged here, so nobody, including us, can change it afterwards. You can check that yourself.",
     "SEARCH": {
       "LABEL": "Capper name or pick link",
-      "PLACEHOLDER": "razor, razor#12 or a pasted pick link",
+      "PLACEHOLDER": "razor, razor#12, a pick id or a pasted link",
       "SUBMIT": "Check",
-      "INVALID": "Enter a capper name, a pick number such as razor#12, or paste a link to a pick.",
+      "INVALID": "Enter a capper name, a capper pick number such as razor#12, a pick id such as 1053, or paste a link to a pick.",
       "NOT_FOUND": "We could not find this pick.",
       "NO_PICKS": "No picks found for {username}.",
       "LATEST": "Latest picks by {username}",
@@ -717,16 +725,25 @@
       "CHECKING": "Checking",
       "UNSEALED": "Not sealed yet",
       "ERROR": "Could not be checked",
-      "LOCKED": "Locked {time}",
       "BY": "by {username}",
-      "NUMBER": "Pick {seq, number}",
+      "NUMBER": "Capper pick #{seq, number}, pick id {id}",
       "UNITS": "{count, plural, one {# unit} other {# units}}",
-      "FALLBACK": "Pick {id} by {username}"
+      "STARTS": "Event start",
+      "LOCKED_AT": "Locked in here",
+      "IMPORTED": "Imported and locked here",
+      "LEAD": "{duration} before the start",
+      "AFTER_START": "{duration} after the start",
+      "ODDS": "Odds",
+      "EXCHANGE_PRICE": "on chain Polymarket fill",
+      "RESULT": "Result",
+      "SOURCE": "Source and trade time",
+      "PROOF_NOTE": "The seal covers the pick as it was logged, including the lock time. The event start time comes from the odds feed and is not part of the seal, so compare the two times yourself.",
+      "PROOF_NOTE_IMPORTED": "This pick was imported from a public {platform} trade. The seal covers it from the moment it was locked here at import time, never earlier. The source link shows the original trade and its own time; the event start time is not part of the seal."
     },
     "HOW": {
       "TITLE": "How it works",
-      "STEP_1_TITLE": "Sealed when made",
-      "STEP_1_BODY": "The moment a capper makes a pick, we seal it: the game, the selection, the odds, the stake and the time.",
+      "STEP_1_TITLE": "Sealed when logged",
+      "STEP_1_BODY": "The moment a pick is logged here, by a capper or by the import of an on chain trade, we seal the game, the selection, the odds, the stake and the lock time. The start time of the game is not part of the seal; each pick card shows it next to the lock time.",
       "STEP_2_TITLE": "Linked to every earlier pick",
       "STEP_2_BODY": "Each new pick is linked to all picks before it. Changing an old pick would break that chain, and everyone would see it.",
       "STEP_3_TITLE": "Stamped into Bitcoin daily",
@@ -804,7 +821,7 @@
   "CHECK": {
     "LABEL": "Check a capper",
     "TITLE": "Check a capper",
-    "DESCRIPTION": "Look up any capper by OpenCapper, Discord, Telegram or Polymarket name and see the verified record, or the warning that there is none.",
+    "DESCRIPTION": "Look up any capper by OpenCapper, Discord, Telegram or Polymarket name and see the record, or the warning that there is none.",
     "HEADING": "Is this capper for real?",
     "SUBHEADING": "Scammers copy the names and pictures of known cappers and sell fake VIP access in DMs. A real record lives on OpenCapper and cannot be edited. Look it up before you pay anyone.",
     "ERROR": "The lookup failed. Please try again later.",
@@ -847,7 +864,7 @@
       "UNITS": "{units} units"
     },
     "NONE": {
-      "TITLE": "No verified record for {query}",
+      "TITLE": "No record for {query}",
       "BODY": "Anyone selling picks without a public record cannot prove it. Ask for their OpenCapper link.",
       "TIP_1": "Real cappers share their record link openly. Someone who refuses has a reason.",
       "TIP_2": "Screenshots of slips and win streaks can be faked in seconds. A locked, timestamped record cannot.",
@@ -858,7 +875,7 @@
       "STEP_1_TITLE": "Look up the name",
       "STEP_1_BODY": "Search the exact name they use on Discord, Telegram or Polymarket, or paste their Discord ID.",
       "STEP_2_TITLE": "Open the record",
-      "STEP_2_BODY": "Every pick on the record was locked before the game at odds the platform captured. Nothing can be edited or deleted.",
+      "STEP_2_BODY": "Live picks were locked here before the game, at the market price or, for imported Polymarket picks, the on chain fill price. On chain history is labelled as such. Nothing can be edited or deleted.",
       "STEP_3_TITLE": "No record, no trust",
       "STEP_3_BODY": "If no record shows up, the capper cannot prove a single win. Ask for their OpenCapper link before you pay."
     }
@@ -1007,11 +1024,17 @@
     "LAST_STAMP": "Last Bitcoin stamp",
     "NO_STAMP": "None yet",
     "LOG_ROOT": "Current root",
-    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "Record of {username}: {wins, number} wins, {losses, number} losses and {pushes, number} pushes over {picks, plural, one {# pick} other {# picks}}, every one locked before the game.",
+    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi}, {scope} | {appName}",
+    "PROFILE_DESCRIPTION": "Record of {username}: {record} over {picks, plural, one {# pick} other {# picks}} logged here before the game and graded automatically.",
     "PICK_TITLE": "{username} #{seq}: {selection} {odds}, {units}u | {appName}",
     "PICK_DESCRIPTION": "{away} at {home}. Locked {time} at {odds} with {bookmaker}. Status: {status}.",
-    "LEADERBOARD_TITLE": "Leaderboard: {filters} | {appName}"
+    "LEADERBOARD_TITLE": "Leaderboard: {filters} | {appName}",
+    "SCOPE_ALL": "live and on chain history",
+    "SCOPE_LIVE": "live picks",
+    "PROFILE_TITLE_UNGRADED": "{username}: no graded picks yet | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "Record of {username}, live and on chain history: {record}. Live picks logged here before the game: {live}. Polymarket trades imported later from the blockchain: {history}.",
+    "SCOPE_SPLIT": "Live {live} + on chain history {history}",
+    "SCOPE_LIVE_LINE": "Live picks logged here"
   },
   "ERRORS": {
     "UNAUTHORIZED": "Unauthorized.",
@@ -1070,7 +1093,9 @@
     "PAYMENTS_NO_PLAN": "This capper does not offer a subscription right now.",
     "PAYMENTS_OWN_PLAN": "You cannot subscribe to yourself.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "You already have an active subscription to this capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "The webhook signature is invalid."
+    "WEBHOOK_SIGNATURE_INVALID": "The webhook signature is invalid.",
+    "CAPPER_NOT_FOUND": "No capper with this name exists.",
+    "PICK_NOT_FOUND": "This pick does not exist."
   },
   "LEGAL": {
     "LABEL": "Legal",
@@ -1263,5 +1288,12 @@
       "LOGIN": "Log in to subscribe",
       "FAILED": "Checkout could not be started."
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "This page does not exist",
+    "BODY": "The link may be broken, or no capper has this name. A real capper can always share a working profile link; check the spelling or look the name up.",
+    "HOME": "Home",
+    "CHECK": "Check a capper"
   }
 }

@@ -7,6 +7,9 @@ export const queryKeys = {
   userPicks: (username: string) => ["user-picks", username] as const,
   userStats: (username: string) => ["user-stats", username] as const,
   userHistory: (username: string) => ["user-history", username] as const,
+  userPick: (username: string, seq: number) =>
+    ["user-pick", username, seq] as const,
+  pick: (pickId: number) => ["pick", pickId] as const,
   myClaims: () => ["my-claims"] as const,
   myPayments: () => ["my-payments"] as const,
   capperPlan: (username: string) => ["capper-plan", username] as const,

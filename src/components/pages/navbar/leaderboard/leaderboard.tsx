@@ -1,6 +1,7 @@
 "use client";
 
 import { PageHeading } from "@/components/elements/page/page-heading";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { useLeaderboardQuery } from "@/hooks/leaderboard/leaderboard-hook";
@@ -70,17 +71,36 @@ export function Leaderboard(props: { minGraded: number }) {
             </CardContent>
           </Card>
         )}
-        {data && data.rows.length === 0 && data.unranked.length === 0 && (
+        {data && data.rows.length === 0 && data.total > 0 && (
           <Card>
             <CardContent className="flex flex-col items-center gap-3 py-10 text-center">
-              <Icon name="trophy" className="text-muted-foreground size-10" />
-              <p className="font-medium">{t("EMPTY_TITLE")}</p>
+              <p className="font-medium">{t("PAST_END_TITLE")}</p>
               <p className="text-muted-foreground max-w-md text-sm">
-                {t("EMPTY_BODY", { count: minGraded })}
+                {t("PAST_END_BODY", { total: data.total })}
               </p>
+              <Button
+                variant="outline"
+                onClick={() => setFilters({ page: null })}
+              >
+                {t("PAST_END_BACK")}
+              </Button>
             </CardContent>
           </Card>
         )}
+        {data &&
+          data.rows.length === 0 &&
+          data.total === 0 &&
+          data.unranked.length === 0 && (
+            <Card>
+              <CardContent className="flex flex-col items-center gap-3 py-10 text-center">
+                <Icon name="trophy" className="text-muted-foreground size-10" />
+                <p className="font-medium">{t("EMPTY_TITLE")}</p>
+                <p className="text-muted-foreground max-w-md text-sm">
+                  {t("EMPTY_BODY", { count: minGraded })}
+                </p>
+              </CardContent>
+            </Card>
+          )}
         {data && data.rows.length > 0 && (
           <>
             <p className="label-mono text-foreground/45 mb-3">

@@ -15,10 +15,17 @@ export function DashChart(props: { points: LandingDashPoint[] }) {
   const t = useTranslations();
   const locale = useLocale();
   const final = props.points.at(-1)?.units ?? 0;
-  const data = props.points.map((point) => ({
-    date: formatShortDate(point.at, locale),
-    units: point.units,
-  }));
+  // Last value per day, so the axis never repeats a date.
+  const data = props.points.reduce<{ date: string; units: number }[]>(
+    (acc, point) => {
+      const date = formatShortDate(point.at, locale);
+      const last = acc.at(-1);
+      if (last && last.date === date) last.units = point.units;
+      else acc.push({ date, units: point.units });
+      return acc;
+    },
+    [],
+  );
   const config = {
     units: {
       label: t("PROFILE.CHART.UNITS"),
@@ -44,7 +51,7 @@ export function DashChart(props: { points: LandingDashPoint[] }) {
         <ChartTooltip content={<ChartTooltipContent />} />
         <Area
           dataKey="units"
-          type="monotone"
+          type="linear"
           stroke="var(--color-units)"
           fill="var(--color-units)"
           fillOpacity={0.12}

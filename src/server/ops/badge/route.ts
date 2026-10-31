@@ -1,8 +1,7 @@
 import { BadgeParams } from "@/lib/api/typebox/check";
-import type { CheckRecord } from "@/lib/types";
 import { badgeRecord } from "@/server/check/check.service";
 import { Elysia } from "elysia";
-import { badgeSvg } from "./badge";
+import { badgeSvg, type BadgeRecord } from "./badge";
 
 const USERNAME = /^@?([a-z0-9_.]{2,32})$/i;
 
@@ -16,7 +15,7 @@ export const badgeRoute = new Elysia({ prefix: "/badge" }).get(
   async (ctx) => {
     const match = USERNAME.exec(ctx.params.username.replace(/\.svg$/i, ""));
     const username = match ? match[1].toLowerCase() : "unknown";
-    let record: CheckRecord | null = null;
+    let record: BadgeRecord | null = null;
     try {
       record = match ? await badgeRecord(username) : null;
     } catch (error) {

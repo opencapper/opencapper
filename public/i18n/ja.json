@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName}：誠実な成績で残る、検証済みのスポーツ予想",
-    "DESCRIPTION": "すべての予想は試合前にタイムスタンプ付きで確定。オッズはプラットフォームが記録し、成績はROIでランキング。ブックメーカーとのアフィリエイト契約は一切ありません。"
+    "TITLE": "{appName}：誰も書き換えられない成績で残るスポーツ予想",
+    "DESCRIPTION": "試合前に確定し、自動で判定される予想。オッズはマーケットまたはオンチェーン取引から取得し、予想家が入力することはありません。成績はROIでランキングし、ブックメーカーとのアフィリエイト契約は一切ありません。"
   },
   "NAV": {
     "HOME": "使い方",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "検証済みの成績で販売する",
       "GROUP_SELL_BODY": "今のストアはそのままで、OpenCapperが検証済みの成績を追加します。",
       "GROUP_HISTORY_TITLE": "過去の履歴を取り込む",
-      "GROUP_HISTORY_BODY": "インポートした予想は別枠で表示され、未検証と表示されます。ただし、オンチェーンのPolymarketのようにソースを確認できる場合は除きます。",
+      "GROUP_HISTORY_BODY": "過去の取引は、オンチェーンのPolymarket取引のように確認できる場合にのみ数えます。後からインポートされ、オンチェーン履歴として表示され、ライブのログに混ざることはありません。",
       "GROUP_BOOKS_TITLE": "好きな場所で賭ける",
       "GROUP_BOOKS_BODY": "ディープリンクのみ。アフィリエイト契約はありません。",
       "BOOKS_BODY": "ワンタップで、お住まいの地域の認可済みブックメーカーで予想を開けます。OpenCapperの収益にはなりません。",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "すべての予想家にダッシュボードを",
-      "BODY": "現在ランキング1位の予想家のプロフィールです。公開ページと同じ記録から作られています：私たちが取得したオッズ、自動判定、ハッシュで連結されたログ。",
+      "BODY": "現在ランキング1位のキャッパーのプロフィールで、公開ページと同じ数字です。現在ランク入りしているキャッパーの多くは公開されているPolymarketのアカウントです。ライブ予想はオンチェーン取引からインポートされ、各試合の開始前にここで確定します。それより古い取引は、後からインポートしたオンチェーン履歴として数えます。",
       "FOOTNOTE": "実データを毎分更新しています。タブはこのプレビューを切り替えるだけで、すべての予想は完全なプロフィールで確認できます。",
       "EMPTY_TITLE": "まだ表示できる記録はありません",
       "EMPTY_BODY": "最初の予想が判定されると、トップ予想家のダッシュボードが実際の数字でここに表示されます。",
@@ -312,8 +312,8 @@
     "FEATURES": {
       "TITLE": "機能",
       "ODDS_LABEL": "オッズ",
-      "ODDS_TITLE": "オッズは私たちが記録。",
-      "ODDS_BODY": "オッズ、ブックメーカー、時刻はマーケットから取得し、予想家が入力することはありません。",
+      "ODDS_TITLE": "予想家が選べないオッズ。",
+      "ODDS_BODY": "ここで行った予想には、確定時のマーケットのオッズ、ブックメーカー、時刻が記録されます。インポートしたPolymarketの予想はオンチェーンの約定価格を使います。予想家がオッズを入力することはありません。",
       "LOCKED_LABEL": "タイミング",
       "LOCKED_TITLE": "キックオフ前に確定。",
       "LOCKED_BODY": "予想を受け付けるのは試合開始前だけです。開始後は編集も削除もできません。",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "ランキング",
     "TITLE": "ランキング",
-    "DESCRIPTION": "OpenCapperの検証済みROIによる予想家ランキング。",
+    "DESCRIPTION": "OpenCapperのキャッパーを、試合前に確定した予想とオンチェーン履歴からROIでランキングしています。",
     "HEADING": "ランキング",
-    "SUBHEADING": "検証済み・確定済みの予想のROIによるランキング。",
+    "SUBHEADING": "判定済みの予想のROIによるランキングです。試合前にここで確定したライブ予想に、後からインポートしたPolymarketのオンチェーン履歴を加えています。「ライブのみ」では履歴を除きます。",
     "MIN_PICKS": "判定済みの予想が{count, number}件に達するとランキング対象になります。たまたま好調な1週間だけで上位には立てません。",
     "RANKED_COUNT": "{total, plural, other {#人の予想家がランクイン}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "金額ではなくROI",
       "ROI_BODY": "デフォルトの並び順はROI（投資収益率）、つまり投入1ユニットあたりの獲得ユニットです。利益額は賭け金が大きい人ほど有利になるだけなので、ランキングには使いません。",
       "GRADED_TITLE": "判定済みの予想のみ",
-      "GRADED_BODY": "勝ち、負け、プッシュが対象です。判定待ちと無効の予想は含みません。オッズはすべて予想の確定時に私たちが記録したものです。",
+      "GRADED_BODY": "勝ち、負け、プッシュが対象で、判定待ちと無効の予想は含みません。ライブ予想のオッズは、ここで確定した時点で固定されたものです。OpenCapperで行った予想はオッズの配信元から、インポートしたPolymarketの予想はオンチェーンの約定から取得します。オンチェーン履歴は各取引の約定価格を使います。",
       "PERIOD_TITLE": "全員に同じ期間",
       "PERIOD_BODY": "期間は試合開始時刻を基準に、すべての予想家に同じように適用されます。都合のいい連勝期間だけを選ぶことはできません。"
     },
-    "SCOPE_HINT_ALL": "オンチェーンのPolymarket履歴を含みます。開始前に行われ、オンチェーンで検証され、後からインポートされ、マーケットの決着で判定された取引です。試合前にここで記録された予想だけを見るには「ライブのみ」に切り替えてください。",
+    "SCOPE_HINT_ALL": "ライブと履歴：試合前にここで確定したライブ予想に、Polymarketのオンチェーン履歴を加えたものです。履歴とは、開始前に行われ、後からブロックチェーンからインポートされ、マーケットの決着で判定された取引です。「ライブのみ」では履歴を除きます。",
     "SCOPE_HINT_LIVE": "ライブのみ：すべての予想は試合前にここで記録されたものです。オンチェーン履歴は含みません。",
     "SPLIT": "判定済み{graded, number}件：ライブ{live, number}件、オンチェーン履歴{history, number}件",
     "SPLIT_SHORT": "ライブ{live, number}件、履歴{history, number}件",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "サンプル不足：判定済み{count, number}件のROIでは、まだほとんど何もわかりません",
       "EMPTY": "この条件で予想を登録した予想家はまだいません。"
     },
-    "CHECK_LINK": "予想家を照会する"
+    "CHECK_LINK": "予想家を照会する",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "このページは表の末尾より後ろです",
+    "PAST_END_BODY": "この条件でランク入りしているキャッパーは{total, plural, other {#人}}です。",
+    "PAST_END_BACK": "最初のページに戻る"
   },
   "TABLE": {
     "TOTAL_COUNT": "合計 {count, number} 件",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "予想家プロフィール",
     "TITLE": "OpenCapperの{username}",
-    "DESCRIPTION": "{username}の検証済み予想履歴：すべての予想は試合前に確定し、ROIで評価されています。",
+    "DESCRIPTION": "OpenCapperでの{username}の予想成績。自動で判定され、ROIでランク付けされています。",
     "HEADING": "@{username}",
     "SUBHEADING": "検証済みの成績。予想は編集も削除もできません。",
     "SUBHEADING_PUBLIC": "インポートした予想から作成された公開成績。予想は編集も削除もできません。",
     "VERIFIED": "検証済みの成績",
     "LOADING": "成績を読み込み中",
-    "NOT_FOUND": "この名前の予想家はまだ予想を登録していません。",
     "ERROR": "成績を読み込めませんでした。しばらくしてからもう一度お試しください。",
     "STATS": {
       "PICKS": "予想数",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "勝ち、負け、プッシュの賭け金",
       "ROI_SMALL_SAMPLE": "サンプル不足：判定済み{min, number}件中{count, number}件",
       "CLV": "CLV",
-      "CLV_HINT": "締切オッズのある{count, number}件の予想の平均",
+      "CLV_HINT": "締切オッズのある{count, plural, other {#件}}の予想の平均",
       "NO_CLV": "締切オッズはまだありません",
       "CLV_BEAT": "締切オッズを平均{value}上回りました。",
       "CLV_MISSED": "締切オッズを平均{value}下回りました。",
       "CLV_EVEN": "平均で締切オッズと同じでした。",
-      "CLV_NONE": "クロージングライン・バリューは、確定時のオッズと試合開始直前の最終オッズを比較します。"
+      "CLV_NONE": "クロージングライン・バリューは、確定時のオッズと試合開始直前の最終オッズを比較します。",
+      "NO_ROI_SHORT": "なし",
+      "SCOPE_SUMMARY": "{record}、{units}u",
+      "SCOPE_LIVE_ONLY": "ここで記録されたライブ予想",
+      "SCOPE_SPLIT": "ライブ：{live}。オンチェーン履歴：{history}。",
+      "CLV_HINT_LIVE": "ライブ予想のみ：締切オッズのある{count, plural, other {#件}}の予想の平均"
     },
     "CHART": {
       "TITLE": "ユニットの推移",
@@ -696,14 +704,14 @@
   "VERIFY": {
     "LABEL": "検証",
     "TITLE": "予想を検証する",
-    "DESCRIPTION": "OpenCapperの予想は作成された瞬間に封印されるため、後から誰も変更できません。ご自身で確認してください。",
+    "DESCRIPTION": "OpenCapperの予想は、ここに記録された瞬間に封印されるため、後から誰も変更できません。ご自身で確かめてください。",
     "HEADING": "予想を検証する",
-    "SUBHEADING": "すべての予想は作成された瞬間に封印されるため、私たちを含め誰も後から変更できません。それをご自身で確認できます。",
+    "SUBHEADING": "予想はここに記録された瞬間に封印されるため、私たちを含め誰も後から変更できません。ご自身で確かめられます。",
     "SEARCH": {
       "LABEL": "予想家名または予想のリンク",
-      "PLACEHOLDER": "razor、razor#12、または予想のリンクを貼り付け",
+      "PLACEHOLDER": "razor、razor#12、予想ID、または貼り付けたリンク",
       "SUBMIT": "確認",
-      "INVALID": "予想家名、razor#12のような予想番号を入力するか、予想へのリンクを貼り付けてください。",
+      "INVALID": "キャッパー名、razor#12のようなキャッパーの予想番号、1053のような予想ID、または予想へのリンクを入力してください。",
       "NOT_FOUND": "この予想は見つかりませんでした。",
       "NO_PICKS": "{username}の予想は見つかりませんでした。",
       "LATEST": "{username}の最新の予想",
@@ -717,16 +725,25 @@
       "CHECKING": "確認中",
       "UNSEALED": "まだ封印されていません",
       "ERROR": "確認できませんでした",
-      "LOCKED": "確定 {time}",
       "BY": "予想家：{username}",
-      "NUMBER": "予想 {seq, number}",
+      "NUMBER": "キャッパーの予想 #{seq, number}、予想ID {id}",
       "UNITS": "{count, plural, other {#ユニット}}",
-      "FALLBACK": "{username}の予想 {id}"
+      "STARTS": "開始時刻",
+      "LOCKED_AT": "ここで確定",
+      "IMPORTED": "ここでインポートして確定",
+      "LEAD": "開始の{duration}前",
+      "AFTER_START": "開始の{duration}後",
+      "ODDS": "オッズ",
+      "EXCHANGE_PRICE": "Polymarketのオンチェーン約定",
+      "RESULT": "結果",
+      "SOURCE": "出典と取引時刻",
+      "PROOF_NOTE": "封印の対象は、記録されたときの予想と確定時刻です。開始時刻はオッズの配信元から取得したもので封印には含まれないため、2つの時刻をご自身で比べてください。",
+      "PROOF_NOTE_IMPORTED": "この予想は{platform}の公開取引からインポートされました。封印の対象は、インポート時にここで確定した時点からで、それより前ではありません。出典リンクには元の取引とその時刻が表示されます。開始時刻は封印に含まれません。"
     },
     "HOW": {
       "TITLE": "仕組み",
-      "STEP_1_TITLE": "作成時に封印",
-      "STEP_1_BODY": "予想家が予想を作成した瞬間に、試合、選択、オッズ、賭け金、時刻を封印します。",
+      "STEP_1_TITLE": "記録時に封印",
+      "STEP_1_BODY": "予想がここに記録された瞬間、キャッパー本人によるものでもオンチェーン取引のインポートによるものでも、試合、選択、オッズ、賭け金、確定時刻を封印します。試合の開始時刻は封印に含まれません。各予想カードで確定時刻の横に表示されます。",
       "STEP_2_TITLE": "過去のすべての予想とつながる",
       "STEP_2_BODY": "新しい予想は、それ以前のすべての予想とつながっています。古い予想を書き換えるとチェーンが壊れ、誰の目にも明らかになります。",
       "STEP_3_TITLE": "毎日ビットコインに刻印",
@@ -804,7 +821,7 @@
   "CHECK": {
     "LABEL": "予想家を照会",
     "TITLE": "予想家を照会",
-    "DESCRIPTION": "OpenCapper、Discord、Telegram、Polymarketの名前で予想家を検索し、検証済みの成績、または成績がないという警告を確認できます。",
+    "DESCRIPTION": "OpenCapper、Discord、Telegram、Polymarketの名前でキャッパーを検索し、成績、または成績がないという警告を確認できます。",
     "HEADING": "この予想家は本物？",
     "SUBHEADING": "詐欺師は有名な予想家の名前やアイコンをコピーし、DMで偽のVIPアクセスを販売します。本物の成績はOpenCapperにあり、編集できません。誰かにお金を払う前に照会してください。",
     "ERROR": "照会に失敗しました。しばらくしてから再度お試しください。",
@@ -847,7 +864,7 @@
       "UNITS": "{units} ユニット"
     },
     "NONE": {
-      "TITLE": "{query} の検証済み成績はありません",
+      "TITLE": "{query}の成績はありません",
       "BODY": "公開の成績なしに予想を売る人は、それを証明できません。OpenCapperのリンクを求めてください。",
       "TIP_1": "本物の予想家は成績のリンクを堂々と共有します。拒む人には理由があります。",
       "TIP_2": "馬券やベット画面、連勝のスクリーンショットは数秒で偽造できます。確定済みでタイムスタンプ付きの成績はできません。",
@@ -858,7 +875,7 @@
       "STEP_1_TITLE": "名前を検索",
       "STEP_1_BODY": "Discord、Telegram、Polymarketで使っている正確な名前を検索するか、Discord IDを貼り付けます。",
       "STEP_2_TITLE": "成績を開く",
-      "STEP_2_BODY": "成績にある予想はすべて試合前に、プラットフォームが取得したオッズで確定されています。編集も削除もできません。",
+      "STEP_2_BODY": "ライブ予想は試合前に、マーケットのオッズ、またはインポートしたPolymarketの予想ではオンチェーンの約定価格で、ここで確定しています。オンチェーン履歴はそのように表示されます。編集も削除もできません。",
       "STEP_3_TITLE": "成績なしは信用なし",
       "STEP_3_BODY": "成績が見つからなければ、その予想家は一度の的中も証明できません。支払う前にOpenCapperのリンクを求めてください。"
     }
@@ -1007,11 +1024,17 @@
     "LAST_STAMP": "最新のビットコイン刻印",
     "NO_STAMP": "まだありません",
     "LOG_ROOT": "現在のルート",
-    "PROFILE_TITLE": "{username}：{record}、{units}u、ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "{username}の成績：{picks, plural, other {#件の予想}}で{wins, number}勝、{losses, number}敗、{pushes, number}プッシュ。すべて試合前に確定済み。",
+    "PROFILE_TITLE": "{username}：{record}、{units}u、ROI {roi}（{scope}） | {appName}",
+    "PROFILE_DESCRIPTION": "{username}の成績：{picks, plural, other {#件の予想}}で{record}。すべて試合前にここで記録され、自動で判定されています。",
     "PICK_TITLE": "{username} #{seq}：{selection} {odds}、{units}u | {appName}",
     "PICK_DESCRIPTION": "{away} @ {home}。{time}に{bookmaker}のオッズ{odds}で確定。ステータス：{status}。",
-    "LEADERBOARD_TITLE": "ランキング：{filters} | {appName}"
+    "LEADERBOARD_TITLE": "ランキング：{filters} | {appName}",
+    "SCOPE_ALL": "ライブとオンチェーン履歴",
+    "SCOPE_LIVE": "ライブ予想",
+    "PROFILE_TITLE_UNGRADED": "{username}：判定済みの予想はまだありません | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "{username}の成績（ライブとオンチェーン履歴）：{record}。試合前にここで記録されたライブ予想：{live}。後からブロックチェーンからインポートしたPolymarketの取引：{history}。",
+    "SCOPE_SPLIT": "ライブ {live} + オンチェーン履歴 {history}",
+    "SCOPE_LIVE_LINE": "ここで記録されたライブ予想"
   },
   "ERRORS": {
     "UNAUTHORIZED": "権限がありません。",
@@ -1070,7 +1093,9 @@
     "PAYMENTS_NO_PLAN": "このキャッパーは現在サブスクリプションを提供していません。",
     "PAYMENTS_OWN_PLAN": "自分自身を購読することはできません。",
     "PAYMENTS_ALREADY_SUBSCRIBED": "このキャッパーの有効なサブスクリプションをすでにお持ちです。",
-    "WEBHOOK_SIGNATURE_INVALID": "Webhookの署名が無効です。"
+    "WEBHOOK_SIGNATURE_INVALID": "Webhookの署名が無効です。",
+    "CAPPER_NOT_FOUND": "この名前のキャッパーは存在しません。",
+    "PICK_NOT_FOUND": "この予想は存在しません。"
   },
   "LEGAL": {
     "LABEL": "法的情報",
@@ -1263,5 +1288,12 @@
       "LOGIN": "ログインして購読",
       "FAILED": "購入手続きを開始できませんでした。"
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "このページは存在しません",
+    "BODY": "リンクが壊れているか、この名前のキャッパーはいません。本物のキャッパーなら、いつでも有効なプロフィールリンクを共有できます。綴りを確認するか、名前で検索してください。",
+    "HOME": "ホーム",
+    "CHECK": "キャッパーを確認"
   }
 }

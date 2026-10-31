@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName}: dürüst sicile sahip doğrulanmış spor tahminleri",
-    "DESCRIPTION": "Her tahmin maçtan önce zaman damgası alır ve kilitlenir. Oranları platform kaydeder, sicil ROI'ye göre sıralanır, bahis siteleriyle hiçbir affiliate anlaşması yok."
+    "TITLE": "{appName}: kimsenin değiştiremeyeceği bir sicille spor tahminleri",
+    "DESCRIPTION": "Maçtan önce kilitlenen ve otomatik sonuçlandırılan tahminler. Oranlar piyasadan ya da zincir üstü işlemlerden gelir, asla tahminciden değil. Siciller ROI ile sıralanır, bahis şirketleriyle ortaklık anlaşması yoktur."
   },
   "NAV": {
     "HOME": "Nasıl çalışır",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "Doğrulanmış sicille sat",
       "GROUP_SELL_BODY": "Mevcut mağazanı koru. OpenCapper ona doğrulanmış bir sicil ekler.",
       "GROUP_HISTORY_TITLE": "Geçmişini getir",
-      "GROUP_HISTORY_BODY": "İçe aktarılanlar ayrı gösterilir ve doğrulanmamış olarak işaretlenir. Zincir üzerindeki Polymarket gibi kaynağı kontrol edilebilenler bunun dışındadır.",
+      "GROUP_HISTORY_BODY": "Geçmiş işlemler yalnızca doğrulanabiliyorsa sayılır, zincir üstü Polymarket işlemleri gibi. Sonradan içe aktarılır, zincir üstü geçmiş olarak gösterilir ve canlı kayıtla asla karıştırılmaz.",
       "GROUP_BOOKS_TITLE": "İstediğin yerde oyna",
       "GROUP_BOOKS_BODY": "Yalnızca doğrudan bağlantılar. Affiliate anlaşması yok.",
       "BOOKS_BODY": "Tek dokunuşla tahmin, bölgendeki lisanslı bir bahis sitesinde açılır. OpenCapper bundan hiçbir şey kazanmaz.",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "Her tahminci kendi panelini alır",
-      "BODY": "Bu, şu anda sıralamanın zirvesindeki tahmincinin profili; herkese açık sayfayla aynı kayıtlardan oluşur: bizim aldığımız oranlar, otomatik sonuçlandırma ve hash ile zincirlenmiş kayıt.",
+      "BODY": "Bu, şu anda sıralamada birinci olan tahmincinin profili; herkese açık sayfadaki rakamların aynısı. Bugün sıralamadaki tahmincilerin çoğu herkese açık Polymarket hesaplarıdır: canlı tahminleri zincir üstü işlemlerden içe aktarılır ve her maç başlamadan önce burada kilitlenir, eski işlemleri ise sonradan içe aktarılan zincir üstü geçmiş olarak sayılır.",
       "FOOTNOTE": "Gerçek veriler, her dakika yenilenir. Sekmeler yalnızca bu önizlemeyi değiştirir; tam profil her tahmini listeler.",
       "EMPTY_TITLE": "Henüz gösterilecek kayıt yok",
       "EMPTY_BODY": "İlk tahminler sonuçlandığında, en iyi tahmincinin paneli burada gerçek rakamlarla görünür.",
@@ -312,8 +312,8 @@
     "FEATURES": {
       "TITLE": "Özellikler",
       "ODDS_LABEL": "Oranlar",
-      "ODDS_TITLE": "Oranları biz kaydederiz.",
-      "ODDS_BODY": "Oran, bahis sitesi ve zaman tahminciden değil, her zaman piyasadan gelir.",
+      "ODDS_TITLE": "Tahmincinin seçemediği oranlar.",
+      "ODDS_BODY": "Burada yapılan tahminler kilitlendiğinde piyasa oranını, bahis şirketini ve zamanı alır. İçe aktarılan Polymarket tahminleri zincir üstü işlem fiyatını kullanır. Tahminci asla oran yazmaz.",
       "LOCKED_LABEL": "Zamanlama",
       "LOCKED_TITLE": "Maç başlamadan kilitlenir.",
       "LOCKED_BODY": "Bir tahmin yalnızca karşılaşma başlamamışken kabul edilir. Sonrasında düzenlenemez ve silinemez.",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "Sıralama",
     "TITLE": "Sıralama",
-    "DESCRIPTION": "OpenCapper'da doğrulanmış ROI'ye göre sıralanan tahminciler.",
+    "DESCRIPTION": "OpenCapper tahmincileri, maçtan önce kilitlenen tahminlere ve zincir üstü geçmişe göre ROI ile sıralanır.",
     "HEADING": "Sıralama",
-    "SUBHEADING": "Doğrulanmış, kilitli tahminlerdeki ROI'ye göre sıralama.",
+    "SUBHEADING": "Sonuçlanan tahminlerin ROI değerine göre sıralama: maçtan önce burada kilitlenen canlı tahminler ve sonradan içe aktarılan zincir üstü Polymarket geçmişi. \"Yalnızca canlı\" geçmişi dışarıda bırakır.",
     "MIN_PICKS": "Bir tahminci {count, number} sonuçlanmış tahminden sonra sıralamaya girer, böylece şanslı bir hafta tabloyu ele geçiremez.",
     "RANKED_COUNT": "{total, plural, other {Sıralamada # tahminci}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "Para değil, her zaman ROI",
       "ROI_BODY": "Varsayılan sıralama yatırım getirisine göredir: riske edilen birim başına kazanılan birim. Dolar cinsinden kâr yalnızca büyük bahis miktarlarını ödüllendirir, bu yüzden ona göre asla sıralamayız.",
       "GRADED_TITLE": "Yalnızca sonuçlanan tahminler",
-      "GRADED_BODY": "Kazanç, kayıp ve iadeler sayılır. Bekleyen ve iptal edilen tahminler sayılmaz. Her oran, tahmin kilitlendiğinde tarafımızca kaydedildi.",
+      "GRADED_BODY": "Kazanç, kayıp ve iadeler sayılır. Bekleyen ve geçersiz tahminler sayılmaz. Canlı bir tahmin, burada kilitlendiğinde sabitlenen oranı taşır: OpenCapper üzerinde yapılan tahminlerde oran akışından, içe aktarılan Polymarket tahminlerinde zincir üstü işlemden. Zincir üstü geçmiş her işlemin gerçekleşme fiyatını kullanır.",
       "PERIOD_TITLE": "Herkes için tek zaman aralığı",
       "PERIOD_BODY": "Dönem, karşılaşmanın başlangıç saatine göre her tahminciye aynı şekilde uygulanır. Kimse kendini iyi gösteren bir seriyi seçemez."
     },
-    "SCOPE_HINT_ALL": "Zincir üzerindeki Polymarket geçmişini de içerir: başlangıçtan önce açılan, zincir üzerinde doğrulanan, sonradan içe aktarılan ve piyasa sonucuna göre sonuçlandırılan işlemler. Yalnızca maçtan önce burada kaydedilen tahminler için \"Yalnızca canlı\" seçeneğine geç.",
+    "SCOPE_HINT_ALL": "Canlı ve geçmiş: maçtan önce burada kilitlenen canlı tahminler ve zincir üstü Polymarket geçmişi, yani başlangıçtan önce açılan, sonradan blokzincirden içe aktarılan ve piyasa sonucuna göre sonuçlandırılan işlemler. \"Yalnızca canlı\" geçmişi dışarıda bırakır.",
     "SCOPE_HINT_LIVE": "Yalnızca canlı: her tahmin maçtan önce burada kaydedildi. Zincir üzerindeki geçmiş dahil edilmez.",
     "SPLIT": "{graded, number} sonuçlanan: {live, number} canlı, {history, number} zincir üstü geçmiş",
     "SPLIT_SHORT": "{live, number} canlı, {history, number} geçmiş",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "Küçük örneklem: {count, number} sonuçlanmış tahmindeki ROI henüz pek bir şey söylemez",
       "EMPTY": "Bu seçimde henüz hiçbir tahminci tahmin kaydetmedi."
     },
-    "CHECK_LINK": "Tahminci sorgula"
+    "CHECK_LINK": "Tahminci sorgula",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "Bu sayfa tablonun sonundan sonra",
+    "PAST_END_BODY": "Bu filtrelerle {total, plural, other {# tahminci}} sıralamada.",
+    "PAST_END_BACK": "İlk sayfaya dön"
   },
   "TABLE": {
     "TOTAL_COUNT": "toplam {count, number}",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "Tahminci profili",
     "TITLE": "OpenCapper'da {username}",
-    "DESCRIPTION": "{username} kullanıcısının doğrulanmış tahmin geçmişi: her tahmin maçtan önce kilitlendi, ROI'ye göre değerlendirildi.",
+    "DESCRIPTION": "{username} kullanıcısının OpenCapper tahmin sicili, otomatik sonuçlandırılır ve ROI ile sıralanır.",
     "HEADING": "@{username}",
     "SUBHEADING": "Doğrulanmış sicil. Tahminler düzenlenemez ve silinemez.",
     "SUBHEADING_PUBLIC": "İçe aktarılan tahminlerden oluşturulmuş herkese açık sicil. Tahminler düzenlenemez ve silinemez.",
     "VERIFIED": "Doğrulanmış sicil",
     "LOADING": "Sicil yükleniyor",
-    "NOT_FOUND": "Bu isimde bir tahminci henüz tahmin kaydetmedi.",
     "ERROR": "Sicil yüklenemedi. Lütfen daha sonra tekrar dene.",
     "STATS": {
       "PICKS": "Tahminler",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "Kazanç, kayıp ve iadelerdeki bahis miktarları",
       "ROI_SMALL_SAMPLE": "Küçük örneklem: {count, number} / {min, number} sonuçlanan tahmin",
       "CLV": "CLV",
-      "CLV_HINT": "Kapanış oranı olan {count, number} tahminin ortalaması",
+      "CLV_HINT": "Kapanış oranı olan {count, plural, other {# tahminin}} ortalaması",
       "NO_CLV": "Henüz kapanış oranı yok",
       "CLV_BEAT": "Kapanış oranını ortalama {value} geçti.",
       "CLV_MISSED": "Kapanış oranının ortalama {value} gerisinde kaldı.",
       "CLV_EVEN": "Ortalamada kapanış oranını yakaladı.",
-      "CLV_NONE": "Kapanış oranı değeri, kilitlenen oranı başlangıçtan önceki son oranla karşılaştırır."
+      "CLV_NONE": "Kapanış oranı değeri, kilitlenen oranı başlangıçtan önceki son oranla karşılaştırır.",
+      "NO_ROI_SHORT": "yok",
+      "SCOPE_SUMMARY": "{record}, {units} birim",
+      "SCOPE_LIVE_ONLY": "Burada kaydedilen canlı tahminler",
+      "SCOPE_SPLIT": "Canlı: {live}. Zincir üstü geçmiş: {history}.",
+      "CLV_HINT_LIVE": "Yalnızca canlı tahminler: kapanış oranı olan {count, plural, other {# tahminin}} ortalaması"
     },
     "CHART": {
       "TITLE": "Zaman içinde birim",
@@ -696,14 +704,14 @@
   "VERIFY": {
     "LABEL": "Doğrula",
     "TITLE": "Her tahmini kontrol et",
-    "DESCRIPTION": "OpenCapper'daki her tahmin yapıldığı anda mühürlenir, böylece sonradan kimse değiştiremez. Kendin kontrol et.",
+    "DESCRIPTION": "Her OpenCapper tahmini burada kaydedildiği anda mühürlenir, böylece kimse onu sonradan değiştiremez. Kendin kontrol et.",
     "HEADING": "Her tahmini kontrol et",
-    "SUBHEADING": "Her tahmin yapıldığı anda mühürlenir, böylece biz dahil kimse sonradan değiştiremez. Bunu kendin kontrol edebilirsin.",
+    "SUBHEADING": "Her tahmin burada kaydedildiği anda mühürlenir, böylece biz dahil kimse onu sonradan değiştiremez. Bunu kendin kontrol edebilirsin.",
     "SEARCH": {
       "LABEL": "Tahminci adı veya tahmin bağlantısı",
-      "PLACEHOLDER": "razor, razor#12 veya yapıştırılmış bir tahmin bağlantısı",
+      "PLACEHOLDER": "razor, razor#12, bir tahmin kimliği veya yapıştırılmış bağlantı",
       "SUBMIT": "Kontrol et",
-      "INVALID": "Bir tahminci adı, razor#12 gibi bir tahmin numarası gir ya da bir tahminin bağlantısını yapıştır.",
+      "INVALID": "Bir tahminci adı, razor#12 gibi bir tahminci tahmin numarası, 1053 gibi bir tahmin kimliği gir ya da bir tahminin bağlantısını yapıştır.",
       "NOT_FOUND": "Bu tahmini bulamadık.",
       "NO_PICKS": "Bu kullanıcı için tahmin bulunamadı: {username}",
       "LATEST": "Son tahminler: {username}",
@@ -717,16 +725,25 @@
       "CHECKING": "Kontrol ediliyor",
       "UNSEALED": "Henüz mühürlenmedi",
       "ERROR": "Kontrol edilemedi",
-      "LOCKED": "Kilitlenme: {time}",
       "BY": "Tahminci: {username}",
-      "NUMBER": "Tahmin {seq, number}",
+      "NUMBER": "Tahmincinin {seq, number}. tahmini, tahmin kimliği {id}",
       "UNITS": "{count, plural, other {# birim}}",
-      "FALLBACK": "Tahmin {id}, tahminci: {username}"
+      "STARTS": "Etkinlik başlangıcı",
+      "LOCKED_AT": "Burada kilitlendi",
+      "IMPORTED": "Burada içe aktarıldı ve kilitlendi",
+      "LEAD": "başlangıçtan {duration} önce",
+      "AFTER_START": "başlangıçtan {duration} sonra",
+      "ODDS": "Oran",
+      "EXCHANGE_PRICE": "zincir üstü Polymarket işlemi",
+      "RESULT": "Sonuç",
+      "SOURCE": "Kaynak ve işlem zamanı",
+      "PROOF_NOTE": "Mühür, tahmini kaydedildiği hâliyle ve kilitlenme zamanıyla birlikte kapsar. Etkinlik başlangıç zamanı oran akışından gelir ve mührün parçası değildir; iki zamanı kendin karşılaştır.",
+      "PROOF_NOTE_IMPORTED": "Bu tahmin, {platform} üzerindeki herkese açık bir işlemden içe aktarıldı. Mühür, onu içe aktarma sırasında burada kilitlendiği andan itibaren kapsar, asla daha önce değil. Kaynak bağlantısı orijinal işlemi ve kendi zamanını gösterir; etkinlik başlangıç zamanı mührün parçası değildir."
     },
     "HOW": {
       "TITLE": "Nasıl çalışır",
-      "STEP_1_TITLE": "Yapıldığı anda mühürlenir",
-      "STEP_1_BODY": "Bir tahminci tahminini yaptığı anda onu mühürleriz: maçı, seçimi, oranı, bahis miktarını ve zamanı.",
+      "STEP_1_TITLE": "Kaydedilince mühürlenir",
+      "STEP_1_BODY": "Bir tahmin burada kaydedildiği anda, tahminci tarafından ya da zincir üstü bir işlemin içe aktarılmasıyla, maçı, seçimi, oranı, bahis miktarını ve kilitlenme zamanını mühürleriz. Maçın başlangıç zamanı mührün parçası değildir; her tahmin kartı onu kilitlenme zamanının yanında gösterir.",
       "STEP_2_TITLE": "Önceki tüm tahminlere bağlıdır",
       "STEP_2_BODY": "Her yeni tahmin kendisinden önceki tüm tahminlere bağlanır. Eski bir tahmini değiştirmek bu zinciri kırar ve bunu herkes görür.",
       "STEP_3_TITLE": "Her gün Bitcoin'e damgalanır",
@@ -804,7 +821,7 @@
   "CHECK": {
     "LABEL": "Tahminci sorgula",
     "TITLE": "Tahminci sorgula",
-    "DESCRIPTION": "Herhangi bir tahminciyi OpenCapper, Discord, Telegram veya Polymarket adıyla ara; doğrulanmış sicilini ya da sicili olmadığı uyarısını gör.",
+    "DESCRIPTION": "Herhangi bir tahminciyi OpenCapper, Discord, Telegram veya Polymarket adıyla ara; sicilini ya da sicili olmadığına dair uyarıyı gör.",
     "HEADING": "Bu tahminci gerçek mi?",
     "SUBHEADING": "Dolandırıcılar tanınmış tahmincilerin adını ve fotoğrafını kopyalayıp DM'den sahte VIP erişimi satar. Gerçek bir sicil OpenCapper'da durur ve düzenlenemez. Kimseye ödeme yapmadan önce sorgula.",
     "ERROR": "Sorgulama başarısız oldu. Lütfen daha sonra tekrar dene.",
@@ -847,7 +864,7 @@
       "UNITS": "{units} birim"
     },
     "NONE": {
-      "TITLE": "{query} için doğrulanmış sicil yok",
+      "TITLE": "{query} için sicil yok",
       "BODY": "Herkese açık sicili olmadan tahmin satan kimse bunu kanıtlayamaz. OpenCapper bağlantısını iste.",
       "TIP_1": "Gerçek tahminciler sicil bağlantısını açıkça paylaşır. Reddeden birinin bir sebebi vardır.",
       "TIP_2": "Kupon ve galibiyet serisi ekran görüntüleri saniyeler içinde sahtelenebilir. Kilitlenmiş, zaman damgalı bir sicil sahtelenemez.",
@@ -858,7 +875,7 @@
       "STEP_1_TITLE": "Adı ara",
       "STEP_1_BODY": "Discord, Telegram veya Polymarket'ta kullandığı tam adı ara ya da Discord kimliğini yapıştır.",
       "STEP_2_TITLE": "Sicili aç",
-      "STEP_2_BODY": "Sicildeki her tahmin maçtan önce, platformun kaydettiği oranlarla kilitlendi. Hiçbir şey düzenlenemez veya silinemez.",
+      "STEP_2_BODY": "Canlı tahminler maçtan önce burada, piyasa oranından ya da içe aktarılan Polymarket tahminlerinde zincir üstü işlem fiyatından kilitlendi. Zincir üstü geçmiş bu şekilde etiketlenir. Hiçbir şey düzenlenemez veya silinemez.",
       "STEP_3_TITLE": "Sicil yoksa güven de yok",
       "STEP_3_BODY": "Hiç sicil çıkmıyorsa, tahminci tek bir kazancı bile kanıtlayamaz. Ödeme yapmadan önce OpenCapper bağlantısını iste."
     }
@@ -1007,11 +1024,17 @@
     "LAST_STAMP": "Son Bitcoin damgası",
     "NO_STAMP": "Henüz yok",
     "LOG_ROOT": "Güncel kök",
-    "PROFILE_TITLE": "{username}: {record}, {units} birim, ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "{username} sicili: {picks, plural, other {# tahminde}} {wins, number} kazanç, {losses, number} kayıp ve {pushes, number} iade; hepsi maçtan önce kilitlendi.",
+    "PROFILE_TITLE": "{username}: {record}, {units} birim, ROI {roi}, {scope} | {appName}",
+    "PROFILE_DESCRIPTION": "{username} sicili: {picks, plural, other {# tahminde}} {record}; hepsi maçtan önce burada kaydedildi ve otomatik sonuçlandırıldı.",
     "PICK_TITLE": "{username} #{seq}: {selection} {odds}, {units} birim | {appName}",
     "PICK_DESCRIPTION": "{away}, {home} deplasmanında. Kilitlenme: {time}, oran {odds}, bahis sitesi {bookmaker}. Durum: {status}.",
-    "LEADERBOARD_TITLE": "Sıralama: {filters} | {appName}"
+    "LEADERBOARD_TITLE": "Sıralama: {filters} | {appName}",
+    "SCOPE_ALL": "canlı ve zincir üstü geçmiş",
+    "SCOPE_LIVE": "canlı tahminler",
+    "PROFILE_TITLE_UNGRADED": "{username}: henüz sonuçlanan tahmin yok | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "{username} sicili, canlı ve zincir üstü geçmiş: {record}. Maçtan önce burada kaydedilen canlı tahminler: {live}. Blokzincirden sonradan içe aktarılan Polymarket işlemleri: {history}.",
+    "SCOPE_SPLIT": "Canlı {live} + zincir üstü geçmiş {history}",
+    "SCOPE_LIVE_LINE": "Burada kaydedilen canlı tahminler"
   },
   "ERRORS": {
     "UNAUTHORIZED": "Yetkisiz.",
@@ -1070,7 +1093,9 @@
     "PAYMENTS_NO_PLAN": "Bu capper şu anda abonelik sunmuyor.",
     "PAYMENTS_OWN_PLAN": "Kendine abone olamazsın.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Bu capper için zaten aktif bir aboneliğin var.",
-    "WEBHOOK_SIGNATURE_INVALID": "Webhook imzası geçersiz."
+    "WEBHOOK_SIGNATURE_INVALID": "Webhook imzası geçersiz.",
+    "CAPPER_NOT_FOUND": "Bu isimde bir tahminci yok.",
+    "PICK_NOT_FOUND": "Bu tahmin yok."
   },
   "LEGAL": {
     "LABEL": "Yasal",
@@ -1263,5 +1288,12 @@
       "LOGIN": "Abone olmak için giriş yap",
       "FAILED": "Ödeme başlatılamadı."
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "Bu sayfa yok",
+    "BODY": "Bağlantı bozuk olabilir ya da bu isimde bir tahminci yok. Gerçek bir tahminci her zaman çalışan bir profil bağlantısı paylaşabilir; yazımı kontrol et veya ismi ara.",
+    "HOME": "Ana sayfa",
+    "CHECK": "Tahminci sorgula"
   }
 }

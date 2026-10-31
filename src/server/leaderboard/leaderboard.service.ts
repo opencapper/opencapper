@@ -239,6 +239,15 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
     last: sql`${rankedAgg.lastPickAt} ${dir} nulls last, ${users.username} asc`,
   } satisfies Record<LeaderboardSort, SQL>;
 
+  const countRanked = async () => {
+    const [row] = await db
+      .select({ total: sql`count(*)::int`.mapWith(Number) })
+      .from(rankedAgg)
+      .innerJoin(users, eq(users.id, rankedAgg.userId))
+      .where(visibleUser);
+    return row?.total ?? 0;
+  };
+
   const unranked = aggregate(input);
   const unrankedAgg = unranked.query
     .having(sql`${unranked.graded} < ${input.minGraded}`)
@@ -275,7 +284,8 @@ async function queryLeaderboard(input: Input): Promise<LeaderboardResponse> {
     unranked: waiting.map(toRow),
     scope: input.scope,
     minGraded: input.minGraded,
-    total: rows[0]?.total ?? 0,
+    // A page past the end has no row to carry the window count, so the client could not offer a way back.
+    total: rows[0]?.total ?? (input.page > 1 ? await countRanked() : 0),
     page: input.page,
     pageSize: input.pageSize,
   };

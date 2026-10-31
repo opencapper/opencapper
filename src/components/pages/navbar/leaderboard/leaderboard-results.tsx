@@ -23,7 +23,7 @@ export function LeaderboardResults(props: {
     { id: props.filters.sort, desc: props.filters.order === "desc" },
   ];
   const pagination: PaginationState = {
-    pageIndex: props.filters.page - 1,
+    pageIndex: Math.max(props.filters.page, 1) - 1,
     pageSize: props.filters.size,
   };
 

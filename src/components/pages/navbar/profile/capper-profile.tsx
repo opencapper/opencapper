@@ -8,7 +8,9 @@ import type { ApiPick } from "@/lib/types";
 import { useAuthUser } from "@/hooks/auth/auth-hook";
 import { useUserPicksQuery, useUserStatsQuery } from "@/hooks/users/users-hook";
 import { apiErrorText } from "@/lib/utils/api-error";
+import type { RecordScope } from "@/lib/utils/stats";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 import { GetPicks } from "./get-picks";
 import { HiddenProfile } from "./hidden-profile";
 import { HistoryTable } from "./history-table";
@@ -30,9 +32,9 @@ export function CapperProfile(props: {
   const stats = useUserStatsQuery(props.username);
   const picks = useUserPicksQuery(props.username);
   const source = stats.data?.source ?? null;
-  const known =
-    stats.data !== undefined &&
-    (stats.data.discordUserId !== null || source !== null);
+  // Unknown names are a 404 before render, so loaded stats always belong to a real profile.
+  const known = stats.data !== undefined;
+  const scopeState = useState<RecordScope>("all");
   const viewer = useAuthUser();
   const own = viewer?.username === props.username.toLowerCase();
   const claimant =
@@ -76,10 +78,11 @@ export function CapperProfile(props: {
           tone="error"
         />
       )}
-      {stats.data && !known && <Notice text={t("NOT_FOUND")} />}
       {stats.data && known && (
         <ProfileStats
           stats={stats.data}
+          scope={scopeState[0]}
+          onScopeChange={scopeState[1]}
           minPicksForRoi={props.ranking.profileMinPicksForRoi}
         />
       )}

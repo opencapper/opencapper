@@ -5,14 +5,16 @@ import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLogVerifyQuery } from "@/hooks/log/log-hook";
-import { useUserPicksQuery } from "@/hooks/users/users-hook";
+import {
+  usePickQuery,
+  useUserPickQuery,
+  useUserPicksQuery,
+} from "@/hooks/users/users-hook";
 import { Link } from "@/i18n/navigation";
-import type { ApiPick } from "@/lib/types";
 import { apiErrorText } from "@/lib/utils/api-error";
 import { useTranslations } from "next-intl";
-import { useState, type ReactNode } from "react";
-import { isSealed, PickCheckCard, SealBadge } from "./pick-check-card";
+import { useState } from "react";
+import { PickCheckCard } from "./pick-check-card";
 import { parseSearch, searchQuery, type SearchTarget } from "./search-target";
 
 const RECENT_PICKS = 10;
@@ -70,8 +72,8 @@ function SearchResults(props: { target: SearchTarget }) {
     return (
       <UserPick
         key={`${target.username}#${target.seq}`}
-        username={target.username}
-        match={(pick) => pick.sequence === target.seq}
+        username={target.username.toLowerCase()}
+        seq={target.seq}
       />
     );
   return <PickById key={target.pickId} pickId={target.pickId} />;
@@ -115,53 +117,30 @@ function CapperPicks(props: { username: string }) {
   );
 }
 
-function UserPick(props: {
-  username: string;
-  match: (pick: ApiPick) => boolean;
-  fallback?: ReactNode;
-}) {
+function UserPick(props: { username: string; seq: number }) {
   const t = useTranslations("VERIFY.SEARCH");
   const tRoot = useTranslations();
-  const picks = useUserPicksQuery(props.username.toLowerCase());
-
-  if (picks.isPending) return <Skeleton className="h-32 rounded-xl" />;
-  if (picks.isError)
-    return <Status text={apiErrorText(tRoot, picks.error, t("ERROR"))} />;
-  const pick = picks.data.find(props.match);
-  if (!pick) return props.fallback ?? <Status text={t("NOT_FOUND")} />;
+  const pick = useUserPickQuery(props.username, props.seq);
+  if (pick.isPending) return <Skeleton className="h-32 rounded-xl" />;
+  if (pick.isError)
+    return <Status text={apiErrorText(tRoot, pick.error, t("NOT_FOUND"))} />;
   return (
     <ul>
-      <PickCheckCard pick={pick} />
+      <PickCheckCard pick={pick.data} />
     </ul>
   );
 }
 
 function PickById(props: { pickId: number }) {
-  const t = useTranslations("VERIFY");
+  const t = useTranslations("VERIFY.SEARCH");
   const tRoot = useTranslations();
-  const check = useLogVerifyQuery({ kind: "pick", pickId: props.pickId });
-
-  if (check.isPending) return <Skeleton className="h-32 rounded-xl" />;
-  if (check.isError)
-    return (
-      <Status text={apiErrorText(tRoot, check.error, t("SEARCH.NOT_FOUND"))} />
-    );
-  const entry = check.data.entry;
+  const pick = usePickQuery(props.pickId);
+  if (pick.isPending) return <Skeleton className="h-32 rounded-xl" />;
+  if (pick.isError)
+    return <Status text={apiErrorText(tRoot, pick.error, t("NOT_FOUND"))} />;
   return (
-    <UserPick
-      username={entry.username}
-      match={(pick) => pick.id === entry.pickId}
-      fallback={
-        <div className="border-foreground/10 bg-card flex flex-col gap-4 rounded-xl border p-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm">
-            {t("CARD.FALLBACK", {
-              id: entry.pickId,
-              username: entry.username,
-            })}
-          </p>
-          <SealBadge state={isSealed(check.data) ? "sealed" : "mismatch"} />
-        </div>
-      }
-    />
+    <ul>
+      <PickCheckCard pick={pick.data} />
+    </ul>
   );
 }

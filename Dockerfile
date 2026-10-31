@@ -28,8 +28,10 @@ RUN for v in NEXT_PUBLIC_LEGAL_NAME NEXT_PUBLIC_LEGAL_ADDRESS NEXT_PUBLIC_LEGAL_
       [ -n "$(printenv "$v")" ] || { echo "missing build arg $v (set ${v#NEXT_PUBLIC_} in the stack env)" >&2; exit 1; }; \
     done
 # Komodo passes no commit, so a timestamp keeps asset URLs unique per deploy: a 404 cached at the edge during a container swap must not outlive that deploy.
+# The share image URLs carry the same id, so link previews refresh per deploy too.
 RUN --mount=type=cache,target=/app/.next/cache \
-    NEXT_DEPLOYMENT_ID=$([ "$GIT_SHA" = dev ] && date +%s || echo "$GIT_SHA") \
+    DEPLOY_ID=$([ "$GIT_SHA" = dev ] && date +%s || echo "$GIT_SHA") && \
+    NEXT_DEPLOYMENT_ID=$DEPLOY_ID NEXT_PUBLIC_RELEASE_VERSION=$DEPLOY_ID \
     NBC_TARGET=bun-linux-$([ "$TARGETARCH" = arm64 ] && echo arm64 || echo x64) bun run build
 
 FROM gcr.io/distroless/cc-debian12:nonroot@sha256:9dac0a79194e45a7da0158a9c6da57b217585af0786db3845d1f0ec1a0dd182f AS prod

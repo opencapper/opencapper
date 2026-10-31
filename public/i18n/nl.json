@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName}: geverifieerde sporttips met een eerlijk track record",
-    "DESCRIPTION": "Elke tip krijgt een tijdstempel en wordt vergrendeld vóór de wedstrijd. Odds vastgelegd door het platform, track records gerangschikt op ROI, geen affiliatedeals met bookmakers."
+    "TITLE": "{appName}: sporttips met een track record dat niemand kan aanpassen",
+    "DESCRIPTION": "Tips vergrendeld vóór de wedstrijd en automatisch beoordeeld. Quoteringen komen uit de markt of uit on chain trades, nooit van de capper. Track records gerangschikt op ROI, geen affiliate deals met bookmakers."
   },
   "NAV": {
     "HOME": "Hoe het werkt",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "Verkoop met een geverifieerd track record",
       "GROUP_SELL_BODY": "Houd je huidige store. OpenCapper voegt er een geverifieerd track record aan toe.",
       "GROUP_HISTORY_TITLE": "Neem je historie mee",
-      "GROUP_HISTORY_BODY": "Imports worden apart getoond en als niet geverifieerd gemarkeerd, tenzij de bron controleerbaar is, zoals Polymarket on chain.",
+      "GROUP_HISTORY_BODY": "Eerdere trades tellen alleen als ze controleerbaar zijn, zoals Polymarket trades on chain. Ze worden later geïmporteerd, getoond als on chain historie en nooit gemengd met het live logboek.",
       "GROUP_BOOKS_TITLE": "Wed waar je wilt",
       "GROUP_BOOKS_BODY": "Alleen deeplinks. Geen affiliatedeals.",
       "BOOKS_BODY": "Met één tik open je de tip bij een vergunde bookmaker in jouw regio. OpenCapper verdient er niets aan.",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "Elke capper krijgt een dashboard",
-      "BODY": "Dit is het profiel van de capper die nu bovenaan staat, gebouwd uit dezelfde gegevens als de openbare pagina: door ons vastgelegde quoteringen, automatische beoordeling en het met hashes geketende logboek.",
+      "BODY": "Dit is het profiel van de capper die nu bovenaan staat, met dezelfde cijfers als de openbare pagina. De meeste gerangschikte cappers zijn op dit moment openbare Polymarket accounts: hun live tips worden geïmporteerd uit on chain trades en hier vóór elke aanvang vergrendeld, hun oudere trades tellen als later geïmporteerde on chain historie.",
       "FOOTNOTE": "Echte gegevens, elke minuut ververst. De tabbladen wisselen alleen deze preview; het volledige profiel toont elke tip.",
       "EMPTY_TITLE": "Nog geen resultaten",
       "EMPTY_BODY": "Zodra de eerste tips beoordeeld zijn, verschijnt hier het dashboard van de beste capper met echte cijfers.",
@@ -312,8 +312,8 @@
     "FEATURES": {
       "TITLE": "Functies",
       "ODDS_LABEL": "Odds",
-      "ODDS_TITLE": "Odds vastgelegd door ons.",
-      "ODDS_BODY": "De quotering, de bookmaker en het tijdstip komen uit de markt, nooit van de tipster.",
+      "ODDS_TITLE": "Quoteringen die de capper niet kiest.",
+      "ODDS_BODY": "Tips die hier worden geplaatst krijgen bij het vergrendelen de marktquotering, de bookmaker en het tijdstip. Geïmporteerde Polymarket tips gebruiken de on chain uitvoeringsprijs. De capper typt nooit zelf een quotering.",
       "LOCKED_LABEL": "Tijdstip",
       "LOCKED_TITLE": "Vergrendeld vóór de aftrap.",
       "LOCKED_BODY": "Een tip wordt alleen geaccepteerd zolang het evenement nog niet begonnen is. Daarna kan hij niet meer worden bewerkt of verwijderd.",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "Ranglijst",
     "TITLE": "Ranglijst",
-    "DESCRIPTION": "Tipsters op OpenCapper gerangschikt op geverifieerde ROI.",
+    "DESCRIPTION": "Cappers gerangschikt op ROI op OpenCapper, op basis van tips vergrendeld vóór de wedstrijd en on chain historie.",
     "HEADING": "Ranglijst",
-    "SUBHEADING": "Ranking op ROI over geverifieerde, vergrendelde tips.",
+    "SUBHEADING": "Gerangschikt op ROI over beoordeelde tips: live tips die hier vóór de wedstrijd zijn vergrendeld, plus later geïmporteerde on chain historie van Polymarket. Alleen live laat de historie weg.",
     "MIN_PICKS": "Een tipster komt in de ranglijst na {count, number} beoordeelde tips, zodat een week vol geluk niet bovenaan kan eindigen.",
     "RANKED_COUNT": "{total, plural, one {# tipster gerangschikt} other {# tipsters gerangschikt}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "ROI, nooit geld",
       "ROI_BODY": "Standaard wordt gesorteerd op rendement: gewonnen units per ingezette unit. Winst in euro’s of dollars beloont alleen hogere inzetten, dus daar rangschikken we nooit op.",
       "GRADED_TITLE": "Alleen beoordeelde tips",
-      "GRADED_BODY": "Winst, verlies en push tellen mee. Open en geannuleerde tips niet. Elke quotering hebben wij zelf vastgelegd toen de tip werd vergrendeld.",
+      "GRADED_BODY": "Winst, verlies en push tellen. Openstaande en ongeldige tips niet. Een live tip draagt de quotering die bij het vergrendelen hier vastlag: uit de quoteringsfeed voor tips op OpenCapper, de on chain uitvoering voor geïmporteerde Polymarket tips. De on chain historie gebruikt de uitvoeringsprijs van elke trade.",
       "PERIOD_TITLE": "Eén periode voor iedereen",
       "PERIOD_BODY": "De periode geldt voor elke tipster gelijk, op basis van de aanvangstijd van het evenement. Niemand kan een gunstige reeks uitkiezen."
     },
-    "SCOPE_HINT_ALL": "Inclusief on chain historie van Polymarket: trades geplaatst vóór de aanvang, on chain geverifieerd, later geïmporteerd en beoordeeld op basis van de marktuitkomst. Kies alleen live voor tips die hier vóór de wedstrijd zijn vastgelegd.",
+    "SCOPE_HINT_ALL": "Live en historie: live tips die hier vóór de wedstrijd zijn vergrendeld, plus on chain historie van Polymarket, dus trades geplaatst vóór de aanvang, later uit de blockchain geïmporteerd en beoordeeld op basis van de marktuitkomst. Alleen live laat de historie weg.",
     "SCOPE_HINT_LIVE": "Alleen live: elke tip is hier vóór de wedstrijd vastgelegd. On chain historie wordt weggelaten.",
     "SPLIT": "{graded, number} beoordeeld: {live, number} live, {history, number} on chain historie",
     "SPLIT_SHORT": "{live, number} live, {history, number} historie",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "Kleine steekproef: ROI over {count, number} beoordeelde tips zegt nog weinig",
       "EMPTY": "Nog geen tipster heeft een tip vastgelegd in deze selectie."
     },
-    "CHECK_LINK": "Tipster checken"
+    "CHECK_LINK": "Tipster checken",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "Deze pagina ligt voorbij het einde van de tabel",
+    "PAST_END_BODY": "Met deze filters {total, plural, one {staat # capper} other {staan # cappers}} in de ranglijst.",
+    "PAST_END_BACK": "Terug naar de eerste pagina"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} in totaal",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "Tipsterprofiel",
     "TITLE": "{username} op OpenCapper",
-    "DESCRIPTION": "Geverifieerde tiphistorie van {username}: elke tip vergrendeld vóór de wedstrijd, beoordeeld op ROI.",
+    "DESCRIPTION": "Tiphistorie van {username} op OpenCapper, automatisch beoordeeld en gerangschikt op ROI.",
     "HEADING": "@{username}",
     "SUBHEADING": "Geverifieerd track record. Tips kunnen niet worden bewerkt of verwijderd.",
     "SUBHEADING_PUBLIC": "Openbaar track record op basis van geïmporteerde tips. Tips kunnen niet worden bewerkt of verwijderd.",
     "VERIFIED": "Geverifieerd track record",
     "LOADING": "Track record laden",
-    "NOT_FOUND": "Er is nog geen tipster met deze naam die een tip heeft vastgelegd.",
     "ERROR": "Het track record kon niet worden geladen. Probeer het later opnieuw.",
     "STATS": {
       "PICKS": "Tips",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "Inzet op winst, verlies en push",
       "ROI_SMALL_SAMPLE": "Kleine steekproef: {count, number} van {min, number} beoordeelde tips",
       "CLV": "CLV",
-      "CLV_HINT": "Gemiddelde over {count, number} tips met een slotquotering",
+      "CLV_HINT": "Gemiddelde over {count, plural, one {# tip} other {# tips}} met een slotquotering",
       "NO_CLV": "Nog geen slotquoteringen",
       "CLV_BEAT": "Versloeg de slotquotering gemiddeld met {value}.",
       "CLV_MISSED": "Bleef gemiddeld {value} onder de slotquotering.",
       "CLV_EVEN": "Gelijk aan de slotquotering, gemiddeld.",
-      "CLV_NONE": "Closing line value vergelijkt de vergrendelde quotering met de laatste quotering vóór de aanvang."
+      "CLV_NONE": "Closing line value vergelijkt de vergrendelde quotering met de laatste quotering vóór de aanvang.",
+      "NO_ROI_SHORT": "n.v.t.",
+      "SCOPE_SUMMARY": "{record}, {units}u",
+      "SCOPE_LIVE_ONLY": "Hier vastgelegde live tips",
+      "SCOPE_SPLIT": "Live: {live}. On chain historie: {history}.",
+      "CLV_HINT_LIVE": "Alleen live tips: gemiddelde over {count, plural, one {# tip} other {# tips}} met een slotquotering"
     },
     "CHART": {
       "TITLE": "Units in de tijd",
@@ -696,14 +704,14 @@
   "VERIFY": {
     "LABEL": "Verifiëren",
     "TITLE": "Controleer elke tip",
-    "DESCRIPTION": "Elke tip op OpenCapper wordt verzegeld op het moment dat hij wordt geplaatst, zodat niemand hem achteraf kan wijzigen. Controleer het zelf.",
+    "DESCRIPTION": "Elke OpenCapper tip wordt verzegeld zodra hij hier wordt vastgelegd, zodat niemand hem achteraf kan wijzigen. Controleer het zelf.",
     "HEADING": "Controleer elke tip",
-    "SUBHEADING": "Elke tip wordt verzegeld op het moment dat hij wordt geplaatst, zodat niemand, ook wij niet, hem achteraf kan wijzigen. Dat kun je zelf controleren.",
+    "SUBHEADING": "Elke tip wordt verzegeld zodra hij hier wordt vastgelegd, zodat niemand, ook wij niet, hem achteraf kan wijzigen. Dat kun je zelf controleren.",
     "SEARCH": {
       "LABEL": "Naam van tipster of link naar tip",
-      "PLACEHOLDER": "razor, razor#12 of een geplakte link naar een tip",
+      "PLACEHOLDER": "razor, razor#12, een tip id of een geplakte link",
       "SUBMIT": "Controleren",
-      "INVALID": "Voer de naam van een tipster in, een tipnummer zoals razor#12, of plak een link naar een tip.",
+      "INVALID": "Voer een capper naam in, een tipnummer van de capper zoals razor#12, een tip id zoals 1053, of plak een link naar een tip.",
       "NOT_FOUND": "We konden deze tip niet vinden.",
       "NO_PICKS": "Geen tips gevonden voor {username}.",
       "LATEST": "Nieuwste tips van {username}",
@@ -717,16 +725,25 @@
       "CHECKING": "Bezig met controleren",
       "UNSEALED": "Nog niet verzegeld",
       "ERROR": "Kon niet worden gecontroleerd",
-      "LOCKED": "Vergrendeld {time}",
       "BY": "door {username}",
-      "NUMBER": "Tip {seq, number}",
+      "NUMBER": "Capper tip nr. {seq, number}, tip id {id}",
       "UNITS": "{count, plural, one {# unit} other {# units}}",
-      "FALLBACK": "Tip {id} van {username}"
+      "STARTS": "Aanvang",
+      "LOCKED_AT": "Hier vergrendeld",
+      "IMPORTED": "Hier geïmporteerd en vergrendeld",
+      "LEAD": "{duration} vóór aanvang",
+      "AFTER_START": "{duration} na aanvang",
+      "ODDS": "Quotering",
+      "EXCHANGE_PRICE": "on chain uitvoering op Polymarket",
+      "RESULT": "Uitslag",
+      "SOURCE": "Bron en tijdstip van de trade",
+      "PROOF_NOTE": "Het zegel dekt de tip zoals die is vastgelegd, inclusief het tijdstip van vergrendelen. De aanvangstijd komt uit de quoteringsfeed en hoort niet bij het zegel; vergelijk de twee tijden zelf.",
+      "PROOF_NOTE_IMPORTED": "Deze tip is geïmporteerd uit een openbare trade op {platform}. Het zegel dekt hem vanaf het moment dat hij hier bij de import is vergrendeld, nooit eerder. De bronlink toont de oorspronkelijke trade en het eigen tijdstip daarvan; de aanvangstijd hoort niet bij het zegel."
     },
     "HOW": {
       "TITLE": "Hoe het werkt",
-      "STEP_1_TITLE": "Verzegeld bij plaatsing",
-      "STEP_1_BODY": "Op het moment dat een tipster een tip plaatst, verzegelen wij hem: de wedstrijd, de selectie, de odds, de inzet en het tijdstip.",
+      "STEP_1_TITLE": "Verzegeld bij vastleggen",
+      "STEP_1_BODY": "Zodra een tip hier wordt vastgelegd, door een capper of door de import van een on chain trade, verzegelen we de wedstrijd, de selectie, de quotering, de inzet en het tijdstip van vergrendelen. De aanvangstijd van de wedstrijd hoort niet bij het zegel; elke tipkaart toont hem naast het tijdstip van vergrendelen.",
       "STEP_2_TITLE": "Gekoppeld aan elke eerdere tip",
       "STEP_2_BODY": "Elke nieuwe tip wordt gekoppeld aan alle tips ervoor. Wie een oude tip wijzigt, breekt die keten, en iedereen zou het zien.",
       "STEP_3_TITLE": "Dagelijks in Bitcoin gestempeld",
@@ -804,7 +821,7 @@
   "CHECK": {
     "LABEL": "Tipster checken",
     "TITLE": "Tipster checken",
-    "DESCRIPTION": "Zoek elke tipster op via zijn naam op OpenCapper, Discord, Telegram of Polymarket en bekijk het geverifieerde track record, of de waarschuwing dat er geen is.",
+    "DESCRIPTION": "Zoek elke capper op via zijn OpenCapper, Discord, Telegram of Polymarket naam en bekijk het track record, of de waarschuwing dat er geen is.",
     "HEADING": "Is deze tipster echt?",
     "SUBHEADING": "Oplichters kopiëren namen en profielfoto's van bekende tipsters en verkopen nep-VIP-toegang via DM's. Een echt track record staat op OpenCapper en kan niet worden bewerkt. Zoek het op voordat je iemand betaalt.",
     "ERROR": "Het opzoeken is mislukt. Probeer het later opnieuw.",
@@ -847,7 +864,7 @@
       "UNITS": "{units} units"
     },
     "NONE": {
-      "TITLE": "Geen geverifieerd track record voor {query}",
+      "TITLE": "Geen track record voor {query}",
       "BODY": "Wie tips verkoopt zonder openbaar track record, kan het niet bewijzen. Vraag om de OpenCapper-link.",
       "TIP_1": "Echte tipsters delen hun track record-link openlijk. Wie weigert, heeft daar een reden voor.",
       "TIP_2": "Screenshots van wedbonnen en winstreeksen zijn in seconden vervalst. Een vastgelegd track record met tijdstempel niet.",
@@ -858,7 +875,7 @@
       "STEP_1_TITLE": "Zoek de naam op",
       "STEP_1_BODY": "Zoek de exacte naam die hij op Discord, Telegram of Polymarket gebruikt, of plak zijn Discord-ID.",
       "STEP_2_TITLE": "Open het track record",
-      "STEP_2_BODY": "Elke tip in het track record is voor de wedstrijd vastgelegd tegen odds die het platform heeft vastgelegd. Niets kan worden bewerkt of verwijderd.",
+      "STEP_2_BODY": "Live tips zijn hier vóór de wedstrijd vergrendeld, tegen de marktquotering of, bij geïmporteerde Polymarket tips, tegen de on chain uitvoeringsprijs. On chain historie is als zodanig gemarkeerd. Niets kan worden bewerkt of verwijderd.",
       "STEP_3_TITLE": "Geen track record, geen vertrouwen",
       "STEP_3_BODY": "Verschijnt er geen track record, dan kan de tipster geen enkele winst bewijzen. Vraag om de OpenCapper-link voordat je betaalt."
     }
@@ -1007,11 +1024,17 @@
     "LAST_STAMP": "Laatste Bitcoin stempel",
     "NO_STAMP": "Nog geen",
     "LOG_ROOT": "Huidige root",
-    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "Track record van {username}: {wins, number} gewonnen, {losses, number} verloren en {pushes, number} push over {picks, plural, one {# tip} other {# tips}}, elke tip vergrendeld vóór de wedstrijd.",
+    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi}, {scope} | {appName}",
+    "PROFILE_DESCRIPTION": "Track record van {username}: {record} over {picks, plural, one {# tip} other {# tips}}, hier vóór de wedstrijd vastgelegd en automatisch beoordeeld.",
     "PICK_TITLE": "{username} #{seq}: {selection} {odds}, {units}u | {appName}",
     "PICK_DESCRIPTION": "{away} tegen {home}. Vergrendeld {time} op {odds} bij {bookmaker}. Status: {status}.",
-    "LEADERBOARD_TITLE": "Ranglijst: {filters} | {appName}"
+    "LEADERBOARD_TITLE": "Ranglijst: {filters} | {appName}",
+    "SCOPE_ALL": "live en on chain historie",
+    "SCOPE_LIVE": "live tips",
+    "PROFILE_TITLE_UNGRADED": "{username}: nog geen beoordeelde tips | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "Track record van {username}, live en on chain historie: {record}. Live tips, hier vóór de wedstrijd vastgelegd: {live}. Polymarket trades, later uit de blockchain geïmporteerd: {history}.",
+    "SCOPE_SPLIT": "Live {live} + on chain historie {history}",
+    "SCOPE_LIVE_LINE": "Hier vastgelegde live tips"
   },
   "ERRORS": {
     "UNAUTHORIZED": "Niet geautoriseerd.",
@@ -1070,7 +1093,9 @@
     "PAYMENTS_NO_PLAN": "Deze capper biedt op dit moment geen abonnement aan.",
     "PAYMENTS_OWN_PLAN": "Je kunt je niet op jezelf abonneren.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Je hebt al een actief abonnement op deze capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "De webhookhandtekening is ongeldig."
+    "WEBHOOK_SIGNATURE_INVALID": "De webhookhandtekening is ongeldig.",
+    "CAPPER_NOT_FOUND": "Er bestaat geen capper met deze naam.",
+    "PICK_NOT_FOUND": "Deze tip bestaat niet."
   },
   "LEGAL": {
     "LABEL": "Juridisch",
@@ -1263,5 +1288,12 @@
       "LOGIN": "Log in om je te abonneren",
       "FAILED": "Het afrekenen kon niet worden gestart."
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "Deze pagina bestaat niet",
+    "BODY": "De link werkt misschien niet, of geen enkele capper heeft deze naam. Een echte capper kan altijd een werkende profiellink delen; controleer de spelling of zoek de naam op.",
+    "HOME": "Home",
+    "CHECK": "Capper controleren"
   }
 }

@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName}: zweryfikowane typy sportowe z uczciwą historią",
-    "DESCRIPTION": "Każdy typ ma znacznik czasu i jest blokowany przed meczem. Kursy zapisuje platforma, historie są rankingowane według ROI, zero umów partnerskich z bukmacherami."
+    "TITLE": "{appName}: typy sportowe z historią, której nikt nie może edytować",
+    "DESCRIPTION": "Typy blokowane przed meczem i rozliczane automatycznie. Kursy pochodzą z rynku albo z transakcji on-chain, nigdy od typera. Historie w rankingu według ROI, zero umów partnerskich z bukmacherami."
   },
   "NAV": {
     "HOME": "Jak to działa",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "Sprzedawaj ze zweryfikowaną historią",
       "GROUP_SELL_BODY": "Zostań przy swoim sklepie. OpenCapper doda do niego zweryfikowaną historię.",
       "GROUP_HISTORY_TITLE": "Przenieś swoją historię",
-      "GROUP_HISTORY_BODY": "Importy są pokazywane osobno i oznaczone jako niezweryfikowane, chyba że źródło da się sprawdzić, jak Polymarket on-chain.",
+      "GROUP_HISTORY_BODY": "Wcześniejsze transakcje liczą się tylko wtedy, gdy da się je sprawdzić, jak transakcje Polymarket on-chain. Są importowane później, pokazywane jako historia on-chain i nigdy nie mieszają się z dziennikiem na żywo.",
       "GROUP_BOOKS_TITLE": "Graj, gdzie chcesz",
       "GROUP_BOOKS_BODY": "Tylko bezpośrednie linki. Zero umów partnerskich.",
       "BOOKS_BODY": "Jedno kliknięcie otwiera typ u legalnego bukmachera w twoim kraju. OpenCapper nic na tym nie zarabia.",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "Każdy typer ma swój panel",
-      "BODY": "To profil najwyżej sklasyfikowanego typera w tej chwili, zbudowany z tych samych danych co strona publiczna: kursy zapisane przez nas, automatyczne rozliczanie i dziennik łączony hashami.",
+      "BODY": "To profil najwyżej sklasyfikowanego typera w tej chwili, z tymi samymi liczbami co strona publiczna. Większość typerów w rankingu to dziś publiczne konta Polymarket: ich typy na żywo są importowane z transakcji on-chain i blokowane tutaj przed startem każdego meczu, a starsze transakcje liczą się jako historia on-chain, zaimportowana później.",
       "FOOTNOTE": "Prawdziwe dane, odświeżane co minutę. Zakładki zmieniają tylko ten podgląd; pełny profil pokazuje każdy typ.",
       "EMPTY_TITLE": "Na razie brak wyników",
       "EMPTY_BODY": "Gdy pierwsze typy zostaną rozliczone, pojawi się tu panel najlepszego typera z prawdziwymi liczbami.",
@@ -312,8 +312,8 @@
     "FEATURES": {
       "TITLE": "Funkcje",
       "ODDS_LABEL": "Kursy",
-      "ODDS_TITLE": "Kursy zapisujemy my.",
-      "ODDS_BODY": "Kurs, bukmacher i czas pochodzą z rynku, nigdy od typera.",
+      "ODDS_TITLE": "Kursy, których typer nie wybiera.",
+      "ODDS_BODY": "Typy dodane tutaj dostają kurs rynkowy, bukmachera i czas w chwili zablokowania. Zaimportowane typy z Polymarket używają ceny realizacji on-chain. Typer nigdy nie wpisuje kursu.",
       "LOCKED_LABEL": "Czas",
       "LOCKED_TITLE": "Zablokowany przed pierwszym gwizdkiem.",
       "LOCKED_BODY": "Typ jest przyjmowany tylko przed rozpoczęciem wydarzenia. Potem nie można go edytować ani usunąć.",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "Ranking",
     "TITLE": "Ranking",
-    "DESCRIPTION": "Typerzy w rankingu według zweryfikowanego ROI na OpenCapper.",
+    "DESCRIPTION": "Typerzy w rankingu ROI w OpenCapper, na podstawie typów zablokowanych przed meczem i historii on-chain.",
     "HEADING": "Ranking",
-    "SUBHEADING": "Ranking według ROI ze zweryfikowanych, zablokowanych typów.",
+    "SUBHEADING": "Ranking według ROI z rozliczonych typów: typy na żywo zablokowane tutaj przed meczem plus historia on-chain z Polymarket zaimportowana później. „Tylko na żywo” pomija historię.",
     "MIN_PICKS": "Typer trafia do rankingu po {count, number} rozliczonych typach, więc jeden szczęśliwy tydzień nie wystarczy, żeby być na szczycie.",
     "RANKED_COUNT": "{total, plural, one {# typer w rankingu} few {# typerów w rankingu} many {# typerów w rankingu} other {# typera w rankingu}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "ROI, nigdy pieniądze",
       "ROI_BODY": "Domyślna kolejność to zwrot z inwestycji: wygrane jednostki na każdą postawioną jednostkę. Zysk w złotówkach nagradza tylko wyższe stawki, dlatego nigdy nie rankingujemy według niego.",
       "GRADED_TITLE": "Tylko rozliczone typy",
-      "GRADED_BODY": "Liczą się wygrane, przegrane i zwroty. Oczekujące i anulowane typy nie. Każdy kurs zapisaliśmy sami w chwili zablokowania typu.",
+      "GRADED_BODY": "Liczą się wygrane, przegrane i zwroty. Oczekujące i anulowane typy nie. Typ na żywo ma kurs ustalony w chwili zablokowania tutaj: z serwisu kursów dla typów dodanych w OpenCapper, z realizacji on-chain dla zaimportowanych typów z Polymarket. Historia on-chain używa ceny realizacji każdej transakcji.",
       "PERIOD_TITLE": "Jedno okno dla wszystkich",
       "PERIOD_BODY": "Okres obowiązuje każdego typera tak samo, według godziny startu wydarzenia. Nikt nie może wybrać sobie korzystnej serii."
     },
-    "SCOPE_HINT_ALL": "Obejmuje historię on-chain z Polymarket: transakcje zawarte przed startem, zweryfikowane on-chain, zaimportowane później i rozliczone według rozstrzygnięcia rynku. Przełącz na „Tylko na żywo”, aby zobaczyć typy zapisane tutaj przed meczem.",
+    "SCOPE_HINT_ALL": "Na żywo i historia: typy na żywo zablokowane tutaj przed meczem plus historia on-chain z Polymarket, czyli transakcje zawarte przed startem, zaimportowane później z blockchaina i rozliczone według rozstrzygnięcia rynku. „Tylko na żywo” pomija historię.",
     "SCOPE_HINT_LIVE": "Tylko na żywo: każdy typ został zapisany tutaj przed meczem. Historia on-chain jest pominięta.",
     "SPLIT": "Rozliczone: {graded, number} (na żywo: {live, number}, historia on-chain: {history, number})",
     "SPLIT_SHORT": "na żywo: {live, number}, historia: {history, number}",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "Mała próba: ROI z {count, number} rozliczonych typów jeszcze niewiele mówi",
       "EMPTY": "Żaden typer nie zapisał jeszcze typu w tym wyborze."
     },
-    "CHECK_LINK": "Sprawdź typera"
+    "CHECK_LINK": "Sprawdź typera",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "Ta strona wykracza poza koniec tabeli",
+    "PAST_END_BODY": "Z tymi filtrami w rankingu {total, plural, one {jest # typer} few {są # typerzy} many {jest # typerów} other {jest # typera}}.",
+    "PAST_END_BACK": "Wróć do pierwszej strony"
   },
   "TABLE": {
     "TOTAL_COUNT": "łącznie {count, number}",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "Profil typera",
     "TITLE": "{username} na OpenCapper",
-    "DESCRIPTION": "Zweryfikowana historia typów użytkownika {username}: każdy typ zablokowany przed meczem, ranking według ROI.",
+    "DESCRIPTION": "Historia typów użytkownika {username} w OpenCapper, rozliczana automatycznie i oceniana według ROI.",
     "HEADING": "@{username}",
     "SUBHEADING": "Zweryfikowana historia. Typów nie można edytować ani usuwać.",
     "SUBHEADING_PUBLIC": "Publiczna historia zbudowana z zaimportowanych typów. Typów nie można edytować ani usuwać.",
     "VERIFIED": "Zweryfikowana historia",
     "LOADING": "Wczytywanie historii",
-    "NOT_FOUND": "Żaden typer o tej nazwie nie zapisał jeszcze typu.",
     "ERROR": "Nie udało się wczytać historii. Spróbuj ponownie później.",
     "STATS": {
       "PICKS": "Typy",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "Stawki na wygrane, przegrane i zwroty",
       "ROI_SMALL_SAMPLE": "Mała próba: rozliczone {count, number} z {min, number} typów",
       "CLV": "CLV",
-      "CLV_HINT": "Średnia z typów z kursem zamknięcia (liczba: {count, number})",
+      "CLV_HINT": "Średnia z {count, plural, one {# typu} other {# typów}} z kursem zamknięcia",
       "NO_CLV": "Brak jeszcze kursów zamknięcia",
       "CLV_BEAT": "Średnio lepiej od kursu zamknięcia o {value}.",
       "CLV_MISSED": "Średnio gorzej od kursu zamknięcia o {value}.",
       "CLV_EVEN": "Średnio na poziomie kursu zamknięcia.",
-      "CLV_NONE": "Wartość kursu zamknięcia porównuje kurs z chwili blokady z ostatnim kursem przed startem."
+      "CLV_NONE": "Wartość kursu zamknięcia porównuje kurs z chwili blokady z ostatnim kursem przed startem.",
+      "NO_ROI_SHORT": "b.d.",
+      "SCOPE_SUMMARY": "{record}, {units} j.",
+      "SCOPE_LIVE_ONLY": "Typy na żywo zapisane tutaj",
+      "SCOPE_SPLIT": "Na żywo: {live}. Historia on-chain: {history}.",
+      "CLV_HINT_LIVE": "Tylko typy na żywo: średnia z {count, plural, one {# typu} other {# typów}} z kursem zamknięcia"
     },
     "CHART": {
       "TITLE": "Jednostki w czasie",
@@ -696,14 +704,14 @@
   "VERIFY": {
     "LABEL": "Weryfikacja",
     "TITLE": "Sprawdź dowolny typ",
-    "DESCRIPTION": "Każdy typ w OpenCapper jest pieczętowany w chwili dodania, więc nikt nie może go później zmienić. Sprawdź to sam.",
+    "DESCRIPTION": "Każdy typ w OpenCapper jest pieczętowany w chwili zapisania tutaj, więc nikt nie może go później zmienić. Sprawdź to sam.",
     "HEADING": "Sprawdź dowolny typ",
-    "SUBHEADING": "Każdy typ jest pieczętowany w chwili dodania, więc nikt, łącznie z nami, nie może go później zmienić. Możesz to sprawdzić sam.",
+    "SUBHEADING": "Każdy typ jest pieczętowany w chwili zapisania tutaj, więc nikt, łącznie z nami, nie może go później zmienić. Możesz to sprawdzić sam.",
     "SEARCH": {
       "LABEL": "Nazwa typera lub link do typu",
-      "PLACEHOLDER": "razor, razor#12 albo wklejony link do typu",
+      "PLACEHOLDER": "razor, razor#12, id typu albo wklejony link",
       "SUBMIT": "Sprawdź",
-      "INVALID": "Wpisz nazwę typera, numer typu, np. razor#12, albo wklej link do typu.",
+      "INVALID": "Wpisz nazwę typera, numer typu typera, np. razor#12, id typu, np. 1053, albo wklej link do typu.",
       "NOT_FOUND": "Nie znaleźliśmy tego typu.",
       "NO_PICKS": "Nie znaleziono typów użytkownika {username}.",
       "LATEST": "Najnowsze typy użytkownika {username}",
@@ -717,16 +725,25 @@
       "CHECKING": "Sprawdzanie",
       "UNSEALED": "Jeszcze niezapieczętowany",
       "ERROR": "Nie udało się sprawdzić",
-      "LOCKED": "Zablokowano {time}",
       "BY": "autor: {username}",
-      "NUMBER": "Typ nr {seq, number}",
+      "NUMBER": "Typ typera nr {seq, number}, id typu {id}",
       "UNITS": "{count, plural, one {# jednostka} few {# jednostki} many {# jednostek} other {# jednostki}}",
-      "FALLBACK": "Typ {id}, autor: {username}"
+      "STARTS": "Początek wydarzenia",
+      "LOCKED_AT": "Zablokowany tutaj",
+      "IMPORTED": "Zaimportowany i zablokowany tutaj",
+      "LEAD": "{duration} przed startem",
+      "AFTER_START": "{duration} po starcie",
+      "ODDS": "Kurs",
+      "EXCHANGE_PRICE": "realizacja on-chain na Polymarket",
+      "RESULT": "Wynik",
+      "SOURCE": "Źródło i czas transakcji",
+      "PROOF_NOTE": "Pieczęć obejmuje typ w postaci, w jakiej został zapisany, łącznie z czasem zablokowania. Czas rozpoczęcia pochodzi z serwisu kursów i nie jest częścią pieczęci, więc porównaj oba czasy samodzielnie.",
+      "PROOF_NOTE_IMPORTED": "Ten typ zaimportowano z publicznej transakcji na {platform}. Pieczęć obejmuje go od chwili zablokowania tutaj podczas importu, nigdy wcześniej. Link do źródła pokazuje oryginalną transakcję i jej czas; czas rozpoczęcia nie jest częścią pieczęci."
     },
     "HOW": {
       "TITLE": "Jak to działa",
-      "STEP_1_TITLE": "Pieczętowany przy dodaniu",
-      "STEP_1_BODY": "W chwili, gdy typer dodaje typ, pieczętujemy go: mecz, wybór, kurs, stawkę i czas.",
+      "STEP_1_TITLE": "Pieczętowany przy zapisie",
+      "STEP_1_BODY": "Gdy tylko typ zostanie tu zapisany, przez typera albo przez import transakcji on-chain, pieczętujemy mecz, wybór, kurs, stawkę i czas zablokowania. Czas rozpoczęcia meczu nie jest częścią pieczęci; każda karta typu pokazuje go obok czasu zablokowania.",
       "STEP_2_TITLE": "Powiązany z każdym wcześniejszym typem",
       "STEP_2_BODY": "Każdy nowy typ jest powiązany ze wszystkimi typami przed nim. Zmiana starego typu przerwałaby ten łańcuch i każdy by to zobaczył.",
       "STEP_3_TITLE": "Codziennie stemplowany w Bitcoinie",
@@ -804,7 +821,7 @@
   "CHECK": {
     "LABEL": "Sprawdź typera",
     "TITLE": "Sprawdź typera",
-    "DESCRIPTION": "Wyszukaj dowolnego typera po nazwie na OpenCapper, Discordzie, Telegramie lub Polymarket i zobacz jego zweryfikowaną historię albo ostrzeżenie, że jej nie ma.",
+    "DESCRIPTION": "Wyszukaj dowolnego typera po nazwie w OpenCapper, na Discordzie, Telegramie lub Polymarket i zobacz jego historię albo ostrzeżenie, że jej nie ma.",
     "HEADING": "Czy ten typer jest prawdziwy?",
     "SUBHEADING": "Oszuści kopiują nazwy i zdjęcia znanych typerów i sprzedają fałszywy dostęp VIP w wiadomościach prywatnych. Prawdziwa historia jest na OpenCapper i nie da się jej edytować. Sprawdź ją, zanim komukolwiek zapłacisz.",
     "ERROR": "Wyszukiwanie nie powiodło się. Spróbuj ponownie później.",
@@ -847,7 +864,7 @@
       "UNITS": "Jednostki: {units}"
     },
     "NONE": {
-      "TITLE": "Brak zweryfikowanej historii dla {query}",
+      "TITLE": "Brak historii dla {query}",
       "BODY": "Kto sprzedaje typy bez publicznej historii, nie może tego udowodnić. Poproś o link do OpenCapper.",
       "TIP_1": "Prawdziwi typerzy otwarcie udostępniają link do swojej historii. Kto odmawia, ma ku temu powód.",
       "TIP_2": "Zrzuty ekranu kuponów i serii wygranych można podrobić w kilka sekund. Zablokowanej historii ze znacznikami czasu nie.",
@@ -858,7 +875,7 @@
       "STEP_1_TITLE": "Wyszukaj nazwę",
       "STEP_1_BODY": "Wyszukaj dokładną nazwę, której używa na Discordzie, Telegramie lub Polymarket, albo wklej jego ID Discord.",
       "STEP_2_TITLE": "Otwórz historię",
-      "STEP_2_BODY": "Każdy typ w historii został zablokowany przed meczem po kursie zapisanym przez platformę. Niczego nie da się edytować ani usunąć.",
+      "STEP_2_BODY": "Typy na żywo zostały zablokowane tutaj przed meczem, po kursie rynkowym albo, w przypadku zaimportowanych typów z Polymarket, po cenie realizacji on-chain. Historia on-chain jest oznaczona jako taka. Niczego nie da się edytować ani usunąć.",
       "STEP_3_TITLE": "Brak historii, brak zaufania",
       "STEP_3_BODY": "Jeśli nie pojawia się żadna historia, typer nie może udowodnić ani jednej wygranej. Poproś o link do OpenCapper, zanim zapłacisz."
     }
@@ -1007,11 +1024,17 @@
     "LAST_STAMP": "Ostatni stempel w Bitcoinie",
     "NO_STAMP": "Jeszcze brak",
     "LOG_ROOT": "Bieżący korzeń",
-    "PROFILE_TITLE": "{username}: {record}, {units} j., ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "Bilans typera {username}: wygrane {wins, number}, przegrane {losses, number}, zwroty {pushes, number}, łącznie {picks, plural, one {# typ} few {# typy} many {# typów} other {# typu}}, każdy zablokowany przed meczem.",
+    "PROFILE_TITLE": "{username}: {record}, {units} j., ROI {roi}, {scope} | {appName}",
+    "PROFILE_DESCRIPTION": "Bilans typera {username}: {record}, łącznie {picks, plural, one {# typ} few {# typy} many {# typów} other {# typu}} zapisanych tutaj przed meczem i rozliczonych automatycznie.",
     "PICK_TITLE": "{username} #{seq}: {selection} {odds}, {units} j. | {appName}",
     "PICK_DESCRIPTION": "{away} @ {home}. Zablokowany {time} po kursie {odds} u bukmachera {bookmaker}. Status: {status}.",
-    "LEADERBOARD_TITLE": "Ranking: {filters} | {appName}"
+    "LEADERBOARD_TITLE": "Ranking: {filters} | {appName}",
+    "SCOPE_ALL": "na żywo i historia on-chain",
+    "SCOPE_LIVE": "typy na żywo",
+    "PROFILE_TITLE_UNGRADED": "{username}: jeszcze brak rozliczonych typów | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "Bilans typera {username}, na żywo i historia on-chain: {record}. Typy na żywo zapisane tutaj przed meczem: {live}. Transakcje z Polymarket zaimportowane później z blockchaina: {history}.",
+    "SCOPE_SPLIT": "Na żywo {live} + historia on-chain {history}",
+    "SCOPE_LIVE_LINE": "Typy na żywo zapisane tutaj"
   },
   "ERRORS": {
     "UNAUTHORIZED": "Brak autoryzacji.",
@@ -1070,7 +1093,9 @@
     "PAYMENTS_NO_PLAN": "Ten capper obecnie nie oferuje subskrypcji.",
     "PAYMENTS_OWN_PLAN": "Nie możesz subskrybować samego siebie.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Masz już aktywną subskrypcję tego cappera.",
-    "WEBHOOK_SIGNATURE_INVALID": "Podpis webhooka jest nieprawidłowy."
+    "WEBHOOK_SIGNATURE_INVALID": "Podpis webhooka jest nieprawidłowy.",
+    "CAPPER_NOT_FOUND": "Nie ma typera o tej nazwie.",
+    "PICK_NOT_FOUND": "Ten typ nie istnieje."
   },
   "LEGAL": {
     "LABEL": "Informacje prawne",
@@ -1263,5 +1288,12 @@
       "LOGIN": "Zaloguj się, aby subskrybować",
       "FAILED": "Nie udało się rozpocząć płatności."
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "Ta strona nie istnieje",
+    "BODY": "Link może być uszkodzony albo żaden typer nie ma tej nazwy. Prawdziwy typer zawsze może podać działający link do profilu; sprawdź pisownię albo wyszukaj nazwę.",
+    "HOME": "Strona główna",
+    "CHECK": "Sprawdź typera"
   }
 }

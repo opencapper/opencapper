@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName} : des pronostics sportifs vérifiés, avec un historique honnête",
-    "DESCRIPTION": "Chaque pronostic horodaté et verrouillé avant le match. Cotes relevées par la plateforme, historiques classés par ROI, aucun partenariat d’affiliation avec les bookmakers."
+    "TITLE": "{appName} : des pronostics sportifs avec un bilan que personne ne peut modifier",
+    "DESCRIPTION": "Des pronostics verrouillés avant le match et réglés automatiquement. Les cotes viennent du marché ou de transactions sur la blockchain, jamais du capper. Bilans classés au ROI, aucun partenariat d’affiliation avec des bookmakers."
   },
   "NAV": {
     "HOME": "Comment ça marche",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "Vendez avec un historique vérifié",
       "GROUP_SELL_BODY": "Gardez votre boutique actuelle. OpenCapper y ajoute un historique vérifié.",
       "GROUP_HISTORY_TITLE": "Importez votre historique",
-      "GROUP_HISTORY_BODY": "Les imports sont affichés à part et marqués comme non vérifiés, sauf si la source peut être contrôlée, comme Polymarket sur la blockchain.",
+      "GROUP_HISTORY_BODY": "Les transactions passées ne comptent que si elles sont vérifiables, comme celles de Polymarket sur la blockchain. Elles sont importées ensuite, affichées comme historique sur la blockchain et jamais mêlées au journal en direct.",
       "GROUP_BOOKS_TITLE": "Pariez où vous voulez",
       "GROUP_BOOKS_BODY": "Uniquement des liens directs. Aucun partenariat d’affiliation.",
       "BOOKS_BODY": "Un simple clic ouvre le pronostic chez un bookmaker agréé dans votre région. OpenCapper n’y gagne rien.",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "Chaque pronostiqueur a son tableau de bord",
-      "BODY": "Voici le profil du pronostiqueur le mieux classé en ce moment, construit à partir des mêmes données que la page publique : cotes relevées par nos soins, correction automatique et journal chaîné par hash.",
+      "BODY": "Voici le profil du capper le mieux classé en ce moment, avec les mêmes chiffres que la page publique. Aujourd’hui, la plupart des cappers classés sont des comptes Polymarket publics : leurs pronostics en direct sont importés de transactions sur la blockchain et verrouillés ici avant le début de chaque match, et leurs transactions plus anciennes comptent comme historique sur la blockchain, importé ensuite.",
       "FOOTNOTE": "Données réelles, actualisées chaque minute. Les onglets ne changent que cet aperçu ; le profil complet liste chaque pronostic.",
       "EMPTY_TITLE": "Aucun bilan pour l’instant",
       "EMPTY_BODY": "Dès que les premiers pronostics sont corrigés, le tableau de bord du meilleur pronostiqueur apparaît ici avec de vrais chiffres.",
@@ -312,8 +312,8 @@
     "FEATURES": {
       "TITLE": "Fonctionnalités",
       "ODDS_LABEL": "Cotes",
-      "ODDS_TITLE": "Des cotes relevées par nos soins.",
-      "ODDS_BODY": "La cote, le bookmaker et l’heure viennent du marché, jamais du tipster.",
+      "ODDS_TITLE": "Des cotes que le capper ne choisit pas.",
+      "ODDS_BODY": "Les pronostics faits ici reçoivent la cote du marché, le bookmaker et l’heure au moment du verrouillage. Les pronostics Polymarket importés utilisent le prix d’exécution sur la blockchain. Le capper ne saisit jamais de cote.",
       "LOCKED_LABEL": "Horaire",
       "LOCKED_TITLE": "Verrouillé avant le coup d’envoi.",
       "LOCKED_BODY": "Un pronostic n’est accepté que tant que l’événement n’a pas commencé. Ensuite, il ne peut plus être ni modifié ni supprimé.",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "Classement",
     "TITLE": "Classement",
-    "DESCRIPTION": "Les tipsters classés par ROI vérifié sur OpenCapper.",
+    "DESCRIPTION": "Les cappers classés au ROI sur OpenCapper, à partir de pronostics verrouillés avant le match et de l’historique sur la blockchain.",
     "HEADING": "Classement",
-    "SUBHEADING": "Classement par ROI sur des pronostics vérifiés et verrouillés.",
+    "SUBHEADING": "Classement au ROI sur les pronostics réglés : pronostics en direct verrouillés ici avant le match, plus l’historique Polymarket sur la blockchain importé ensuite. « En direct uniquement » exclut l’historique.",
     "MIN_PICKS": "Un tipster est classé après {count, number} pronostics réglés, pour qu’une semaine chanceuse ne suffise pas à prendre la tête.",
     "RANKED_COUNT": "{total, plural, one {# tipster classé} other {# tipsters classés}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "Le ROI, jamais l’argent",
       "ROI_BODY": "L’ordre par défaut est le retour sur investissement : unités gagnées par unité engagée. Le bénéfice en argent ne récompense que les grosses mises, nous ne classons donc jamais selon ce critère.",
       "GRADED_TITLE": "Uniquement les pronostics réglés",
-      "GRADED_BODY": "Les gagnés, les perdus et les remboursés comptent. Les pronostics en attente et annulés, non. Chaque cote a été relevée par nos soins au verrouillage du pronostic.",
+      "GRADED_BODY": "Les gains, pertes et remboursements comptent. Les pronostics en attente et annulés non. Un pronostic en direct garde la cote fixée lors de son verrouillage ici : celle du flux de cotes pour les pronostics faits sur OpenCapper, l’exécution sur la blockchain pour les pronostics Polymarket importés. L’historique sur la blockchain utilise le prix d’exécution de chaque transaction.",
       "PERIOD_TITLE": "La même fenêtre pour tous",
       "PERIOD_BODY": "La période s’applique à tous les tipsters de la même manière, selon l’heure de début de l’événement. Personne ne peut choisir une série flatteuse."
     },
-    "SCOPE_HINT_ALL": "Inclut l’historique Polymarket sur la blockchain : transactions passées avant le début, vérifiées sur la blockchain, importées ensuite et réglées selon la résolution du marché. Choisissez « En direct uniquement » pour ne voir que les pronostics enregistrés ici avant le match.",
+    "SCOPE_HINT_ALL": "En direct et historique : pronostics en direct verrouillés ici avant le match, plus l’historique Polymarket sur la blockchain, c’est-à-dire des transactions passées avant le début, importées ensuite et réglées selon la résolution du marché. « En direct uniquement » exclut l’historique.",
     "SCOPE_HINT_LIVE": "En direct uniquement : chaque pronostic a été enregistré ici avant le match. L’historique sur la blockchain est exclu.",
     "SPLIT": "{graded, number} réglés : {live, number} en direct, {history, number} issus de l’historique sur la blockchain",
     "SPLIT_SHORT": "{live, number} en direct, {history, number} historique",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "Petit échantillon : un ROI sur {count, number} pronostics réglés ne dit pas encore grand-chose",
       "EMPTY": "Aucun tipster n’a encore enregistré de pronostic dans cette sélection."
     },
-    "CHECK_LINK": "Vérifier un tipster"
+    "CHECK_LINK": "Vérifier un tipster",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "Cette page dépasse la fin du classement",
+    "PAST_END_BODY": "Avec ces filtres, {total, plural, one {# capper est classé} other {# cappers sont classés}}.",
+    "PAST_END_BACK": "Revenir à la première page"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} au total",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "Profil du tipster",
     "TITLE": "{username} sur OpenCapper",
-    "DESCRIPTION": "Historique vérifié des pronostics de {username} : chaque pronostic verrouillé avant le match, évalué au ROI.",
+    "DESCRIPTION": "Bilan des pronostics de {username} sur OpenCapper, réglés automatiquement et classés au ROI.",
     "HEADING": "@{username}",
     "SUBHEADING": "Historique vérifié. Les pronostics ne peuvent être ni modifiés ni supprimés.",
     "SUBHEADING_PUBLIC": "Historique public constitué de pronostics importés. Les pronostics ne peuvent être ni modifiés ni supprimés.",
     "VERIFIED": "Historique vérifié",
     "LOADING": "Chargement de l’historique",
-    "NOT_FOUND": "Aucun tipster portant ce nom n’a encore enregistré de pronostic.",
     "ERROR": "Impossible de charger l’historique. Veuillez réessayer plus tard.",
     "STATS": {
       "PICKS": "Pronostics",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "Mises sur les pronostics gagnés, perdus et remboursés",
       "ROI_SMALL_SAMPLE": "Petit échantillon : {count, number} sur {min, number} pronostics réglés",
       "CLV": "CLV",
-      "CLV_HINT": "Moyenne sur {count, number} pronostics avec une cote de clôture",
+      "CLV_HINT": "Moyenne sur {count, plural, one {# pronostic} other {# pronostics}} avec une cote de clôture",
       "NO_CLV": "Pas encore de cotes de clôture",
       "CLV_BEAT": "A battu la cote de clôture de {value} en moyenne.",
       "CLV_MISSED": "Est resté sous la cote de clôture de {value} en moyenne.",
       "CLV_EVEN": "A égalé la cote de clôture en moyenne.",
-      "CLV_NONE": "La CLV (closing line value) compare la cote verrouillée à la dernière cote avant le début."
+      "CLV_NONE": "La CLV (closing line value) compare la cote verrouillée à la dernière cote avant le début.",
+      "NO_ROI_SHORT": "n.d.",
+      "SCOPE_SUMMARY": "{record}, {units}u",
+      "SCOPE_LIVE_ONLY": "Pronostics en direct enregistrés ici",
+      "SCOPE_SPLIT": "En direct : {live}. Historique sur la blockchain : {history}.",
+      "CLV_HINT_LIVE": "Pronostics en direct uniquement : moyenne sur {count, plural, one {# pronostic} other {# pronostics}} avec une cote de clôture"
     },
     "CHART": {
       "TITLE": "Unités au fil du temps",
@@ -696,14 +704,14 @@
   "VERIFY": {
     "LABEL": "Vérifier",
     "TITLE": "Vérifiez n’importe quel pronostic",
-    "DESCRIPTION": "Chaque pronostic OpenCapper est scellé dès sa création, si bien que personne ne peut le modifier ensuite. Vérifiez-le vous-même.",
+    "DESCRIPTION": "Chaque pronostic OpenCapper est scellé dès qu’il est enregistré ici, pour que personne ne puisse le modifier ensuite. Vérifiez par vous-même.",
     "HEADING": "Vérifiez n’importe quel pronostic",
-    "SUBHEADING": "Chaque pronostic est scellé dès sa création, si bien que personne, nous compris, ne peut le modifier ensuite. Vous pouvez le vérifier vous-même.",
+    "SUBHEADING": "Chaque pronostic est scellé dès qu’il est enregistré ici, pour que personne, nous compris, ne puisse le modifier ensuite. Vous pouvez le vérifier vous-même.",
     "SEARCH": {
       "LABEL": "Nom du tipster ou lien du pronostic",
-      "PLACEHOLDER": "razor, razor#12 ou un lien de pronostic collé",
+      "PLACEHOLDER": "razor, razor#12, un identifiant de pronostic ou un lien collé",
       "SUBMIT": "Vérifier",
-      "INVALID": "Saisissez un nom de tipster, un numéro de pronostic comme razor#12, ou collez le lien d’un pronostic.",
+      "INVALID": "Saisissez un nom de capper, un numéro de pronostic du capper comme razor#12, un identifiant comme 1053, ou collez un lien vers un pronostic.",
       "NOT_FOUND": "Nous n’avons pas trouvé ce pronostic.",
       "NO_PICKS": "Aucun pronostic trouvé pour {username}.",
       "LATEST": "Derniers pronostics de {username}",
@@ -717,16 +725,25 @@
       "CHECKING": "Vérification en cours",
       "UNSEALED": "Pas encore scellé",
       "ERROR": "Vérification impossible",
-      "LOCKED": "Verrouillé {time}",
       "BY": "par {username}",
-      "NUMBER": "Pronostic {seq, number}",
+      "NUMBER": "Pronostic n° {seq, number} du capper, identifiant {id}",
       "UNITS": "{count, plural, one {# unité} other {# unités}}",
-      "FALLBACK": "Pronostic {id} de {username}"
+      "STARTS": "Début de l’événement",
+      "LOCKED_AT": "Verrouillé ici",
+      "IMPORTED": "Importé et verrouillé ici",
+      "LEAD": "{duration} avant le début",
+      "AFTER_START": "{duration} après le début",
+      "ODDS": "Cote",
+      "EXCHANGE_PRICE": "exécution Polymarket sur la blockchain",
+      "RESULT": "Résultat",
+      "SOURCE": "Source et heure de la transaction",
+      "PROOF_NOTE": "Le sceau couvre le pronostic tel qu’il a été enregistré, heure de verrouillage comprise. L’heure de début provient du flux de cotes et ne fait pas partie du sceau : comparez vous-même les deux heures.",
+      "PROOF_NOTE_IMPORTED": "Ce pronostic a été importé d’une transaction publique sur {platform}. Le sceau le couvre à partir du moment où il a été verrouillé ici lors de l’import, jamais avant. Le lien source montre la transaction d’origine et son heure ; l’heure de début ne fait pas partie du sceau."
     },
     "HOW": {
       "TITLE": "Comment ça marche",
-      "STEP_1_TITLE": "Scellé dès sa création",
-      "STEP_1_BODY": "Dès qu’un tipster fait un pronostic, nous le scellons : le match, la sélection, la cote, la mise et l’heure.",
+      "STEP_1_TITLE": "Scellé à l’enregistrement",
+      "STEP_1_BODY": "Dès qu’un pronostic est enregistré ici, par un capper ou par l’import d’une transaction sur la blockchain, nous scellons le match, la sélection, la cote, la mise et l’heure de verrouillage. L’heure de début du match ne fait pas partie du sceau ; chaque fiche de pronostic l’affiche à côté de l’heure de verrouillage.",
       "STEP_2_TITLE": "Relié à tous les pronostics précédents",
       "STEP_2_BODY": "Chaque nouveau pronostic est relié à tous ceux qui le précèdent. Modifier un ancien pronostic briserait cette chaîne, et tout le monde le verrait.",
       "STEP_3_TITLE": "Horodaté chaque jour dans Bitcoin",
@@ -804,7 +821,7 @@
   "CHECK": {
     "LABEL": "Vérifier un tipster",
     "TITLE": "Vérifier un tipster",
-    "DESCRIPTION": "Recherchez n'importe quel tipster par son nom sur OpenCapper, Discord, Telegram ou Polymarket et voyez son historique vérifié, ou l'avertissement qu'il n'en a pas.",
+    "DESCRIPTION": "Recherchez n’importe quel capper par son nom OpenCapper, Discord, Telegram ou Polymarket et consultez son bilan, ou l’avertissement qu’il n’en a pas.",
     "HEADING": "Ce tipster est-il réel ?",
     "SUBHEADING": "Les arnaqueurs copient le nom et la photo de tipsters connus et vendent de faux accès VIP en message privé. Un vrai historique se trouve sur OpenCapper et ne peut pas être modifié. Vérifiez-le avant de payer qui que ce soit.",
     "ERROR": "La recherche a échoué. Veuillez réessayer plus tard.",
@@ -847,7 +864,7 @@
       "UNITS": "{units} unités"
     },
     "NONE": {
-      "TITLE": "Aucun historique vérifié pour {query}",
+      "TITLE": "Aucun bilan pour {query}",
       "BODY": "Quiconque vend des pronostics sans historique public ne peut pas le prouver. Demandez son lien OpenCapper.",
       "TIP_1": "Les vrais tipsters partagent ouvertement le lien de leur historique. Celui qui refuse a ses raisons.",
       "TIP_2": "Les captures de tickets et de séries gagnantes se falsifient en quelques secondes. Un historique verrouillé et horodaté, non.",
@@ -858,7 +875,7 @@
       "STEP_1_TITLE": "Recherchez le nom",
       "STEP_1_BODY": "Cherchez le nom exact qu'il utilise sur Discord, Telegram ou Polymarket, ou collez son ID Discord.",
       "STEP_2_TITLE": "Ouvrez l'historique",
-      "STEP_2_BODY": "Chaque pronostic de l'historique a été verrouillé avant le match à une cote relevée par la plateforme. Rien ne peut être modifié ni supprimé.",
+      "STEP_2_BODY": "Les pronostics en direct ont été verrouillés ici avant le match, à la cote du marché ou, pour les pronostics Polymarket importés, au prix d’exécution sur la blockchain. L’historique sur la blockchain est indiqué comme tel. Rien ne peut être modifié ni supprimé.",
       "STEP_3_TITLE": "Pas d'historique, pas de confiance",
       "STEP_3_BODY": "Si aucun historique n'apparaît, le tipster ne peut prouver aucune victoire. Demandez son lien OpenCapper avant de payer."
     }
@@ -1007,11 +1024,17 @@
     "LAST_STAMP": "Dernier horodatage Bitcoin",
     "NO_STAMP": "Aucun pour l’instant",
     "LOG_ROOT": "Racine actuelle",
-    "PROFILE_TITLE": "{username} : {record}, {units}u, ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "Bilan de {username} : {wins, number} gagnés, {losses, number} perdus et {pushes, number} remboursés sur {picks, plural, one {# pronostic} other {# pronostics}}, tous verrouillés avant le match.",
+    "PROFILE_TITLE": "{username} : {record}, {units}u, ROI {roi}, {scope} | {appName}",
+    "PROFILE_DESCRIPTION": "Bilan de {username} : {record} sur {picks, plural, one {# pronostic} other {# pronostics}} enregistrés ici avant le match et réglés automatiquement.",
     "PICK_TITLE": "{username} #{seq} : {selection} {odds}, {units}u | {appName}",
     "PICK_DESCRIPTION": "{home} contre {away}. Verrouillé {time} à {odds} chez {bookmaker}. Statut : {status}.",
-    "LEADERBOARD_TITLE": "Classement : {filters} | {appName}"
+    "LEADERBOARD_TITLE": "Classement : {filters} | {appName}",
+    "SCOPE_ALL": "en direct et historique sur la blockchain",
+    "SCOPE_LIVE": "pronostics en direct",
+    "PROFILE_TITLE_UNGRADED": "{username} : aucun pronostic réglé pour l’instant | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "Bilan de {username}, en direct et historique sur la blockchain : {record}. Pronostics en direct enregistrés ici avant le match : {live}. Transactions Polymarket importées ensuite depuis la blockchain : {history}.",
+    "SCOPE_SPLIT": "En direct {live} + historique blockchain {history}",
+    "SCOPE_LIVE_LINE": "Pronostics en direct enregistrés ici"
   },
   "ERRORS": {
     "UNAUTHORIZED": "Non autorisé.",
@@ -1070,7 +1093,9 @@
     "PAYMENTS_NO_PLAN": "Ce capper ne propose pas d'abonnement pour le moment.",
     "PAYMENTS_OWN_PLAN": "Vous ne pouvez pas vous abonner à vous-même.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Vous avez déjà un abonnement actif à ce capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "La signature du webhook n'est pas valide."
+    "WEBHOOK_SIGNATURE_INVALID": "La signature du webhook n'est pas valide.",
+    "CAPPER_NOT_FOUND": "Aucun capper ne porte ce nom.",
+    "PICK_NOT_FOUND": "Ce pronostic n’existe pas."
   },
   "LEGAL": {
     "LABEL": "Informations légales",
@@ -1263,5 +1288,12 @@
       "LOGIN": "Connectez-vous pour vous abonner",
       "FAILED": "Le paiement n'a pas pu être lancé."
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "Cette page n’existe pas",
+    "BODY": "Le lien est peut-être cassé, ou aucun capper ne porte ce nom. Un vrai capper peut toujours partager un lien de profil qui fonctionne ; vérifiez l’orthographe ou recherchez le nom.",
+    "HOME": "Accueil",
+    "CHECK": "Contrôler un capper"
   }
 }

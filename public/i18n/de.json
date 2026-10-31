@@ -1,7 +1,7 @@
 {
   "METADATA": {
-    "TITLE": "{appName}: verifizierte Sporttipps mit ehrlicher Bilanz",
-    "DESCRIPTION": "Jeder Tipp mit Zeitstempel und vor dem Spiel gesperrt. Quoten erfasst die Plattform, Bilanzen werden nach ROI bewertet, keine Affiliate-Deals mit Buchmachern."
+    "TITLE": "{appName}: Sporttipps mit einer Bilanz, die niemand ändern kann",
+    "DESCRIPTION": "Tipps vor dem Spiel festgeschrieben und automatisch gewertet. Quoten kommen vom Markt oder aus On Chain Trades, nie vom Capper. Bilanzen nach ROI eingestuft, keine Affiliate-Deals mit Buchmachern."
   },
   "NAV": {
     "HOME": "So funktioniert's",
@@ -148,7 +148,7 @@
   "LANDING": {
     "ANNOUNCEMENT_LABEL": "Live-Demo",
     "ANNOUNCEMENT": "Tritt unserem Discord-Server bei",
-    "HEADLINE": "Jeder Tipp im Protokoll. Gesperrt vor dem Anpfiff.",
+    "HEADLINE": "Jeder Tipp im Protokoll. Festgeschrieben vor dem Anpfiff.",
     "SUBHEADLINE": "Eine ehrliche, automatische Bilanz jedes Tipps, egal wo du ihn abgibst. Discord, Telegram, im Web oder in deiner eigenen App.",
     "CTA_TRACK": "Tipps erfassen",
     "CTA_LEADERBOARD": "Rangliste",
@@ -176,7 +176,7 @@
       },
       "WEB": {
         "TITLE": "Neuer Tipp",
-        "NOTE": "Die Quote wird im Moment des Sperrens erfasst."
+        "NOTE": "Die Quote wird im Moment des Festschreibens erfasst."
       },
       "API": {
         "META": "Für Entwickler",
@@ -191,9 +191,9 @@
       "BOOKMAKER": "Buchmacher",
       "STARTS": "Beginn",
       "MONEYLINE": "Siegwette",
-      "LOCKED": "Gesperrt",
-      "LOCK_PICK": "Tipp sperren",
-      "AT_LOCK": "beim Sperren",
+      "LOCKED": "Festgeschrieben",
+      "LOCK_PICK": "Tipp festschreiben",
+      "AT_LOCK": "beim Festschreiben",
       "PLACEHOLDER_HOME": "Kämpfer A",
       "PLACEHOLDER_AWAY": "Kämpfer B",
       "PLACEHOLDER_KICKOFF": "nächstes Event"
@@ -227,7 +227,7 @@
       "MOBILE_TITLE": "App für iOS und Android",
       "MOBILE_BODY": "Unterwegs Tipps abgeben und die Bilanz im Blick behalten.",
       "WEBHOOKS_TITLE": "Zapier und Webhooks",
-      "WEBHOOKS_BODY": "Jeden gesperrten oder gewerteten Tipp an deine eigenen Tools senden.",
+      "WEBHOOKS_BODY": "Jeden festgeschriebenen oder gewerteten Tipp an deine eigenen Tools senden.",
       "REQUEST_TITLE": "Dein Kanal fehlt?",
       "REQUEST_BODY": "Je mehr Orte OpenCapper unterstützt, desto besser. Sag uns, wo deine Tipps zu Hause sind, und wir schauen es uns an.",
       "REQUEST_LINK": "Integration vorschlagen",
@@ -236,7 +236,7 @@
       "GROUP_SELL_TITLE": "Mit geprüfter Bilanz verkaufen",
       "GROUP_SELL_BODY": "Behalte deinen Shop. OpenCapper ergänzt ihn um eine geprüfte Bilanz.",
       "GROUP_HISTORY_TITLE": "Deinen Verlauf mitbringen",
-      "GROUP_HISTORY_BODY": "Importe werden getrennt angezeigt und als ungeprüft markiert, außer die Quelle ist nachprüfbar, wie Polymarket auf der Blockchain.",
+      "GROUP_HISTORY_BODY": "Frühere Trades zählen nur, wenn sie nachprüfbar sind, wie Polymarket Trades auf der Blockchain. Sie werden nachträglich importiert, als On Chain Historie gezeigt und nie mit dem Live Protokoll vermischt.",
       "GROUP_BOOKS_TITLE": "Wetten, wo du willst",
       "GROUP_BOOKS_BODY": "Nur direkte Links. Keine Affiliate Deals.",
       "BOOKS_BODY": "Ein Fingertipp öffnet den Tipp bei einem lizenzierten Anbieter in deiner Region. OpenCapper verdient daran nichts.",
@@ -268,7 +268,7 @@
     },
     "DASH": {
       "TITLE": "Jeder Capper bekommt ein Dashboard",
-      "BODY": "Das ist das Profil des aktuell bestplatzierten Cappers, gebaut aus denselben Daten wie die öffentliche Seite: von uns erfasste Quoten, automatische Auswertung und das per Hash verkettete Log.",
+      "BODY": "Das ist das Profil des aktuell bestplatzierten Cappers, mit denselben Zahlen wie die öffentliche Seite. Die meisten eingestuften Capper sind derzeit öffentliche Polymarket Konten: Ihre Live Tipps werden aus On Chain Trades importiert und hier vor jedem Spielbeginn festgeschrieben, ihre älteren Trades zählen als nachträglich importierte On Chain Historie.",
       "FOOTNOTE": "Echte Daten, jede Minute aktualisiert. Die Tabs wechseln nur diese Vorschau; das vollständige Profil zeigt jeden Tipp.",
       "EMPTY_TITLE": "Noch keine Bilanz vorhanden",
       "EMPTY_BODY": "Sobald die ersten Tipps ausgewertet sind, erscheint hier das Dashboard des besten Cappers mit echten Zahlen.",
@@ -312,10 +312,10 @@
     "FEATURES": {
       "TITLE": "Funktionen",
       "ODDS_LABEL": "Quoten",
-      "ODDS_TITLE": "Die Quote erfassen wir.",
-      "ODDS_BODY": "Quote, Buchmacher und Zeitpunkt stammen vom Markt, nie vom Capper.",
+      "ODDS_TITLE": "Quoten, die der Capper nicht wählt.",
+      "ODDS_BODY": "Hier abgegebene Tipps erhalten beim Festschreiben Marktquote, Buchmacher und Zeitpunkt. Importierte Polymarket Tipps nutzen den On Chain Ausführungspreis. Der Capper tippt nie selbst eine Quote ein.",
       "LOCKED_LABEL": "Zeitpunkt",
-      "LOCKED_TITLE": "Gesperrt vor dem Anpfiff.",
+      "LOCKED_TITLE": "Festgeschrieben vor dem Anpfiff.",
       "LOCKED_BODY": "Ein Tipp wird nur angenommen, solange das Spiel nicht begonnen hat. Danach lässt er sich weder ändern noch löschen.",
       "GRADED_LABEL": "Wertung",
       "GRADED_TITLE": "Automatisch gewertet.",
@@ -347,7 +347,7 @@
         "REFERRAL": "Empfehlungslink",
         "ZERO": "Provisionen 0",
         "PENDING": "offen",
-        "NO_ODDS": "Quote beim Sperren",
+        "NO_ODDS": "Quote beim Festschreiben",
         "NEXT_EVENT": "nächstes Event",
         "NO_CLV": "noch keine Schlussquoten",
         "LOG_SIZE": "{count, plural, one {# Eintrag} other {# Einträge}}",
@@ -363,7 +363,7 @@
     },
     "VERIFY": {
       "TITLE": "Für Skeptiker",
-      "BODY": "Du musst uns nicht vertrauen. Jeder Tipp bekommt im Moment des Sperrens einen Fingerabdruck, und jeder Fingerabdruck hängt am vorherigen. Würde jemand auch nur einen Tipp ändern, ginge die Kette nicht mehr auf und alle könnten es sehen.",
+      "BODY": "Du musst uns nicht vertrauen. Jeder Tipp bekommt im Moment des Festschreibens einen Fingerabdruck, und jeder Fingerabdruck hängt am vorherigen. Würde jemand auch nur einen Tipp ändern, ginge die Kette nicht mehr auf und alle könnten es sehen.",
       "STEP_1": "Lade den Eintrag von <code>/api/log/picks/:id</code>.",
       "STEP_2": "Hashe <code>canonical</code> mit sha256. Das Ergebnis muss <code>leaf</code> entsprechen.",
       "STEP_3": "Hashe die Bytes von <code>prevRoot</code> gefolgt von <code>leaf</code>. Das Ergebnis muss <code>root</code> entsprechen.",
@@ -398,9 +398,9 @@
   "LEADERBOARD": {
     "LABEL": "Rangliste",
     "TITLE": "Rangliste",
-    "DESCRIPTION": "Capper auf OpenCapper, sortiert nach verifiziertem ROI.",
+    "DESCRIPTION": "Capper nach ROI auf OpenCapper, aus vor dem Spiel festgeschriebenen Tipps und On Chain Historie.",
     "HEADING": "Rangliste",
-    "SUBHEADING": "Sortiert nach ROI über verifizierte, gesperrte Tipps.",
+    "SUBHEADING": "Eingestuft nach ROI über gewertete Tipps: hier vor dem Spiel festgeschriebene Live Tipps plus nachträglich importierte On Chain Historie von Polymarket. Nur live lässt die Historie weg.",
     "MIN_PICKS": "Ein Capper erscheint ab {count, number} gewerteten Tipps, damit keine Glückswoche die Tabelle anführt.",
     "RANKED_COUNT": "{total, plural, one {# Capper in der Wertung} other {# Capper in der Wertung}}",
     "FILTERS": {
@@ -444,11 +444,11 @@
       "ROI_TITLE": "ROI, nie Geld",
       "ROI_BODY": "Standardmäßig wird nach Rendite sortiert: gewonnene Einheiten je eingesetzter Einheit. Der absolute Geldgewinn belohnt nur höhere Einsätze, deshalb ranken wir nie danach.",
       "GRADED_TITLE": "Nur gewertete Tipps",
-      "GRADED_BODY": "Siege, Niederlagen und Pushes zählen, offene und ungültige Tipps nicht. Jede Quote haben wir beim Sperren des Tipps selbst erfasst.",
+      "GRADED_BODY": "Siege, Niederlagen und Pushes zählen, offene und ungültige Tipps nicht. Ein Live Tipp trägt die Quote, die beim Festschreiben hier galt: aus dem Quotenfeed für auf OpenCapper abgegebene Tipps, die On Chain Ausführung für importierte Polymarket Tipps. Die On Chain Historie nutzt den Ausführungspreis jedes Trades.",
       "PERIOD_TITLE": "Ein Zeitraum für alle",
       "PERIOD_BODY": "Der Zeitraum gilt für jeden Capper gleich, gemessen am Spielbeginn. Niemand sucht sich eine schmeichelhafte Serie aus."
     },
-    "SCOPE_HINT_ALL": "Enthält die On Chain Historie von Polymarket: Trades vor dem Anpfiff, on chain verifiziert, nachträglich importiert und nach Marktauflösung gewertet. Wähle nur live für Tipps, die hier vor dem Spiel erfasst wurden.",
+    "SCOPE_HINT_ALL": "Live und Historie: hier vor dem Spiel festgeschriebene Live Tipps plus On Chain Historie von Polymarket, also Trades vor dem Anpfiff, nachträglich aus der Blockchain importiert und nach Marktauflösung gewertet. Nur live lässt die Historie weg.",
     "SCOPE_HINT_LIVE": "Nur live: Jeder Tipp wurde hier vor dem Spiel erfasst. Die On Chain Historie bleibt außen vor.",
     "SPLIT": "{graded, number} gewertet: {live, number} live, {history, number} aus der On Chain Historie",
     "SPLIT_SHORT": "{live, number} live, {history, number} Historie",
@@ -461,7 +461,11 @@
       "SMALL_SAMPLE": "Kleine Stichprobe: Der ROI aus {count, number} gewerteten Tipps sagt noch wenig aus",
       "EMPTY": "In dieser Auswahl hat noch kein Capper einen Tipp erfasst."
     },
-    "CHECK_LINK": "Capper checken"
+    "CHECK_LINK": "Capper checken",
+    "MOBILE_ROI": "ROI {roi}",
+    "PAST_END_TITLE": "Diese Seite liegt hinter dem Ende der Tabelle",
+    "PAST_END_BODY": "Mit diesen Filtern {total, plural, one {ist # Capper} other {sind # Capper}} eingestuft.",
+    "PAST_END_BACK": "Zurück zur ersten Seite"
   },
   "TABLE": {
     "TOTAL_COUNT": "{count, number} gesamt",
@@ -476,13 +480,12 @@
   "PROFILE": {
     "LABEL": "Capperprofil",
     "TITLE": "{username} auf OpenCapper",
-    "DESCRIPTION": "Verifizierte Tipp-Historie von {username}: jeder Tipp vor dem Spiel gesperrt, bewertet nach ROI.",
+    "DESCRIPTION": "Tippbilanz von {username} auf OpenCapper, automatisch gewertet und nach ROI eingestuft.",
     "HEADING": "@{username}",
     "SUBHEADING": "Verifizierte Bilanz. Tipps können weder bearbeitet noch gelöscht werden.",
     "SUBHEADING_PUBLIC": "Öffentliche Bilanz aus importierten Tipps. Tipps können weder bearbeitet noch gelöscht werden.",
     "VERIFIED": "Verifizierte Bilanz",
     "LOADING": "Bilanz wird geladen",
-    "NOT_FOUND": "Unter diesem Namen wurde noch kein Tipp erfasst.",
     "ERROR": "Die Bilanz konnte nicht geladen werden. Bitte versuche es später erneut.",
     "STATS": {
       "PICKS": "Tipps",
@@ -499,12 +502,17 @@
       "RISKED_HINT": "Einsätze auf Siege, Niederlagen und Pushes",
       "ROI_SMALL_SAMPLE": "Kleine Stichprobe: {count, number} von {min, number} bewerteten Tipps",
       "CLV": "CLV",
-      "CLV_HINT": "Durchschnitt über {count, number} Tipps mit Schlussquote",
+      "CLV_HINT": "Durchschnitt über {count, plural, one {# Tipp} other {# Tipps}} mit Schlussquote",
       "NO_CLV": "Noch keine Schlussquoten",
       "CLV_BEAT": "Schlug die Schlussquote im Schnitt um {value}.",
       "CLV_MISSED": "Lag im Schnitt {value} unter der Schlussquote.",
       "CLV_EVEN": "Traf die Schlussquote im Schnitt genau.",
-      "CLV_NONE": "Der Closing Line Value vergleicht die gesperrte Quote mit der letzten Quote vor dem Beginn."
+      "CLV_NONE": "Der Closing Line Value vergleicht die festgeschriebene Quote mit der letzten Quote vor dem Beginn.",
+      "NO_ROI_SHORT": "k. A.",
+      "SCOPE_SUMMARY": "{record}, {units}u",
+      "SCOPE_LIVE_ONLY": "Hier erfasste Live Tipps",
+      "SCOPE_SPLIT": "Live: {live}. On Chain Historie: {history}.",
+      "CLV_HINT_LIVE": "Nur Live Tipps: Durchschnitt über {count, plural, one {# Tipp} other {# Tipps}} mit Schlussquote"
     },
     "CHART": {
       "TITLE": "Einheiten im Verlauf",
@@ -523,9 +531,9 @@
       "ODDS": "Quote",
       "UNITS": "Einheiten",
       "STATUS": "Status",
-      "LOCKED_AT": "Gesperrt am",
+      "LOCKED_AT": "Festgeschrieben am",
       "STARTS_AT": "Beginn {time}",
-      "LOCKED_HINT": "Gesperrt am {time}. Quote von der Plattform erfasst; dieser Tipp kann weder bearbeitet noch gelöscht werden.",
+      "LOCKED_HINT": "Festgeschrieben am {time}. Quote von der Plattform erfasst; dieser Tipp kann weder bearbeitet noch gelöscht werden.",
       "CLV": "CLV",
       "CLV_NONE": "k. A.",
       "CLV_NONE_HINT": "Für diesen Tipp wurde keine Schlussquote erfasst.",
@@ -696,14 +704,14 @@
   "VERIFY": {
     "LABEL": "Prüfen",
     "TITLE": "Jeden Tipp prüfen",
-    "DESCRIPTION": "Jeder OpenCapper Tipp wird in dem Moment versiegelt, in dem er abgegeben wird, sodass ihn danach niemand mehr ändern kann. Prüfe es selbst.",
+    "DESCRIPTION": "Jeder OpenCapper Tipp wird versiegelt, sobald er hier erfasst wird, damit ihn danach niemand mehr ändern kann. Prüfe es selbst.",
     "HEADING": "Jeden Tipp prüfen",
-    "SUBHEADING": "Jeder Tipp wird in dem Moment versiegelt, in dem er abgegeben wird. Danach kann ihn niemand mehr ändern, auch wir nicht. Das kannst du selbst prüfen.",
+    "SUBHEADING": "Jeder Tipp wird versiegelt, sobald er hier erfasst wird, damit ihn danach niemand ändern kann, auch wir nicht. Das kannst du selbst prüfen.",
     "SEARCH": {
       "LABEL": "Capper Name oder Tipp Link",
-      "PLACEHOLDER": "razor, razor#12 oder ein eingefügter Tipp Link",
+      "PLACEHOLDER": "razor, razor#12, eine Tipp ID oder ein eingefügter Link",
       "SUBMIT": "Prüfen",
-      "INVALID": "Gib einen Capper Namen ein, eine Tipp Nummer wie razor#12, oder füge einen Link zu einem Tipp ein.",
+      "INVALID": "Gib einen Capper Namen ein, eine Tippnummer des Cappers wie razor#12, eine Tipp ID wie 1053, oder füge einen Link zu einem Tipp ein.",
       "NOT_FOUND": "Diesen Tipp konnten wir nicht finden.",
       "NO_PICKS": "Keine Tipps von {username} gefunden.",
       "LATEST": "Neueste Tipps von {username}",
@@ -717,16 +725,25 @@
       "CHECKING": "Wird geprüft",
       "UNSEALED": "Noch nicht versiegelt",
       "ERROR": "Konnte nicht geprüft werden",
-      "LOCKED": "Gesperrt {time}",
       "BY": "von {username}",
-      "NUMBER": "Tipp {seq, number}",
+      "NUMBER": "Capper Tipp Nr. {seq, number}, Tipp ID {id}",
       "UNITS": "{count, plural, one {# Einheit} other {# Einheiten}}",
-      "FALLBACK": "Tipp {id} von {username}"
+      "STARTS": "Spielbeginn",
+      "LOCKED_AT": "Hier festgeschrieben",
+      "IMPORTED": "Hier importiert und festgeschrieben",
+      "LEAD": "{duration} vor Beginn",
+      "AFTER_START": "{duration} nach Beginn",
+      "ODDS": "Quote",
+      "EXCHANGE_PRICE": "On Chain Ausführung auf Polymarket",
+      "RESULT": "Ergebnis",
+      "SOURCE": "Quelle und Handelszeit",
+      "PROOF_NOTE": "Das Siegel umfasst den Tipp so, wie er erfasst wurde, samt Zeitpunkt der Festschreibung. Der Spielbeginn stammt aus dem Quotenfeed und gehört nicht zum Siegel; vergleiche die beiden Zeiten selbst.",
+      "PROOF_NOTE_IMPORTED": "Dieser Tipp wurde aus einem öffentlichen Trade auf {platform} importiert. Das Siegel gilt ab dem Moment, in dem er hier beim Import festgeschrieben wurde, nie früher. Der Quellenlink zeigt den ursprünglichen Trade mit seiner eigenen Zeit; der Spielbeginn gehört nicht zum Siegel."
     },
     "HOW": {
       "TITLE": "So funktioniert es",
-      "STEP_1_TITLE": "Versiegelt bei Abgabe",
-      "STEP_1_BODY": "Sobald ein Capper einen Tipp abgibt, versiegeln wir ihn: das Spiel, die Auswahl, die Quote, den Einsatz und die Uhrzeit.",
+      "STEP_1_TITLE": "Versiegelt bei Erfassung",
+      "STEP_1_BODY": "Sobald ein Tipp hier erfasst wird, vom Capper selbst oder durch den Import eines On Chain Trades, versiegeln wir Spiel, Auswahl, Quote, Einsatz und den Zeitpunkt der Festschreibung. Der Spielbeginn gehört nicht zum Siegel; jede Tippkarte zeigt ihn neben dieser Zeit.",
       "STEP_2_TITLE": "Mit allen früheren Tipps verknüpft",
       "STEP_2_BODY": "Jeder neue Tipp wird mit allen Tipps davor verknüpft. Wer einen alten Tipp ändert, zerreißt diese Kette, und jeder würde es sehen.",
       "STEP_3_TITLE": "Täglich in Bitcoin gestempelt",
@@ -744,7 +761,7 @@
       "DESCRIPTION": "Die Hashes, die rohen Protokolleinträge, die API und die Bitcoin Nachweise, damit du alles mit deinen eigenen Werkzeugen prüfen kannst.",
       "STEPS_TITLE": "So funktioniert die Prüfung",
       "STEP_1_TITLE": "Jeder Tipp bekommt einen Fingerabdruck",
-      "STEP_1_BODY": "Beim Sperren schreiben wir die festen Felder des Tipps (ID, Capper, laufende Nummer, Ereignis, Markt, Auswahl, Linie, Quote, Buchmacher, Einheiten und Sperrzeit) als kurzen JSON Text und berechnen seinen SHA 256 Hash. Dieser Hash ist das Blatt.",
+      "STEP_1_BODY": "Beim Festschreiben notieren wir die unveränderlichen Felder des Tipps (ID, Capper, laufende Nummer, Ereignis, Markt, Auswahl, Linie, Quote, Buchmacher, Einheiten und Zeitpunkt der Festschreibung) als kurzen JSON Text und berechnen seinen SHA 256 Hash. Dieser Hash ist das Blatt.",
       "STEP_2_TITLE": "Die Fingerabdrücke werden verkettet",
       "STEP_2_BODY": "Die neue Wurzel ist der SHA 256 Hash aus der vorherigen Wurzel und dem neuen Blatt. Wer einen alten Tipp ändert, ändert jede spätere Wurzel, eine stille Korrektur lässt sich also nicht verbergen.",
       "STEP_3_TITLE": "Die Kette wird in Bitcoin verankert",
@@ -804,7 +821,7 @@
   "CHECK": {
     "LABEL": "Capper checken",
     "TITLE": "Capper checken",
-    "DESCRIPTION": "Finde jeden Capper über seinen Namen auf OpenCapper, Discord, Telegram oder Polymarket und sieh die verifizierte Bilanz oder die Warnung, dass es keine gibt.",
+    "DESCRIPTION": "Schlage jeden Capper über seinen OpenCapper, Discord, Telegram oder Polymarket Namen nach und sieh die Bilanz oder die Warnung, dass es keine gibt.",
     "HEADING": "Ist dieser Capper echt?",
     "SUBHEADING": "Betrüger kopieren Namen und Profilbilder bekannter Capper und verkaufen per DM gefälschte VIP-Zugänge. Eine echte Bilanz liegt auf OpenCapper und kann nicht bearbeitet werden. Prüfe sie, bevor du irgendwem Geld schickst.",
     "ERROR": "Die Suche ist fehlgeschlagen. Bitte versuche es später erneut.",
@@ -842,15 +859,15 @@
       "NO_LAST": "Noch keine Tipps"
     },
     "SPLIT": {
-      "LIVE": "Hier gesperrte Live-Tipps",
+      "LIVE": "Hier festgeschriebene Live-Tipps",
       "HISTORY": "On Chain Historie",
       "UNITS": "{units} Einheiten"
     },
     "NONE": {
-      "TITLE": "Keine verifizierte Bilanz für {query}",
+      "TITLE": "Keine Bilanz für {query}",
       "BODY": "Wer Tipps ohne öffentliche Bilanz verkauft, kann nichts beweisen. Frag nach dem OpenCapper-Link.",
       "TIP_1": "Echte Capper teilen ihren Bilanz-Link offen. Wer sich weigert, hat einen Grund.",
-      "TIP_2": "Screenshots von Wettscheinen und Siegesserien sind in Sekunden gefälscht. Eine gesperrte Bilanz mit Zeitstempel nicht.",
+      "TIP_2": "Screenshots von Wettscheinen und Siegesserien sind in Sekunden gefälscht. Eine festgeschriebene Bilanz mit Zeitstempel nicht.",
       "TIP_3": "Zahle Fremden aus deinen DMs nie im Voraus mit Gutscheinkarten, Krypto oder Überweisungen an Freunde und Familie."
     },
     "HOW": {
@@ -858,7 +875,7 @@
       "STEP_1_TITLE": "Namen suchen",
       "STEP_1_BODY": "Suche den exakten Namen, den er auf Discord, Telegram oder Polymarket nutzt, oder füge seine Discord-ID ein.",
       "STEP_2_TITLE": "Bilanz öffnen",
-      "STEP_2_BODY": "Jeder Tipp der Bilanz wurde vor dem Spiel zu Quoten gesperrt, die die Plattform erfasst hat. Nichts lässt sich bearbeiten oder löschen.",
+      "STEP_2_BODY": "Live Tipps wurden hier vor dem Spiel festgeschrieben, zur Marktquote oder, bei importierten Polymarket Tipps, zum On Chain Ausführungspreis. On Chain Historie ist als solche gekennzeichnet. Nichts lässt sich bearbeiten oder löschen.",
       "STEP_3_TITLE": "Keine Bilanz, kein Vertrauen",
       "STEP_3_BODY": "Erscheint keine Bilanz, kann der Capper keinen einzigen Treffer beweisen. Frag vor dem Bezahlen nach seinem OpenCapper-Link."
     }
@@ -867,14 +884,14 @@
     "PUBLIC_BADGE": "Öffentlich",
     "PUBLIC_HINT": "Öffentliches Profil, importiert von {platform, select, polymarket {Polymarket} reddit {Reddit} other {einer anderen Plattform}}. Diese Person hat sich nicht bei OpenCapper registriert.",
     "BANNER_TITLE": "Öffentliches Profil, importiert von {platform, select, polymarket {Polymarket} reddit {Reddit} other {einer anderen Plattform}}, nicht beansprucht",
-    "BANNER_BODY": "Jeder Tipp wurde vor Beginn seines Spiels aus öffentlicher Aktivität auf {platform, select, polymarket {Polymarket} reddit {Reddit} other {einer anderen Plattform}} importiert und beim Import gesperrt. Diese Person hat sich nicht registriert und diese Bilanz nicht geprüft.",
+    "BANNER_BODY": "Jeder Tipp wurde vor Beginn seines Spiels aus öffentlicher Aktivität auf {platform, select, polymarket {Polymarket} reddit {Reddit} other {einer anderen Plattform}} importiert und beim Import festgeschrieben. Diese Person hat sich nicht registriert und diese Bilanz nicht geprüft.",
     "BANNER_SOURCE": "Auf {platform, select, polymarket {Polymarket} reddit {Reddit} other {einer anderen Plattform}} ansehen",
     "PICK_SOURCE": "Quelle: {platform, select, polymarket {Polymarket Trade} reddit {Reddit Kommentar} other {Originalbeitrag}}",
-    "POSTED_AT": "Ursprünglich veröffentlicht {time}. Auf OpenCapper beim Import gesperrt, nie rückdatiert.",
-    "FILL_HINT": "Gesperrt am {time}. Die Quote ist die On Chain Ausführung auf Polymarket vom {filled}, keine Buchmacherquote. Dieser Tipp kann weder bearbeitet noch gelöscht werden.",
+    "POSTED_AT": "Ursprünglich veröffentlicht {time}. Auf OpenCapper beim Import festgeschrieben, nie rückdatiert.",
+    "FILL_HINT": "Festgeschrieben am {time}. Die Quote ist die On Chain Ausführung auf Polymarket vom {filled}, keine Buchmacherquote. Dieser Tipp kann weder bearbeitet noch gelöscht werden.",
     "PUBLIC_HINT_CLAIMED": "Öffentliches Profil, importiert von {platform}. Der Inhaber hat es mit einem OpenCapper Konto beansprucht.",
     "BANNER_TITLE_CLAIMED": "Öffentliches Profil, importiert von {platform}, beansprucht von @{username}",
-    "BANNER_BODY_CLAIMED": "Der Inhaber hat nachgewiesen, dass dieses {platform} Konto ihm gehört. Tipps werden weiterhin vor Spielbeginn aus öffentlicher Aktivität importiert und beim Import gesperrt.",
+    "BANNER_BODY_CLAIMED": "Der Inhaber hat nachgewiesen, dass dieses {platform} Konto ihm gehört. Tipps werden weiterhin vor Spielbeginn aus öffentlicher Aktivität importiert und beim Import festgeschrieben.",
     "MANUAL_CLAIM": "Bist du das? Ansprüche auf {platform} werden vorerst von Hand geprüft. Kontaktiere uns und wir prüfen es.",
     "OWNER_HINT": "Du hast dieses Profil beansprucht. Ausblenden entfernt es aus Rangliste, Suche und Vorschauen. Die Protokolleinträge bleiben.",
     "CLAIMANT_PROFILE": "Inhaber: @{username}",
@@ -996,22 +1013,28 @@
   "OG": {
     "HOME_LABEL": "Open Source Tipp-Tracker",
     "POST_FROM": "Tipps abgeben über",
-    "PICK_LABEL": "Gesperrter Tipp",
+    "PICK_LABEL": "Festgeschriebener Tipp",
     "IMPORTED": "Öffentliches Profil, importiert von {platform, select, polymarket {Polymarket} reddit {Reddit} other {einer anderen Plattform}}",
     "SEALED": "Versiegelt im öffentlichen Protokoll #{seq}",
     "NOT_SEALED": "Noch nicht im öffentlichen Protokoll versiegelt",
     "STAKE": "Einsatz",
-    "LOCKED": "Gesperrt",
+    "LOCKED": "Festgeschrieben",
     "TOP_BY_ROI": "Die besten Capper nach ROI",
     "PICKS_SEALED": "Versiegelte Tipps",
     "LAST_STAMP": "Letzter Bitcoin Stempel",
     "NO_STAMP": "Noch keiner",
     "LOG_ROOT": "Aktuelle Wurzel",
-    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi} | {appName}",
-    "PROFILE_DESCRIPTION": "Bilanz von {username}: {wins, number} Siege, {losses, number} Niederlagen und {pushes, number} Pushes aus {picks, plural, one {# Tipp} other {# Tipps}}, jeder vor dem Spiel gesperrt.",
+    "PROFILE_TITLE": "{username}: {record}, {units}u, ROI {roi}, {scope} | {appName}",
+    "PROFILE_DESCRIPTION": "Bilanz von {username}: {record} aus {picks, plural, one {# Tipp} other {# Tipps}}, hier vor dem Spiel erfasst und automatisch gewertet.",
     "PICK_TITLE": "{username} #{seq}: {selection} {odds}, {units}u | {appName}",
-    "PICK_DESCRIPTION": "{away} bei {home}. Gesperrt am {time} zu {odds} bei {bookmaker}. Status: {status}.",
-    "LEADERBOARD_TITLE": "Rangliste: {filters} | {appName}"
+    "PICK_DESCRIPTION": "{away} bei {home}. Festgeschrieben am {time} zu {odds} bei {bookmaker}. Status: {status}.",
+    "LEADERBOARD_TITLE": "Rangliste: {filters} | {appName}",
+    "SCOPE_ALL": "live und On Chain Historie",
+    "SCOPE_LIVE": "Live Tipps",
+    "PROFILE_TITLE_UNGRADED": "{username}: noch keine gewerteten Tipps | {appName}",
+    "PROFILE_DESCRIPTION_ALL": "Bilanz von {username}, live und On Chain Historie: {record}. Live Tipps, hier vor dem Spiel erfasst: {live}. Polymarket Trades, nachträglich aus der Blockchain importiert: {history}.",
+    "SCOPE_SPLIT": "Live {live} + On Chain Historie {history}",
+    "SCOPE_LIVE_LINE": "Hier erfasste Live Tipps"
   },
   "ERRORS": {
     "UNAUTHORIZED": "Nicht autorisiert.",
@@ -1070,7 +1093,9 @@
     "PAYMENTS_NO_PLAN": "Dieser Capper bietet derzeit kein Abo an.",
     "PAYMENTS_OWN_PLAN": "Du kannst dich nicht selbst abonnieren.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Du hast bereits ein aktives Abo bei diesem Capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "Die Webhook-Signatur ist ungültig."
+    "WEBHOOK_SIGNATURE_INVALID": "Die Webhook-Signatur ist ungültig.",
+    "CAPPER_NOT_FOUND": "Es gibt keinen Capper mit diesem Namen.",
+    "PICK_NOT_FOUND": "Diesen Tipp gibt es nicht."
   },
   "LEGAL": {
     "LABEL": "Rechtliches",
@@ -1263,5 +1288,12 @@
       "LOGIN": "Zum Abonnieren anmelden",
       "FAILED": "Der Checkout konnte nicht gestartet werden."
     }
+  },
+  "NOT_FOUND": {
+    "CODE": "404",
+    "HEADING": "Diese Seite gibt es nicht",
+    "BODY": "Der Link ist vielleicht kaputt, oder kein Capper trägt diesen Namen. Ein echter Capper kann jederzeit einen funktionierenden Profillink teilen; prüfe die Schreibweise oder schlage den Namen nach.",
+    "HOME": "Startseite",
+    "CHECK": "Capper prüfen"
   }
 }
