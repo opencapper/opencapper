@@ -1,3 +1,4 @@
+import { DRAW_SELECTION } from "@/lib/config/markets";
 import { PICK_LEAGUE_KEYS, type PickLeagueKey } from "@/lib/config/sports";
 import type { ApiBoard, ApiEvent } from "@/lib/types";
 import { dayjs } from "@/lib/utils/format/date";
@@ -9,6 +10,7 @@ import {
   listEvents,
   type EventOdds,
 } from "@/server/odds/odds.service";
+import { saneOutcomes } from "@/server/odds/price";
 import { isLookupPending } from "@/server/participants/participants.service";
 import { toAmericanOdds } from "@/server/picks/picks.mapper";
 
@@ -19,7 +21,13 @@ const FAILED_TTL_MS = 60_000;
 const LEAGUES_TTL_MS = 6 * 60 * 60_000;
 
 // Decimal prices of the best ranked bookmaker; `books` counts every bookmaker quoting the game.
-type Offer = { bookmaker: string; home: number; away: number; books: number };
+type Offer = {
+  bookmaker: string;
+  home: number;
+  away: number;
+  draw: number | null;
+  books: number;
+};
 type Prices = { pricedAt: string; byEvent: Map<string, Offer> };
 type PriceSlot = { expires: number; prices: Promise<Prices | null> };
 
@@ -47,10 +55,20 @@ function bestOffer(event: EventOdds): Offer | null {
   const offers = event.bookmakers
     .flatMap((bookmaker) => {
       const outcomes = bookmaker.markets.find((m) => m.key === "h2h")?.outcomes;
-      const home = outcomes?.find((o) => o.name === event.home_team);
-      const away = outcomes?.find((o) => o.name === event.away_team);
-      return home && away
-        ? [{ bookmaker: bookmaker.key, home: home.price, away: away.price }]
+      const sane = outcomes ? saneOutcomes(bookmaker.key, "h2h", outcomes) : [];
+      const price = (name: string) =>
+        sane.find((o) => o.name === name)?.price ?? null;
+      const home = price(event.home_team);
+      const away = price(event.away_team);
+      return home !== null && away !== null
+        ? [
+            {
+              bookmaker: bookmaker.key,
+              home,
+              away,
+              draw: price(DRAW_SELECTION),
+            },
+          ]
         : [];
     })
     .toSorted(
@@ -106,6 +124,7 @@ export async function getBoard(sportKey: PickLeagueKey): Promise<ApiBoard> {
               bookmaker: offer.bookmaker,
               home: toAmericanOdds(offer.home),
               away: toAmericanOdds(offer.away),
+              draw: offer.draw === null ? null : toAmericanOdds(offer.draw),
             }
           : null,
       };

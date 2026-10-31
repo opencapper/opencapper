@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "Pick {name} at {odds}",
       "MORE_MARKETS": "Spread and total",
       "PRICES_NOTE": "Indicative moneylines, updated {relative}. The price is captured when you lock.",
-      "NO_PRICES_NOTE": "Prices are not available right now. You can still pick a side: the price is captured when you lock."
+      "NO_PRICES_NOTE": "Prices are not available right now. You can still pick a side: the price is captured when you lock.",
+      "DRAW": "Draw"
     },
     "SLIP": {
       "TITLE": "Pick slip",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "This capper does not offer a subscription right now.",
     "PAYMENTS_OWN_PLAN": "You cannot subscribe to yourself.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "You already have an active subscription to this capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "The webhook signature is invalid."
+    "WEBHOOK_SIGNATURE_INVALID": "The webhook signature is invalid.",
+    "OUTCOME_NOT_IN_EVENT": "Pick {home}, {away} or Draw for this event.",
+    "PRICE_UNRELIABLE": "No bookmaker offers a reliable price for this pick right now. Please try again closer to the game.",
+    "PICK_DUPLICATE": "You already have a pick on this market for this event.",
+    "UNITS_INVALID": "Units must be between {min} and {max}, in steps of {step}."
   },
   "LEGAL": {
     "LABEL": "Legal",

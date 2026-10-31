@@ -17,17 +17,23 @@ import { useCopyToClipboard } from "@/hooks/ui/use-copy-to-clipboard-hook";
 import { getPathname, Link } from "@/i18n/navigation";
 import {
   PICK_MARKETS,
-  WEB_UNITS_MAX,
-  WEB_UNITS_MIN,
-  WEB_UNITS_STEP,
+  PICK_UNITS_MAX,
+  PICK_UNITS_MIN,
+  PICK_UNITS_STEP,
   type PickMarket,
 } from "@/lib/api/typebox/picks";
 import { env } from "@/lib/config/env";
-import { isMarket, MARKET_KEY } from "@/lib/config/markets";
+import {
+  DRAW_SELECTION,
+  hasDrawOutcome,
+  isMarket,
+  MARKET_KEY,
+} from "@/lib/config/markets";
 import { isFighterGroup, PICK_LEAGUES, sportGroup } from "@/lib/config/sports";
 import { vendorName } from "@/lib/config/vendor-registry";
 import type { ApiPick } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { apiErrorText } from "@/lib/utils/api-error";
 import {
   formatDayHeading,
   formatRelative,
@@ -196,7 +202,11 @@ function SlipBody(props: {
             <p className="text-muted-foreground text-xs">
               {t(MARKET_KEY[sel.market])}
             </p>
-            <p className="truncate font-semibold">{sel.selection}</p>
+            <p className="truncate font-semibold">
+              {sel.selection === DRAW_SELECTION
+                ? t("PICK_NEW.BOARD.DRAW")
+                : sel.selection}
+            </p>
           </div>
           <div className="flex shrink-0 flex-col items-end gap-1">
             {sel.odds !== null && (
@@ -277,6 +287,7 @@ function MarketOutcomes(props: {
   onSelect: (next: SlipSelection) => void;
 }) {
   const t = useTranslations("PICK_NEW.SLIP");
+  const tRoot = useTranslations();
   const sel = props.selection;
   const fromBoard = sel.market === "h2h";
   const lines = useEventOddsQuery(
@@ -298,15 +309,29 @@ function MarketOutcomes(props: {
   if (fromBoard) {
     const line = sel.event.moneyline;
     const outcomes = [
-      { selection: sel.event.away, odds: line?.away ?? null },
-      { selection: sel.event.home, odds: line?.home ?? null },
+      {
+        selection: sel.event.away,
+        label: sel.event.away,
+        odds: line?.away ?? null,
+      },
+      {
+        selection: sel.event.home,
+        label: sel.event.home,
+        odds: line?.home ?? null,
+      },
     ];
+    if (hasDrawOutcome(sel.sportKey))
+      outcomes.splice(1, 0, {
+        selection: DRAW_SELECTION,
+        label: tRoot("PICK_NEW.BOARD.DRAW"),
+        odds: line?.draw ?? null,
+      });
     return (
-      <OutcomeGrid label={t("CHOOSE_LINE")}>
+      <OutcomeGrid label={t("CHOOSE_LINE")} columns={outcomes.length}>
         {outcomes.map((o) => (
           <OutcomeButton
             key={o.selection}
-            label={o.selection}
+            label={o.label}
             odds={o.odds}
             active={sel.selection === o.selection}
             onClick={() => pick(o, line?.bookmaker ?? null)}
@@ -324,7 +349,11 @@ function MarketOutcomes(props: {
       </div>
     );
   if (lines.isError)
-    return <p className="text-destructive text-sm">{t("LINES_ERROR")}</p>;
+    return (
+      <p className="text-destructive text-sm">
+        {apiErrorText(tRoot, lines.error, t("LINES_ERROR"))}
+      </p>
+    );
   if (lines.data.markets.length === 0)
     return <p className="text-muted-foreground text-sm">{t("NO_MARKETS")}</p>;
   const market = lines.data.markets.find((m) => m.market === sel.market);
@@ -348,12 +377,19 @@ function MarketOutcomes(props: {
   );
 }
 
-function OutcomeGrid(props: { label: string; children: ReactNode }) {
+function OutcomeGrid(props: {
+  label: string;
+  columns?: number;
+  children: ReactNode;
+}) {
   return (
     <div
       role="group"
       aria-label={props.label}
-      className="grid grid-cols-2 gap-2"
+      className={cn(
+        "grid gap-2",
+        props.columns === 3 ? "grid-cols-3" : "grid-cols-2",
+      )}
     >
       {props.children}
     </div>
@@ -424,9 +460,9 @@ function UnitsField(props: { value: number; onChange: (v: number) => void }) {
       </div>
       <Slider
         aria-label={t("UNITS")}
-        min={WEB_UNITS_MIN}
-        max={WEB_UNITS_MAX}
-        step={WEB_UNITS_STEP}
+        min={PICK_UNITS_MIN}
+        max={PICK_UNITS_MAX}
+        step={PICK_UNITS_STEP}
         value={props.value}
         onValueChange={(value) =>
           props.onChange(typeof value === "number" ? value : value[0])

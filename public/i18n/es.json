@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "Elegir {name} a {odds}",
       "MORE_MARKETS": "Hándicap y totales",
       "PRICES_NOTE": "Cuotas a ganador orientativas, actualizadas {relative}. La cuota se captura al bloquear.",
-      "NO_PRICES_NOTE": "Las cuotas no están disponibles ahora. Aun así puedes elegir un lado: la cuota se captura al bloquear."
+      "NO_PRICES_NOTE": "Las cuotas no están disponibles ahora. Aun así puedes elegir un lado: la cuota se captura al bloquear.",
+      "DRAW": "Empate"
     },
     "SLIP": {
       "TITLE": "Boleto",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "Este capper no ofrece ninguna suscripción en este momento.",
     "PAYMENTS_OWN_PLAN": "No puedes suscribirte a ti mismo.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Ya tienes una suscripción activa a este capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "La firma del webhook no es válida."
+    "WEBHOOK_SIGNATURE_INVALID": "La firma del webhook no es válida.",
+    "OUTCOME_NOT_IN_EVENT": "Elige {home}, {away} o empate (Draw) para este evento.",
+    "PRICE_UNRELIABLE": "Ahora mismo ninguna casa de apuestas ofrece una cuota fiable para esta selección. Vuelve a intentarlo más cerca del partido.",
+    "PICK_DUPLICATE": "Ya tienes una selección en este mercado para este evento.",
+    "UNITS_INVALID": "Las unidades deben estar entre {min} y {max}, en pasos de {step}."
   },
   "LEGAL": {
     "LABEL": "Información legal",

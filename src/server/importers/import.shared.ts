@@ -1,4 +1,4 @@
-import { WEB_UNITS_MAX, WEB_UNITS_MIN } from "@/lib/api/typebox/picks";
+import { PICK_UNITS_MAX, PICK_UNITS_MIN } from "@/lib/api/typebox/picks";
 import type { ApiEvent, ApiPick } from "@/lib/types";
 import { dayjs } from "@/lib/utils/format/date";
 import { serverEnv } from "@/server/env";
@@ -111,7 +111,7 @@ export async function findEvent(
 }
 
 export function toUnits(value: number): number {
-  if (!Number.isFinite(value)) return WEB_UNITS_MIN;
+  if (!Number.isFinite(value)) return PICK_UNITS_MIN;
   const stepped = Math.round(value * 2) / 2;
-  return Math.min(WEB_UNITS_MAX, Math.max(WEB_UNITS_MIN, stepped));
+  return Math.min(PICK_UNITS_MAX, Math.max(PICK_UNITS_MIN, stepped));
 }

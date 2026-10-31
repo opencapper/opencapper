@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "Escolher {name} a {odds}",
       "MORE_MARKETS": "Handicap e total",
       "PRICES_NOTE": "Odds de vencedor indicativas, atualizadas {relative}. A odd é capturada quando você trava.",
-      "NO_PRICES_NOTE": "As odds não estão disponíveis agora. Você ainda pode escolher um lado: a odd é capturada quando você trava."
+      "NO_PRICES_NOTE": "As odds não estão disponíveis agora. Você ainda pode escolher um lado: a odd é capturada quando você trava.",
+      "DRAW": "Empate"
     },
     "SLIP": {
       "TITLE": "Bilhete",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "Este capper não oferece assinatura no momento.",
     "PAYMENTS_OWN_PLAN": "Você não pode assinar a si mesmo.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Você já tem uma assinatura ativa deste capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "A assinatura do webhook é inválida."
+    "WEBHOOK_SIGNATURE_INVALID": "A assinatura do webhook é inválida.",
+    "OUTCOME_NOT_IN_EVENT": "Escolha {home}, {away} ou empate (Draw) para este evento.",
+    "PRICE_UNRELIABLE": "Nenhuma casa de apostas oferece uma odd confiável para este palpite no momento. Tente de novo mais perto do jogo.",
+    "PICK_DUPLICATE": "Você já tem um palpite neste mercado para este evento.",
+    "UNITS_INVALID": "As unidades devem ficar entre {min} e {max}, em passos de {step}."
   },
   "LEGAL": {
     "LABEL": "Informações legais",

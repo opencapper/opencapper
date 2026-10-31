@@ -9,8 +9,11 @@ import { ApiError } from "@/server/errors";
 import {
   createPick,
   getSettledPicks,
+  unitsError,
   type CreatePickInput,
+  type PickIdentity,
 } from "@/server/picks/picks.service";
+import { throttlePicks } from "@/server/picks/pick-throttle";
 import type { TSchema } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import { Elysia, t } from "elysia";
@@ -22,6 +25,7 @@ function hasKey(body: unknown, key: string) {
 // Same message shape as the global VALIDATION handler, so Discord bot errors read as before.
 function invalid(schema: TSchema, body: unknown): ApiError {
   const path = Value.Errors(schema, body).First()?.path;
+  if (path === "/units") return unitsError();
   return new ApiError(422, "ERRORS.INVALID_REQUEST", { path: path || "body" });
 }
 
@@ -61,12 +65,21 @@ function toPickInput(body: unknown): CreatePickInput {
   };
 }
 
+function pickerKey(identity: PickIdentity): string {
+  if (identity.kind === "discord") return `discord:${identity.discordId}`;
+  if (identity.kind === "telegram") return `telegram:${identity.telegramId}`;
+  if (identity.kind === "user") return `user:${identity.userId}`;
+  return `source:${identity.platform}:${identity.handle}`;
+}
+
 export const picksRoute = new Elysia({ prefix: "/picks" })
   .post(
     "/",
     async (ctx) => {
       assertBotToken(ctx.headers.authorization);
-      return createPick(toPickInput(ctx.body));
+      const input = toPickInput(ctx.body);
+      throttlePicks(pickerKey(input.identity));
+      return createPick(input);
     },
     { body: t.Unknown() },
   )

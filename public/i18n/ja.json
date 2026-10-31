@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "{name}を{odds}で選択",
       "MORE_MARKETS": "ハンディキャップと合計",
       "PRICES_NOTE": "勝敗オッズの参考値です（{relative}に更新）。オッズはロック時に記録されます。",
-      "NO_PRICES_NOTE": "現在オッズを取得できません。それでも選択はできます。オッズはロック時に記録されます。"
+      "NO_PRICES_NOTE": "現在オッズを取得できません。それでも選択はできます。オッズはロック時に記録されます。",
+      "DRAW": "引き分け"
     },
     "SLIP": {
       "TITLE": "予想スリップ",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "このキャッパーは現在サブスクリプションを提供していません。",
     "PAYMENTS_OWN_PLAN": "自分自身を購読することはできません。",
     "PAYMENTS_ALREADY_SUBSCRIBED": "このキャッパーの有効なサブスクリプションをすでにお持ちです。",
-    "WEBHOOK_SIGNATURE_INVALID": "Webhookの署名が無効です。"
+    "WEBHOOK_SIGNATURE_INVALID": "Webhookの署名が無効です。",
+    "OUTCOME_NOT_IN_EVENT": "この試合では{home}、{away}、または引き分け（Draw）を選んでください。",
+    "PRICE_UNRELIABLE": "現在、このピックに信頼できるオッズを提示しているブックメーカーはありません。試合が近づいてから再度お試しください。",
+    "PICK_DUPLICATE": "この試合のこのマーケットには、すでにピックがあります。",
+    "UNITS_INVALID": "ユニットは{min}から{max}の間で、{step}刻みで指定してください。"
   },
   "LEGAL": {
     "LABEL": "法的情報",

@@ -5,7 +5,11 @@ import { EventBoard } from "@/components/pages/navbar/picks/new/event-board";
 import { LeagueChips } from "@/components/pages/navbar/picks/new/league-chips";
 import { usePickFilters } from "@/components/pages/navbar/picks/new/pick-filters";
 import { PickSlip } from "@/components/pages/navbar/picks/new/pick-slip";
-import type { SlipSelection } from "@/components/pages/navbar/picks/new/slip";
+import type {
+  BoardSide,
+  SlipSelection,
+} from "@/components/pages/navbar/picks/new/slip";
+import { DRAW_SELECTION } from "@/lib/config/markets";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
@@ -48,8 +52,8 @@ export function PickForm() {
     setFilters({ league: next, q: null });
   };
 
-  const pickSide = (event: ApiBoardEvent, side: "home" | "away") => {
-    const name = event[side];
+  const pickSide = (event: ApiBoardEvent, side: BoardSide) => {
+    const name = side === "draw" ? DRAW_SELECTION : event[side];
     const same =
       selection?.event.id === event.id &&
       selection.market === "h2h" &&
@@ -174,6 +178,7 @@ function MobileSlipBar(props: {
   onOpen: () => void;
 }) {
   const t = useTranslations("PICK_NEW.SLIP");
+  const tBoard = useTranslations("PICK_NEW.BOARD");
   if (!props.selection && !props.done) return null;
   return (
     <div className="bg-background/90 border-border fixed inset-x-0 bottom-0 z-40 border-t px-4 py-3 backdrop-blur lg:hidden">
@@ -187,7 +192,9 @@ function MobileSlipBar(props: {
             1
           </span>
           <span className="truncate">
-            {props.selection?.selection ?? t("TITLE")}
+            {props.selection?.selection === DRAW_SELECTION
+              ? tBoard("DRAW")
+              : (props.selection?.selection ?? t("TITLE"))}
           </span>
         </span>
         <span className="flex shrink-0 items-center gap-2">

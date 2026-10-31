@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "Wybierz {name} po kursie {odds}",
       "MORE_MARKETS": "Handicap i suma",
       "PRICES_NOTE": "Orientacyjne kursy na zwycięzcę, zaktualizowane {relative}. Kurs zapisujemy w chwili zablokowania.",
-      "NO_PRICES_NOTE": "Kursy są teraz niedostępne. Nadal możesz wybrać stronę: kurs zapisujemy w chwili zablokowania."
+      "NO_PRICES_NOTE": "Kursy są teraz niedostępne. Nadal możesz wybrać stronę: kurs zapisujemy w chwili zablokowania.",
+      "DRAW": "Remis"
     },
     "SLIP": {
       "TITLE": "Kupon",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "Ten capper obecnie nie oferuje subskrypcji.",
     "PAYMENTS_OWN_PLAN": "Nie możesz subskrybować samego siebie.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Masz już aktywną subskrypcję tego cappera.",
-    "WEBHOOK_SIGNATURE_INVALID": "Podpis webhooka jest nieprawidłowy."
+    "WEBHOOK_SIGNATURE_INVALID": "Podpis webhooka jest nieprawidłowy.",
+    "OUTCOME_NOT_IN_EVENT": "W tym wydarzeniu wybierz: {home}, {away} albo remis (Draw).",
+    "PRICE_UNRELIABLE": "Żaden bukmacher nie oferuje obecnie wiarygodnego kursu dla tego typu. Spróbuj ponownie bliżej meczu.",
+    "PICK_DUPLICATE": "Masz już typ na ten rynek w tym wydarzeniu.",
+    "UNITS_INVALID": "Jednostki muszą mieścić się w przedziale od {min} do {max}, w krokach co {step}."
   },
   "LEGAL": {
     "LABEL": "Informacje prawne",

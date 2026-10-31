@@ -69,7 +69,14 @@ export function formatError(
     case "ERRORS.INVALID_REQUEST":
       return t(code, { path: param("path") });
     case "ERRORS.TEAM_NOT_IN_EVENT":
+    case "ERRORS.OUTCOME_NOT_IN_EVENT":
       return t(code, { home: param("home"), away: param("away") });
+    case "ERRORS.UNITS_INVALID":
+      return t(code, {
+        min: param("min"),
+        max: param("max"),
+        step: param("step"),
+      });
     case "ERRORS.LINE_NOT_OFFERED":
       return t(code, { line: param("line") });
     default:

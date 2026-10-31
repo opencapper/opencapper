@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "Choisir {name} à {odds}",
       "MORE_MARKETS": "Handicap et total",
       "PRICES_NOTE": "Cotes vainqueur indicatives, mises à jour {relative}. La cote est capturée au verrouillage.",
-      "NO_PRICES_NOTE": "Les cotes ne sont pas disponibles pour le moment. Vous pouvez quand même choisir un camp : la cote est capturée au verrouillage."
+      "NO_PRICES_NOTE": "Les cotes ne sont pas disponibles pour le moment. Vous pouvez quand même choisir un camp : la cote est capturée au verrouillage.",
+      "DRAW": "Match nul"
     },
     "SLIP": {
       "TITLE": "Coupon",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "Ce capper ne propose pas d'abonnement pour le moment.",
     "PAYMENTS_OWN_PLAN": "Vous ne pouvez pas vous abonner à vous-même.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Vous avez déjà un abonnement actif à ce capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "La signature du webhook n'est pas valide."
+    "WEBHOOK_SIGNATURE_INVALID": "La signature du webhook n'est pas valide.",
+    "OUTCOME_NOT_IN_EVENT": "Choisissez {home}, {away} ou le match nul (Draw) pour cet événement.",
+    "PRICE_UNRELIABLE": "Aucun bookmaker ne propose actuellement de cote fiable pour ce pronostic. Réessayez plus près du match.",
+    "PICK_DUPLICATE": "Vous avez déjà un pronostic sur ce marché pour cet événement.",
+    "UNITS_INVALID": "Les unités doivent être comprises entre {min} et {max}, par paliers de {step}."
   },
   "LEGAL": {
     "LABEL": "Informations légales",

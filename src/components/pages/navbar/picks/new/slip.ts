@@ -11,3 +11,5 @@ export type SlipSelection = {
   odds: number | null;
   bookmaker: string | null;
 };
+
+export type BoardSide = "home" | "away" | "draw";

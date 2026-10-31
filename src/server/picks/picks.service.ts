@@ -7,7 +7,14 @@ import {
   picks,
   users,
 } from "@/lib/db/schema/server";
-import type { PickMarket, SettledPicksQuery } from "@/lib/api/typebox/picks";
+import {
+  PICK_UNITS_MAX,
+  PICK_UNITS_MIN,
+  PICK_UNITS_STEP,
+  PickUnits,
+  type PickMarket,
+  type SettledPicksQuery,
+} from "@/lib/api/typebox/picks";
 import {
   EXCHANGE_BOOKMAKER,
   type SourcePlatform,
@@ -17,9 +24,11 @@ import { dayjs } from "@/lib/utils/format/date";
 import {
   captureOdds,
   fetchEventOdds,
+  findUpcomingEvent,
   formatLine,
   type CapturedOdds,
 } from "@/server/odds/odds.service";
+import { readSelection, resolveOutcome } from "@/server/odds/selection";
 import { appendPick } from "@/server/log/log.service";
 import { lookupParticipants } from "@/server/participants/participants.service";
 import { toApiPick } from "@/server/picks/picks.mapper";
@@ -29,7 +38,8 @@ import {
   upsertSourceUser,
   upsertTelegramUser,
 } from "@/server/users/identity.service";
-import { and, asc, eq, gt, isNotNull, ne, sql } from "drizzle-orm";
+import { Value } from "@sinclair/typebox/value";
+import { and, asc, eq, gt, isNotNull, ne, sql, type SQL } from "drizzle-orm";
 
 export type PickIdentity =
   | { kind: "discord"; discordId: string; username: string }
@@ -148,6 +158,52 @@ async function assertNotHidden(identity: PickIdentity) {
   if (row) throw new ApiError(409, "ERRORS.PROFILE_HIDDEN");
 }
 
+function samePickExists(match: SQL, input: CreatePickInput, db: Db | Tx) {
+  return db
+    .select({ id: picks.id })
+    .from(picks)
+    .innerJoin(users, eq(users.id, picks.userId))
+    .where(
+      and(
+        match,
+        eq(picks.sportKey, input.sportKey),
+        eq(picks.eventId, input.eventId),
+        eq(picks.market, input.market),
+      ),
+    )
+    .limit(1);
+}
+
+// One pick per event and market, so nobody pads a record by taking both sides or the same side twice.
+async function assertNoDuplicate(input: CreatePickInput) {
+  const match = identityMatch(input.identity);
+  if (!match) return;
+  const rows = await samePickExists(match, input, getDb());
+  if (rows.length > 0) throw new ApiError(409, "ERRORS.PICK_DUPLICATE");
+}
+
+export function unitsError(): ApiError {
+  return new ApiError(422, "ERRORS.UNITS_INVALID", {
+    min: PICK_UNITS_MIN,
+    max: PICK_UNITS_MAX,
+    step: PICK_UNITS_STEP,
+  });
+}
+
+// Everything checkable from free data, so a pick that would fail spends no Odds API credits.
+async function precheckPick(input: CreatePickInput) {
+  const parsed = readSelection(input.market, input.selection);
+  const event = await findUpcomingEvent(input.sportKey, input.eventId);
+  resolveOutcome({
+    sportKey: input.sportKey,
+    market: input.market,
+    side: parsed.side,
+    home: event.home,
+    away: event.away,
+  });
+  await assertNoDuplicate(input);
+}
+
 function exchangeOdds(fill: ExchangeFill): CapturedOdds {
   const commence = dayjs(fill.commenceTime);
   if (!commence.isAfter(dayjs()))
@@ -171,6 +227,9 @@ function exchangeOdds(fill: ExchangeFill): CapturedOdds {
 export async function createPick(input: CreatePickInput): Promise<ApiPick> {
   await assertNotBanned(input.identity);
   await assertNotHidden(input.identity);
+  if (!Value.Check(PickUnits, input.units)) throw unitsError();
+  // Importers match events and dedupe through pick_sources on their own.
+  if (!input.source) await precheckPick(input);
   const odds = input.exchangeFill
     ? exchangeOdds(input.exchangeFill)
     : await captureOdds(input, input.loadOdds);
@@ -186,6 +245,12 @@ export async function createPick(input: CreatePickInput): Promise<ApiPick> {
       .from(users)
       .where(eq(users.id, user.id))
       .for("update");
+
+    if (
+      !input.source &&
+      (await samePickExists(eq(users.id, user.id), input, tx)).length > 0
+    )
+      throw new ApiError(409, "ERRORS.PICK_DUPLICATE");
 
     const [next] = await tx
       .select({

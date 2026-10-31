@@ -13,10 +13,11 @@ import {
   lookupParticipants,
   participantFields,
 } from "@/server/participants/participants.service";
+import { saneOutcomes } from "@/server/odds/price";
 import {
   normalise,
-  parseSelection,
-  resolveTeam,
+  readSelection,
+  resolveOutcome,
 } from "@/server/odds/selection";
 import { toAmericanOdds } from "@/server/picks/picks.mapper";
 import { Type, type TSchema, type Static } from "@sinclair/typebox";
@@ -42,7 +43,7 @@ const EventOddsSchema = Type.Composite([
             outcomes: Type.Array(
               Type.Object({
                 name: Type.String(),
-                price: Type.Number({ exclusiveMinimum: 1 }),
+                price: Type.Number(),
                 point: Type.Optional(Type.Number()),
               }),
             ),
@@ -126,12 +127,53 @@ async function oddsApi<T extends TSchema>(
   return body;
 }
 
-export async function listEvents(sportKey: string): Promise<ApiEvent[]> {
-  const events = await oddsApi(
+const EVENTS_TTL_MS = 60_000;
+const eventsCache = new Map<
+  string,
+  { expires: number; events: Promise<Static<typeof EventSchema>[]> }
+>();
+
+// Free call, cached briefly so pick checks and the board share one fetch per sport.
+function sportEvents(sportKey: string): Promise<Static<typeof EventSchema>[]> {
+  const now = Date.now();
+  const hit = eventsCache.get(sportKey);
+  if (hit && hit.expires > now) return hit.events;
+  for (const [k, entry] of eventsCache)
+    if (entry.expires <= now) eventsCache.delete(k);
+  const events = oddsApi(
     `/sports/${encodeURIComponent(sportKey)}/events`,
     {},
     Type.Array(EventSchema),
   );
+  eventsCache.set(sportKey, { expires: now + EVENTS_TTL_MS, events });
+  events.catch(() => {
+    if (eventsCache.get(sportKey)?.events === events)
+      eventsCache.delete(sportKey);
+  });
+  return events;
+}
+
+export type ListedEvent = { home: string; away: string; commenceTime: Date };
+
+// Checks an event against the free list before anything is spent on its odds.
+export async function findUpcomingEvent(
+  sportKey: string,
+  eventId: string,
+): Promise<ListedEvent> {
+  const event = (await sportEvents(sportKey)).find((e) => e.id === eventId);
+  if (!event) throw new ApiError(404, "ERRORS.EVENT_NOT_FOUND");
+  const commence = dayjs(event.commence_time);
+  if (!commence.isValid() || !commence.isAfter(dayjs()))
+    throw new ApiError(409, "ERRORS.EVENT_STARTED");
+  return {
+    home: event.home_team,
+    away: event.away_team,
+    commenceTime: commence.toDate(),
+  };
+}
+
+export async function listEvents(sportKey: string): Promise<ApiEvent[]> {
+  const events = await sportEvents(sportKey);
   const now = dayjs();
   const upcoming = events.filter((e) => dayjs(e.commence_time).isAfter(now));
   const images = await lookupParticipants(
@@ -149,12 +191,28 @@ export async function listEvents(sportKey: string): Promise<ApiEvent[]> {
   }));
 }
 
-export function fetchEventOdds(input: {
+// Some books send a placeholder price of 1 for a suspended side; one such quote must not void the whole response.
+function dropBrokenPrices(event: EventOdds): EventOdds {
+  return {
+    ...event,
+    bookmakers: event.bookmakers.map((bookmaker) => ({
+      ...bookmaker,
+      markets: bookmaker.markets.map((market) => ({
+        ...market,
+        outcomes: market.outcomes.filter(
+          (o) => Number.isFinite(o.price) && o.price > 1,
+        ),
+      })),
+    })),
+  };
+}
+
+export async function fetchEventOdds(input: {
   sportKey: string;
   eventId: string;
   markets: readonly PickMarket[];
 }): Promise<EventOdds> {
-  return oddsApi(
+  const event = await oddsApi(
     `/sports/${encodeURIComponent(input.sportKey)}/events/${encodeURIComponent(input.eventId)}/odds`,
     {
       regions: "us,eu",
@@ -163,14 +221,15 @@ export function fetchEventOdds(input: {
     },
     EventOddsSchema,
   );
+  return dropBrokenPrices(event);
 }
 
 // Every upcoming event of a sport in one call; billed per region times market like the event endpoint.
-export function fetchSportOdds(input: {
+export async function fetchSportOdds(input: {
   sportKey: string;
   markets: readonly PickMarket[];
 }): Promise<EventOdds[]> {
-  return oddsApi(
+  const events = await oddsApi(
     `/sports/${encodeURIComponent(input.sportKey)}/odds`,
     {
       regions: "us,eu",
@@ -179,6 +238,7 @@ export function fetchSportOdds(input: {
     },
     Type.Array(EventOddsSchema),
   );
+  return events.map(dropBrokenPrices);
 }
 
 // Free: /sports costs no credits and lists only in season sports by default.
@@ -230,14 +290,7 @@ export async function captureOdds(
   },
   loadOdds: typeof fetchEventOdds = fetchEventOdds,
 ): Promise<CapturedOdds> {
-  const parsed = parseSelection(input.market, input.selection);
-  if (!parsed)
-    throw new ApiError(
-      422,
-      input.market === "totals"
-        ? "ERRORS.TOTALS_SIDE_REQUIRED"
-        : "ERRORS.SELECTION_UNREADABLE",
-    );
+  const parsed = readSelection(input.market, input.selection);
 
   const event = await loadOdds({
     sportKey: input.sportKey,
@@ -249,27 +302,38 @@ export async function captureOdds(
   if (!commence.isValid() || !commence.isAfter(capturedAt))
     throw new ApiError(409, "ERRORS.EVENT_STARTED");
 
-  const outcomeName =
-    input.market === "totals"
-      ? parsed.side
-      : resolveTeam(parsed.side, [event.home_team, event.away_team]);
-  if (!outcomeName)
-    throw new ApiError(422, "ERRORS.TEAM_NOT_IN_EVENT", {
+  const outcomeName = normalise(
+    resolveOutcome({
+      sportKey: input.sportKey,
+      market: input.market,
+      side: parsed.side,
       home: event.home_team,
       away: event.away_team,
-    });
+    }),
+  );
 
-  const offers = event.bookmakers
+  const quotes = event.bookmakers
     .flatMap((bookmaker) => {
-      const outcome = bookmaker.markets
-        .find((m) => m.key === input.market)
-        ?.outcomes.find((o) => normalise(o.name) === normalise(outcomeName));
-      return outcome ? [{ bookmaker: bookmaker.key, outcome }] : [];
+      const outcomes =
+        bookmaker.markets.find((m) => m.key === input.market)?.outcomes ?? [];
+      return outcomes
+        .filter((o) => normalise(o.name) === outcomeName)
+        .map((outcome) => ({
+          bookmaker: bookmaker.key,
+          outcome,
+          sane: saneOutcomes(bookmaker.key, input.market, outcomes).includes(
+            outcome,
+          ),
+        }));
     })
     .toSorted(
       (a, b) => bookmakerRank(a.bookmaker) - bookmakerRank(b.bookmaker),
     );
-  if (offers.length === 0) throw new ApiError(422, "ERRORS.MARKET_NOT_OFFERED");
+  if (quotes.length === 0) throw new ApiError(422, "ERRORS.MARKET_NOT_OFFERED");
+
+  // An empty exchange book or a stale quote is skipped for the next bookmaker in priority.
+  const offers = quotes.filter((q) => q.sane);
+  if (offers.length === 0) throw new ApiError(422, "ERRORS.PRICE_UNRELIABLE");
 
   const chosen =
     parsed.point === null
@@ -302,6 +366,7 @@ async function loadEventLines(
   sportKey: string,
   eventId: string,
 ): Promise<ApiEventOdds> {
+  await findUpcomingEvent(sportKey, eventId);
   const event = await fetchEventOdds({
     sportKey,
     eventId,
@@ -315,8 +380,11 @@ async function loadEventLines(
     const best = event.bookmakers
       .flatMap((bookmaker) => {
         const found = bookmaker.markets.find((m) => m.key === market);
-        return found && found.outcomes.length > 0
-          ? [{ bookmaker: bookmaker.key, outcomes: found.outcomes }]
+        const outcomes = found
+          ? saneOutcomes(bookmaker.key, market, found.outcomes)
+          : [];
+        return outcomes.length > 0
+          ? [{ bookmaker: bookmaker.key, outcomes }]
           : [];
       })
       .toSorted(

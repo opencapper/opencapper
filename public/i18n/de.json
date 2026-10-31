@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "{name} zur Quote {odds} tippen",
       "MORE_MARKETS": "Handicap und Über/Unter",
       "PRICES_NOTE": "Richtwerte für die Siegwette, aktualisiert {relative}. Die Quote wird beim Festschreiben erfasst.",
-      "NO_PRICES_NOTE": "Gerade sind keine Quoten verfügbar. Du kannst trotzdem eine Seite tippen: Die Quote wird beim Festschreiben erfasst."
+      "NO_PRICES_NOTE": "Gerade sind keine Quoten verfügbar. Du kannst trotzdem eine Seite tippen: Die Quote wird beim Festschreiben erfasst.",
+      "DRAW": "Unentschieden"
     },
     "SLIP": {
       "TITLE": "Wettschein",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "Dieser Capper bietet derzeit kein Abo an.",
     "PAYMENTS_OWN_PLAN": "Du kannst dich nicht selbst abonnieren.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Du hast bereits ein aktives Abo bei diesem Capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "Die Webhook-Signatur ist ungültig."
+    "WEBHOOK_SIGNATURE_INVALID": "Die Webhook-Signatur ist ungültig.",
+    "OUTCOME_NOT_IN_EVENT": "Wähle {home}, {away} oder Unentschieden (Draw) für dieses Spiel.",
+    "PRICE_UNRELIABLE": "Gerade bietet kein Buchmacher einen verlässlichen Preis für diesen Tipp. Versuche es näher am Spiel noch einmal.",
+    "PICK_DUPLICATE": "Du hast für dieses Spiel bereits einen Tipp auf diesen Markt.",
+    "UNITS_INVALID": "Units müssen zwischen {min} und {max} liegen, in Schritten von {step}."
   },
   "LEGAL": {
     "LABEL": "Rechtliches",

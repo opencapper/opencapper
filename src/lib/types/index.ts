@@ -44,6 +44,7 @@ export type ApiMoneyline = {
   bookmaker: string;
   home: number;
   away: number;
+  draw: number | null;
 };
 
 export type ApiBoardEvent = ApiEvent & { moneyline: ApiMoneyline | null };

@@ -1,4 +1,6 @@
 import type { PickMarket } from "@/lib/api/typebox/picks";
+import { DRAW_SELECTION, hasDrawOutcome } from "@/lib/config/markets";
+import { ApiError } from "@/server/errors";
 
 export type ParsedSelection = {
   side: string;
@@ -45,4 +47,38 @@ export function resolveTeam(
     return name.includes(side) || name.split(" ").includes(side);
   });
   return partial.length === 1 ? partial[0] : null;
+}
+
+// The outcome name a selection points at, or a 422 naming the valid sides; runs before any odds are fetched.
+export function resolveOutcome(input: {
+  sportKey: string;
+  market: PickMarket;
+  side: string;
+  home: string;
+  away: string;
+}): string {
+  if (input.market === "totals") return input.side;
+  const draw = input.market === "h2h" && hasDrawOutcome(input.sportKey);
+  if (draw && input.side === normalise(DRAW_SELECTION)) return DRAW_SELECTION;
+  const team = resolveTeam(input.side, [input.home, input.away]);
+  if (team) return team;
+  throw new ApiError(
+    422,
+    draw ? "ERRORS.OUTCOME_NOT_IN_EVENT" : "ERRORS.TEAM_NOT_IN_EVENT",
+    { home: input.home, away: input.away },
+  );
+}
+
+export function readSelection(
+  market: PickMarket,
+  raw: string,
+): ParsedSelection {
+  const parsed = parseSelection(market, raw);
+  if (parsed) return parsed;
+  throw new ApiError(
+    422,
+    market === "totals"
+      ? "ERRORS.TOTALS_SIDE_REQUIRED"
+      : "ERRORS.SELECTION_UNREADABLE",
+  );
 }

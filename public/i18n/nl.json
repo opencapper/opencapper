@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "Kies {name} tegen {odds}",
       "MORE_MARKETS": "Handicap en totaal",
       "PRICES_NOTE": "Indicatieve winnaarquoteringen, bijgewerkt {relative}. De quotering wordt vastgelegd bij het vergrendelen.",
-      "NO_PRICES_NOTE": "Quoteringen zijn nu niet beschikbaar. Je kunt nog steeds een kant kiezen: de quotering wordt vastgelegd bij het vergrendelen."
+      "NO_PRICES_NOTE": "Quoteringen zijn nu niet beschikbaar. Je kunt nog steeds een kant kiezen: de quotering wordt vastgelegd bij het vergrendelen.",
+      "DRAW": "Gelijkspel"
     },
     "SLIP": {
       "TITLE": "Wedslip",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "Deze capper biedt op dit moment geen abonnement aan.",
     "PAYMENTS_OWN_PLAN": "Je kunt je niet op jezelf abonneren.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Je hebt al een actief abonnement op deze capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "De webhookhandtekening is ongeldig."
+    "WEBHOOK_SIGNATURE_INVALID": "De webhookhandtekening is ongeldig.",
+    "OUTCOME_NOT_IN_EVENT": "Kies {home}, {away} of gelijkspel (Draw) voor dit evenement.",
+    "PRICE_UNRELIABLE": "Op dit moment biedt geen enkele bookmaker een betrouwbare quotering voor deze pick. Probeer het dichter bij de wedstrijd opnieuw.",
+    "PICK_DUPLICATE": "Je hebt al een pick op deze markt voor dit evenement.",
+    "UNITS_INVALID": "Units moeten tussen {min} en {max} liggen, in stappen van {step}."
   },
   "LEGAL": {
     "LABEL": "Juridisch",

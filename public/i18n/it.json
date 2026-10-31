@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "Scegli {name} a {odds}",
       "MORE_MARKETS": "Handicap e totale",
       "PRICES_NOTE": "Quote vincente indicative, aggiornate {relative}. La quota viene registrata quando blocchi.",
-      "NO_PRICES_NOTE": "Le quote non sono disponibili al momento. Puoi comunque scegliere un lato: la quota viene registrata quando blocchi."
+      "NO_PRICES_NOTE": "Le quote non sono disponibili al momento. Puoi comunque scegliere un lato: la quota viene registrata quando blocchi.",
+      "DRAW": "Pareggio"
     },
     "SLIP": {
       "TITLE": "Schedina",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "Questo capper al momento non offre abbonamenti.",
     "PAYMENTS_OWN_PLAN": "Non puoi abbonarti a te stesso.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Hai già un abbonamento attivo a questo capper.",
-    "WEBHOOK_SIGNATURE_INVALID": "La firma del webhook non è valida."
+    "WEBHOOK_SIGNATURE_INVALID": "La firma del webhook non è valida.",
+    "OUTCOME_NOT_IN_EVENT": "Scegli {home}, {away} o il pareggio (Draw) per questo evento.",
+    "PRICE_UNRELIABLE": "Al momento nessun bookmaker offre una quota affidabile per questo pronostico. Riprova più vicino alla partita.",
+    "PICK_DUPLICATE": "Hai già un pronostico su questo mercato per questo evento.",
+    "UNITS_INVALID": "Le unità devono essere tra {min} e {max}, a passi di {step}."
   },
   "LEGAL": {
     "LABEL": "Informazioni legali",

@@ -657,7 +657,8 @@
       "PICK_SIDE_AT": "{name} seç, oran {odds}",
       "MORE_MARKETS": "Handikap ve toplam",
       "PRICES_NOTE": "Gösterge niteliğinde maç sonucu oranları, {relative} güncellendi. Oran kilitlediğinde kaydedilir.",
-      "NO_PRICES_NOTE": "Oranlar şu anda mevcut değil. Yine de bir taraf seçebilirsin: oran kilitlediğinde kaydedilir."
+      "NO_PRICES_NOTE": "Oranlar şu anda mevcut değil. Yine de bir taraf seçebilirsin: oran kilitlediğinde kaydedilir.",
+      "DRAW": "Beraberlik"
     },
     "SLIP": {
       "TITLE": "Kupon",
@@ -1070,7 +1071,11 @@
     "PAYMENTS_NO_PLAN": "Bu capper şu anda abonelik sunmuyor.",
     "PAYMENTS_OWN_PLAN": "Kendine abone olamazsın.",
     "PAYMENTS_ALREADY_SUBSCRIBED": "Bu capper için zaten aktif bir aboneliğin var.",
-    "WEBHOOK_SIGNATURE_INVALID": "Webhook imzası geçersiz."
+    "WEBHOOK_SIGNATURE_INVALID": "Webhook imzası geçersiz.",
+    "OUTCOME_NOT_IN_EVENT": "Bu karşılaşma için şunlardan birini seç: {home}, {away} veya beraberlik (Draw).",
+    "PRICE_UNRELIABLE": "Şu anda hiçbir bahis sitesi bu tahmin için güvenilir bir oran sunmuyor. Maça daha yakın bir zamanda tekrar dene.",
+    "PICK_DUPLICATE": "Bu karşılaşmada bu bahis türü için zaten bir tahminin var.",
+    "UNITS_INVALID": "Birim {min} ile {max} arasında, {step} adımlarla olmalı."
   },
   "LEGAL": {
     "LABEL": "Yasal",

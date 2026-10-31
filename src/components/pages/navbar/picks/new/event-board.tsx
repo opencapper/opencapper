@@ -7,7 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { SlipSelection } from "@/components/pages/navbar/picks/new/slip";
+import type {
+  BoardSide,
+  SlipSelection,
+} from "@/components/pages/navbar/picks/new/slip";
+import { DRAW_SELECTION, hasDrawOutcome } from "@/lib/config/markets";
 import { isFighterGroup, sportGroup } from "@/lib/config/sports";
 import { vendorName } from "@/lib/config/vendor-registry";
 import type { ApiBoard, ApiBoardEvent } from "@/lib/types";
@@ -22,8 +26,6 @@ import {
 } from "@/lib/utils/format/date";
 import { formatAmericanOdds } from "@/lib/utils/format/number";
 import { useLocale, useTranslations } from "next-intl";
-
-type Side = "home" | "away";
 
 function fold(value: string): string {
   return value
@@ -56,7 +58,7 @@ export function EventBoard(props: {
   search: string;
   onSearch: (value: string) => void;
   selected: SlipSelection | null;
-  onPick: (event: ApiBoardEvent, side: Side) => void;
+  onPick: (event: ApiBoardEvent, side: BoardSide) => void;
   onMoreMarkets: (event: ApiBoardEvent) => void;
 }) {
   const t = useTranslations("PICK_NEW.BOARD");
@@ -176,7 +178,7 @@ function EventRow(props: {
   sportKey: string;
   event: ApiBoardEvent;
   selected: SlipSelection | null;
-  onPick: (side: Side) => void;
+  onPick: (side: BoardSide) => void;
   onMoreMarkets: () => void;
 }) {
   const t = useTranslations("PICK_NEW.BOARD");
@@ -250,6 +252,34 @@ function EventRow(props: {
             />
           </div>
         ))}
+        {hasDrawOutcome(props.sportKey) && (
+          <div className="flex items-center gap-3">
+            <span className="flex min-w-0 flex-1 items-center gap-2.5">
+              <span
+                aria-hidden
+                className="border-border text-muted-foreground inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-dashed"
+              >
+                <Icon name="scale" className="size-3.5" />
+              </span>
+              <span className="text-muted-foreground truncate text-sm font-medium">
+                {t("DRAW")}
+              </span>
+            </span>
+            <PriceButton
+              odds={line?.draw ?? null}
+              active={isPicked(DRAW_SELECTION)}
+              label={
+                line?.draw == null
+                  ? t("PICK_SIDE", { name: t("DRAW") })
+                  : t("PICK_SIDE_AT", {
+                      name: t("DRAW"),
+                      odds: formatAmericanOdds(line.draw),
+                    })
+              }
+              onClick={() => props.onPick("draw")}
+            />
+          </div>
+        )}
         <div className="flex items-center justify-between gap-3 pt-0.5">
           <button
             type="button"
