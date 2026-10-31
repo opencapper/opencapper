@@ -5,23 +5,27 @@ import { dayjs } from "@/lib/utils/format/date";
 import { OTS_CALENDARS } from "@/server/constants";
 import { ApiError } from "@/server/errors";
 import { backfillLog, getHeadRow } from "@/server/log/log.service";
+import {
+  OP_APPEND,
+  OP_SHA256,
+  OTS_FORK,
+  bitcoinAttestations,
+  hasPending,
+  otsHeader,
+  parseOts,
+  serializeOts,
+  upgradeOts,
+} from "@/server/log/ots";
 import { desc, eq } from "drizzle-orm";
 import { createHash, randomBytes } from "node:crypto";
 
-const ANCHOR_EVERY_HOURS = 24;
+const ANCHOR_EVERY_MS = 24 * 60 * 60 * 1000;
 const CHECK_EVERY_MS = 60 * 60 * 1000;
 const FIRST_CHECK_MS = 60 * 1000;
 const CALENDAR_TIMEOUT_MS = 20_000;
 const MAX_CALENDAR_REPLY = 10_000;
-
-const OTS_MAGIC = Buffer.from(
-  "004f70656e54696d657374616d7073000050726f6f6600bf89e2e884e89294",
-  "hex",
-);
-const OTS_VERSION = 0x01;
-const OP_SHA256 = 0x08;
-const OP_APPEND = 0xf0;
-const OTS_FORK = 0xff;
+const MAX_UPGRADE_REPLY = 100_000;
+const OTS_ACCEPT = "application/vnd.opentimestamps.v1";
 
 async function submitDigest(
   calendar: string,
@@ -32,7 +36,7 @@ async function submitDigest(
       method: "POST",
       body: new Uint8Array(digest),
       headers: {
-        Accept: "application/vnd.opentimestamps.v1",
+        Accept: OTS_ACCEPT,
         "Content-Type": "application/x-www-form-urlencoded",
         "User-Agent": "opencapper",
       },
@@ -74,12 +78,50 @@ async function stampRoot(root: Buffer): Promise<Buffer | null> {
   const body = ok.flatMap((branch, i) =>
     i < ok.length - 1 ? [Buffer.from([OTS_FORK]), branch] : [branch],
   );
-  return Buffer.concat([
-    OTS_MAGIC,
-    Buffer.from([OTS_VERSION, OP_SHA256]),
-    root,
-    ...body,
-  ]);
+  return Buffer.concat([otsHeader(root), ...body]);
+}
+
+// 404 means the calendar has not committed this digest to a Bitcoin block yet.
+export async function fetchCalendarUpgrade(
+  calendar: string,
+  commitment: Buffer,
+): Promise<Buffer | null> {
+  try {
+    const res = await fetch(
+      `${calendar}/timestamp/${commitment.toString("hex")}`,
+      {
+        headers: { Accept: OTS_ACCEPT, "User-Agent": "opencapper" },
+        signal: AbortSignal.timeout(CALENDAR_TIMEOUT_MS),
+      },
+    );
+    if (!res.ok) return null;
+    const body = Buffer.from(await res.arrayBuffer());
+    if (body.length === 0 || body.length > MAX_UPGRADE_REPLY) return null;
+    return body;
+  } catch (error) {
+    console.warn(`[log] calendar ${calendar} upgrade failed`, error);
+    return null;
+  }
+}
+
+// Calendars commit to Bitcoin a few hours after stamping; retried every tick until a block attests.
+async function upgradeAnchors() {
+  const rows = await getDb()
+    .select({ id: logAnchors.id, ots: logAnchors.ots })
+    .from(logAnchors)
+    .where(eq(logAnchors.upgraded, false));
+  for (const row of rows) {
+    const proof = parseOts(row.ots);
+    if (!hasPending(proof)) continue;
+    const result = await upgradeOts(proof, fetchCalendarUpgrade);
+    if (!result.changed) continue;
+    const upgraded = bitcoinAttestations(result.proof).length > 0;
+    await getDb()
+      .update(logAnchors)
+      .set({ ots: serializeOts(result.proof), upgraded })
+      .where(eq(logAnchors.id, row.id));
+    console.log(`[log] anchor ${row.id} upgraded to a Bitcoin attestation`);
+  }
 }
 
 async function anchorIfDue() {
@@ -92,7 +134,11 @@ async function anchorIfDue() {
     .orderBy(desc(logAnchors.createdAt))
     .limit(1);
   if (last && last.root.equals(head.root)) return;
-  if (last && dayjs().diff(dayjs(last.createdAt), "hour") < ANCHOR_EVERY_HOURS)
+  // Half a tick of slack, or the hourly check lands just short and each stamp slips an hour.
+  if (
+    last &&
+    dayjs().diff(dayjs(last.createdAt)) < ANCHOR_EVERY_MS - CHECK_EVERY_MS / 2
+  )
     return;
   const ots = await stampRoot(head.root);
   if (!ots) {
@@ -111,6 +157,11 @@ let running = false;
 async function tick() {
   if (running) return;
   running = true;
+  try {
+    await upgradeAnchors();
+  } catch (error) {
+    console.error("[log] anchor upgrade failed", error);
+  }
   try {
     await anchorIfDue();
   } catch (error) {

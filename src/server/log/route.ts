@@ -9,14 +9,15 @@ import { Elysia, t } from "elysia";
 
 const EXPORT_LIMIT = 1000;
 
+// Async handlers: see usersRoute.
 export const logRoute = new Elysia({ prefix: "/log" })
   .get("/head", () => getLogHead())
-  .get("/picks/:id", (ctx) => getPickEntry(ctx.params.id), {
+  .get("/picks/:id", async (ctx) => getPickEntry(ctx.params.id), {
     params: t.Object({ id: t.Numeric({ minimum: 1, multipleOf: 1 }) }),
   })
   .get(
     "/users/:username/:seq",
-    (ctx) => getUserSequenceEntry(ctx.params.username, ctx.params.seq),
+    async (ctx) => getUserSequenceEntry(ctx.params.username, ctx.params.seq),
     {
       params: t.Object({
         username: t.String({ minLength: 2, maxLength: 32 }),
@@ -39,6 +40,6 @@ export const logRoute = new Elysia({ prefix: "/log" })
   .get("/anchors", () => listAnchors())
   .get(
     "/anchors/:file",
-    (ctx) => getAnchorOts(Number.parseInt(ctx.params.file, 10)),
+    async (ctx) => getAnchorOts(Number.parseInt(ctx.params.file, 10)),
     { params: t.Object({ file: t.String({ pattern: "^[0-9]{1,9}\\.ots$" }) }) },
   );
