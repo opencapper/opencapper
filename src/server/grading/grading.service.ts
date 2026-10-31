@@ -1,9 +1,13 @@
 import { getDb } from "@/lib/db/server/client";
 import {
+  pickDisqualifications,
+  pickResultChanges,
   pickSettlements,
   pickSources,
   picks,
+  type DisqualifySource,
   type Pick,
+  type VoidReason,
 } from "@/lib/db/schema/server";
 import type { PickResult } from "@/lib/api/typebox/picks";
 import { dayjs } from "@/lib/utils/format/date";
@@ -21,17 +25,39 @@ import { EXCHANGE_BOOKMAKER } from "@/lib/api/typebox/sources";
 import {
   fetchMarkets,
   marketPrices,
+  marketStart,
   resolveOutcome,
   type PolymarketMarket,
 } from "@/server/polymarket/polymarket.api";
-import { and, eq, gt, isNotNull, isNull, lte, ne } from "drizzle-orm";
+import {
+  and,
+  count,
+  eq,
+  gt,
+  isNotNull,
+  isNull,
+  lt,
+  lte,
+  ne,
+  or,
+} from "drizzle-orm";
 
 const GRADE_AFTER_HOURS = 3;
+// The scores endpoint reaches this far back; older games are only found again when the feed moved them.
 const SCORES_DAYS_FROM = 3;
-const VOID_AFTER_DAYS = 7;
+// Past the scores window a pick is overdue: its sport is polled this often, and each poll logs it.
+const OVERDUE_RETRY_HOURS = 6;
+// Bookmakers void a game moved this much later than scheduled.
+const POSTPONED_AFTER_HOURS = 48;
+// No score and no postponement after this long: void as a timeout, flagged for staff.
+const VOID_TIMEOUT_DAYS = 30;
 const CLOSING_WINDOW_MINUTES = 15;
 // Exchange markets stay open through postponements, so they get longer before a void.
 const EXCHANGE_VOID_AFTER_DAYS = 14;
+// A market that resolves before the stored start means the game was earlier: grade it and check its fills.
+const EXCHANGE_LOOKAHEAD_HOURS = 24;
+
+const lastScoresPoll = new Map<string, number>();
 
 function groupBy<T>(items: readonly T[], key: (item: T) => string) {
   const groups = new Map<string, T[]>();
@@ -47,12 +73,14 @@ async function recordResult(
   result: PickResult,
   score: FinalScore | null,
   gradedAt: Date,
+  voidReason: VoidReason | null = null,
 ) {
   const values = {
     result,
     homeScore: score?.home ?? null,
     awayScore: score?.away ?? null,
     gradedAt,
+    voidReason,
   };
   await getDb().transaction(async (tx) => {
     const updated = await tx
@@ -66,6 +94,122 @@ async function recordResult(
       .values({ pickId, ...values })
       .onConflictDoUpdate({ target: pickSettlements.pickId, set: values });
   });
+}
+
+// The only way to change a final result: the picks trigger needs the audit row from the same transaction.
+export async function correctResult(input: {
+  pickId: number;
+  to: PickResult;
+  reason: string;
+  actor: string;
+}): Promise<{ from: PickResult; to: PickResult } | null> {
+  return getDb().transaction(async (tx) => {
+    const [row] = await tx
+      .select({ result: picks.result })
+      .from(picks)
+      .where(eq(picks.id, input.pickId))
+      .for("update");
+    if (!row || row.result === input.to) return null;
+    await tx.insert(pickResultChanges).values({
+      pickId: input.pickId,
+      fromResult: row.result,
+      toResult: input.to,
+      reason: input.reason,
+      actor: input.actor,
+    });
+    await tx
+      .update(picks)
+      .set({ result: input.to })
+      .where(eq(picks.id, input.pickId));
+    await tx
+      .update(pickSettlements)
+      .set({
+        result: input.to,
+        ...(input.to === "void" ? {} : { voidReason: null }),
+      })
+      .where(eq(pickSettlements.pickId, input.pickId));
+    console.warn(
+      JSON.stringify({
+        event: "pick_result_corrected",
+        pickId: input.pickId,
+        from: row.result,
+        to: input.to,
+        reason: input.reason,
+        actor: input.actor,
+      }),
+    );
+    return { from: row.result, to: input.to };
+  });
+}
+
+// A pick locked at or after the real start leaves every record; the row stays and only this flag is added.
+export async function disqualifyPick(input: {
+  pickId: number;
+  actualStart: Date;
+  detectedBy: DisqualifySource;
+  evidence: Record<string, string | number | null>;
+}): Promise<boolean> {
+  const inserted = await getDb()
+    .insert(pickDisqualifications)
+    .values({
+      pickId: input.pickId,
+      actualStart: input.actualStart,
+      detectedBy: input.detectedBy,
+      evidence: JSON.stringify(input.evidence),
+    })
+    .onConflictDoNothing()
+    .returning({ pickId: pickDisqualifications.pickId });
+  if (inserted.length > 0)
+    console.warn(
+      JSON.stringify({
+        event: "pick_disqualified",
+        pickId: input.pickId,
+        actualStart: dayjs(input.actualStart).toISOString(),
+        detectedBy: input.detectedBy,
+        evidence: input.evidence,
+      }),
+    );
+  return inserted.length > 0;
+}
+
+async function checkStart(
+  pick: Pick,
+  actualStart: Date | null,
+  source: string,
+  fillAt: Date | null = null,
+) {
+  if (!actualStart) return;
+  const lockedAt = fillAt && fillAt > pick.createdAt ? fillAt : pick.createdAt;
+  if (dayjs(lockedAt).isBefore(actualStart)) return;
+  await disqualifyPick({
+    pickId: pick.id,
+    actualStart,
+    detectedBy: "grading",
+    evidence: {
+      source,
+      storedCommence: dayjs(pick.commenceTime).toISOString(),
+      createdAt: dayjs(pick.createdAt).toISOString(),
+      fillAt: fillAt ? dayjs(fillAt).toISOString() : null,
+    },
+  });
+}
+
+function gradingLog(
+  level: "warn" | "error",
+  event: string,
+  pick: Pick,
+  extra: Record<string, string | number | null> = {},
+) {
+  const line = JSON.stringify({
+    event,
+    pickId: pick.id,
+    sportKey: pick.sportKey,
+    eventId: pick.eventId,
+    commenceTime: dayjs(pick.commenceTime).toISOString(),
+    ...extra,
+  });
+  if (level === "error") console.error(line);
+  else console.warn(line);
 }
 
 export async function gradePendingPicks(
@@ -86,35 +230,104 @@ export async function gradePendingPicks(
       ),
     );
   const scoresFrom = now.subtract(SCORES_DAYS_FROM, "day");
-  const voidBefore = now.subtract(VOID_AFTER_DAYS, "day");
+  const timeoutBefore = now.subtract(VOID_TIMEOUT_DAYS, "day");
 
   let graded = 0;
   for (const [sportKey, sportPicks] of groupBy(pending, (p) => p.sportKey)) {
+    const recent = sportPicks.some((p) =>
+      dayjs(p.commenceTime).isAfter(scoresFrom),
+    );
+    const lastPoll = lastScoresPoll.get(sportKey) ?? 0;
+    if (!recent && now.valueOf() - lastPoll < OVERDUE_RETRY_HOURS * 60 * 60_000)
+      continue;
+    lastScoresPoll.set(sportKey, now.valueOf());
+
     const events = new Map<string, EventScore>();
-    if (sportPicks.some((p) => dayjs(p.commenceTime).isAfter(scoresFrom))) {
-      try {
-        for (const event of await loadScores(sportKey))
-          events.set(event.id, event);
-      } catch (error) {
-        console.error(`grading: scores for ${sportKey} failed`, error);
-        continue;
-      }
+    try {
+      for (const event of await loadScores(sportKey))
+        events.set(event.id, event);
+    } catch (error) {
+      console.error(`grading: scores for ${sportKey} failed`, error);
+      continue;
     }
 
     for (const pick of sportPicks) {
       const event = events.get(pick.eventId);
+      if (event)
+        await checkStart(pick, dayjs(event.commence_time).toDate(), "scores");
       const score = event ? finalScore(event) : null;
       const result = event && score ? settle(pick, event, score) : null;
       if (result) {
         await recordResult(pick.id, result, score, now.toDate());
         graded++;
-      } else if (dayjs(pick.commenceTime).isBefore(voidBefore)) {
-        await recordResult(pick.id, "void", null, now.toDate());
+        continue;
+      }
+      if (event && score)
+        gradingLog("error", "grading_unsettled", pick, {
+          home: event.home_team,
+          away: event.away_team,
+          selection: pick.selection,
+        });
+      const movedHours = event
+        ? dayjs(event.commence_time).diff(pick.commenceTime, "hour", true)
+        : 0;
+      if (event && !event.completed && movedHours >= POSTPONED_AFTER_HOURS) {
+        gradingLog("warn", "grading_void_postponed", pick, {
+          newCommence: event.commence_time,
+        });
+        await recordResult(pick.id, "void", null, now.toDate(), "postponed");
         graded++;
+      } else if (dayjs(pick.commenceTime).isBefore(timeoutBefore)) {
+        gradingLog("error", "grading_void_timeout", pick, {
+          days: VOID_TIMEOUT_DAYS,
+        });
+        await recordResult(pick.id, "void", null, now.toDate(), "timeout");
+        graded++;
+      } else if (!dayjs(pick.commenceTime).isAfter(scoresFrom)) {
+        gradingLog("warn", "grading_overdue", pick, {
+          inFeed: event ? 1 : 0,
+          retryHours: OVERDUE_RETRY_HOURS,
+        });
       }
     }
   }
   return graded;
+}
+
+export async function gradingBacklog(now = dayjs()) {
+  const db = getDb();
+  const overdueBefore = now.subtract(SCORES_DAYS_FROM, "day").toDate();
+  const exchangeOverdueBefore = now.subtract(1, "day").toDate();
+  const [overdue] = await db
+    .select({ count: count() })
+    .from(picks)
+    .where(
+      and(
+        eq(picks.result, "pending"),
+        or(
+          and(
+            ne(picks.bookmaker, EXCHANGE_BOOKMAKER),
+            lt(picks.commenceTime, overdueBefore),
+          ),
+          and(
+            eq(picks.bookmaker, EXCHANGE_BOOKMAKER),
+            lt(picks.commenceTime, exchangeOverdueBefore),
+          ),
+        ),
+      ),
+    );
+  const [timedOut] = await db
+    .select({ count: count() })
+    .from(pickSettlements)
+    .where(eq(pickSettlements.voidReason, "timeout"));
+  const [disqualified] = await db
+    .select({ count: count() })
+    .from(pickDisqualifications);
+  return {
+    overdue: overdue?.count ?? 0,
+    timedOut: timedOut?.count ?? 0,
+    disqualified: disqualified?.count ?? 0,
+  };
 }
 
 function closingPrice(event: EventOdds, pick: Pick) {
@@ -218,6 +431,7 @@ async function exchangePicks(where: ReturnType<typeof and>) {
             pick: row.pick,
             marketRef: row.source.marketRef,
             outcomeIndex: row.source.outcomeIndex,
+            filledAt: row.source.postedAt,
           },
         ]
       : [],
@@ -229,7 +443,9 @@ export async function gradeExchangePicks(
   now = dayjs(),
   loadMarkets: typeof fetchMarkets = fetchMarkets,
 ): Promise<number> {
-  const pending = await exchangePicks(lte(picks.commenceTime, now.toDate()));
+  const pending = await exchangePicks(
+    lte(picks.commenceTime, now.add(EXCHANGE_LOOKAHEAD_HOURS, "hour").toDate()),
+  );
   if (pending.length === 0) return 0;
   const markets = new Map<string, PolymarketMarket>();
   for (const market of await loadMarkets(
@@ -242,12 +458,23 @@ export async function gradeExchangePicks(
   let graded = 0;
   for (const entry of pending) {
     const market = markets.get(entry.marketRef);
+    if (market)
+      await checkStart(
+        entry.pick,
+        marketStart(market),
+        "polymarket",
+        entry.filledAt,
+      );
     const result = market ? resolveOutcome(market, entry.outcomeIndex) : null;
     if (result) {
       await recordResult(entry.pick.id, result, null, now.toDate());
       graded++;
     } else if (dayjs(entry.pick.commenceTime).isBefore(voidBefore)) {
-      await recordResult(entry.pick.id, "void", null, now.toDate());
+      gradingLog("error", "grading_void_timeout", entry.pick, {
+        days: EXCHANGE_VOID_AFTER_DAYS,
+        marketRef: entry.marketRef,
+      });
+      await recordResult(entry.pick.id, "void", null, now.toDate(), "timeout");
       graded++;
     }
   }

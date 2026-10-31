@@ -1,11 +1,19 @@
 import { getDb } from "@/lib/db/server/client";
 import {
   historyPicks,
+  pickDisqualifications,
   pickSettlements,
   picks,
   users,
   type User,
 } from "@/lib/db/schema/server";
+import {
+  GRADED_RESULTS,
+  RESULT_SHARES,
+  resultsIn,
+  type RecordColumn,
+} from "@/lib/config/results";
+import type { PickResult } from "@/lib/api/typebox/picks";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
 import type { CapperStats, HistoryStats, ProfileStats } from "@/lib/types";
 import {
@@ -25,21 +33,47 @@ import {
   type SQLWrapper,
 } from "drizzle-orm";
 
+function sqlList(values: readonly string[]) {
+  return sql.raw(values.map((v) => `'${v}'`).join(", "));
+}
+
+// Record column of a result: half wins count as wins, half losses as losses, 50/50 resolutions as pushes.
+export function recordCount(result: SQLWrapper, column: RecordColumn) {
+  return sql`count(*) filter (where ${result} in (${sqlList(resultsIn(column))}))::int`.mapWith(
+    Number,
+  );
+}
+
+export const gradedIn = (result: SQLWrapper) =>
+  sql`${result} in (${sqlList(GRADED_RESULTS)})`;
+
 const count = (result: string) =>
   sql`count(*) filter (where ${picks.result} = ${result})`.mapWith(Number);
 
 export function netOf(result: SQLWrapper, units: SQLWrapper, odds: SQLWrapper) {
-  return sql`coalesce(sum(case
-  when ${result} = 'win' then ${units} * (${odds} - 1)
-  when ${result} = 'loss' then -${units}
-  else 0 end), 0)::float8`.mapWith(Number);
+  const cases = Object.entries(RESULT_SHARES).flatMap(([name, share]) =>
+    share.win === 0 && share.loss === 0
+      ? []
+      : [
+          sql`when ${result} = ${sql.raw(`'${name}'`)} then ${units} * (${sql.raw(String(share.win))} * (${odds} - 1) - ${sql.raw(String(share.loss))})`,
+        ],
+  );
+  return sql`coalesce(sum(case ${sql.join(cases, sql` `)} else 0 end), 0)::float8`.mapWith(
+    Number,
+  );
 }
 
 export function riskedOf(result: SQLWrapper, units: SQLWrapper) {
   return sql`coalesce(sum(case
-  when ${result} in ('win', 'loss', 'push') then ${units}
+  when ${gradedIn(result)} then ${units}
   else 0 end), 0)::float8`.mapWith(Number);
 }
+
+// Picks ordered at or after the real start stay listed but never count.
+export const countedPick = sql`not exists (select 1 from ${pickDisqualifications} where ${pickDisqualifications.pickId} = ${picks.id})`;
+
+// Legacy history rows stored a 50/50 resolution as void; history never voids for any other reason.
+export const historyResult = sql<PickResult>`case when ${historyPicks.result} = 'void' then 'split' else ${historyPicks.result} end`;
 
 export const net = netOf(picks.result, picks.units, picks.oddsDecimal);
 
@@ -49,9 +83,9 @@ const statColumns = {
   username: users.username,
   discordUserId: users.discordId,
   picks: sql`count(${picks.id})`.mapWith(Number),
-  wins: count("win"),
-  losses: count("loss"),
-  pushes: count("push"),
+  wins: recordCount(picks.result, "win"),
+  losses: recordCount(picks.result, "loss"),
+  pushes: recordCount(picks.result, "push"),
   pending: count("pending"),
   units: net,
   unitsRisked: risked,
@@ -104,7 +138,7 @@ export function emptyStats(username: string): CapperStats {
 }
 
 const historyCount = (result: string) =>
-  sql`count(*) filter (where ${historyPicks.result} = ${result})::int`.mapWith(
+  sql`count(*) filter (where ${historyResult} = ${result})::int`.mapWith(
     Number,
   );
 
@@ -112,16 +146,12 @@ async function getHistoryStats(name: string): Promise<HistoryStats | null> {
   const [row] = await getDb()
     .select({
       picks: sql`count(*)::int`.mapWith(Number),
-      wins: historyCount("win"),
-      losses: historyCount("loss"),
-      pushes: historyCount("push"),
+      wins: recordCount(historyResult, "win"),
+      losses: recordCount(historyResult, "loss"),
+      pushes: recordCount(historyResult, "push"),
       voids: historyCount("void"),
-      units: netOf(
-        historyPicks.result,
-        historyPicks.units,
-        historyPicks.oddsDecimal,
-      ),
-      unitsRisked: riskedOf(historyPicks.result, historyPicks.units),
+      units: netOf(historyResult, historyPicks.units, historyPicks.oddsDecimal),
+      unitsRisked: riskedOf(historyResult, historyPicks.units),
     })
     .from(historyPicks)
     .innerJoin(users, eq(users.id, historyPicks.userId))
@@ -169,7 +199,7 @@ export async function getCapperStats(username: string): Promise<ProfileStats> {
     getDb()
       .select(statColumns)
       .from(users)
-      .leftJoin(picks, eq(picks.userId, users.id))
+      .leftJoin(picks, and(eq(picks.userId, users.id), countedPick))
       .leftJoin(pickSettlements, eq(pickSettlements.pickId, picks.id))
       .where(eq(users.id, profile.id))
       .groupBy(users.id),
@@ -195,6 +225,7 @@ export async function getGuildStats(input: {
     eq(picks.guildId, input.guildId),
     gte(picks.commenceTime, input.from),
     lte(picks.commenceTime, input.to),
+    countedPick,
   ];
   const rows = await getDb()
     .select(statColumns)

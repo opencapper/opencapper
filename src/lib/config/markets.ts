@@ -26,4 +26,7 @@ export const PICK_STATUS_KEY = {
   loss: msg("PROFILE.STATUS.LOSS"),
   push: msg("PROFILE.STATUS.PUSH"),
   void: msg("PROFILE.STATUS.VOID"),
+  half_win: msg("PROFILE.STATUS.HALF_WIN"),
+  half_loss: msg("PROFILE.STATUS.HALF_LOSS"),
+  split: msg("PROFILE.STATUS.SPLIT"),
 } satisfies Record<PickResult, string>;

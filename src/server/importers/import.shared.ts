@@ -2,7 +2,12 @@ import { PICK_UNITS_MAX, PICK_UNITS_MIN } from "@/lib/api/typebox/picks";
 import type { ApiEvent, ApiPick } from "@/lib/types";
 import { dayjs } from "@/lib/utils/format/date";
 import { serverEnv } from "@/server/env";
-import { fetchEventOdds, listEvents } from "@/server/odds/odds.service";
+import {
+  fetchEventOdds,
+  listEventStarts,
+  listEvents,
+  type EventStart,
+} from "@/server/odds/odds.service";
 import { normalise } from "@/server/odds/selection";
 
 // Safety window: a source older than this at import time is not imported, so a stale post cannot become a pick.
@@ -10,6 +15,8 @@ export const SOURCE_MAX_AGE_HOURS = 6;
 // One event odds call asks for us,eu and one market.
 const CREDITS_PER_ODDS_CALL = 2;
 const EVENT_START_TOLERANCE_MINUTES = 90;
+// Widest gap between two sources' start times still taken as the same game; Polymarket placeholders were 7.5 hours off.
+const START_CHECK_TOLERANCE_HOURS = 12;
 
 export type ImportSkip = { ref: string; reason: string };
 
@@ -37,6 +44,7 @@ function creditsLeft(): number {
 // Per import cycle: one events list per sport (free) and one odds call per event and market, under the daily budget.
 export function createCycle(report: ImportReport) {
   const events = new Map<string, Promise<ApiEvent[]>>();
+  const starts = new Map<string, Promise<EventStart[]>>();
   const odds = new Map<string, ReturnType<typeof fetchEventOdds>>();
 
   const loadOdds: typeof fetchEventOdds = (input) => {
@@ -59,6 +67,15 @@ export function createCycle(report: ImportReport) {
       [...odds.keys()].some((k) => k.startsWith(`${sportKey}/${eventId}/`)) ||
       hasBudget(),
     loadOdds,
+    starts(sportKey: string): Promise<EventStart[]> {
+      const hit = starts.get(sportKey);
+      if (hit) return hit;
+      const pending = serverEnv.oddsApiKey
+        ? listEventStarts(sportKey).catch(() => [])
+        : Promise.resolve([]);
+      starts.set(sportKey, pending);
+      return pending;
+    },
     events(sportKey: string): Promise<ApiEvent[]> {
       const hit = events.get(sportKey);
       if (hit) return hit;
@@ -108,6 +125,25 @@ export async function findEvent(
     );
   });
   return matches.length === 1 ? matches[0] : null;
+}
+
+// The Odds API start of the same game, in play or not, when exactly one listed game matches.
+export async function oddsApiStart(
+  cycle: ImportCycle,
+  input: { sportKey: string; teams: string[]; start: Date },
+): Promise<Date | null> {
+  const events = await cycle.starts(input.sportKey);
+  const matches = events.filter(
+    (event) =>
+      Math.abs(dayjs(event.commence_time).diff(input.start, "hour", true)) <=
+        START_CHECK_TOLERANCE_HOURS &&
+      input.teams.every(
+        (team) =>
+          teamMatches(team, event.home_team) ||
+          teamMatches(team, event.away_team),
+      ),
+  );
+  return matches.length === 1 ? dayjs(matches[0].commence_time).toDate() : null;
 }
 
 export function toUnits(value: number): number {

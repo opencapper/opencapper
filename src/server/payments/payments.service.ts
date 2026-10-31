@@ -37,8 +37,9 @@ import {
 import { minimizeWhopEvent } from "@/server/payments/whop.events";
 import { createRateLimiter } from "@/server/rate-limit";
 import { visibleUser } from "@/server/users/hidden";
+import { countedPick, gradedIn } from "@/server/stats/stats.service";
 import { Value } from "@sinclair/typebox/value";
-import { and, count, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
+import { and, count, eq, gt, isNull, or, sql } from "drizzle-orm";
 
 type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
 
@@ -69,12 +70,7 @@ async function gradedPickCount(userId: number): Promise<number> {
   const [row] = await getDb()
     .select({ total: count() })
     .from(picks)
-    .where(
-      and(
-        eq(picks.userId, userId),
-        inArray(picks.result, ["win", "loss", "push"]),
-      ),
-    );
+    .where(and(eq(picks.userId, userId), gradedIn(picks.result), countedPick));
   return row?.total ?? 0;
 }
 

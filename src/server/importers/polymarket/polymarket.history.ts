@@ -9,6 +9,7 @@ import {
   mapMarket,
   median,
   notionalOf,
+  positionOf,
   round,
 } from "@/server/importers/polymarket/polymarket.importer";
 import {
@@ -120,12 +121,12 @@ function rowsFor(
       skip("market not resolved");
       continue;
     }
-    const oddsDecimal = round(1 / side.first.price, 3);
+    const position = positionOf(side.same);
+    const oddsDecimal = round(1 / position.price, 3);
     if (!(oddsDecimal > 1)) {
       skip("price at or above 1");
       continue;
     }
-    const notional = side.same.reduce((sum, t) => sum + notionalOf(t), 0);
     rows.push({
       platform: "polymarket",
       externalId: `${trader.wallet}:${gameSlug(side.first.eventSlug)}:${mapped.market}`,
@@ -141,7 +142,7 @@ function rowsFor(
       selection: formatLine(mapped.outcome, mapped.point ?? undefined),
       point: mapped.point,
       oddsDecimal,
-      units: toUnits(notional / (unit ?? notional)),
+      units: toUnits(position.notional / (unit ?? position.notional)),
       marketRef: conditionId,
       outcomeIndex: side.first.outcomeIndex,
       result,

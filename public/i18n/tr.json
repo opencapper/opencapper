@@ -540,7 +540,10 @@
       "WIN": "Kazandı",
       "LOSS": "Kaybetti",
       "PUSH": "İade",
-      "VOID": "İptal"
+      "VOID": "İptal",
+      "HALF_WIN": "Yarım kazanç",
+      "HALF_LOSS": "Yarım kayıp",
+      "SPLIT": "50/50"
     },
     "MARKET": {
       "H2H": "Maç sonucu",
@@ -979,6 +982,8 @@
       "NO_ANCHOR": "Henüz çapa yok.",
       "IMAGES_PENDING": "Bekleyen görseller",
       "IMAGES_HINT": "TheSportsDB'den beklenen takım ve oyuncu görselleri.",
+      "GRADING_BACKLOG": "Geciken pickler",
+      "GRADING_BACKLOG_HINT": "Başlamış ama hâlâ sonucu olmayan pickler. {timedOut, number} tanesi zaman aşımıyla iptal edildi, {disqualified, number} tanesi gerçek başlangıçtan sonra yapıldı.",
       "IMPORTER": "{platform} içe aktarıcı",
       "RUN": "Son çalışma {time}: {created, number} oluşturuldu, {skipped, number} atlandı, {credits, number} kredi",
       "RUN_FAILED": "Son çalışma {time} başarısız oldu. Sunucu günlüğüne bak.",

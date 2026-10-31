@@ -540,7 +540,10 @@
       "WIN": "Gewonnen",
       "LOSS": "Verloren",
       "PUSH": "Push",
-      "VOID": "Ungültig"
+      "VOID": "Ungültig",
+      "HALF_WIN": "Halb gewonnen",
+      "HALF_LOSS": "Halb verloren",
+      "SPLIT": "50/50"
     },
     "MARKET": {
       "H2H": "Siegwette",
@@ -979,6 +982,8 @@
       "NO_ANCHOR": "Noch kein Anker.",
       "IMAGES_PENDING": "Ausstehende Bilder",
       "IMAGES_HINT": "Team und Spielerbilder, die auf TheSportsDB warten.",
+      "GRADING_BACKLOG": "Überfällige Picks",
+      "GRADING_BACKLOG_HINT": "Gestartete Picks ohne Ergebnis. {timedOut, number} nach Zeitablauf annulliert, {disqualified, number} nach dem echten Start platziert.",
       "IMPORTER": "{platform} Importer",
       "RUN": "Letzter Lauf {time}: {created, number} erstellt, {skipped, number} übersprungen, {credits, number} Credits",
       "RUN_FAILED": "Letzter Lauf {time} fehlgeschlagen. Prüfe das Serverlog.",

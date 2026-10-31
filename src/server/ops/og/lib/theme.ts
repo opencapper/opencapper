@@ -1,4 +1,5 @@
 import type { PickResult } from "@/lib/api/typebox/picks";
+import { RECORD_OF } from "@/lib/config/results";
 
 export const OG_WIDTH = 1200;
 export const OG_HEIGHT = 630;
@@ -18,8 +19,8 @@ export const C = {
 } as const;
 
 export function resultColor(result: PickResult): string {
-  if (result === "win") return C.win;
-  if (result === "loss") return C.loss;
+  if (RECORD_OF[result] === "win") return C.win;
+  if (RECORD_OF[result] === "loss") return C.loss;
   return C.soft;
 }
 

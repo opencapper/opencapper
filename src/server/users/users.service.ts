@@ -2,6 +2,7 @@ import { getDb } from "@/lib/db/server/client";
 import {
   authUser,
   historyPicks,
+  pickDisqualifications,
   pickLog,
   pickSettlements,
   pickSources,
@@ -28,12 +29,14 @@ export async function getUserPicks(username: string): Promise<ApiPick[]> {
       settlement: pickSettlements,
       logSeq: pickLog.seq,
       source: pickSources,
+      disqualification: pickDisqualifications,
     })
     .from(picks)
     .innerJoin(users, eq(users.id, picks.userId))
     .leftJoin(pickSettlements, eq(pickSettlements.pickId, picks.id))
     .leftJoin(pickLog, eq(pickLog.pickId, picks.id))
     .leftJoin(pickSources, eq(pickSources.pickId, picks.id))
+    .leftJoin(pickDisqualifications, eq(pickDisqualifications.pickId, picks.id))
     .where(and(eq(users.username, username.toLowerCase()), visibleUser))
     .orderBy(desc(picks.sequence))
     .limit(500);
@@ -51,6 +54,7 @@ export async function getUserPicks(username: string): Promise<ApiPick[]> {
       row.settlement,
       row.logSeq,
       row.source,
+      row.disqualification,
     ),
   );
 }
@@ -85,7 +89,8 @@ export async function getUserHistory(
     point: row.pick.point,
     odds: toAmericanOdds(row.pick.oddsDecimal),
     units: row.pick.units,
-    result: row.pick.result,
+    // Legacy history rows stored a 50/50 resolution as void.
+    result: row.pick.result === "void" ? "split" : row.pick.result,
     gradedAt: row.pick.gradedAt.toISOString(),
     ...participantFields(
       images,

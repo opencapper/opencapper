@@ -540,7 +540,10 @@
       "WIN": "Wygrany",
       "LOSS": "Przegrany",
       "PUSH": "Zwrot",
-      "VOID": "Anulowany"
+      "VOID": "Anulowany",
+      "HALF_WIN": "Połowa wygranej",
+      "HALF_LOSS": "Połowa przegranej",
+      "SPLIT": "50/50"
     },
     "MARKET": {
       "H2H": "Zwycięzca meczu",
@@ -979,6 +982,8 @@
       "NO_ANCHOR": "Brak kotwicy.",
       "IMAGES_PENDING": "Oczekujące obrazy",
       "IMAGES_HINT": "Zdjęcia drużyn i zawodników czekające na TheSportsDB.",
+      "GRADING_BACKLOG": "Zaległe typy",
+      "GRADING_BACKLOG_HINT": "Rozpoczęte typy wciąż bez wyniku. {timedOut, number} anulowanych po przekroczeniu czasu, {disqualified, number} postawionych po faktycznym starcie.",
       "IMPORTER": "Importer {platform}",
       "RUN": "Ostatnie uruchomienie {time}: utworzono {created, number}, pominięto {skipped, number}, kredyty {credits, number}",
       "RUN_FAILED": "Ostatnie uruchomienie {time} nie powiodło się. Sprawdź log serwera.",

@@ -9,6 +9,7 @@ import {
   createCycle,
   emptyReport,
   findEvent,
+  oddsApiStart,
   SOURCE_MAX_AGE_HOURS,
   teamMatches,
   toUnits,
@@ -28,6 +29,7 @@ import {
   fetchTrades,
   marketOutcomes,
   marketStart,
+  marketStarted,
   type PolymarketMarket,
   type PolymarketTrade,
 } from "@/server/polymarket/polymarket.api";
@@ -41,9 +43,9 @@ const UNIT_WINDOW_DAYS = 30;
 type Candidate = {
   trader: PolymarketTrader;
   first: PolymarketTrade;
-  notional: number;
-  fills: number;
-  unit: number;
+  // Same side fills, oldest first.
+  fills: PolymarketTrade[];
+  unit: number | null;
 };
 
 export type MappedMarket = {
@@ -70,6 +72,13 @@ export function gameSlug(eventSlug: string) {
 
 export function notionalOf(trade: PolymarketTrade) {
   return trade.size * trade.price;
+}
+
+// Size weighted average fill price, so the odds match the units, which come from every fill.
+export function positionOf(fills: PolymarketTrade[]) {
+  const shares = fills.reduce((sum, t) => sum + t.size, 0);
+  const notional = fills.reduce((sum, t) => sum + notionalOf(t), 0);
+  return { shares, notional, price: shares > 0 ? notional / shares : 0 };
 }
 
 // "UFC Fight Night: A vs. B (Lightweight)" and "A vs. B - More Markets" both give [A, B].
@@ -149,14 +158,11 @@ function candidatesFor(
   return [...byMarket.values()].map((fills) => {
     const ordered = fills.toSorted((a, b) => a.timestamp - b.timestamp);
     const first = ordered[0];
-    const same = ordered.filter((t) => t.outcomeIndex === first.outcomeIndex);
-    const notional = same.reduce((sum, t) => sum + notionalOf(t), 0);
     return {
       trader,
       first,
-      notional,
-      fills: same.length,
-      unit: unit ?? notional,
+      fills: ordered.filter((t) => t.outcomeIndex === first.outcomeIndex),
+      unit,
     };
   });
 }
@@ -203,20 +209,41 @@ export function round(value: number, digits: number) {
   return Math.round(value * f) / f;
 }
 
+// Earliest credible start: gamma's two start fields, then the Odds API list, which keeps games in play.
+async function currentStart(
+  cycle: ImportCycle,
+  mapped: MappedMarket,
+): Promise<Date> {
+  if (!mapped.league.oddsApi) return mapped.start;
+  const listed = await oddsApiStart(cycle, {
+    sportKey: mapped.league.sportKey,
+    teams: [mapped.home, mapped.away],
+    start: mapped.start,
+  });
+  return listed && listed < mapped.start ? listed : mapped.start;
+}
+
 async function importCandidate(
   cycle: ImportCycle,
   candidate: Candidate,
+  market: PolymarketMarket,
   mapped: MappedMarket,
   externalId: string,
   now: Dayjs,
 ): Promise<ImportReport["created"][number]> {
+  if (marketStarted(market)) throw new ApiError(409, "ERRORS.EVENT_STARTED");
+  const start = await currentStart(cycle, mapped);
   const filledAt = dayjs.unix(candidate.first.timestamp);
-  if (!dayjs(mapped.start).isAfter(now))
+  if (!dayjs(start).isAfter(now))
     throw new ApiError(409, "ERRORS.EVENT_STARTED");
-  if (!filledAt.isBefore(mapped.start))
+  if (!filledAt.isBefore(start))
     throw new ApiError(409, "ERRORS.FILL_AFTER_START");
 
   const trade = candidate.first;
+  const fills = candidate.fills.filter((t) =>
+    dayjs.unix(t.timestamp).isBefore(start),
+  );
+  const position = positionOf(fills);
   const base: Omit<CreatePickInput, "sportKey" | "eventId" | "selection"> = {
     identity: {
       kind: "source",
@@ -227,13 +254,13 @@ async function importCandidate(
     },
     guildId: null,
     market: mapped.market,
-    units: toUnits(candidate.notional / candidate.unit),
+    units: toUnits(position.notional / (candidate.unit ?? position.notional)),
     source: {
       platform: "polymarket",
       externalId,
       url: `${POLYGONSCAN_TX}/${trade.transactionHash}`,
       postedAt: filledAt.toDate(),
-      rawText: `BUY ${round(trade.size, 2)} "${trade.outcome}" at ${round(trade.price, 4)} on "${trade.title}" (${candidate.fills} fills, ${round(candidate.notional, 2)} USDC, ${POLYMARKET_SITE}/event/${trade.eventSlug})`,
+      rawText: `BUY ${round(position.shares, 2)} "${trade.outcome}" at ${round(position.price, 4)} average on "${trade.title}" (${fills.length} fills, ${round(position.notional, 2)} USDC, ${POLYMARKET_SITE}/event/${trade.eventSlug})`,
       marketRef: trade.conditionId,
       outcomeIndex: trade.outcomeIndex,
     },
@@ -261,10 +288,10 @@ async function importCandidate(
       bookmaker: EXCHANGE_BOOKMAKER,
       home: mapped.home,
       away: mapped.away,
-      commenceTime: mapped.start,
+      commenceTime: start,
       outcome: mapped.outcome,
       point: mapped.point,
-      oddsDecimal: round(1 / trade.price, 3),
+      oddsDecimal: round(1 / position.price, 3),
       filledAt: filledAt.toDate(),
     },
   });
@@ -315,7 +342,7 @@ export async function importPolymarket(
         return [];
       }
       const externalId = `${candidate.trader.wallet}:${gameSlug(candidate.first.eventSlug)}:${mapped.market}`;
-      return [{ ref, candidate, mapped, externalId }];
+      return market ? [{ ref, candidate, market, mapped, externalId }] : [];
     });
 
   const done = await alreadyImported(mappedCandidates.map((c) => c.externalId));
@@ -327,6 +354,7 @@ export async function importPolymarket(
         await importCandidate(
           cycle,
           entry.candidate,
+          entry.market,
           entry.mapped,
           entry.externalId,
           now,

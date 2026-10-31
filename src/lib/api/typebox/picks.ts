@@ -6,6 +6,9 @@ export const PickResult = t.Union([
   t.Literal("loss"),
   t.Literal("push"),
   t.Literal("void"),
+  t.Literal("half_win"),
+  t.Literal("half_loss"),
+  t.Literal("split"),
 ]);
 export type PickResult = typeof PickResult.static;
 

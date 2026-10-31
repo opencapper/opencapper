@@ -4,7 +4,13 @@ import { authUser, historyPicks, picks, users } from "@/lib/db/schema/server";
 import type { CapperCheck, CheckMatch, CheckRecord } from "@/lib/types";
 import { dayjs } from "@/lib/utils/format/date";
 import { findClaimant } from "@/server/claims/profile-claims";
-import { netOf, riskedOf } from "@/server/stats/stats.service";
+import {
+  countedPick,
+  historyResult,
+  netOf,
+  recordCount,
+  riskedOf,
+} from "@/server/stats/stats.service";
 import { avatarColumns, avatarUrl } from "@/server/users/avatar";
 import { visibleUser } from "@/server/users/hidden";
 import {
@@ -83,16 +89,16 @@ async function liveRecords(ids: number[]) {
   const rows = await getDb()
     .select({
       userId: picks.userId,
-      wins: resultCount(picks.result, "win"),
-      losses: resultCount(picks.result, "loss"),
-      pushes: resultCount(picks.result, "push"),
+      wins: recordCount(picks.result, "win"),
+      losses: recordCount(picks.result, "loss"),
+      pushes: recordCount(picks.result, "push"),
       pending: resultCount(picks.result, "pending"),
       units: netOf(picks.result, picks.units, picks.oddsDecimal),
       unitsRisked: riskedOf(picks.result, picks.units),
       lastAt: sql<Date | string | null>`max(${picks.createdAt})`,
     })
     .from(picks)
-    .where(inArray(picks.userId, ids))
+    .where(and(inArray(picks.userId, ids), countedPick))
     .groupBy(picks.userId);
   return new Map(rows.map((row) => [row.userId, row]));
 }
@@ -101,15 +107,11 @@ async function historyRecords(ids: number[]) {
   const rows = await getDb()
     .select({
       userId: historyPicks.userId,
-      wins: resultCount(historyPicks.result, "win"),
-      losses: resultCount(historyPicks.result, "loss"),
-      pushes: resultCount(historyPicks.result, "push"),
-      units: netOf(
-        historyPicks.result,
-        historyPicks.units,
-        historyPicks.oddsDecimal,
-      ),
-      unitsRisked: riskedOf(historyPicks.result, historyPicks.units),
+      wins: recordCount(historyResult, "win"),
+      losses: recordCount(historyResult, "loss"),
+      pushes: recordCount(historyResult, "push"),
+      units: netOf(historyResult, historyPicks.units, historyPicks.oddsDecimal),
+      unitsRisked: riskedOf(historyResult, historyPicks.units),
       lastAt: sql<Date | string | null>`max(${historyPicks.tradedAt})`,
     })
     .from(historyPicks)

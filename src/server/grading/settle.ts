@@ -29,10 +29,28 @@ export function finalScore(event: EventScore): FinalScore | null {
   return home === null || away === null ? null : { home, away };
 }
 
-function byMargin(margin: number): PickResult {
+type WholeResult = "win" | "loss" | "push";
+
+function byMargin(margin: number): WholeResult {
   if (margin > 0) return "win";
   if (margin < 0) return "loss";
   return "push";
+}
+
+function isQuarter(point: number) {
+  return Math.abs((point * 4) % 2) === 1;
+}
+
+// A quarter line (0.25, 2.75) is half the stake on each neighbouring half line: 2.75 is 2.5 plus 3.
+function byLine(point: number, margin: (line: number) => number): PickResult {
+  if (!isQuarter(point)) return byMargin(margin(point));
+  const low = byMargin(margin(point - 0.25));
+  const high = byMargin(margin(point + 0.25));
+  if (low === high) return low;
+  const halves = [low, high];
+  if (halves.includes("win") && halves.includes("push")) return "half_win";
+  if (halves.includes("loss") && halves.includes("push")) return "half_loss";
+  return "split";
 }
 
 export function settle(
@@ -46,9 +64,8 @@ export function settle(
   if (pick.market === "totals") {
     if (pick.point === null) return null;
     const total = score.home + score.away;
-    return byMargin(
-      parsed.side === "over" ? total - pick.point : pick.point - total,
-    );
+    const over = parsed.side === "over";
+    return byLine(pick.point, (line) => (over ? total - line : line - total));
   }
 
   if (pick.market === "h2h" && parsed.side === "draw")
@@ -62,7 +79,7 @@ export function settle(
 
   if (pick.market === "spreads") {
     if (pick.point === null) return null;
-    return byMargin(own + pick.point - other);
+    return byLine(pick.point, (line) => own + line - other);
   }
 
   // Soccer moneyline is three way, so a draw beats both team sides; two way markets refund.

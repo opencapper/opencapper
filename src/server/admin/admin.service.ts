@@ -29,6 +29,7 @@ import { serverEnv } from "@/server/env";
 import { getImportRuns } from "@/server/importers/import.job";
 import { listAnchors } from "@/server/log/anchor.service";
 import { getLogHead } from "@/server/log/log.service";
+import { gradingBacklog } from "@/server/grading/grading.service";
 import { getBoardBudget } from "@/server/odds/board.service";
 import { getOddsCredits } from "@/server/odds/odds.service";
 import {
@@ -297,7 +298,11 @@ export async function getSystemStatus(): Promise<AdminSystem> {
     polymarket: serverEnv.importPolymarketEnabled,
     reddit: serverEnv.importRedditEnabled,
   };
-  const [head, anchors] = await Promise.all([getLogHead(), listAnchors(1)]);
+  const [head, anchors, grading] = await Promise.all([
+    getLogHead(),
+    listAnchors(1),
+    gradingBacklog(),
+  ]);
   return {
     oddsConfigured: Boolean(serverEnv.oddsApiKey),
     oddsCredits: getOddsCredits(),
@@ -312,5 +317,6 @@ export async function getSystemStatus(): Promise<AdminSystem> {
     })),
     log: { head, lastAnchor: anchors.at(0) ?? null },
     imagesPending: pendingLookups(),
+    grading,
   };
 }
