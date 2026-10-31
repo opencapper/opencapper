@@ -39,7 +39,11 @@ export function UnitsChart(props: { picks: ApiPick[] }) {
       const last = acc.at(-1);
       const date = formatShortDate(pick.commenceTime, locale, local);
       const units =
-        Math.round(((last?.units ?? 0) + netUnits(pick.result, pick.units, americanToDecimal(pick.odds))) * 100) / 100;
+        Math.round(
+          ((last?.units ?? 0) +
+            netUnits(pick.result, pick.units, americanToDecimal(pick.odds))) *
+            100,
+        ) / 100;
       if (last && last.date === date) last.units = units;
       else acc.push({ date, units });
       return acc;

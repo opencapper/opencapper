@@ -1,6 +1,7 @@
 "use client";
 
 import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
+import { DisqualifiedBadge } from "@/components/elements/badge/disqualified-badge";
 import { PickStatusBadge } from "@/components/elements/badge/pick-status-badge";
 import { Matchup } from "@/components/elements/participant/matchup";
 import {
@@ -107,9 +108,12 @@ export function PickCheckCard(props: { pick: ApiPick }) {
   );
   const state = sealState(logged, check);
   const source = pick.source;
-  const startMs = dayjs(pick.commenceTime).valueOf();
+  const disqualified = pick.disqualified;
+  // A disqualified pick is measured against the real start, not the start the feed had when it was locked.
+  const start = disqualified?.actualStart ?? pick.commenceTime;
+  const startMs = dayjs(start).valueOf();
   const lockedMs = dayjs(pick.createdAt).valueOf();
-  const lead = formatDuration(pick.createdAt, pick.commenceTime, locale);
+  const lead = formatDuration(pick.createdAt, start, locale);
 
   return (
     <li className="border-foreground/10 bg-card flex flex-col gap-4 rounded-xl border p-4">
@@ -136,6 +140,9 @@ export function PickCheckCard(props: { pick: ApiPick }) {
               {t("VERIFY.CARD.UNITS", { count: pick.units })}
             </span>
             <PickStatusBadge result={pick.result} />
+            {disqualified && (
+              <DisqualifiedBadge actualStart={disqualified.actualStart} />
+            )}
           </div>
           <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
             <Link
@@ -158,7 +165,14 @@ export function PickCheckCard(props: { pick: ApiPick }) {
 
       <dl className="border-foreground/10 grid gap-x-6 gap-y-3 border-t pt-4 text-sm sm:grid-cols-2">
         <Fact icon="clock" label={t("VERIFY.CARD.STARTS")}>
-          {formatDateTime(pick.commenceTime, locale, local)}
+          {formatDateTime(start, locale, local)}
+          {disqualified && (
+            <span className="text-muted-foreground ml-2 text-xs">
+              {t("VERIFY.CARD.SCHEDULED", {
+                time: formatDateTime(pick.commenceTime, locale, local),
+              })}
+            </span>
+          )}
         </Fact>
         <Fact
           icon="lock"
@@ -212,6 +226,13 @@ export function PickCheckCard(props: { pick: ApiPick }) {
             })
           : t("VERIFY.CARD.PROOF_NOTE")}
       </p>
+      {disqualified && (
+        <p className="text-pick-loss text-sm">
+          {t("VERIFY.CARD.DISQUALIFIED_NOTE", {
+            time: formatDateTime(disqualified.actualStart, locale, local),
+          })}
+        </p>
+      )}
       {state === "mismatch" && (
         <p className="text-pick-loss text-sm">
           {t("VERIFY.CARD.MISMATCH_HINT")}

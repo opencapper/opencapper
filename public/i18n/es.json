@@ -541,7 +541,10 @@
       "CLV_MISSED": "Cuota de cierre {odds}. Este pick quedó por debajo en {value}.",
       "CLV_EVEN": "Cuota de cierre {odds}. Este pick la igualó.",
       "IN_LOG": "Verificado en el registro",
-      "IN_LOG_HINT": "Entrada {seq, number} del registro público de picks. Ábrela para recalcular los hashes en tu navegador."
+      "IN_LOG_HINT": "Entrada {seq, number} del registro público de picks. Ábrela para recalcular los hashes en tu navegador.",
+      "DISQUALIFIED": "Descalificado",
+      "DISQUALIFIED_HINT": "Bloqueado después del inicio real ({time}), así que este pick no cuenta.",
+      "STARTED_AT": "Empezó {time}"
     },
     "STATUS": {
       "PENDING": "Pendiente",
@@ -742,7 +745,9 @@
       "RESULT": "Resultado",
       "SOURCE": "Fuente y hora de la operación",
       "PROOF_NOTE": "El sello cubre el pick tal como se registró, incluida la hora de bloqueo. La hora de inicio viene del proveedor de cuotas y no forma parte del sello, así que compara tú mismo las dos horas.",
-      "PROOF_NOTE_IMPORTED": "Este pick se importó de una operación pública en {platform}. El sello lo cubre desde el momento en que se bloqueó aquí al importarlo, nunca antes. El enlace de la fuente muestra la operación original y su propia hora; la hora de inicio no forma parte del sello."
+      "PROOF_NOTE_IMPORTED": "Este pick se importó de una operación pública en {platform}. El sello lo cubre desde el momento en que se bloqueó aquí al importarlo, nunca antes. El enlace de la fuente muestra la operación original y su propia hora; la hora de inicio no forma parte del sello.",
+      "SCHEDULED": "programado para {time}",
+      "DISQUALIFIED_NOTE": "Descalificado: este pick se bloqueó después del inicio real ({time}) y no cuenta para ningún récord."
     },
     "HOW": {
       "TITLE": "Cómo funciona",
@@ -1006,7 +1011,9 @@
       "RUN_FAILED": "La última ejecución {time} falló. Revisa el log del servidor.",
       "NO_RUN_YET": "Ninguna ejecución desde que arrancó el servidor.",
       "ON": "Activo",
-      "OFF": "Inactivo"
+      "OFF": "Inactivo",
+      "USER_BUDGET": "Picks y cuotas hoy",
+      "USER_BUDGET_HINT": "Créditos gastados hoy en picks y cuotas del formulario de picks sobre el presupuesto diario. En pausa mientras queden menos de {reserve, number} créditos."
     },
     "CLAIM": {
       "TITLE": "Aprobar una reclamación de @{username}",
@@ -1105,7 +1112,9 @@
     "PICK_DUPLICATE": "Ya tienes una selección en este mercado para este evento.",
     "UNITS_INVALID": "Las unidades deben estar entre {min} y {max}, en pasos de {step}.",
     "CAPPER_NOT_FOUND": "No existe ningún capper con este nombre.",
-    "PICK_NOT_FOUND": "Este pick no existe."
+    "PICK_NOT_FOUND": "Este pick no existe.",
+    "ODDS_DAILY_LIMIT": "Las consultas de cuotas en vivo han alcanzado el límite de hoy. Vuelve a intentarlo después de la medianoche UTC.",
+    "ODDS_RESERVE": "Las consultas de cuotas en vivo están en pausa para reservar créditos para la evaluación. Vuelve a intentarlo más tarde."
   },
   "LEGAL": {
     "LABEL": "Información legal",

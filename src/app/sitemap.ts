@@ -5,7 +5,7 @@ import { LOCALES } from "@/lib/config/constants";
 import { listSitemapProfiles } from "@/server/users/sitemap.service";
 import type { MetadataRoute } from "next";
 
-// Built per request: the profile list needs the database, which the build does not have.
+// Not prerendered: the build has no database. The profile list is cached an hour in process instead.
 export const dynamic = "force-dynamic";
 
 type Href = Parameters<typeof getPathname>[0]["href"];

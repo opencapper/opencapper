@@ -541,7 +541,10 @@
       "CLV_MISSED": "Odd de fechamento {odds}. Este palpite ficou abaixo dela em {value}.",
       "CLV_EVEN": "Odd de fechamento {odds}. Este palpite a igualou.",
       "IN_LOG": "Verificado no registro",
-      "IN_LOG_HINT": "Entrada {seq, number} no registro público de palpites. Abra para recalcular os hashes no seu navegador."
+      "IN_LOG_HINT": "Entrada {seq, number} no registro público de palpites. Abra para recalcular os hashes no seu navegador.",
+      "DISQUALIFIED": "Desclassificado",
+      "DISQUALIFIED_HINT": "Travado depois do início real ({time}), então este palpite não conta.",
+      "STARTED_AT": "Começou {time}"
     },
     "STATUS": {
       "PENDING": "Pendente",
@@ -742,7 +745,9 @@
       "RESULT": "Resultado",
       "SOURCE": "Fonte e horário da operação",
       "PROOF_NOTE": "O selo cobre o palpite como foi registrado, incluindo o horário em que foi travado. O horário de início vem do feed de odds e não faz parte do selo, então compare os dois horários você mesmo.",
-      "PROOF_NOTE_IMPORTED": "Este palpite foi importado de uma operação pública na {platform}. O selo o cobre a partir do momento em que foi travado aqui na importação, nunca antes. O link da fonte mostra a operação original e o horário dela; o horário de início não faz parte do selo."
+      "PROOF_NOTE_IMPORTED": "Este palpite foi importado de uma operação pública na {platform}. O selo o cobre a partir do momento em que foi travado aqui na importação, nunca antes. O link da fonte mostra a operação original e o horário dela; o horário de início não faz parte do selo.",
+      "SCHEDULED": "previsto para {time}",
+      "DISQUALIFIED_NOTE": "Desclassificado: este palpite foi travado depois do início real ({time}) e não conta para nenhum histórico."
     },
     "HOW": {
       "TITLE": "Como funciona",
@@ -1006,7 +1011,9 @@
       "RUN_FAILED": "A última execução {time} falhou. Veja o log do servidor.",
       "NO_RUN_YET": "Nenhuma execução desde que o servidor iniciou.",
       "ON": "Ligado",
-      "OFF": "Desligado"
+      "OFF": "Desligado",
+      "USER_BUDGET": "Palpites e linhas hoje",
+      "USER_BUDGET_HINT": "Créditos gastos hoje com palpites e linhas do formulário de palpite do orçamento diário. Pausado enquanto restarem menos de {reserve, number} créditos."
     },
     "CLAIM": {
       "TITLE": "Aprovar uma reivindicação de @{username}",
@@ -1105,7 +1112,9 @@
     "PICK_DUPLICATE": "Você já tem um palpite neste mercado para este evento.",
     "UNITS_INVALID": "As unidades devem ficar entre {min} e {max}, em passos de {step}.",
     "CAPPER_NOT_FOUND": "Não existe nenhum capper com esse nome.",
-    "PICK_NOT_FOUND": "Este palpite não existe."
+    "PICK_NOT_FOUND": "Este palpite não existe.",
+    "ODDS_DAILY_LIMIT": "As consultas de odds ao vivo atingiram o limite de hoje. Tente novamente depois da meia-noite UTC.",
+    "ODDS_RESERVE": "As consultas de odds ao vivo estão pausadas para reservar créditos para a apuração. Tente novamente mais tarde."
   },
   "LEGAL": {
     "LABEL": "Informações legais",

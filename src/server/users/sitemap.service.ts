@@ -1,45 +1,51 @@
 import { getDb } from "@/lib/db/server/client";
 import { historyPicks, picks, users } from "@/lib/db/schema/server";
 import { visibleUser } from "@/server/users/hidden";
-import { and, eq, exists, or, sql } from "drizzle-orm";
+import { desc, eq, max, sql } from "drizzle-orm";
+import { unionAll } from "drizzle-orm/pg-core";
 
 const MAX_PROFILES = 5000;
+const SITEMAP_TTL_MS = 60 * 60_000;
 
-// Visible profiles with at least one live pick or on chain trade, most recently active first.
-export async function listSitemapProfiles(): Promise<
-  { username: string; lastPickAt: Date | null }[]
-> {
+type SitemapProfile = { username: string; lastPickAt: Date | null };
+
+let cache: { expires: number; profiles: SitemapProfile[] } | null = null;
+
+// One grouped pass over each pick table instead of a subquery per user.
+async function loadProfiles(): Promise<SitemapProfile[]> {
   const db = getDb();
-  const lastPick = sql<Date | string | null>`greatest(
-    (select max(${picks.createdAt}) from ${picks} where ${picks.userId} = ${users.id}),
-    (select max(${historyPicks.tradedAt}) from ${historyPicks} where ${historyPicks.userId} = ${users.id})
-  )`;
+  const activity = unionAll(
+    db
+      .select({ userId: picks.userId, at: max(picks.createdAt).as("at") })
+      .from(picks)
+      .groupBy(picks.userId),
+    db
+      .select({
+        userId: historyPicks.userId,
+        at: max(historyPicks.tradedAt).as("at"),
+      })
+      .from(historyPicks)
+      .groupBy(historyPicks.userId),
+  ).as("activity");
+  const lastPickAt = sql<Date | string | null>`max(${activity.at})`;
   const rows = await db
-    .select({ username: users.username, lastPickAt: lastPick })
-    .from(users)
-    .where(
-      and(
-        visibleUser,
-        or(
-          exists(
-            db
-              .select({ one: sql`1` })
-              .from(picks)
-              .where(eq(picks.userId, users.id)),
-          ),
-          exists(
-            db
-              .select({ one: sql`1` })
-              .from(historyPicks)
-              .where(eq(historyPicks.userId, users.id)),
-          ),
-        ),
-      ),
-    )
-    .orderBy(sql`${lastPick} desc nulls last`)
+    .select({ username: users.username, lastPickAt })
+    .from(activity)
+    .innerJoin(users, eq(users.id, activity.userId))
+    .where(visibleUser)
+    .groupBy(users.id)
+    .orderBy(desc(lastPickAt))
     .limit(MAX_PROFILES);
   return rows.map((row) => ({
     username: row.username,
     lastPickAt: row.lastPickAt ? new Date(row.lastPickAt) : null,
   }));
+}
+
+// Visible profiles with at least one live pick or on chain trade, most recently active first, cached an hour.
+export async function listSitemapProfiles(): Promise<SitemapProfile[]> {
+  if (cache && cache.expires > Date.now()) return cache.profiles;
+  const profiles = await loadProfiles();
+  cache = { expires: Date.now() + SITEMAP_TTL_MS, profiles };
+  return profiles;
 }

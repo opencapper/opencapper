@@ -10,6 +10,7 @@ import {
   listEvents,
   type EventOdds,
 } from "@/server/odds/odds.service";
+import { belowReserve } from "@/server/odds/credits";
 import { saneOutcomes } from "@/server/odds/price";
 import { isLookupPending } from "@/server/participants/participants.service";
 import { toAmericanOdds } from "@/server/picks/picks.mapper";
@@ -93,7 +94,11 @@ function boardPrices(sportKey: string): Promise<Prices | null> {
   const now = Date.now();
   const hit = priceCache.get(sportKey);
   if (hit && hit.expires > now) return hit.prices;
-  if (!serverEnv.oddsApiKey || creditsLeft() < CREDITS_PER_REFRESH)
+  if (
+    !serverEnv.oddsApiKey ||
+    creditsLeft() < CREDITS_PER_REFRESH ||
+    belowReserve()
+  )
     return hit?.prices ?? Promise.resolve(null);
 
   budget.used += CREDITS_PER_REFRESH;

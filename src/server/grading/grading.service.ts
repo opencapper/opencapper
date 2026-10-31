@@ -16,9 +16,12 @@ import {
   fetchEventOdds,
   fetchScores,
   formatLine,
+  listEventStarts,
   type EventOdds,
   type EventScore,
+  type EventStart,
 } from "@/server/odds/odds.service";
+import { belowReserve, oddsKeyEmpty } from "@/server/odds/credits";
 import { normalise } from "@/server/odds/selection";
 import { finalScore, settle, type FinalScore } from "@/server/grading/settle";
 import { EXCHANGE_BOOKMAKER } from "@/lib/api/typebox/sources";
@@ -45,8 +48,9 @@ import {
 const GRADE_AFTER_HOURS = 3;
 // The scores endpoint reaches this far back; older games are only found again when the feed moved them.
 const SCORES_DAYS_FROM = 3;
-// Past the scores window a pick is overdue: its sport is polled this often, and each poll logs it.
-const OVERDUE_RETRY_HOURS = 6;
+// Past the scores window a pick is overdue: its sport gets one paid scores poll a day until this many days after the start.
+const OVERDUE_SCORES_DAYS = 5;
+const OVERDUE_POLL_HOUR_UTC = 12;
 // Bookmakers void a game moved this much later than scheduled.
 const POSTPONED_AFTER_HOURS = 48;
 // No score and no postponement after this long: void as a timeout, flagged for staff.
@@ -57,7 +61,7 @@ const EXCHANGE_VOID_AFTER_DAYS = 14;
 // A market that resolves before the stored start means the game was earlier: grade it and check its fills.
 const EXCHANGE_LOOKAHEAD_HOURS = 24;
 
-const lastScoresPoll = new Map<string, number>();
+const overduePolledDay = new Map<string, string>();
 
 function groupBy<T>(items: readonly T[], key: (item: T) => string) {
   const groups = new Map<string, T[]>();
@@ -212,13 +216,36 @@ function gradingLog(
   else console.warn(line);
 }
 
+type FeedEvent = { commence: string; scored: EventScore | null };
+
+// Overdue sports get one poll a day in this UTC hour, so a deploy does not trigger a fresh paid poll.
+function overdueSlotOpen(sportKey: string, now: dayjs.Dayjs): boolean {
+  const utc = now.utc();
+  return (
+    utc.hour() === OVERDUE_POLL_HOUR_UTC &&
+    overduePolledDay.get(sportKey) !== utc.format("YYYY-MM-DD")
+  );
+}
+
+async function markUnsettled(pickId: number, at: Date) {
+  await getDb()
+    .insert(pickSettlements)
+    .values({ pickId, unsettledAt: at })
+    .onConflictDoUpdate({
+      target: pickSettlements.pickId,
+      set: { unsettledAt: at },
+    });
+}
+
 export async function gradePendingPicks(
   now = dayjs(),
   loadScores: (sportKey: string) => Promise<EventScore[]> = fetchScores,
+  loadStarts: (sportKey: string) => Promise<EventStart[]> = listEventStarts,
 ): Promise<number> {
   const pending = await getDb()
-    .select()
+    .select({ pick: picks, unsettledAt: pickSettlements.unsettledAt })
     .from(picks)
+    .leftJoin(pickSettlements, eq(pickSettlements.pickId, picks.id))
     .where(
       and(
         eq(picks.result, "pending"),
@@ -230,50 +257,80 @@ export async function gradePendingPicks(
       ),
     );
   const scoresFrom = now.subtract(SCORES_DAYS_FROM, "day");
+  const scoresUntil = now.subtract(OVERDUE_SCORES_DAYS, "day");
   const timeoutBefore = now.subtract(VOID_TIMEOUT_DAYS, "day");
+  const keyEmpty = oddsKeyEmpty();
 
   let graded = 0;
-  for (const [sportKey, sportPicks] of groupBy(pending, (p) => p.sportKey)) {
-    const recent = sportPicks.some((p) =>
-      dayjs(p.commenceTime).isAfter(scoresFrom),
+  for (const [sportKey, rows] of groupBy(pending, (r) => r.pick.sportKey)) {
+    const open = rows.filter((r) => r.unsettledAt === null);
+    const recent = open.some((r) =>
+      dayjs(r.pick.commenceTime).isAfter(scoresFrom),
     );
-    const lastPoll = lastScoresPoll.get(sportKey) ?? 0;
-    if (!recent && now.valueOf() - lastPoll < OVERDUE_RETRY_HOURS * 60 * 60_000)
-      continue;
-    lastScoresPoll.set(sportKey, now.valueOf());
+    const overdue = open.some(
+      (r) =>
+        dayjs(r.pick.commenceTime).isAfter(scoresUntil) &&
+        !dayjs(r.pick.commenceTime).isAfter(scoresFrom),
+    );
+    const slot = overdueSlotOpen(sportKey, now);
+    const paid = !keyEmpty && (recent || (overdue && slot && !belowReserve()));
+    // Past the paid window only the free events list can still show a postponement.
+    const free =
+      !paid &&
+      slot &&
+      rows.some((r) => !dayjs(r.pick.commenceTime).isAfter(scoresFrom));
+    if (slot && (paid || free))
+      overduePolledDay.set(sportKey, now.utc().format("YYYY-MM-DD"));
 
-    const events = new Map<string, EventScore>();
-    try {
-      for (const event of await loadScores(sportKey))
-        events.set(event.id, event);
-    } catch (error) {
-      console.error(`grading: scores for ${sportKey} failed`, error);
-      continue;
+    let events: Map<string, FeedEvent> | null = null;
+    if (paid || free) {
+      try {
+        const list: [string, FeedEvent][] = paid
+          ? (await loadScores(sportKey)).map((e) => [
+              e.id,
+              { commence: e.commence_time, scored: e },
+            ])
+          : (await loadStarts(sportKey)).map((e) => [
+              e.id,
+              { commence: e.commence_time, scored: null },
+            ]);
+        events = new Map(list);
+      } catch (error) {
+        console.error(`grading: events for ${sportKey} failed`, error);
+      }
     }
 
-    for (const pick of sportPicks) {
-      const event = events.get(pick.eventId);
+    for (const row of rows) {
+      const pick = row.pick;
+      const event = events?.get(pick.eventId) ?? null;
       if (event)
-        await checkStart(pick, dayjs(event.commence_time).toDate(), "scores");
-      const score = event ? finalScore(event) : null;
-      const result = event && score ? settle(pick, event, score) : null;
+        await checkStart(
+          pick,
+          dayjs(event.commence).toDate(),
+          paid ? "scores" : "events",
+        );
+      const scored = event?.scored ?? null;
+      const score = scored ? finalScore(scored) : null;
+      const result = scored && score ? settle(pick, scored, score) : null;
       if (result) {
         await recordResult(pick.id, result, score, now.toDate());
         graded++;
         continue;
       }
-      if (event && score)
+      if (scored && score && row.unsettledAt === null) {
         gradingLog("error", "grading_unsettled", pick, {
-          home: event.home_team,
-          away: event.away_team,
+          home: scored.home_team,
+          away: scored.away_team,
           selection: pick.selection,
         });
+        await markUnsettled(pick.id, now.toDate());
+      }
       const movedHours = event
-        ? dayjs(event.commence_time).diff(pick.commenceTime, "hour", true)
+        ? dayjs(event.commence).diff(pick.commenceTime, "hour", true)
         : 0;
-      if (event && !event.completed && movedHours >= POSTPONED_AFTER_HOURS) {
+      if (event && !scored?.completed && movedHours >= POSTPONED_AFTER_HOURS) {
         gradingLog("warn", "grading_void_postponed", pick, {
-          newCommence: event.commence_time,
+          newCommence: event.commence,
         });
         await recordResult(pick.id, "void", null, now.toDate(), "postponed");
         graded++;
@@ -283,10 +340,15 @@ export async function gradePendingPicks(
         });
         await recordResult(pick.id, "void", null, now.toDate(), "timeout");
         graded++;
-      } else if (!dayjs(pick.commenceTime).isAfter(scoresFrom)) {
+      } else if (
+        slot &&
+        events !== null &&
+        !dayjs(pick.commenceTime).isAfter(scoresFrom)
+      ) {
         gradingLog("warn", "grading_overdue", pick, {
           inFeed: event ? 1 : 0,
-          retryHours: OVERDUE_RETRY_HOURS,
+          scores: paid ? 1 : 0,
+          unsettled: row.unsettledAt === null ? 0 : 1,
         });
       }
     }

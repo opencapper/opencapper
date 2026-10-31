@@ -1,4 +1,5 @@
 import { serverEnv } from "@/server/env";
+import { oddsKeyEmpty } from "@/server/odds/credits";
 import {
   captureClosingLines,
   captureExchangeClosing,
@@ -33,7 +34,7 @@ async function tick() {
     await step("exchange closing", () => captureExchangeClosing());
     await step("exchange grading", () => gradeExchangePicks());
     if (!serverEnv.oddsApiKey) return;
-    await step("closing", () => captureClosingLines());
+    if (!oddsKeyEmpty()) await step("closing", () => captureClosingLines());
     if (Date.now() - lastGradedAt >= GRADE_EVERY_MS) {
       lastGradedAt = Date.now();
       await step("grading", () => gradePendingPicks());

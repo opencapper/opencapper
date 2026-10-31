@@ -541,7 +541,10 @@
       "CLV_MISSED": "Slotquotering {odds}. Deze tip bleef {value} onder die quotering.",
       "CLV_EVEN": "Slotquotering {odds}. Deze tip was er gelijk aan.",
       "IN_LOG": "Geverifieerd in logboek",
-      "IN_LOG_HINT": "Vermelding {seq, number} in het openbare tiplogboek. Open hem om de hashes in je browser opnieuw te berekenen."
+      "IN_LOG_HINT": "Vermelding {seq, number} in het openbare tiplogboek. Open hem om de hashes in je browser opnieuw te berekenen.",
+      "DISQUALIFIED": "Gediskwalificeerd",
+      "DISQUALIFIED_HINT": "Vergrendeld na de echte aanvang ({time}), dus deze tip telt niet mee.",
+      "STARTED_AT": "Gestart {time}"
     },
     "STATUS": {
       "PENDING": "Open",
@@ -742,7 +745,9 @@
       "RESULT": "Uitslag",
       "SOURCE": "Bron en tijdstip van de trade",
       "PROOF_NOTE": "Het zegel dekt de tip zoals die is vastgelegd, inclusief het tijdstip van vergrendelen. De aanvangstijd komt uit de quoteringsfeed en hoort niet bij het zegel; vergelijk de twee tijden zelf.",
-      "PROOF_NOTE_IMPORTED": "Deze tip is geïmporteerd uit een openbare trade op {platform}. Het zegel dekt hem vanaf het moment dat hij hier bij de import is vergrendeld, nooit eerder. De bronlink toont de oorspronkelijke trade en het eigen tijdstip daarvan; de aanvangstijd hoort niet bij het zegel."
+      "PROOF_NOTE_IMPORTED": "Deze tip is geïmporteerd uit een openbare trade op {platform}. Het zegel dekt hem vanaf het moment dat hij hier bij de import is vergrendeld, nooit eerder. De bronlink toont de oorspronkelijke trade en het eigen tijdstip daarvan; de aanvangstijd hoort niet bij het zegel.",
+      "SCHEDULED": "gepland voor {time}",
+      "DISQUALIFIED_NOTE": "Gediskwalificeerd: deze tip is na de echte aanvang ({time}) vergrendeld en telt voor geen enkel record mee."
     },
     "HOW": {
       "TITLE": "Hoe het werkt",
@@ -1006,7 +1011,9 @@
       "RUN_FAILED": "Laatste run {time} is mislukt. Bekijk het serverlog.",
       "NO_RUN_YET": "Geen run sinds de server is gestart.",
       "ON": "Aan",
-      "OFF": "Uit"
+      "OFF": "Uit",
+      "USER_BUDGET": "Tips en lijnen vandaag",
+      "USER_BUDGET_HINT": "Credits die vandaag aan tips en lijnen in het tipformulier zijn besteed, van het dagbudget. Gepauzeerd zolang er minder dan {reserve, number} credits over zijn."
     },
     "CLAIM": {
       "TITLE": "Claim voor @{username} goedkeuren",
@@ -1105,7 +1112,9 @@
     "PICK_DUPLICATE": "Je hebt al een pick op deze markt voor dit evenement.",
     "UNITS_INVALID": "Units moeten tussen {min} en {max} liggen, in stappen van {step}.",
     "CAPPER_NOT_FOUND": "Er bestaat geen capper met deze naam.",
-    "PICK_NOT_FOUND": "Deze tip bestaat niet."
+    "PICK_NOT_FOUND": "Deze tip bestaat niet.",
+    "ODDS_DAILY_LIMIT": "Live odds opvragen heeft de limiet van vandaag bereikt. Probeer het na middernacht UTC opnieuw.",
+    "ODDS_RESERVE": "Live odds opvragen is gepauzeerd om credits voor de beoordeling te bewaren. Probeer het later opnieuw."
   },
   "LEGAL": {
     "LABEL": "Juridisch",

@@ -169,6 +169,8 @@ export const pickSettlements = pgTable(
     clv: numeric("clv", { precision: 10, scale: 6, mode: "number" }),
     // Why a pick was voided without a result: the feed confirmed a postponement, or staff gave up waiting.
     voidReason: text("void_reason").$type<VoidReason>(),
+    // The feed had a final score the grader could not settle: no more paid polls, staff repairs it.
+    unsettledAt: timestamp("unsettled_at", { withTimezone: true }),
   },
   (table) => [
     index("pick_settlements_graded_at_idx").on(table.gradedAt),

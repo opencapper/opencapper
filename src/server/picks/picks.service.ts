@@ -29,10 +29,12 @@ import {
   formatLine,
   type CapturedOdds,
 } from "@/server/odds/odds.service";
+import { spendUserCredits } from "@/server/odds/credits";
 import { readSelection, resolveOutcome } from "@/server/odds/selection";
 import { appendPick } from "@/server/log/log.service";
 import { lookupParticipants } from "@/server/participants/participants.service";
 import { toApiPick } from "@/server/picks/picks.mapper";
+import { countedPick } from "@/server/stats/stats.service";
 import { ApiError } from "@/server/errors";
 import {
   upsertDiscordUser,
@@ -88,6 +90,9 @@ export type CreatePickInput = {
   source?: PickSourceInput;
   loadOdds?: typeof fetchEventOdds;
 };
+
+// One market times two regions.
+const CAPTURE_CREDITS = 2;
 
 type Tx = Parameters<Parameters<Db["transaction"]>[0]>[0];
 
@@ -231,6 +236,7 @@ export async function createPick(input: CreatePickInput): Promise<ApiPick> {
   if (!Value.Check(PickUnits, input.units)) throw unitsError();
   // Importers match events and dedupe through pick_sources on their own.
   if (!input.source) await precheckPick(input);
+  if (!input.source && !input.exchangeFill) spendUserCredits(CAPTURE_CREDITS);
   const odds = input.exchangeFill
     ? exchangeOdds(input.exchangeFill)
     : await captureOdds(input, input.loadOdds);
@@ -326,6 +332,7 @@ export async function getSettledPicks(
         eq(picks.guildId, input.guildId),
         ne(picks.result, "pending"),
         gt(pickSettlements.gradedAt, dayjs(input.since).toDate()),
+        countedPick,
       ),
     )
     .orderBy(asc(pickSettlements.gradedAt), asc(picks.id))

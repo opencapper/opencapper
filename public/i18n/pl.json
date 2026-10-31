@@ -541,7 +541,10 @@
       "CLV_MISSED": "Kurs zamknięcia {odds}. Ten typ był od niego gorszy o {value}.",
       "CLV_EVEN": "Kurs zamknięcia {odds}. Ten typ był na jego poziomie.",
       "IN_LOG": "Zweryfikowany w rejestrze",
-      "IN_LOG_HINT": "Wpis nr {seq, number} w publicznym rejestrze typów. Otwórz go, aby przeliczyć hashe w przeglądarce."
+      "IN_LOG_HINT": "Wpis nr {seq, number} w publicznym rejestrze typów. Otwórz go, aby przeliczyć hashe w przeglądarce.",
+      "DISQUALIFIED": "Zdyskwalifikowany",
+      "DISQUALIFIED_HINT": "Zablokowany po faktycznym starcie ({time}), więc ten typ się nie liczy.",
+      "STARTED_AT": "Start {time}"
     },
     "STATUS": {
       "PENDING": "Oczekuje",
@@ -742,7 +745,9 @@
       "RESULT": "Wynik",
       "SOURCE": "Źródło i czas transakcji",
       "PROOF_NOTE": "Pieczęć obejmuje typ w postaci, w jakiej został zapisany, łącznie z czasem zablokowania. Czas rozpoczęcia pochodzi z serwisu kursów i nie jest częścią pieczęci, więc porównaj oba czasy samodzielnie.",
-      "PROOF_NOTE_IMPORTED": "Ten typ zaimportowano z publicznej transakcji na {platform}. Pieczęć obejmuje go od chwili zablokowania tutaj podczas importu, nigdy wcześniej. Link do źródła pokazuje oryginalną transakcję i jej czas; czas rozpoczęcia nie jest częścią pieczęci."
+      "PROOF_NOTE_IMPORTED": "Ten typ zaimportowano z publicznej transakcji na {platform}. Pieczęć obejmuje go od chwili zablokowania tutaj podczas importu, nigdy wcześniej. Link do źródła pokazuje oryginalną transakcję i jej czas; czas rozpoczęcia nie jest częścią pieczęci.",
+      "SCHEDULED": "planowo {time}",
+      "DISQUALIFIED_NOTE": "Zdyskwalifikowany: ten typ zablokowano po faktycznym starcie ({time}) i nie liczy się do żadnego bilansu."
     },
     "HOW": {
       "TITLE": "Jak to działa",
@@ -1006,7 +1011,9 @@
       "RUN_FAILED": "Ostatnie uruchomienie {time} nie powiodło się. Sprawdź log serwera.",
       "NO_RUN_YET": "Brak uruchomień od startu serwera.",
       "ON": "Wł.",
-      "OFF": "Wył."
+      "OFF": "Wył.",
+      "USER_BUDGET": "Typy i linie dzisiaj",
+      "USER_BUDGET_HINT": "Kredyty wydane dziś na typy i linie w formularzu typu z dziennego budżetu. Wstrzymane, dopóki zostaje mniej niż {reserve, number} kredytów."
     },
     "CLAIM": {
       "TITLE": "Zatwierdź przejęcie @{username}",
@@ -1105,7 +1112,9 @@
     "PICK_DUPLICATE": "Masz już typ na ten rynek w tym wydarzeniu.",
     "UNITS_INVALID": "Jednostki muszą mieścić się w przedziale od {min} do {max}, w krokach co {step}.",
     "CAPPER_NOT_FOUND": "Nie ma typera o tej nazwie.",
-    "PICK_NOT_FOUND": "Ten typ nie istnieje."
+    "PICK_NOT_FOUND": "Ten typ nie istnieje.",
+    "ODDS_DAILY_LIMIT": "Pobieranie kursów na żywo osiągnęło dzisiejszy limit. Spróbuj ponownie po północy UTC.",
+    "ODDS_RESERVE": "Pobieranie kursów na żywo jest wstrzymane, aby zachować kredyty na rozliczanie. Spróbuj ponownie później."
   },
   "LEGAL": {
     "LABEL": "Informacje prawne",

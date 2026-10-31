@@ -111,16 +111,20 @@ async function upgradeAnchors() {
     .from(logAnchors)
     .where(eq(logAnchors.upgraded, false));
   for (const row of rows) {
-    const proof = parseOts(row.ots);
-    if (!hasPending(proof)) continue;
-    const result = await upgradeOts(proof, fetchCalendarUpgrade);
-    if (!result.changed) continue;
-    const upgraded = bitcoinAttestations(result.proof).length > 0;
-    await getDb()
-      .update(logAnchors)
-      .set({ ots: serializeOts(result.proof), upgraded })
-      .where(eq(logAnchors.id, row.id));
-    console.log(`[log] anchor ${row.id} upgraded to a Bitcoin attestation`);
+    try {
+      const proof = parseOts(row.ots);
+      if (!hasPending(proof)) continue;
+      const result = await upgradeOts(proof, fetchCalendarUpgrade);
+      if (!result.changed) continue;
+      const upgraded = bitcoinAttestations(result.proof).length > 0;
+      await getDb()
+        .update(logAnchors)
+        .set({ ots: serializeOts(result.proof), upgraded })
+        .where(eq(logAnchors.id, row.id));
+      console.log(`[log] anchor ${row.id} upgraded to a Bitcoin attestation`);
+    } catch (error) {
+      console.error(`[log] anchor ${row.id} upgrade failed`, error);
+    }
   }
 }
 

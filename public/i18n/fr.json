@@ -541,7 +541,10 @@
       "CLV_MISSED": "Cote de clôture {odds}. Ce pronostic est resté en dessous de {value}.",
       "CLV_EVEN": "Cote de clôture {odds}. Ce pronostic l’a égalée.",
       "IN_LOG": "Vérifié dans le journal",
-      "IN_LOG_HINT": "Entrée {seq, number} du journal public des pronostics. Ouvrez-la pour recalculer les hachages dans votre navigateur."
+      "IN_LOG_HINT": "Entrée {seq, number} du journal public des pronostics. Ouvrez-la pour recalculer les hachages dans votre navigateur.",
+      "DISQUALIFIED": "Disqualifié",
+      "DISQUALIFIED_HINT": "Verrouillé après le vrai début ({time}), ce pronostic ne compte donc pas.",
+      "STARTED_AT": "Commencé {time}"
     },
     "STATUS": {
       "PENDING": "En attente",
@@ -742,7 +745,9 @@
       "RESULT": "Résultat",
       "SOURCE": "Source et heure de la transaction",
       "PROOF_NOTE": "Le sceau couvre le pronostic tel qu’il a été enregistré, heure de verrouillage comprise. L’heure de début provient du flux de cotes et ne fait pas partie du sceau : comparez vous-même les deux heures.",
-      "PROOF_NOTE_IMPORTED": "Ce pronostic a été importé d’une transaction publique sur {platform}. Le sceau le couvre à partir du moment où il a été verrouillé ici lors de l’import, jamais avant. Le lien source montre la transaction d’origine et son heure ; l’heure de début ne fait pas partie du sceau."
+      "PROOF_NOTE_IMPORTED": "Ce pronostic a été importé d’une transaction publique sur {platform}. Le sceau le couvre à partir du moment où il a été verrouillé ici lors de l’import, jamais avant. Le lien source montre la transaction d’origine et son heure ; l’heure de début ne fait pas partie du sceau.",
+      "SCHEDULED": "prévu le {time}",
+      "DISQUALIFIED_NOTE": "Disqualifié : ce pronostic a été verrouillé après le vrai début ({time}) et ne compte dans aucun bilan."
     },
     "HOW": {
       "TITLE": "Comment ça marche",
@@ -1006,7 +1011,9 @@
       "RUN_FAILED": "La dernière exécution {time} a échoué. Consultez le journal du serveur.",
       "NO_RUN_YET": "Aucune exécution depuis le démarrage du serveur.",
       "ON": "Activé",
-      "OFF": "Désactivé"
+      "OFF": "Désactivé",
+      "USER_BUDGET": "Pronostics et cotes aujourd'hui",
+      "USER_BUDGET_HINT": "Crédits dépensés aujourd'hui pour les pronostics et les cotes du formulaire sur le budget quotidien. En pause tant qu'il reste moins de {reserve, number} crédits."
     },
     "CLAIM": {
       "TITLE": "Approuver une revendication pour @{username}",
@@ -1105,7 +1112,9 @@
     "PICK_DUPLICATE": "Vous avez déjà un pronostic sur ce marché pour cet événement.",
     "UNITS_INVALID": "Les unités doivent être comprises entre {min} et {max}, par paliers de {step}.",
     "CAPPER_NOT_FOUND": "Aucun capper ne porte ce nom.",
-    "PICK_NOT_FOUND": "Ce pronostic n’existe pas."
+    "PICK_NOT_FOUND": "Ce pronostic n’existe pas.",
+    "ODDS_DAILY_LIMIT": "Les consultations de cotes en direct ont atteint la limite du jour. Réessaie après minuit UTC.",
+    "ODDS_RESERVE": "Les consultations de cotes en direct sont en pause pour garder des crédits pour la correction. Réessaie plus tard."
   },
   "LEGAL": {
     "LABEL": "Informations légales",

@@ -1,14 +1,10 @@
 import { dayjs } from "@/lib/utils/format/date";
 import { PICK_MARKETS, type PickMarket } from "@/lib/api/typebox/picks";
-import type {
-  ApiEvent,
-  ApiEventOdds,
-  ApiMarketOdds,
-  OddsCredits,
-} from "@/lib/types";
+import type { ApiEvent, ApiEventOdds, ApiMarketOdds } from "@/lib/types";
 import { ApiError } from "@/server/errors";
 import { BOOKMAKER_PRIORITY, ODDS_API_BASE } from "@/server/constants";
 import { serverEnv } from "@/server/env";
+import { recordCredits, spendUserCredits } from "@/server/odds/credits";
 import {
   lookupParticipants,
   participantFields,
@@ -66,37 +62,6 @@ const ScoresSchema = Type.Array(
     }),
   ]),
 );
-
-declare global {
-  var oddsApiCredits: OddsCredits | undefined;
-}
-
-function headerNumber(res: Response, name: string): number | null {
-  const raw = res.headers.get(name);
-  const n = Number(raw);
-  return raw !== null && Number.isFinite(n) ? n : null;
-}
-
-// globalThis: the grading job (instrumentation) and the routes load separate module copies.
-function recordCredits(res: Response) {
-  const remaining = headerNumber(res, "x-requests-remaining");
-  if (remaining === null) return;
-  globalThis.oddsApiCredits = {
-    remaining,
-    used: headerNumber(res, "x-requests-used"),
-    updatedAt: dayjs().toISOString(),
-  };
-}
-
-export function getOddsCredits(): OddsCredits {
-  return (
-    globalThis.oddsApiCredits ?? {
-      remaining: null,
-      used: null,
-      updatedAt: null,
-    }
-  );
-}
 
 export type EventOdds = Static<typeof EventOddsSchema>;
 export type EventScore = Static<typeof ScoresSchema>[number];
@@ -368,6 +333,8 @@ export async function captureOdds(
 }
 
 const LINES_TTL_MS = 60_000;
+// Three markets times two regions.
+const EVENT_LINES_CREDITS = PICK_MARKETS.length * 2;
 const linesCache = new Map<
   string,
   { expires: number; lines: Promise<ApiEventOdds> }
@@ -378,6 +345,7 @@ async function loadEventLines(
   eventId: string,
 ): Promise<ApiEventOdds> {
   await findUpcomingEvent(sportKey, eventId);
+  spendUserCredits(EVENT_LINES_CREDITS);
   const event = await fetchEventOdds({
     sportKey,
     eventId,

@@ -541,7 +541,10 @@
       "CLV_MISSED": "Closing price {odds}. This pick missed it by {value}.",
       "CLV_EVEN": "Closing price {odds}. This pick matched it.",
       "IN_LOG": "Verified in log",
-      "IN_LOG_HINT": "Entry {seq, number} in the public pick log. Open it to recompute the hashes in your browser."
+      "IN_LOG_HINT": "Entry {seq, number} in the public pick log. Open it to recompute the hashes in your browser.",
+      "DISQUALIFIED": "Disqualified",
+      "DISQUALIFIED_HINT": "Locked after the real start ({time}), so this pick does not count.",
+      "STARTED_AT": "Started {time}"
     },
     "STATUS": {
       "PENDING": "Pending",
@@ -742,7 +745,9 @@
       "RESULT": "Result",
       "SOURCE": "Source and trade time",
       "PROOF_NOTE": "The seal covers the pick as it was logged, including the lock time. The event start time comes from the odds feed and is not part of the seal, so compare the two times yourself.",
-      "PROOF_NOTE_IMPORTED": "This pick was imported from a public {platform} trade. The seal covers it from the moment it was locked here at import time, never earlier. The source link shows the original trade and its own time; the event start time is not part of the seal."
+      "PROOF_NOTE_IMPORTED": "This pick was imported from a public {platform} trade. The seal covers it from the moment it was locked here at import time, never earlier. The source link shows the original trade and its own time; the event start time is not part of the seal.",
+      "SCHEDULED": "scheduled for {time}",
+      "DISQUALIFIED_NOTE": "Disqualified: this pick was locked after the real start ({time}) and does not count toward any record."
     },
     "HOW": {
       "TITLE": "How it works",
@@ -1006,7 +1011,9 @@
       "RUN_FAILED": "Last run {time} failed. Check the server log.",
       "NO_RUN_YET": "No run since the server started.",
       "ON": "On",
-      "OFF": "Off"
+      "OFF": "Off",
+      "USER_BUDGET": "Picks and lines today",
+      "USER_BUDGET_HINT": "Credits spent on picks and pick form lines today out of the daily budget. Paused while fewer than {reserve, number} credits remain."
     },
     "CLAIM": {
       "TITLE": "Approve a claim for @{username}",
@@ -1105,7 +1112,9 @@
     "PICK_DUPLICATE": "You already have a pick on this market for this event.",
     "UNITS_INVALID": "Units must be between {min} and {max}, in steps of {step}.",
     "CAPPER_NOT_FOUND": "No capper with this name exists.",
-    "PICK_NOT_FOUND": "This pick does not exist."
+    "PICK_NOT_FOUND": "This pick does not exist.",
+    "ODDS_DAILY_LIMIT": "Live odds lookups have reached today's limit. Please try again after midnight UTC.",
+    "ODDS_RESERVE": "Live odds lookups are paused to keep credits for grading. Please try again later."
   },
   "LEGAL": {
     "LABEL": "Legal",

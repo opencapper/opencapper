@@ -76,6 +76,13 @@ function SystemCards(props: { system: System }) {
             value={`${system.board.used} / ${system.board.limit}`}
             note={t("ADMIN.SYSTEM.BOARD_BUDGET_HINT")}
           />
+          <StatCard
+            label={t("ADMIN.SYSTEM.USER_BUDGET")}
+            value={`${system.userOdds.used} / ${system.userOdds.limit}`}
+            note={t("ADMIN.SYSTEM.USER_BUDGET_HINT", {
+              reserve: system.userOdds.reserve,
+            })}
+          />
         </div>
       </section>
 

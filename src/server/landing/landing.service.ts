@@ -162,6 +162,7 @@ async function loadStats(): Promise<LandingStats> {
           and(
             isNotNull(pickSettlements.clv),
             isNotNull(pickSettlements.closingOddsDecimal),
+            countedPick,
           ),
         )
         .orderBy(desc(pickSettlements.closingCapturedAt))
@@ -178,6 +179,7 @@ async function loadStats(): Promise<LandingStats> {
           and(
             isNotNull(pickSettlements.gradedAt),
             inArray(picks.result, FINAL_RESULTS),
+            countedPick,
           ),
         )
         .orderBy(desc(pickSettlements.gradedAt))
@@ -314,6 +316,7 @@ async function loadTicker(): Promise<LandingDashTick[]> {
           visibleUser,
           isNotNull(pickSettlements.gradedAt),
           inArray(picks.result, FINAL_RESULTS),
+          countedPick,
         ),
       )
       .orderBy(desc(pickSettlements.gradedAt))
@@ -390,6 +393,7 @@ async function loadGradedToday(): Promise<number> {
       and(
         gte(pickSettlements.gradedAt, dayjs.utc().startOf("day").toDate()),
         inArray(picks.result, FINAL_RESULTS),
+        countedPick,
       ),
     );
   return row?.count ?? 0;

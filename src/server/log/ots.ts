@@ -1,3 +1,4 @@
+import { OTS_UPGRADE_HOSTS } from "@/server/constants";
 import { createHash } from "node:crypto";
 
 const OTS_MAGIC = Buffer.from(
@@ -198,7 +199,9 @@ export function hasPending(proof: OtsProof): boolean {
 function pendingUri(att: Attestation): string | null {
   try {
     const uri = new Reader(att.payload).varbytes().toString("utf8");
-    return CALENDAR_URI.test(uri) ? uri : null;
+    return CALENDAR_URI.test(uri) && OTS_UPGRADE_HOSTS.has(new URL(uri).host)
+      ? uri
+      : null;
   } catch {
     return null;
   }

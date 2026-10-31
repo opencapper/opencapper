@@ -541,7 +541,10 @@
       "CLV_MISSED": "Kapanış oranı {odds}. Bu tahmin onun {value} gerisinde kaldı.",
       "CLV_EVEN": "Kapanış oranı {odds}. Bu tahmin onu yakaladı.",
       "IN_LOG": "Kayıt defterinde doğrulandı",
-      "IN_LOG_HINT": "Herkese açık tahmin kayıt defterinde {seq, number} numaralı kayıt. Hash'leri tarayıcında yeniden hesaplamak için aç."
+      "IN_LOG_HINT": "Herkese açık tahmin kayıt defterinde {seq, number} numaralı kayıt. Hash'leri tarayıcında yeniden hesaplamak için aç.",
+      "DISQUALIFIED": "Diskalifiye",
+      "DISQUALIFIED_HINT": "Gerçek başlangıçtan ({time}) sonra kilitlendi, bu yüzden bu tahmin sayılmaz.",
+      "STARTED_AT": "Başladı {time}"
     },
     "STATUS": {
       "PENDING": "Bekliyor",
@@ -742,7 +745,9 @@
       "RESULT": "Sonuç",
       "SOURCE": "Kaynak ve işlem zamanı",
       "PROOF_NOTE": "Mühür, tahmini kaydedildiği hâliyle ve kilitlenme zamanıyla birlikte kapsar. Etkinlik başlangıç zamanı oran akışından gelir ve mührün parçası değildir; iki zamanı kendin karşılaştır.",
-      "PROOF_NOTE_IMPORTED": "Bu tahmin, {platform} üzerindeki herkese açık bir işlemden içe aktarıldı. Mühür, onu içe aktarma sırasında burada kilitlendiği andan itibaren kapsar, asla daha önce değil. Kaynak bağlantısı orijinal işlemi ve kendi zamanını gösterir; etkinlik başlangıç zamanı mührün parçası değildir."
+      "PROOF_NOTE_IMPORTED": "Bu tahmin, {platform} üzerindeki herkese açık bir işlemden içe aktarıldı. Mühür, onu içe aktarma sırasında burada kilitlendiği andan itibaren kapsar, asla daha önce değil. Kaynak bağlantısı orijinal işlemi ve kendi zamanını gösterir; etkinlik başlangıç zamanı mührün parçası değildir.",
+      "SCHEDULED": "planlanan {time}",
+      "DISQUALIFIED_NOTE": "Diskalifiye: bu tahmin gerçek başlangıçtan ({time}) sonra kilitlendi ve hiçbir sicile sayılmaz."
     },
     "HOW": {
       "TITLE": "Nasıl çalışır",
@@ -1006,7 +1011,9 @@
       "RUN_FAILED": "Son çalışma {time} başarısız oldu. Sunucu günlüğüne bak.",
       "NO_RUN_YET": "Sunucu başladığından beri çalışma yok.",
       "ON": "Açık",
-      "OFF": "Kapalı"
+      "OFF": "Kapalı",
+      "USER_BUDGET": "Bugünkü tahminler ve oranlar",
+      "USER_BUDGET_HINT": "Bugün tahminler ve tahmin formundaki oranlar için günlük bütçeden harcanan krediler. {reserve, number} krediden az kaldığında duraklatılır."
     },
     "CLAIM": {
       "TITLE": "@{username} için sahiplenmeyi onayla",
@@ -1105,7 +1112,9 @@
     "PICK_DUPLICATE": "Bu karşılaşmada bu bahis türü için zaten bir tahminin var.",
     "UNITS_INVALID": "Birim {min} ile {max} arasında, {step} adımlarla olmalı.",
     "CAPPER_NOT_FOUND": "Bu isimde bir tahminci yok.",
-    "PICK_NOT_FOUND": "Bu tahmin yok."
+    "PICK_NOT_FOUND": "Bu tahmin yok.",
+    "ODDS_DAILY_LIMIT": "Canlı oran sorguları bugünkü sınıra ulaştı. Lütfen UTC gece yarısından sonra tekrar dene.",
+    "ODDS_RESERVE": "Değerlendirme için kredi ayırmak amacıyla canlı oran sorguları duraklatıldı. Lütfen daha sonra tekrar dene."
   },
   "LEGAL": {
     "LABEL": "Yasal",

@@ -2,6 +2,7 @@
 
 import { useHydrated } from "@/hooks/ui/use-hydrated-hook";
 import { CARD_LABEL } from "@/components/elements/page/page-heading";
+import { DisqualifiedBadge } from "@/components/elements/badge/disqualified-badge";
 import { PickStatusBadge } from "@/components/elements/badge/pick-status-badge";
 import { Matchup } from "@/components/elements/participant/matchup";
 import { SourceIcon } from "@/components/elements/source/source-badge";
@@ -173,8 +174,8 @@ export function PicksTable(props: {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="PROFILE.PICKS.STATUS" />
       ),
-      size: 100,
-      cell: ({ row }) => <PickStatusBadge result={row.original.result} />,
+      size: 130,
+      cell: ({ row }) => <StatusCell pick={row.original} />,
     },
     {
       id: "lockedAt",
@@ -265,6 +266,25 @@ export function EventCell(props: {
         })}
       </div>
     </>
+  );
+}
+
+function StatusCell(props: { pick: ApiPick }) {
+  const t = useTranslations();
+  const locale = useLocale();
+  const local = useHydrated();
+  const disqualified = props.pick.disqualified;
+  if (!disqualified) return <PickStatusBadge result={props.pick.result} />;
+  return (
+    <div className="flex flex-col items-start gap-1">
+      <PickStatusBadge result={props.pick.result} />
+      <DisqualifiedBadge actualStart={disqualified.actualStart} />
+      <span className="text-muted-foreground tabular text-xs">
+        {t("PROFILE.PICKS.STARTED_AT", {
+          time: formatDateTime(disqualified.actualStart, locale, local),
+        })}
+      </span>
+    </div>
   );
 }
 

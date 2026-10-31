@@ -541,7 +541,10 @@
       "CLV_MISSED": "Schlussquote {odds}. Dieser Tipp lag {value} darunter.",
       "CLV_EVEN": "Schlussquote {odds}. Dieser Tipp traf sie genau.",
       "IN_LOG": "Im Protokoll verifiziert",
-      "IN_LOG_HINT": "Eintrag {seq, number} im öffentlichen Tipp Protokoll. Öffnen, um die Hashes im Browser nachzurechnen."
+      "IN_LOG_HINT": "Eintrag {seq, number} im öffentlichen Tipp Protokoll. Öffnen, um die Hashes im Browser nachzurechnen.",
+      "DISQUALIFIED": "Disqualifiziert",
+      "DISQUALIFIED_HINT": "Nach dem tatsächlichen Spielbeginn ({time}) festgeschrieben, daher zählt dieser Tipp nicht.",
+      "STARTED_AT": "Begonnen {time}"
     },
     "STATUS": {
       "PENDING": "Offen",
@@ -742,7 +745,9 @@
       "RESULT": "Ergebnis",
       "SOURCE": "Quelle und Handelszeit",
       "PROOF_NOTE": "Das Siegel umfasst den Tipp so, wie er erfasst wurde, samt Zeitpunkt der Festschreibung. Der Spielbeginn stammt aus dem Quotenfeed und gehört nicht zum Siegel; vergleiche die beiden Zeiten selbst.",
-      "PROOF_NOTE_IMPORTED": "Dieser Tipp wurde aus einem öffentlichen Trade auf {platform} importiert. Das Siegel gilt ab dem Moment, in dem er hier beim Import festgeschrieben wurde, nie früher. Der Quellenlink zeigt den ursprünglichen Trade mit seiner eigenen Zeit; der Spielbeginn gehört nicht zum Siegel."
+      "PROOF_NOTE_IMPORTED": "Dieser Tipp wurde aus einem öffentlichen Trade auf {platform} importiert. Das Siegel gilt ab dem Moment, in dem er hier beim Import festgeschrieben wurde, nie früher. Der Quellenlink zeigt den ursprünglichen Trade mit seiner eigenen Zeit; der Spielbeginn gehört nicht zum Siegel.",
+      "SCHEDULED": "angesetzt für {time}",
+      "DISQUALIFIED_NOTE": "Disqualifiziert: Dieser Tipp wurde nach dem tatsächlichen Spielbeginn ({time}) festgeschrieben und zählt für keine Bilanz."
     },
     "HOW": {
       "TITLE": "So funktioniert es",
@@ -1006,7 +1011,9 @@
       "RUN_FAILED": "Letzter Lauf {time} fehlgeschlagen. Prüfe das Serverlog.",
       "NO_RUN_YET": "Seit dem Serverstart kein Lauf.",
       "ON": "An",
-      "OFF": "Aus"
+      "OFF": "Aus",
+      "USER_BUDGET": "Tipps und Quoten heute",
+      "USER_BUDGET_HINT": "Heute für Tipps und Quoten im Tippformular verbrauchte Credits vom Tagesbudget. Pausiert, solange weniger als {reserve, number} Credits übrig sind."
     },
     "CLAIM": {
       "TITLE": "Anspruch für @{username} bestätigen",
@@ -1105,7 +1112,9 @@
     "PICK_DUPLICATE": "Du hast für dieses Spiel bereits einen Tipp auf diesen Markt.",
     "UNITS_INVALID": "Units müssen zwischen {min} und {max} liegen, in Schritten von {step}.",
     "CAPPER_NOT_FOUND": "Es gibt keinen Capper mit diesem Namen.",
-    "PICK_NOT_FOUND": "Diesen Tipp gibt es nicht."
+    "PICK_NOT_FOUND": "Diesen Tipp gibt es nicht.",
+    "ODDS_DAILY_LIMIT": "Live-Quotenabfragen haben das heutige Limit erreicht. Bitte versuche es nach Mitternacht UTC erneut.",
+    "ODDS_RESERVE": "Live-Quotenabfragen sind pausiert, damit Credits für die Auswertung übrig bleiben. Bitte versuche es später erneut."
   },
   "LEGAL": {
     "LABEL": "Rechtliches",

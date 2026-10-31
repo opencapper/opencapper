@@ -541,7 +541,10 @@
       "CLV_MISSED": "Quota di chiusura {odds}. Questo pronostico è rimasto sotto di {value}.",
       "CLV_EVEN": "Quota di chiusura {odds}. Questo pronostico l’ha eguagliata.",
       "IN_LOG": "Verificato nel registro",
-      "IN_LOG_HINT": "Voce {seq, number} del registro pubblico dei pronostici. Aprila per ricalcolare gli hash nel tuo browser."
+      "IN_LOG_HINT": "Voce {seq, number} del registro pubblico dei pronostici. Aprila per ricalcolare gli hash nel tuo browser.",
+      "DISQUALIFIED": "Squalificato",
+      "DISQUALIFIED_HINT": "Bloccato dopo l'inizio reale ({time}), quindi questo pronostico non conta.",
+      "STARTED_AT": "Iniziato {time}"
     },
     "STATUS": {
       "PENDING": "In attesa",
@@ -742,7 +745,9 @@
       "RESULT": "Risultato",
       "SOURCE": "Fonte e ora dell’operazione",
       "PROOF_NOTE": "Il sigillo copre il pronostico così come è stato registrato, ora del blocco inclusa. L’ora di inizio arriva dal feed delle quote e non fa parte del sigillo, quindi confronta tu stesso i due orari.",
-      "PROOF_NOTE_IMPORTED": "Questo pronostico è stato importato da un’operazione pubblica su {platform}. Il sigillo lo copre dal momento in cui è stato bloccato qui durante l’importazione, mai prima. Il link alla fonte mostra l’operazione originale con il suo orario; l’ora di inizio non fa parte del sigillo."
+      "PROOF_NOTE_IMPORTED": "Questo pronostico è stato importato da un’operazione pubblica su {platform}. Il sigillo lo copre dal momento in cui è stato bloccato qui durante l’importazione, mai prima. Il link alla fonte mostra l’operazione originale con il suo orario; l’ora di inizio non fa parte del sigillo.",
+      "SCHEDULED": "previsto per {time}",
+      "DISQUALIFIED_NOTE": "Squalificato: questo pronostico è stato bloccato dopo l'inizio reale ({time}) e non conta per nessun record."
     },
     "HOW": {
       "TITLE": "Come funziona",
@@ -1006,7 +1011,9 @@
       "RUN_FAILED": "L’ultima esecuzione {time} non è riuscita. Controlla il log del server.",
       "NO_RUN_YET": "Nessuna esecuzione dall’avvio del server.",
       "ON": "Attivo",
-      "OFF": "Spento"
+      "OFF": "Spento",
+      "USER_BUDGET": "Pronostici e quote oggi",
+      "USER_BUDGET_HINT": "Crediti spesi oggi per pronostici e quote del modulo rispetto al budget giornaliero. In pausa finché restano meno di {reserve, number} crediti."
     },
     "CLAIM": {
       "TITLE": "Approva una rivendicazione per @{username}",
@@ -1105,7 +1112,9 @@
     "PICK_DUPLICATE": "Hai già un pronostico su questo mercato per questo evento.",
     "UNITS_INVALID": "Le unità devono essere tra {min} e {max}, a passi di {step}.",
     "CAPPER_NOT_FOUND": "Non esiste nessun capper con questo nome.",
-    "PICK_NOT_FOUND": "Questo pronostico non esiste."
+    "PICK_NOT_FOUND": "Questo pronostico non esiste.",
+    "ODDS_DAILY_LIMIT": "Le richieste di quote live hanno raggiunto il limite di oggi. Riprova dopo la mezzanotte UTC.",
+    "ODDS_RESERVE": "Le richieste di quote live sono in pausa per conservare crediti per la valutazione. Riprova più tardi."
   },
   "LEGAL": {
     "LABEL": "Informazioni legali",

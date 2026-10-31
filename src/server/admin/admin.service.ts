@@ -31,7 +31,7 @@ import { listAnchors } from "@/server/log/anchor.service";
 import { getLogHead } from "@/server/log/log.service";
 import { gradingBacklog } from "@/server/grading/grading.service";
 import { getBoardBudget } from "@/server/odds/board.service";
-import { getOddsCredits } from "@/server/odds/odds.service";
+import { getOddsCredits, getUserBudget } from "@/server/odds/credits";
 import {
   lookupParticipants,
   pendingLookups,
@@ -307,6 +307,7 @@ export async function getSystemStatus(): Promise<AdminSystem> {
     oddsConfigured: Boolean(serverEnv.oddsApiKey),
     oddsCredits: getOddsCredits(),
     board: getBoardBudget(),
+    userOdds: getUserBudget(),
     importOddsCreditsPerDay: serverEnv.importOddsCreditsPerDay,
     historyDays: serverEnv.importPolymarketHistoryDays,
     gradingEnabled: serverEnv.gradingEnabled,

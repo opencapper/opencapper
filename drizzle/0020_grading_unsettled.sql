@@ -1,0 +1,1 @@
+ALTER TABLE "pick_settlements" ADD COLUMN "unsettled_at" timestamp with time zone;

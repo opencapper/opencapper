@@ -492,6 +492,7 @@ export type AdminSystem = {
   oddsConfigured: boolean;
   oddsCredits: OddsCredits;
   board: { used: number; limit: number };
+  userOdds: { used: number; limit: number; reserve: number };
   importOddsCreditsPerDay: number;
   historyDays: number;
   gradingEnabled: boolean;

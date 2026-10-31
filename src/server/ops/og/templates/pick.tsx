@@ -61,9 +61,11 @@ export async function pickCard(
     vendorImage(pick.bookmaker, BOOK),
     sportIcon(pick.sportKey, 26, C.soft),
   ]);
-  const color = resultColor(pick.result);
+  const disqualified = Boolean(pick.disqualified);
+  const color = disqualified ? C.loss : resultColor(pick.result);
   const tinted =
-    RECORD_OF[pick.result] === "win" || RECORD_OF[pick.result] === "loss";
+    !disqualified &&
+    (RECORD_OF[pick.result] === "win" || RECORD_OF[pick.result] === "loss");
 
   return (
     <Frame
@@ -88,11 +90,15 @@ export async function pickCard(
           <Row
             style={{
               padding: "8px 16px",
-              border: `1px solid ${tinted ? color : C.hairline}`,
-              backgroundColor: tinted ? `${color}22` : C.fill,
+              border: `1px solid ${tinted || disqualified ? color : C.hairline}`,
+              backgroundColor: tinted || disqualified ? `${color}22` : C.fill,
             }}
           >
-            <Eyebrow color={color}>{t(PICK_STATUS_KEY[pick.result])}</Eyebrow>
+            <Eyebrow color={color}>
+              {disqualified
+                ? t("PROFILE.PICKS.DISQUALIFIED")
+                : t(PICK_STATUS_KEY[pick.result])}
+            </Eyebrow>
           </Row>
         </Row>
         <Row style={{ alignItems: "center", gap: 28 }}>

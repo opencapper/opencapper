@@ -49,6 +49,14 @@ export const serverEnv = {
   get boardOddsCreditsPerDay() {
     return nonNegativeInt(process.env.BOARD_ODDS_CREDITS_PER_DAY, 20);
   },
+  // Odds API credits picks and pick form lines may spend per UTC day across all users (2 per pick, 6 per uncached lines view).
+  get userOddsCreditsPerDay() {
+    return nonNegativeInt(process.env.USER_ODDS_CREDITS_PER_DAY, 100);
+  },
+  // Below this many remaining credits only grading and closing capture may call the Odds API.
+  get oddsCreditsReserve() {
+    return nonNegativeInt(process.env.ODDS_CREDITS_RESERVE, 100);
+  },
   // Override for a local stub; production always uses the public gamma API.
   get polymarketGammaBase() {
     return (
