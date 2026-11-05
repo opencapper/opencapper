@@ -14,6 +14,12 @@ import {
   participantFields,
 } from "@/server/participants/participants.service";
 import { saneOutcomes } from "@/server/odds/price";
+import { isShapeMarket } from "@/lib/config/markets";
+import {
+  sharpCovers,
+  shapeOffers,
+  type Offer,
+} from "@/server/odds/providers/sharpapi";
 import {
   normalise,
   readSelection,
@@ -263,6 +269,42 @@ export function formatLine(name: string, point: number | undefined): string {
   return `${name} ${signed ? "+" : ""}${point}`;
 }
 
+function rankedOffers(offers: readonly Offer[]): Offer[] {
+  return offers.toSorted(
+    (a, b) => bookmakerRank(a.bookmaker) - bookmakerRank(b.bookmaker),
+  );
+}
+
+// A shape market price comes from the shape provider's cached board; the selection must match an offered label exactly.
+async function captureShapeOdds(input: {
+  sportKey: string;
+  eventId: string;
+  market: PickMarket;
+  selection: string;
+}): Promise<CapturedOdds> {
+  if (!sharpCovers(input.sportKey))
+    throw new ApiError(422, "ERRORS.MARKET_NOT_OFFERED");
+  const event = await findUpcomingEvent(input.sportKey, input.eventId);
+  const want = normalise(input.selection);
+  const offers = (
+    await shapeOffers({ sportKey: input.sportKey, ...event })
+  ).filter((o) => o.market === input.market && normalise(o.label) === want);
+  if (offers.length === 0) throw new ApiError(422, "ERRORS.MARKET_NOT_OFFERED");
+  const chosen = rankedOffers(offers.filter((o) => o.capturable))[0];
+  if (!chosen) throw new ApiError(422, "ERRORS.PRICE_UNRELIABLE");
+  return {
+    home: event.home,
+    away: event.away,
+    commenceTime: event.commenceTime,
+    outcome: chosen.label,
+    spec: chosen.spec,
+    bookmaker: chosen.bookmaker,
+    oddsDecimal: chosen.oddsDecimal,
+    point: null,
+    capturedAt: chosen.observedAt,
+  };
+}
+
 export async function captureOdds(
   input: {
     sportKey: string;
@@ -272,6 +314,7 @@ export async function captureOdds(
   },
   loadOdds: typeof fetchEventOdds = fetchEventOdds,
 ): Promise<CapturedOdds> {
+  if (isShapeMarket(input.market)) return captureShapeOdds(input);
   const parsed = readSelection(input.market, input.selection);
 
   const event = await loadOdds({
@@ -345,8 +388,9 @@ export async function captureOdds(
 }
 
 const LINES_TTL_MS = 60_000;
-// Three markets times two regions.
-const EVENT_LINES_CREDITS = PICK_MARKETS.length * 2;
+const SCORE_MARKETS = PICK_MARKETS.filter((m) => !isShapeMarket(m));
+// Score markets times two regions; shape markets cost no Odds API credits.
+const EVENT_LINES_CREDITS = SCORE_MARKETS.length * 2;
 const linesCache = new Map<
   string,
   { expires: number; lines: Promise<ApiEventOdds> }
@@ -361,13 +405,13 @@ async function loadEventLines(
   const event = await fetchEventOdds({
     sportKey,
     eventId,
-    markets: PICK_MARKETS,
+    markets: SCORE_MARKETS,
   });
   const commence = dayjs(event.commence_time);
   if (!commence.isValid() || !commence.isAfter(dayjs()))
     throw new ApiError(409, "ERRORS.EVENT_STARTED");
 
-  const markets = PICK_MARKETS.flatMap((market): ApiMarketOdds[] => {
+  const markets = SCORE_MARKETS.flatMap((market): ApiMarketOdds[] => {
     const best = event.bookmakers
       .flatMap((bookmaker) => {
         const found = bookmaker.markets.find((m) => m.key === market);
@@ -396,13 +440,45 @@ async function loadEventLines(
     ];
   });
 
+  const shape = sharpCovers(sportKey)
+    ? shapeLines(
+        await shapeOffers({
+          sportKey,
+          home: event.home_team,
+          away: event.away_team,
+          commenceTime: commence.toDate(),
+        }),
+      )
+    : [];
+
   return {
     eventId: event.id,
     home: event.home_team,
     away: event.away_team,
     commenceTime: commence.toISOString(),
-    markets,
+    markets: [...markets, ...shape],
   };
+}
+
+// One outcome per label at the best ranked book; outcomes name their own book because no single book offers every label.
+function shapeLines(offers: readonly Offer[]): ApiMarketOdds[] {
+  const shapeOnly = offers.filter((o) => isShapeMarket(o.market));
+  return [...Map.groupBy(shapeOnly, (o) => o.market)].map(([market, list]) => {
+    const best = [...Map.groupBy(list, (o) => o.label).values()].map(
+      (same) => rankedOffers(same)[0],
+    );
+    return {
+      market,
+      bookmaker: rankedOffers(best)[0].bookmaker,
+      outcomes: best.map((o) => ({
+        name: o.label,
+        point: o.point,
+        odds: toAmericanOdds(o.oddsDecimal),
+        selection: o.label,
+        bookmaker: o.bookmaker,
+      })),
+    };
+  });
 }
 
 // Display only and cached, so browsing lines does not burn Odds API credits; captureOdds always fetches fresh.

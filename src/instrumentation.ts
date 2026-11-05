@@ -9,4 +9,7 @@ export async function register() {
   startImportJob();
   const { startLogAnchoring } = await import("@/server/log/anchor.service");
   startLogAnchoring();
+  const { startSharpRefresh } =
+    await import("@/server/odds/providers/sharpapi");
+  startSharpRefresh();
 }

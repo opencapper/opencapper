@@ -36,6 +36,7 @@ import {
   scoreSpec,
 } from "@/server/odds/selection";
 import { appendPick } from "@/server/log/log.service";
+import { isShapeMarket } from "@/lib/config/markets";
 import { lookupParticipants } from "@/server/participants/participants.service";
 import { toApiPick } from "@/server/picks/picks.mapper";
 import { countedPick } from "@/server/stats/stats.service";
@@ -204,13 +205,15 @@ export function unitsError(): ApiError {
 async function precheckPick(input: CreatePickInput) {
   const parsed = readSelection(input.market, input.selection);
   const event = await findUpcomingEvent(input.sportKey, input.eventId);
-  resolveOutcome({
-    sportKey: input.sportKey,
-    market: input.market,
-    side: parsed.side,
-    home: event.home,
-    away: event.away,
-  });
+  // Shape selections are checked against the offered labels at capture, which spends no Odds API credits.
+  if (!isShapeMarket(input.market))
+    resolveOutcome({
+      sportKey: input.sportKey,
+      market: input.market,
+      side: parsed.side,
+      home: event.home,
+      away: event.away,
+    });
   await assertNoDuplicate(input);
 }
 
@@ -241,7 +244,8 @@ export async function createPick(input: CreatePickInput): Promise<ApiPick> {
   if (!Value.Check(PickUnits, input.units)) throw unitsError();
   // Importers match events and dedupe through pick_sources on their own.
   if (!input.source) await precheckPick(input);
-  if (!input.source && !input.exchangeFill) spendUserCredits(CAPTURE_CREDITS);
+  if (!input.source && !input.exchangeFill && !isShapeMarket(input.market))
+    spendUserCredits(CAPTURE_CREDITS);
   const odds = input.exchangeFill
     ? exchangeOdds(input.exchangeFill, input.market)
     : await captureOdds(input, input.loadOdds);

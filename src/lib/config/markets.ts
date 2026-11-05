@@ -81,6 +81,11 @@ const SHAPE_FAMILIES: readonly PickMarket[] = [
   "distance",
 ];
 
+// Shape markets are priced by the shape provider and graded from method and period facts.
+export function isShapeMarket(market: PickMarket): boolean {
+  return SHAPE_FAMILIES.includes(market);
+}
+
 export function marketsFor(sportKey: string): PickMarket[] {
   return sportShape(sportKey)
     ? [...SCORE_FAMILIES, ...SHAPE_FAMILIES]

@@ -42,6 +42,29 @@ export function parseSelection(
   return { side: match[1], point };
 }
 
+function nameTokens(value: string): string[] {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z\s-]/g, "")
+    .split(/[\s-]+/)
+    .filter(Boolean);
+}
+
+// The same person or team across feeds that spell names differently ("Seok Hyun Ko" and "Seokhyeon Ko", "Cortes-Acosta").
+export function sameParticipant(a: string, b: string): boolean {
+  const x = nameTokens(a);
+  const y = nameTokens(b);
+  if (x.length === 0 || y.length === 0) return false;
+  if (x.join("") === y.join("")) return true;
+  const lastX = x[x.length - 1];
+  const lastY = y[y.length - 1];
+  if (lastX !== lastY) return false;
+  // Same family name: the given names must start alike, or one feed gives only the family name.
+  return x.length === 1 || y.length === 1 || x[0][0] === y[0][0];
+}
+
 export function resolveTeam(
   side: string,
   teams: readonly string[],
