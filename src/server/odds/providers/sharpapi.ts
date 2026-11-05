@@ -52,7 +52,10 @@ async function throttle() {
   if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
 }
 
-const MAX_PAGES = 12;
+const MAX_PAGES = 30;
+// Only the markets parseRow maps; moneylines and spreads come from The Odds API.
+const SHAPE_MARKET_TYPES =
+  "method_of_victory,round_betting,go_the_distance,total_rounds";
 
 async function fetchLeague(league: string): Promise<Row[]> {
   const apiKey = serverEnv.sharpApiKey;
@@ -64,6 +67,8 @@ async function fetchLeague(league: string): Promise<Row[]> {
     const url = new URL(`${SHARPAPI_BASE}/odds`);
     url.searchParams.set("league", league);
     url.searchParams.set("limit", "200");
+    url.searchParams.set("market", SHAPE_MARKET_TYPES);
+    url.searchParams.set("is_live", "false");
     if (cursor) url.searchParams.set("cursor", cursor);
     const res = await fetch(url, {
       headers: { "X-API-Key": apiKey },
@@ -75,9 +80,11 @@ async function fetchLeague(league: string): Promise<Row[]> {
       throw new ApiError(502, "ERRORS.ODDS_BAD_RESPONSE");
     for (const row of body.data)
       if (Value.Check(RowSchema, row)) rows.push(row);
-    if (!body.pagination.has_more || !body.pagination.next_cursor) break;
+    if (!body.pagination.has_more || !body.pagination.next_cursor) return rows;
     cursor = body.pagination.next_cursor;
   }
+  // A cut board drops whole books from later pages, so it must show up in the logs.
+  console.error(`sharpapi: ${league} board cut at ${MAX_PAGES} pages`);
   return rows;
 }
 
