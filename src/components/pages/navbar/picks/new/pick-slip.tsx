@@ -16,7 +16,6 @@ import { useEventOddsQuery } from "@/hooks/picks/picks-hook";
 import { useCopyToClipboard } from "@/hooks/ui/use-copy-to-clipboard-hook";
 import { getPathname, Link } from "@/i18n/navigation";
 import {
-  PICK_MARKETS,
   PICK_UNITS_MAX,
   PICK_UNITS_MIN,
   PICK_UNITS_STEP,
@@ -28,6 +27,7 @@ import {
   hasDrawOutcome,
   isMarket,
   MARKET_KEY,
+  marketsFor,
 } from "@/lib/config/markets";
 import { isFighterGroup, PICK_LEAGUES, sportGroup } from "@/lib/config/sports";
 import { vendorName } from "@/lib/config/vendor-registry";
@@ -175,7 +175,7 @@ function SlipBody(props: {
         aria-label={t("PICK_NEW.SLIP.MARKET")}
         className="bg-muted grid grid-cols-3 gap-1 rounded-lg p-1"
       >
-        {PICK_MARKETS.map((market) => (
+        {marketsFor(sel.sportKey).map((market) => (
           <button
             key={market}
             type="button"
@@ -370,7 +370,7 @@ function MarketOutcomes(props: {
           label={o.selection}
           odds={o.odds}
           active={sel.selection === o.selection}
-          onClick={() => pick(o, market.bookmaker)}
+          onClick={() => pick(o, o.bookmaker ?? market.bookmaker)}
         />
       ))}
     </OutcomeGrid>

@@ -460,6 +460,15 @@ async function loadEventLines(
   };
 }
 
+export async function getShapeLines(
+  sportKey: string,
+  eventId: string,
+): Promise<ApiMarketOdds[]> {
+  if (!sharpCovers(sportKey)) return [];
+  const event = await findUpcomingEvent(sportKey, eventId);
+  return shapeLines(await shapeOffers({ sportKey, ...event }));
+}
+
 // One outcome per label at the best ranked book; outcomes name their own book because no single book offers every label.
 function shapeLines(offers: readonly Offer[]): ApiMarketOdds[] {
   const shapeOnly = offers.filter((o) => isShapeMarket(o.market));
