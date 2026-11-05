@@ -12,4 +12,6 @@ export async function register() {
   const { startSharpRefresh } =
     await import("@/server/odds/providers/sharpapi");
   startSharpRefresh();
+  const { startResultsJob } = await import("@/server/results/results.job");
+  startResultsJob();
 }

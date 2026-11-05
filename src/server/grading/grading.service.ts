@@ -30,6 +30,7 @@ import {
   scoresResult,
 } from "@/server/results/results.service";
 import { sportShape } from "@/lib/config/markets";
+import { hasFreeResults } from "@/server/results/results.job";
 import { EXCHANGE_BOOKMAKER } from "@/lib/api/typebox/sources";
 import {
   fetchMarkets,
@@ -287,7 +288,11 @@ export async function gradePendingPicks(
         !dayjs(r.pick.commenceTime).isAfter(scoresFrom),
     );
     const slot = overdueSlotOpen(sportKey, now);
-    const paid = !keyEmpty && (recent || (overdue && slot && !belowReserve()));
+    // Fight sports grade from the free results job; paying for scores would only duplicate it.
+    const paid =
+      !keyEmpty &&
+      !hasFreeResults(sportKey) &&
+      (recent || (overdue && slot && !belowReserve()));
     // Past the paid window only the free events list can still show a postponement.
     const free =
       !paid &&
