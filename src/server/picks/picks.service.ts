@@ -30,7 +30,11 @@ import {
   type CapturedOdds,
 } from "@/server/odds/odds.service";
 import { spendUserCredits } from "@/server/odds/credits";
-import { readSelection, resolveOutcome } from "@/server/odds/selection";
+import {
+  readSelection,
+  resolveOutcome,
+  scoreSpec,
+} from "@/server/odds/selection";
 import { appendPick } from "@/server/log/log.service";
 import { lookupParticipants } from "@/server/participants/participants.service";
 import { toApiPick } from "@/server/picks/picks.mapper";
@@ -210,7 +214,7 @@ async function precheckPick(input: CreatePickInput) {
   await assertNoDuplicate(input);
 }
 
-function exchangeOdds(fill: ExchangeFill): CapturedOdds {
+function exchangeOdds(fill: ExchangeFill, market: PickMarket): CapturedOdds {
   const commence = dayjs(fill.commenceTime);
   if (!commence.isAfter(dayjs()))
     throw new ApiError(409, "ERRORS.EVENT_STARTED");
@@ -223,6 +227,7 @@ function exchangeOdds(fill: ExchangeFill): CapturedOdds {
     away: fill.away,
     commenceTime: commence.toDate(),
     outcome: fill.outcome,
+    spec: scoreSpec(market, fill.outcome, fill.home, fill.away),
     bookmaker: fill.bookmaker,
     oddsDecimal: fill.oddsDecimal,
     point: fill.point,
@@ -238,7 +243,7 @@ export async function createPick(input: CreatePickInput): Promise<ApiPick> {
   if (!input.source) await precheckPick(input);
   if (!input.source && !input.exchangeFill) spendUserCredits(CAPTURE_CREDITS);
   const odds = input.exchangeFill
-    ? exchangeOdds(input.exchangeFill)
+    ? exchangeOdds(input.exchangeFill, input.market)
     : await captureOdds(input, input.loadOdds);
   if (input.source && !dayjs(input.source.postedAt).isBefore(odds.commenceTime))
     throw new ApiError(409, "ERRORS.SOURCE_AFTER_START");
@@ -279,6 +284,7 @@ export async function createPick(input: CreatePickInput): Promise<ApiPick> {
         commenceTime: odds.commenceTime,
         market: input.market,
         selection: formatLine(odds.outcome, odds.point ?? undefined),
+        spec: odds.spec,
         point: odds.point,
         bookmaker: odds.bookmaker,
         oddsDecimal: odds.oddsDecimal,

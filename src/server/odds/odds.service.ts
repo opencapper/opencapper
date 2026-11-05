@@ -1,5 +1,9 @@
 import { dayjs } from "@/lib/utils/format/date";
-import { PICK_MARKETS, type PickMarket } from "@/lib/api/typebox/picks";
+import {
+  PICK_MARKETS,
+  type PickMarket,
+  type PickSpec,
+} from "@/lib/api/typebox/picks";
 import type { ApiEvent, ApiEventOdds, ApiMarketOdds } from "@/lib/types";
 import { ApiError } from "@/server/errors";
 import { BOOKMAKER_PRIORITY, ODDS_API_BASE } from "@/server/constants";
@@ -14,6 +18,7 @@ import {
   normalise,
   readSelection,
   resolveOutcome,
+  scoreSpec,
 } from "@/server/odds/selection";
 import { toAmericanOdds } from "@/server/picks/picks.mapper";
 import { Type, type TSchema, type Static } from "@sinclair/typebox";
@@ -240,6 +245,7 @@ export type CapturedOdds = {
   away: string;
   commenceTime: Date;
   outcome: string;
+  spec: PickSpec;
   bookmaker: string;
   oddsDecimal: number;
   point: number | null;
@@ -325,6 +331,12 @@ export async function captureOdds(
     away: event.away_team,
     commenceTime: commence.toDate(),
     outcome: chosen.outcome.name,
+    spec: scoreSpec(
+      input.market,
+      chosen.outcome.name,
+      event.home_team,
+      event.away_team,
+    ),
     bookmaker: chosen.bookmaker,
     oddsDecimal: chosen.outcome.price,
     point: chosen.outcome.point ?? null,

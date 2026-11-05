@@ -559,7 +559,10 @@
     "MARKET": {
       "H2H": "マネーライン",
       "SPREADS": "スプレッド",
-      "TOTALS": "トータル"
+      "TOTALS": "トータル",
+      "METHOD": "決着方法",
+      "PERIOD_WIN": "ピリオド別ベット",
+      "DISTANCE": "最後までもつれる"
     },
     "LOG_PICK": "予想を登録",
     "TABS": {

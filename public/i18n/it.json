@@ -559,7 +559,10 @@
     "MARKET": {
       "H2H": "Testa a testa",
       "SPREADS": "Handicap",
-      "TOTALS": "Under/Over"
+      "TOTALS": "Under/Over",
+      "METHOD": "Metodo di vittoria",
+      "PERIOD_WIN": "Scommessa sul periodo",
+      "DISTANCE": "Arriva al termine"
     },
     "LOG_PICK": "Registra un pronostico",
     "TABS": {

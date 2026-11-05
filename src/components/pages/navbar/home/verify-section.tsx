@@ -17,6 +17,7 @@ const EXAMPLE = {
     eventId: "example",
     market: "h2h",
     selection: "Example Fighter",
+    spec: { side: "home", methods: null, period: null },
     point: null,
     oddsDecimal: 2,
     bookmaker: "pinnacle",

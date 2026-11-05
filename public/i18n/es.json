@@ -559,7 +559,10 @@
     "MARKET": {
       "H2H": "Ganador del partido",
       "SPREADS": "Hándicap",
-      "TOTALS": "Total"
+      "TOTALS": "Total",
+      "METHOD": "Método de victoria",
+      "PERIOD_WIN": "Apuesta por periodo",
+      "DISTANCE": "Llega al final"
     },
     "LOG_PICK": "Registrar un pick",
     "TABS": {

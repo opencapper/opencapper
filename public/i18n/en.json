@@ -559,7 +559,10 @@
     "MARKET": {
       "H2H": "Moneyline",
       "SPREADS": "Spread",
-      "TOTALS": "Total"
+      "TOTALS": "Total",
+      "METHOD": "Method of victory",
+      "PERIOD_WIN": "Period betting",
+      "DISTANCE": "Goes the distance"
     },
     "LOG_PICK": "Log a pick",
     "TABS": {
