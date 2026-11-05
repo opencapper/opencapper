@@ -5,7 +5,11 @@ import { isBotToken } from "@/server/auth/bot-token";
 import { ApiError } from "@/server/errors";
 import { clientIp, createRateLimiter } from "@/server/rate-limit";
 import { getActiveLeagues, getBoard } from "@/server/odds/board.service";
-import { getEventLines, listEvents } from "@/server/odds/odds.service";
+import {
+  getEventLines,
+  getShapeLines,
+  listEvents,
+} from "@/server/odds/odds.service";
 import { Elysia } from "elysia";
 
 const linesPerMinute = createRateLimiter({ limit: 10, windowMs: 60_000 });
@@ -44,6 +48,16 @@ export const eventsRoute = new Elysia({ prefix: "/events" })
         throw new ApiError(404, "ERRORS.LEAGUE_NOT_OFFERED");
       await throttleLines(ctx.request.headers, ctx.headers);
       return getEventLines(ctx.params.sportKey, ctx.params.eventId);
+    },
+    { params: EventOddsParams },
+  )
+  // Read from the shape provider's warm cache: no Odds API credits, so the bot can autocomplete from it.
+  .get(
+    "/:sportKey/:eventId/shape",
+    async (ctx) => {
+      if (!isPickLeague(ctx.params.sportKey))
+        throw new ApiError(404, "ERRORS.LEAGUE_NOT_OFFERED");
+      return getShapeLines(ctx.params.sportKey, ctx.params.eventId);
     },
     { params: EventOddsParams },
   );

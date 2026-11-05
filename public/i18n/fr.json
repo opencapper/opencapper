@@ -559,7 +559,10 @@
     "MARKET": {
       "H2H": "Vainqueur du match",
       "SPREADS": "Handicap",
-      "TOTALS": "Plus/Moins"
+      "TOTALS": "Plus/Moins",
+      "METHOD": "Méthode de victoire",
+      "PERIOD_WIN": "Pari par période",
+      "DISTANCE": "Va jusqu'au bout"
     },
     "LOG_PICK": "Enregistrer un pronostic",
     "TABS": {

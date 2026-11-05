@@ -148,6 +148,20 @@
       "when": 1793409375510,
       "tag": "0020_grading_unsettled",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1793918181751,
+      "tag": "0021_generic_markets",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1793918188425,
+      "tag": "0022_event_results_append_only",
+      "breakpoints": true
     }
   ]
 }

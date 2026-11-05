@@ -559,7 +559,10 @@
     "MARKET": {
       "H2H": "Moneyline",
       "SPREADS": "Handicap",
-      "TOTALS": "Total (mais/menos)"
+      "TOTALS": "Total (mais/menos)",
+      "METHOD": "Método de vitória",
+      "PERIOD_WIN": "Aposta por período",
+      "DISTANCE": "Vai até o fim"
     },
     "LOG_PICK": "Registrar palpite",
     "TABS": {

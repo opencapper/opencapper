@@ -276,6 +276,8 @@ export type ApiOddsOutcome = {
   point: number | null;
   odds: number;
   selection: string;
+  // Set when the outcome's book differs per outcome (shape markets).
+  bookmaker?: string;
 };
 
 export type ApiMarketOdds = {

@@ -1,6 +1,6 @@
 import { PICK_MARKETS, PICK_RESULTS } from "@/lib/api/typebox/picks";
 import { FINAL_RESULTS } from "@/lib/config/results";
-import type { PickMarket, PickResult } from "@/lib/api/typebox/picks";
+import type { PickMarket, PickResult, PickSpec } from "@/lib/api/typebox/picks";
 import { PARTICIPANT_KINDS } from "@/lib/api/typebox/participants";
 import type { ParticipantKind } from "@/lib/api/typebox/participants";
 import { SOURCE_PLATFORMS } from "@/lib/api/typebox/sources";
@@ -42,7 +42,12 @@ const bytea = customType<{ data: Buffer; driverData: Buffer }>({
   },
 });
 
-export const VOID_REASONS = ["postponed", "timeout"] as const;
+export const VOID_REASONS = [
+  "postponed",
+  "timeout",
+  "cancelled",
+  "no_contest",
+] as const;
 export type VoidReason = (typeof VOID_REASONS)[number];
 
 function sqlList(values: readonly string[]) {
@@ -105,6 +110,7 @@ export const picks = pgTable(
     commenceTime: timestamp("commence_time", { withTimezone: true }).notNull(),
     market: text("market").$type<PickMarket>().notNull(),
     selection: text("selection").notNull(),
+    spec: jsonb("spec").$type<PickSpec>().notNull(),
     point: numeric("point", { precision: 8, scale: 2, mode: "number" }),
     bookmaker: text("bookmaker").notNull(),
     oddsDecimal: numeric("odds_decimal", {
@@ -213,6 +219,61 @@ export const pickDisqualifications = pgTable(
     ),
   ],
 );
+
+export const EVENT_STATUSES = ["final", "cancelled", "postponed"] as const;
+export type EventStatus = (typeof EVENT_STATUSES)[number];
+export const RESULT_WINNERS = ["home", "away", "draw"] as const;
+export type ResultWinner = (typeof RESULT_WINNERS)[number];
+
+// What happened in an event, from whichever results source covers its sport. Append only: a correction is a newer row, the latest wins.
+export const eventResults = pgTable(
+  "event_results",
+  {
+    id: serial("id").primaryKey(),
+    sportKey: text("sport_key").notNull(),
+    eventId: text("event_id").notNull(),
+    source: text("source").notNull(),
+    status: text("status").$type<EventStatus>().notNull(),
+    winner: text("winner").$type<ResultWinner>(),
+    homeScore: numeric("home_score", {
+      precision: 8,
+      scale: 2,
+      mode: "number",
+    }),
+    awayScore: numeric("away_score", {
+      precision: 8,
+      scale: 2,
+      mode: "number",
+    }),
+    // Result class from the sport's shape (ko, submission, decision); null where score decides.
+    method: text("method"),
+    methodDetail: text("method_detail"),
+    periodsScheduled: integer("periods_scheduled"),
+    periodEnded: integer("period_ended"),
+    // Seconds elapsed in the ending period.
+    periodClock: integer("period_clock"),
+    bonuses: jsonb("bonuses").$type<string[]>().notNull().default([]),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index("event_results_event_idx").on(
+      table.sportKey,
+      table.eventId,
+      table.id,
+    ),
+    check(
+      "event_results_status_check",
+      sql`${table.status} in (${sqlList(EVENT_STATUSES)})`,
+    ),
+    check(
+      "event_results_winner_check",
+      sql`${table.winner} in (${sqlList(RESULT_WINNERS)})`,
+    ),
+  ],
+);
+export type EventResult = typeof eventResults.$inferSelect;
 
 // Every change of a final result. Append only; the picks trigger only lets a final result change with a row from the same transaction.
 export const pickResultChanges = pgTable(

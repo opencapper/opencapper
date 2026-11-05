@@ -14,14 +14,40 @@ export type PickResult = typeof PickResult.static;
 
 export const PICK_RESULTS = PickResult.anyOf.map((l) => l.const);
 
+// Sport neutral market families; the measured quantity and vocabularies come from the sport (src/lib/config/markets.ts).
 export const PickMarket = t.Union([
   t.Literal("h2h"),
   t.Literal("spreads"),
   t.Literal("totals"),
+  t.Literal("method"),
+  t.Literal("period_win"),
+  t.Literal("distance"),
 ]);
 export type PickMarket = typeof PickMarket.static;
 
 export const PICK_MARKETS = PickMarket.anyOf.map((l) => l.const);
+
+// Who or what a selection backs: a participant by position, a total side, a yes/no, or either participant.
+export const SpecSide = t.Union([
+  t.Literal("home"),
+  t.Literal("away"),
+  t.Literal("draw"),
+  t.Literal("any"),
+  t.Literal("over"),
+  t.Literal("under"),
+  t.Literal("yes"),
+  t.Literal("no"),
+]);
+export type SpecSide = typeof SpecSide.static;
+
+// The grading input of a pick, hashed into the log leaf: graders read only this, the line and the event result.
+export const PickSpec = t.Object({
+  side: SpecSide,
+  // Result classes that count as this selection (one book's "KO/TKO/DQ" is ["ko", "dq"]); null for markets without a method.
+  methods: t.Union([t.Array(t.String(), { minItems: 1 }), t.Null()]),
+  period: t.Union([t.Integer({ minimum: 1 }), t.Null()]),
+});
+export type PickSpec = typeof PickSpec.static;
 
 // The one stake scale for every caller (web, Discord, Telegram, importers), so units compare across channels.
 export const PICK_UNITS_MIN = 0.5;

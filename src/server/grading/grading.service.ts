@@ -23,7 +23,14 @@ import {
 } from "@/server/odds/odds.service";
 import { belowReserve, oddsKeyEmpty } from "@/server/odds/credits";
 import { normalise } from "@/server/odds/selection";
-import { finalScore, settle, type FinalScore } from "@/server/grading/settle";
+import { settle, type ResultFacts } from "@/server/grading/settle";
+import {
+  latestResults,
+  recordEventResult,
+  scoresResult,
+} from "@/server/results/results.service";
+import { sportShape } from "@/lib/config/markets";
+import { hasFreeResults } from "@/server/results/results.job";
 import { EXCHANGE_BOOKMAKER } from "@/lib/api/typebox/sources";
 import {
   fetchMarkets,
@@ -72,17 +79,25 @@ function groupBy<T>(items: readonly T[], key: (item: T) => string) {
   return groups;
 }
 
+function voidReasonOf(sportKey: string, facts: ResultFacts): VoidReason {
+  if (facts.status === "cancelled") return "cancelled";
+  const shape = sportShape(sportKey);
+  if (shape && facts.method && shape.voidMethods.includes(facts.method))
+    return "no_contest";
+  return "cancelled";
+}
+
 async function recordResult(
   pickId: number,
   result: PickResult,
-  score: FinalScore | null,
+  score: { homeScore: number | null; awayScore: number | null } | null,
   gradedAt: Date,
   voidReason: VoidReason | null = null,
 ) {
   const values = {
     result,
-    homeScore: score?.home ?? null,
-    awayScore: score?.away ?? null,
+    homeScore: score?.homeScore ?? null,
+    awayScore: score?.awayScore ?? null,
     gradedAt,
     voidReason,
   };
@@ -273,7 +288,11 @@ export async function gradePendingPicks(
         !dayjs(r.pick.commenceTime).isAfter(scoresFrom),
     );
     const slot = overdueSlotOpen(sportKey, now);
-    const paid = !keyEmpty && (recent || (overdue && slot && !belowReserve()));
+    // Fight sports grade from the free results job; paying for scores would only duplicate it.
+    const paid =
+      !keyEmpty &&
+      !hasFreeResults(sportKey) &&
+      (recent || (overdue && slot && !belowReserve()));
     // Past the paid window only the free events list can still show a postponement.
     const free =
       !paid &&
@@ -300,6 +319,11 @@ export async function gradePendingPicks(
       }
     }
 
+    // Results already stored by a free source (fighter feeds) grade without any paid poll.
+    const stored = await latestResults(
+      sportKey,
+      rows.map((r) => r.pick.eventId),
+    );
     for (const row of rows) {
       const pick = row.pick;
       const event = events?.get(pick.eventId) ?? null;
@@ -310,17 +334,29 @@ export async function gradePendingPicks(
           paid ? "scores" : "events",
         );
       const scored = event?.scored ?? null;
-      const score = scored ? finalScore(scored) : null;
-      const result = scored && score ? settle(pick, scored, score) : null;
+      const fromFeed = scored ? scoresResult(sportKey, scored) : null;
+      const facts = fromFeed
+        ? await recordEventResult(fromFeed, stored.get(pick.eventId))
+        : (stored.get(pick.eventId) ?? null);
+      if (facts) stored.set(pick.eventId, facts);
+      const result = facts ? settle(pick, facts) : null;
       if (result) {
-        await recordResult(pick.id, result, score, now.toDate());
+        await recordResult(
+          pick.id,
+          result,
+          facts,
+          now.toDate(),
+          result === "void" && facts
+            ? voidReasonOf(pick.sportKey, facts)
+            : null,
+        );
         graded++;
         continue;
       }
-      if (scored && score && row.unsettledAt === null) {
+      if (facts?.status === "final" && row.unsettledAt === null) {
         gradingLog("error", "grading_unsettled", pick, {
-          home: scored.home_team,
-          away: scored.away_team,
+          home: pick.home,
+          away: pick.away,
           selection: pick.selection,
         });
         await markUnsettled(pick.id, now.toDate());

@@ -559,7 +559,10 @@
     "MARKET": {
       "H2H": "Siegwette",
       "SPREADS": "Handicap",
-      "TOTALS": "Über/Unter"
+      "TOTALS": "Über/Unter",
+      "METHOD": "Siegart",
+      "PERIOD_WIN": "Abschnittswette",
+      "DISTANCE": "Volle Distanz"
     },
     "LOG_PICK": "Tipp abgeben",
     "TABS": {

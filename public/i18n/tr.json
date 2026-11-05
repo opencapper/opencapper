@@ -559,7 +559,10 @@
     "MARKET": {
       "H2H": "Maç sonucu",
       "SPREADS": "Handikap",
-      "TOTALS": "Alt/Üst"
+      "TOTALS": "Alt/Üst",
+      "METHOD": "Kazanma şekli",
+      "PERIOD_WIN": "Periyot bahsi",
+      "DISTANCE": "Sonuna kadar gider"
     },
     "LOG_PICK": "Tahmin gir",
     "TABS": {

@@ -559,7 +559,10 @@
     "MARKET": {
       "H2H": "Moneyline",
       "SPREADS": "Handicap",
-      "TOTALS": "Totaal"
+      "TOTALS": "Totaal",
+      "METHOD": "Manier van winnen",
+      "PERIOD_WIN": "Periodeweddenschap",
+      "DISTANCE": "Gaat de volle afstand"
     },
     "LOG_PICK": "Tip vastleggen",
     "TABS": {

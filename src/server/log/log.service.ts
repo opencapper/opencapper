@@ -33,6 +33,12 @@ export function canonicalPick(pick: Pick): string {
     eventId: pick.eventId,
     market: pick.market,
     selection: pick.selection,
+    // Fixed key order: jsonb does not keep the insert order.
+    spec: {
+      side: pick.spec.side,
+      methods: pick.spec.methods,
+      period: pick.spec.period,
+    },
     point: pick.point,
     oddsDecimal: pick.oddsDecimal,
     bookmaker: pick.bookmaker,

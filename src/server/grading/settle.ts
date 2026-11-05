@@ -1,33 +1,24 @@
-import type { PickMarket, PickResult } from "@/lib/api/typebox/picks";
-import type { EventScore } from "@/server/odds/odds.service";
-import {
-  normalise,
-  parseSelection,
-  resolveTeam,
-} from "@/server/odds/selection";
+import type { PickMarket, PickResult, PickSpec } from "@/lib/api/typebox/picks";
+import { sportShape } from "@/lib/config/markets";
+import type { EventResult } from "@/lib/db/schema/server";
 
 export type Gradable = {
   sportKey: string;
   market: PickMarket;
-  selection: string;
+  spec: PickSpec;
   point: number | null;
 };
 
-export type FinalScore = { home: number; away: number };
-
-export function finalScore(event: EventScore): FinalScore | null {
-  if (!event.completed || !event.scores) return null;
-  const scoreOf = (team: string) => {
-    const entry = event.scores?.find(
-      (s) => normalise(s.name) === normalise(team),
-    );
-    const value = entry ? Number(entry.score) : NaN;
-    return Number.isFinite(value) ? value : null;
-  };
-  const home = scoreOf(event.home_team);
-  const away = scoreOf(event.away_team);
-  return home === null || away === null ? null : { home, away };
-}
+export type ResultFacts = Pick<
+  EventResult,
+  | "status"
+  | "winner"
+  | "homeScore"
+  | "awayScore"
+  | "method"
+  | "periodEnded"
+  | "periodClock"
+>;
 
 type WholeResult = "win" | "loss" | "push";
 
@@ -53,37 +44,91 @@ function byLine(point: number, margin: (line: number) => number): PickResult {
   return "split";
 }
 
-export function settle(
-  pick: Gradable,
-  event: Pick<EventScore, "home_team" | "away_team">,
-  score: FinalScore,
-): PickResult | null {
-  const parsed = parseSelection(pick.market, pick.selection);
-  if (!parsed) return null;
+function winnerOf(facts: ResultFacts): ResultFacts["winner"] {
+  if (facts.winner) return facts.winner;
+  if (facts.homeScore === null || facts.awayScore === null) return null;
+  if (facts.homeScore === facts.awayScore) return "draw";
+  return facts.homeScore > facts.awayScore ? "home" : "away";
+}
+
+function hit(won: boolean): PickResult {
+  return won ? "win" : "loss";
+}
+
+// Grades one pick from what happened in its event; null when the facts cannot settle it, so the grader keeps it pending.
+export function settle(pick: Gradable, facts: ResultFacts): PickResult | null {
+  if (facts.status === "cancelled") return "void";
+  if (facts.status !== "final") return null;
+
+  const shape = sportShape(pick.sportKey);
+  if (shape && facts.method && shape.voidMethods.includes(facts.method))
+    return "void";
+
+  const spec = pick.spec;
+  const winner = winnerOf(facts);
 
   if (pick.market === "totals") {
     if (pick.point === null) return null;
-    const total = score.home + score.away;
-    const over = parsed.side === "over";
+    const periods =
+      shape?.periodSeconds && facts.periodEnded !== null
+        ? facts.periodEnded - 1 + (facts.periodClock ?? 0) / shape.periodSeconds
+        : null;
+    const total =
+      periods ??
+      (facts.homeScore === null || facts.awayScore === null
+        ? null
+        : facts.homeScore + facts.awayScore);
+    if (total === null) return null;
+    const over = spec.side === "over";
     return byLine(pick.point, (line) => (over ? total - line : line - total));
   }
 
-  if (pick.market === "h2h" && parsed.side === "draw")
-    return score.home === score.away ? "win" : "loss";
-
-  const team = resolveTeam(parsed.side, [event.home_team, event.away_team]);
-  if (!team) return null;
-  const isHome = team === event.home_team;
-  const own = isHome ? score.home : score.away;
-  const other = isHome ? score.away : score.home;
-
   if (pick.market === "spreads") {
-    if (pick.point === null) return null;
+    if (
+      pick.point === null ||
+      facts.homeScore === null ||
+      facts.awayScore === null
+    )
+      return null;
+    const own = spec.side === "home" ? facts.homeScore : facts.awayScore;
+    const other = spec.side === "home" ? facts.awayScore : facts.homeScore;
     return byLine(pick.point, (line) => own + line - other);
   }
 
-  // Soccer moneyline is three way, so a draw beats both team sides; two way markets refund.
-  if (own === other)
-    return pick.sportKey.startsWith("soccer_") ? "loss" : "push";
-  return byMargin(own - other);
+  if (pick.market === "h2h") {
+    if (!winner) return null;
+    if (spec.side === "draw") return hit(winner === "draw");
+    // Soccer moneyline is three way, so a draw beats both team sides; two way markets refund.
+    if (winner === "draw")
+      return pick.sportKey.startsWith("soccer_") ? "loss" : "push";
+    return hit(winner === spec.side);
+  }
+
+  if (!shape || !facts.method) return null;
+  const wentDistance = shape.distanceMethods.includes(facts.method);
+
+  if (pick.market === "distance") {
+    if (spec.side !== "yes" && spec.side !== "no") return null;
+    return hit(wentDistance === (spec.side === "yes"));
+  }
+
+  if (spec.side === "draw") return hit(winner === "draw");
+  if (!winner || winner === "draw") return winner ? "loss" : null;
+  const sideWon = spec.side === "any" || spec.side === winner;
+  const methodHit = spec.methods ? spec.methods.includes(facts.method) : true;
+
+  if (pick.market === "method") return hit(sideWon && methodHit);
+
+  if (pick.market === "period_win") {
+    if (spec.period === null) return hit(sideWon && methodHit);
+    if (facts.periodEnded === null) return null;
+    // A decision after the last round is not a win in that round.
+    return hit(
+      sideWon &&
+        methodHit &&
+        !wentDistance &&
+        facts.periodEnded === spec.period,
+    );
+  }
+  return null;
 }

@@ -11,6 +11,8 @@ export const BOOKMAKER_PRIORITY = [
   "bet365",
 ];
 
+export const SHARPAPI_BASE = "https://api.sharpapi.io/api/v1";
+
 export const THESPORTSDB_BASE = "https://www.thesportsdb.com/api/v1/json";
 
 export const DISCORD_CDN_BASE = "https://cdn.discordapp.com";

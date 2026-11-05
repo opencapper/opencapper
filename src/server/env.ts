@@ -23,6 +23,10 @@ export const serverEnv = {
   get oddsApiKey() {
     return process.env.ODDS_API_KEY;
   },
+  // Prices the shape markets (method, period, distance) from US books; those markets are off without it.
+  get sharpApiKey() {
+    return process.env.SHARPAPI_KEY?.trim() || undefined;
+  },
   get theSportsDbApiKey() {
     return process.env.THESPORTSDB_API_KEY?.trim() || "123";
   },
