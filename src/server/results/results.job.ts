@@ -13,6 +13,7 @@ import {
   fightFor,
   pairingReplaced,
 } from "@/server/results/sources/ufc";
+import { espnFightFacts, espnFightNear } from "@/server/results/sources/espn";
 import { and, eq, gte, lte } from "drizzle-orm";
 
 const RUN_EVERY_MS = 2 * 60_000;
@@ -80,6 +81,19 @@ export async function collectFightResults(now = dayjs()): Promise<number> {
           next = { ...base, ...facts, status: "final" };
           break;
         }
+      }
+      // PFL and anything the UFC feed misses: ESPN, which has no bonuses.
+      if (!next) {
+        const fight = await espnFightNear(
+          event.commenceTime,
+          event.home,
+          event.away,
+        ).catch(() => null);
+        const facts = fight
+          ? await espnFightFacts(fight, event.home).catch(() => null)
+          : null;
+        if (facts)
+          next = { ...base, ...facts, source: "espn", status: "final" };
       }
       if (
         !next &&
