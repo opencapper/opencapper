@@ -473,9 +473,10 @@ export async function getShapeLines(
 function shapeLines(offers: readonly Offer[]): ApiMarketOdds[] {
   const shapeOnly = offers.filter((o) => isShapeMarket(o.market));
   return [...Map.groupBy(shapeOnly, (o) => o.market)].map(([market, list]) => {
-    const best = [...Map.groupBy(list, (o) => o.label).values()].map(
-      (same) => rankedOffers(same)[0],
-    );
+    // Favourites first, so a long menu reads from likely to unlikely.
+    const best = [...Map.groupBy(list, (o) => o.label).values()]
+      .map((same) => rankedOffers(same)[0])
+      .toSorted((a, b) => a.oddsDecimal - b.oddsDecimal);
     return {
       market,
       bookmaker: rankedOffers(best)[0].bookmaker,
