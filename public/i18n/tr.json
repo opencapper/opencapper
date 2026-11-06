@@ -1317,5 +1317,23 @@
     "BODY": "Bağlantı bozuk olabilir ya da bu isimde bir tahminci yok. Gerçek bir tahminci her zaman çalışan bir profil bağlantısı paylaşabilir; yazımı kontrol et veya ismi ara.",
     "HOME": "Ana sayfa",
     "CHECK": "Tahminci sorgula"
+  },
+  "PICK_LABEL": {
+    "BY": "{who}, {method} ile",
+    "IN_PERIOD": "{who}, {n}. {period}",
+    "BY_IN_PERIOD": "{who}, {n}. {period} {method} ile",
+    "DISTANCE_YES": "Sonuna kadar gider",
+    "DISTANCE_NO": "Sonuna kadar gitmez",
+    "METHOD": {
+      "KO": "KO/TKO",
+      "SUBMISSION": "Teslim",
+      "DECISION": "Karar",
+      "DQ": "Diskalifiye",
+      "DRAW": "Beraberlik",
+      "NO_CONTEST": "Sonuçsuz"
+    },
+    "PERIOD": {
+      "ROUND": "raunt"
+    }
   }
 }

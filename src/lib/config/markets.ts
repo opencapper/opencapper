@@ -32,6 +32,8 @@ export type SportShape = {
   // Result classes that void every pick on the event.
   voidMethods: readonly string[];
   periodName: string;
+  // Translation key of the period word under PICK_LABEL.PERIOD.
+  periodKey: "ROUND";
   // Seconds per period, for totals measured in periods (rounds); null when totals count score.
   periodSeconds: number | null;
 };
@@ -48,6 +50,7 @@ const FIGHT_SHAPE: SportShape = {
   distanceMethods: ["decision", "draw"],
   voidMethods: ["no_contest"],
   periodName: "Round",
+  periodKey: "ROUND",
   periodSeconds: 300,
 };
 

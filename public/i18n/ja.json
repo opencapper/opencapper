@@ -1317,5 +1317,23 @@
     "BODY": "リンクが壊れているか、この名前のキャッパーはいません。本物のキャッパーなら、いつでも有効なプロフィールリンクを共有できます。綴りを確認するか、名前で検索してください。",
     "HOME": "ホーム",
     "CHECK": "キャッパーを確認"
+  },
+  "PICK_LABEL": {
+    "BY": "{who}が{method}で勝利",
+    "IN_PERIOD": "{who}が{period}{n}で勝利",
+    "BY_IN_PERIOD": "{who}が{period}{n}に{method}で勝利",
+    "DISTANCE_YES": "判定までもつれる",
+    "DISTANCE_NO": "判定前に決着",
+    "METHOD": {
+      "KO": "KO/TKO",
+      "SUBMISSION": "一本",
+      "DECISION": "判定",
+      "DQ": "反則負け",
+      "DRAW": "引き分け",
+      "NO_CONTEST": "ノーコンテスト"
+    },
+    "PERIOD": {
+      "ROUND": "ラウンド"
+    }
   }
 }

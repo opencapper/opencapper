@@ -1317,5 +1317,23 @@
     "BODY": "Le lien est peut-être cassé, ou aucun capper ne porte ce nom. Un vrai capper peut toujours partager un lien de profil qui fonctionne ; vérifiez l’orthographe ou recherchez le nom.",
     "HOME": "Accueil",
     "CHECK": "Contrôler un capper"
+  },
+  "PICK_LABEL": {
+    "BY": "{who} par {method}",
+    "IN_PERIOD": "{who} au {period} {n}",
+    "BY_IN_PERIOD": "{who} par {method} au {period} {n}",
+    "DISTANCE_YES": "Va jusqu'au bout",
+    "DISTANCE_NO": "Ne va pas jusqu'au bout",
+    "METHOD": {
+      "KO": "KO/TKO",
+      "SUBMISSION": "Soumission",
+      "DECISION": "Décision",
+      "DQ": "DQ",
+      "DRAW": "Match nul",
+      "NO_CONTEST": "Sans décision"
+    },
+    "PERIOD": {
+      "ROUND": "round"
+    }
   }
 }

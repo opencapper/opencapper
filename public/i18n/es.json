@@ -1317,5 +1317,23 @@
     "BODY": "Puede que el enlace esté roto o que ningún capper tenga este nombre. Un capper real siempre puede compartir un enlace de perfil que funcione; revisa la ortografía o busca el nombre.",
     "HOME": "Inicio",
     "CHECK": "Comprobar un capper"
+  },
+  "PICK_LABEL": {
+    "BY": "{who} por {method}",
+    "IN_PERIOD": "{who} en el {period} {n}",
+    "BY_IN_PERIOD": "{who} por {method} en el {period} {n}",
+    "DISTANCE_YES": "Llega al final",
+    "DISTANCE_NO": "No llega al final",
+    "METHOD": {
+      "KO": "KO/TKO",
+      "SUBMISSION": "Sumisión",
+      "DECISION": "Decisión",
+      "DQ": "DQ",
+      "DRAW": "Empate",
+      "NO_CONTEST": "Sin resultado"
+    },
+    "PERIOD": {
+      "ROUND": "asalto"
+    }
   }
 }

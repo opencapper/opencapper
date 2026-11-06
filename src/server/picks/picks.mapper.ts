@@ -39,6 +39,7 @@ export function toApiPick(
     commenceTime: dayjs(pick.commenceTime).toISOString(),
     market: pick.market,
     selection: pick.selection,
+    spec: pick.spec,
     point: pick.point,
     units: pick.units,
     odds: toAmericanOdds(pick.oddsDecimal),

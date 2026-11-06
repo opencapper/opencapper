@@ -485,6 +485,7 @@ function shapeLines(offers: readonly Offer[]): ApiMarketOdds[] {
         odds: toAmericanOdds(o.oddsDecimal),
         selection: o.label,
         bookmaker: o.bookmaker,
+        spec: o.spec,
       })),
     };
   });

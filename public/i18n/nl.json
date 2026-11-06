@@ -1317,5 +1317,23 @@
     "BODY": "De link werkt misschien niet, of geen enkele capper heeft deze naam. Een echte capper kan altijd een werkende profiellink delen; controleer de spelling of zoek de naam op.",
     "HOME": "Home",
     "CHECK": "Capper controleren"
+  },
+  "PICK_LABEL": {
+    "BY": "{who} via {method}",
+    "IN_PERIOD": "{who} in {period} {n}",
+    "BY_IN_PERIOD": "{who} via {method} in {period} {n}",
+    "DISTANCE_YES": "Gaat de volle afstand",
+    "DISTANCE_NO": "Gaat niet de volle afstand",
+    "METHOD": {
+      "KO": "KO/TKO",
+      "SUBMISSION": "Submission",
+      "DECISION": "Jurybeslissing",
+      "DQ": "DQ",
+      "DRAW": "Gelijkspel",
+      "NO_CONTEST": "No contest"
+    },
+    "PERIOD": {
+      "ROUND": "ronde"
+    }
   }
 }

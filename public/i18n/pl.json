@@ -1317,5 +1317,23 @@
     "BODY": "Link może być uszkodzony albo żaden typer nie ma tej nazwy. Prawdziwy typer zawsze może podać działający link do profilu; sprawdź pisownię albo wyszukaj nazwę.",
     "HOME": "Strona główna",
     "CHECK": "Sprawdź typera"
+  },
+  "PICK_LABEL": {
+    "BY": "{who} przez {method}",
+    "IN_PERIOD": "{who} w {period} {n}",
+    "BY_IN_PERIOD": "{who} przez {method} w {period} {n}",
+    "DISTANCE_YES": "Pełny dystans",
+    "DISTANCE_NO": "Bez pełnego dystansu",
+    "METHOD": {
+      "KO": "KO/TKO",
+      "SUBMISSION": "Poddanie",
+      "DECISION": "Decyzja",
+      "DQ": "DQ",
+      "DRAW": "Remis",
+      "NO_CONTEST": "Bez rozstrzygnięcia"
+    },
+    "PERIOD": {
+      "ROUND": "rundzie"
+    }
   }
 }

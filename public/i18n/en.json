@@ -1317,5 +1317,23 @@
     "BODY": "The link may be broken, or no capper has this name. A real capper can always share a working profile link; check the spelling or look the name up.",
     "HOME": "Home",
     "CHECK": "Check a capper"
+  },
+  "PICK_LABEL": {
+    "BY": "{who} by {method}",
+    "IN_PERIOD": "{who} in {period} {n}",
+    "BY_IN_PERIOD": "{who} by {method} in {period} {n}",
+    "DISTANCE_YES": "Goes the distance",
+    "DISTANCE_NO": "Does not go the distance",
+    "METHOD": {
+      "KO": "KO/TKO",
+      "SUBMISSION": "Submission",
+      "DECISION": "Decision",
+      "DQ": "DQ",
+      "DRAW": "Draw",
+      "NO_CONTEST": "No contest"
+    },
+    "PERIOD": {
+      "ROUND": "Round"
+    }
   }
 }

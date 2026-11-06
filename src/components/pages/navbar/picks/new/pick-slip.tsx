@@ -13,6 +13,7 @@ import { Icon } from "@/components/ui/icon";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Slider } from "@/components/ui/slider";
 import { useEventOddsQuery } from "@/hooks/picks/picks-hook";
+import { useSelectionLabel } from "@/hooks/picks/use-selection-label-hook";
 import { useCopyToClipboard } from "@/hooks/ui/use-copy-to-clipboard-hook";
 import { getPathname, Link } from "@/i18n/navigation";
 import {
@@ -20,6 +21,7 @@ import {
   PICK_UNITS_MIN,
   PICK_UNITS_STEP,
   type PickMarket,
+  type PickSpec,
 } from "@/lib/api/typebox/picks";
 import { env } from "@/lib/config/env";
 import {
@@ -116,6 +118,7 @@ function SlipBody(props: {
 }) {
   const t = useTranslations();
   const locale = useLocale();
+  const label = useSelectionLabel();
   const sel = props.selection;
   const league = PICK_LEAGUES.find((l) => l.sportKey === sel.sportKey);
   const fighters = isFighterGroup(sportGroup(sel.sportKey));
@@ -205,7 +208,14 @@ function SlipBody(props: {
             <p className="truncate font-semibold">
               {sel.selection === DRAW_SELECTION
                 ? t("PICK_NEW.BOARD.DRAW")
-                : sel.selection}
+                : label({
+                    sportKey: sel.sportKey,
+                    market: sel.market,
+                    selection: sel.selection,
+                    spec: sel.spec,
+                    home: sel.event.home,
+                    away: sel.event.away,
+                  })}
             </p>
           </div>
           <div className="flex shrink-0 flex-col items-end gap-1">
@@ -295,13 +305,15 @@ function MarketOutcomes(props: {
     fromBoard ? null : sel.event.id,
   );
 
+  const label = useSelectionLabel();
   const pick = (
-    outcome: { selection: string; odds: number | null },
+    outcome: { selection: string; odds: number | null; spec?: PickSpec },
     bookmaker: string | null,
   ) =>
     props.onSelect({
       ...sel,
       selection: outcome.selection,
+      spec: outcome.spec ?? null,
       odds: outcome.odds,
       bookmaker,
     });
@@ -367,7 +379,14 @@ function MarketOutcomes(props: {
       {market.outcomes.map((o) => (
         <OutcomeButton
           key={o.selection}
-          label={o.selection}
+          label={label({
+            sportKey: sel.sportKey,
+            market: sel.market,
+            selection: o.selection,
+            spec: o.spec,
+            home: sel.event.home,
+            away: sel.event.away,
+          })}
           odds={o.odds}
           active={sel.selection === o.selection}
           onClick={() => pick(o, o.bookmaker ?? market.bookmaker)}
@@ -476,6 +495,7 @@ function UnitsField(props: { value: number; onChange: (v: number) => void }) {
 function SlipDone(props: { pick: ApiPick; onAnother: () => void }) {
   const t = useTranslations("PICK_NEW.DONE");
   const tm = useTranslations();
+  const label = useSelectionLabel();
   const locale = useLocale();
   const clipboard = useCopyToClipboard();
   const profile = {
@@ -532,7 +552,7 @@ function SlipDone(props: { pick: ApiPick; onAnother: () => void }) {
           <Dot />
           {formatRelative(props.pick.commenceTime, locale)}
         </p>
-        <p className="mt-0.5 font-semibold">{props.pick.selection}</p>
+        <p className="mt-0.5 font-semibold">{label(props.pick)}</p>
         <p className="text-muted-foreground text-xs">
           {props.pick.away} {tm("PARTICIPANT.AT")} {props.pick.home}
         </p>

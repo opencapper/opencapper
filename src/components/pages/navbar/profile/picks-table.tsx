@@ -43,6 +43,7 @@ import {
 } from "@/lib/utils/format/number";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
+import { useSelectionLabel } from "@/hooks/picks/use-selection-label-hook";
 import { useEffect, useState } from "react";
 
 const PAGE_SIZE = 20;
@@ -53,6 +54,7 @@ export function PicksTable(props: {
   highlightPickId?: string | null;
 }) {
   const t = useTranslations();
+  const label = useSelectionLabel();
   const locale = useLocale();
   const highlightId = props.highlightPickId ?? null;
   // Paged so a capper with hundreds of picks does not render every row; a linked pick opens on its page.
@@ -118,7 +120,7 @@ export function PicksTable(props: {
       size: 140,
       cell: ({ row }) => (
         <>
-          {row.original.selection}
+          {label(row.original)}
           {row.original.source && <SourceLine source={row.original.source} />}
         </>
       ),

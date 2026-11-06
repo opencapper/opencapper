@@ -28,6 +28,7 @@ import {
   formatUnits,
 } from "@/lib/utils/format/number";
 import { useLocale, useTranslations } from "next-intl";
+import { useSelectionLabel } from "@/hooks/picks/use-selection-label-hook";
 import type { ReactNode } from "react";
 import { DashChart } from "./dash-chart";
 import {
@@ -203,6 +204,7 @@ function Empty(props: { children: string }) {
 
 function PickRows(props: { picks: ApiPick[]; full?: boolean }) {
   const t = useTranslations();
+  const label = useSelectionLabel();
   const locale = useLocale();
   if (props.picks.length === 0)
     return <Empty>{t("PROFILE.PICKS.EMPTY")}</Empty>;
@@ -252,9 +254,7 @@ function PickRows(props: { picks: ApiPick[]; full?: boolean }) {
               <CompactMatchup event={pick} />
             </td>
             <td className={cn(TD, "hidden @md:table-cell")}>
-              <div className="text-foreground/85 truncate">
-                {pick.selection}
-              </div>
+              <div className="text-foreground/85 truncate">{label(pick)}</div>
               <MarketLabel market={pick.market} />
             </td>
             <td

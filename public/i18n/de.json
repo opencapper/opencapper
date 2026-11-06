@@ -1317,5 +1317,23 @@
     "BODY": "Der Link ist vielleicht kaputt, oder kein Capper trägt diesen Namen. Ein echter Capper kann jederzeit einen funktionierenden Profillink teilen; prüfe die Schreibweise oder schlage den Namen nach.",
     "HOME": "Startseite",
     "CHECK": "Capper prüfen"
+  },
+  "PICK_LABEL": {
+    "BY": "{who} durch {method}",
+    "IN_PERIOD": "{who} in {period} {n}",
+    "BY_IN_PERIOD": "{who} durch {method} in {period} {n}",
+    "DISTANCE_YES": "Geht über die volle Distanz",
+    "DISTANCE_NO": "Endet vorzeitig",
+    "METHOD": {
+      "KO": "KO/TKO",
+      "SUBMISSION": "Aufgabe",
+      "DECISION": "Punktentscheidung",
+      "DQ": "DQ",
+      "DRAW": "Unentschieden",
+      "NO_CONTEST": "No Contest"
+    },
+    "PERIOD": {
+      "ROUND": "Runde"
+    }
   }
 }

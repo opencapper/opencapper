@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { dayjs, formatDateTime, formatDuration } from "@/lib/utils/format/date";
 import { formatAmericanOdds } from "@/lib/utils/format/number";
 import { useLocale, useTranslations } from "next-intl";
+import { useSelectionLabel } from "@/hooks/picks/use-selection-label-hook";
 import type { ReactNode } from "react";
 
 type SealState = "sealed" | "mismatch" | "checking" | "unsealed" | "error";
@@ -99,6 +100,7 @@ export function SealBadge(props: { state: SealState }) {
 
 export function PickCheckCard(props: { pick: ApiPick }) {
   const t = useTranslations();
+  const label = useSelectionLabel();
   const locale = useLocale();
   const local = useHydrated();
   const pick = props.pick;
@@ -131,7 +133,7 @@ export function PickCheckCard(props: { pick: ApiPick }) {
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <span className="text-foreground text-base font-medium">
-              {pick.selection}
+              {label(pick)}
             </span>
             <span className="tabular text-sm">
               {formatAmericanOdds(pick.odds)}

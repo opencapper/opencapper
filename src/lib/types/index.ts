@@ -1,4 +1,4 @@
-import type { PickMarket, PickResult } from "@/lib/api/typebox/picks";
+import type { PickMarket, PickResult, PickSpec } from "@/lib/api/typebox/picks";
 import type { LeaderboardScope } from "@/lib/api/typebox/leaderboard";
 import type { SourcePlatform } from "@/lib/api/typebox/sources";
 import type { CheckMatchKind, CheckStatus } from "@/lib/api/typebox/check";
@@ -79,6 +79,8 @@ export type ApiPick = {
   commenceTime: string;
   market: string;
   selection: string;
+  // Present on live picks; drives the translated label of shape markets.
+  spec?: PickSpec;
   point: number | null;
   units: number;
   odds: number;
@@ -278,6 +280,7 @@ export type ApiOddsOutcome = {
   selection: string;
   // Set when the outcome's book differs per outcome (shape markets).
   bookmaker?: string;
+  spec?: PickSpec;
 };
 
 export type ApiMarketOdds = {
