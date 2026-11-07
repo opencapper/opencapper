@@ -115,8 +115,11 @@ export type LogEntry = {
   canonical: string;
 };
 
-export type LogExportEntry = LogEntry & {
+export type LogExportEntry = Omit<LogEntry, "canonical"> & {
   loggedAt: string;
+  // Null for picks priced by SharpAPI: their terms allow showing one pick's price, not exporting prices in bulk. `leaf` still proves the chain; the canonical text is at `canonicalUrl`.
+  canonical: string | null;
+  canonicalUrl?: string;
 };
 
 export type LogExportPage = {

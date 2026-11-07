@@ -7,6 +7,7 @@ import type {
   LogExportPage,
   LogHead,
 } from "@/lib/types";
+import { isShapeMarket } from "@/lib/config/markets";
 import { dayjs } from "@/lib/utils/format/date";
 import { ApiError } from "@/server/errors";
 import { visibleUser } from "@/server/users/hidden";
@@ -184,10 +185,19 @@ export async function listEntries(
     .orderBy(asc(pickLog.seq))
     .limit(limit + 1);
   const page = rows.slice(0, limit);
-  const entries: LogExportEntry[] = page.map((row) => ({
-    ...toLogEntry(row.entry, row.pick, row.username),
-    loggedAt: dayjs(row.entry.createdAt).toISOString(),
-  }));
+  const entries: LogExportEntry[] = page.map((row) => {
+    const entry = {
+      ...toLogEntry(row.entry, row.pick, row.username),
+      loggedAt: dayjs(row.entry.createdAt).toISOString(),
+    };
+    return isShapeMarket(row.pick.market)
+      ? {
+          ...entry,
+          canonical: null,
+          canonicalUrl: `/api/log/picks/${row.pick.id}`,
+        }
+      : entry;
+  });
   return {
     entries,
     next: rows.length > limit ? rows[limit].entry.seq : null,

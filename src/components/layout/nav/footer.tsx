@@ -12,6 +12,10 @@ import { navigation } from "./navigation";
 const LINK =
   "text-foreground/50 hover:text-foreground/80 font-mono text-[11px] transition-colors";
 
+// Attribution SharpAPI's terms (section 5.4) require, word for word, on every page that shows its prices.
+const SHARPAPI_CREDIT = "Data provided by SharpAPI";
+const SHARPAPI_URL = "https://sharpapi.io";
+
 const LEGAL_LINKS = [
   { href: "/impressum", key: msg("FOOTER.IMPRESSUM") },
   { href: "/privacy", key: msg("FOOTER.PRIVACY") },
@@ -64,6 +68,15 @@ export function Footer() {
               </Link>
             </Fragment>
           ))}
+          <Separator />
+          <a
+            href={SHARPAPI_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={LINK}
+          >
+            {SHARPAPI_CREDIT}
+          </a>
         </div>
 
         <div className="flex items-center justify-between gap-4">
