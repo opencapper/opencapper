@@ -3,6 +3,28 @@ import { serverEnv } from "@/server/env";
 import { Type, type Static, type TSchema } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 
+// Data API v2 row (snake_case); mapped onto TradeSchema so importers keep one shape.
+const V2TradeSchema = Type.Object({
+  proxy_wallet: Type.String(),
+  side: Type.String(),
+  condition_id: Type.String(),
+  size: Type.Number(),
+  price: Type.Number(),
+  timestamp: Type.Number(),
+  title: Type.String(),
+  event_slug: Type.String(),
+  outcome: Type.String(),
+  outcome_index: Type.Number(),
+  transaction_hash: Type.String(),
+});
+
+const TradePageSchema = Type.Object({
+  data: Type.Array(V2TradeSchema),
+  pagination: Type.Object({
+    next_cursor: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  }),
+});
+
 const TradeSchema = Type.Object({
   proxyWallet: Type.String(),
   side: Type.String(),
@@ -16,6 +38,24 @@ const TradeSchema = Type.Object({
   outcomeIndex: Type.Number(),
   transactionHash: Type.String(),
 });
+
+function toTrade(
+  row: Static<typeof V2TradeSchema>,
+): Static<typeof TradeSchema> {
+  return {
+    proxyWallet: row.proxy_wallet,
+    side: row.side,
+    conditionId: row.condition_id,
+    size: row.size,
+    price: row.price,
+    timestamp: row.timestamp,
+    title: row.title,
+    eventSlug: row.event_slug,
+    outcome: row.outcome,
+    outcomeIndex: row.outcome_index,
+    transactionHash: row.transaction_hash,
+  };
+}
 
 const MarketSchema = Type.Object({
   conditionId: Type.String(),
@@ -87,12 +127,12 @@ async function getJson<T extends TSchema>(url: URL, schema: T) {
 }
 
 // Taker fills only: maker fills of resting quotes are liquidity provision, not a chosen position.
-export function fetchTrades(wallet: string, limit = 500) {
-  const url = new URL(`${POLYMARKET_DATA_BASE}/trades`);
+export async function fetchTrades(wallet: string, limit = 500) {
+  const url = new URL(`${POLYMARKET_DATA_BASE}/v2/trades`);
   url.searchParams.set("user", wallet);
   url.searchParams.set("limit", String(limit));
-  url.searchParams.set("takerOnly", "true");
-  return getJson(url, Type.Array(TradeSchema));
+  url.searchParams.set("taker_only", "true");
+  return (await getJson(url, TradePageSchema)).data.map(toTrade);
 }
 
 function fetchPublicProfile(wallet: string) {
@@ -109,42 +149,29 @@ export async function fetchProfileBio(wallet: string) {
   return (await fetchPublicProfile(wallet)).bio ?? "";
 }
 
-function tradeKey(trade: PolymarketTrade) {
-  return `${trade.transactionHash}:${trade.conditionId}:${trade.outcomeIndex}:${trade.size}:${trade.price}`;
-}
-
-// The data API rejects offsets past 10000, so older pages are reached by moving `end` back instead.
+// v2 pages by cursor only; the filters are re-sent on every page or the feed re-anchors.
 export async function fetchBuysSince(
   wallet: string,
   since: number,
   delayMs: number,
 ): Promise<{ trades: PolymarketTrade[]; complete: boolean }> {
-  const seen = new Map<string, PolymarketTrade>();
-  let end: number | null = null;
-  let offset = 0;
+  const trades: PolymarketTrade[] = [];
+  let cursor: string | null = null;
   for (let page = 0; page < HISTORY_MAX_PAGES; page++) {
     if (page > 0) await pause(delayMs);
-    const url = new URL(`${POLYMARKET_DATA_BASE}/trades`);
+    const url = new URL(`${POLYMARKET_DATA_BASE}/v2/trades`);
     url.searchParams.set("user", wallet);
     url.searchParams.set("limit", String(HISTORY_PAGE));
-    url.searchParams.set("offset", String(offset));
-    url.searchParams.set("takerOnly", "true");
+    url.searchParams.set("taker_only", "true");
     url.searchParams.set("side", "BUY");
     url.searchParams.set("start", String(since));
-    if (end !== null) url.searchParams.set("end", String(end));
-    const batch = await getJson(url, Type.Array(TradeSchema));
-    for (const trade of batch) seen.set(tradeKey(trade), trade);
-    if (batch.length < HISTORY_PAGE)
-      return { trades: [...seen.values()], complete: true };
-    const oldest = Math.min(...batch.map((trade) => trade.timestamp));
-    if (oldest < since) return { trades: [...seen.values()], complete: true };
-    if (end !== null && oldest + 1 >= end) offset += HISTORY_PAGE;
-    else {
-      end = oldest + 1;
-      offset = 0;
-    }
+    if (cursor) url.searchParams.set("cursor", cursor);
+    const body = await getJson(url, TradePageSchema);
+    trades.push(...body.data.map(toTrade));
+    cursor = body.pagination.next_cursor ?? null;
+    if (!cursor) return { trades, complete: true };
   }
-  return { trades: [...seen.values()], complete: false };
+  return { trades, complete: false };
 }
 
 export async function fetchMarkets(
