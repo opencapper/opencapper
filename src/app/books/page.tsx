@@ -2,12 +2,18 @@ import type { Metadata } from "next";
 import { connection } from "next/server";
 import { AutoRefresh } from "@/components/refresh";
 import { PageHeader, Panel, Unreachable, td, th } from "@/components/ui";
-import { api, load } from "@/lib/api/client";
+import { api, load, type BookStatus } from "@/lib/api/client";
 import { ago, bookName } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Bookmakers" };
 
 const STALE_SECS = 180;
+
+function role(b: BookStatus): string {
+  if (b.book === "pinnacle") return "Sharp: sets the fair line";
+  if (b.commission) return `Exchange, ${(b.commission * 100).toFixed(0)}% commission`;
+  return "Bookmaker";
+}
 
 export default async function Books() {
   await connection();
@@ -29,6 +35,12 @@ export default async function Books() {
               <th className={th}>Book</th>
               <th className={`${th} text-right`}>Games</th>
               <th className={`${th} text-right`}>Prices</th>
+              <th className={`${th} text-right`} title="Games we could pair with a Pinnacle game">
+                Matched
+              </th>
+              <th className={`${th} text-right`} title="Median difference in implied chance from Pinnacle on the same outcome">
+                Gap to Pinnacle
+              </th>
               <th className={th}>Last confirmed</th>
               <th className={th}>Role</th>
             </tr>
@@ -44,8 +56,16 @@ export default async function Books() {
                   </td>
                   <td className={`${td} tabular text-right font-mono`}>{b.events.toLocaleString("en-GB")}</td>
                   <td className={`${td} tabular text-right font-mono`}>{b.quotes.toLocaleString("en-GB")}</td>
+                  <td className={`${td} tabular text-right font-mono text-muted`}>
+                    {b.book === "pinnacle" ? "" : b.matched_events.toLocaleString("en-GB")}
+                  </td>
+                  <td className={`${td} tabular text-right font-mono text-muted`}>
+                    {b.median_implied_gap === null || b.median_implied_gap === undefined
+                      ? ""
+                      : `${(b.median_implied_gap * 100).toFixed(2)}%`}
+                  </td>
                   <td className={`${td} text-muted`}>{b.newest_seen_at ? ago(b.newest_seen_at, now) : "never"}</td>
-                  <td className={`${td} text-muted`}>{b.book === "pinnacle" ? "Sharp: sets the fair line" : "Soft"}</td>
+                  <td className={`${td} text-muted`}>{role(b)}</td>
                 </tr>
               );
             })}

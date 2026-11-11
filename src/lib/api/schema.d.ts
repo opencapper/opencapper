@@ -242,7 +242,19 @@ export interface components {
         };
         BookStatus: {
             book: string;
+            /**
+             * Format: double
+             * @description Commission on net winnings, for exchanges.
+             */
+            commission?: number | null;
+            compared_prices: number;
             events: number;
+            matched_events: number;
+            /**
+             * Format: double
+             * @description Median of |1/book odds - 1/Pinnacle odds| over compared outcomes: how closely the book tracks the sharp line.
+             */
+            median_implied_gap?: number | null;
             /** Format: date-time */
             newest_seen_at?: string | null;
             quotes: number;
