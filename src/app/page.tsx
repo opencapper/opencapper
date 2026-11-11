@@ -69,10 +69,13 @@ export default async function Home({ searchParams }: PageProps<"/">) {
   const book = typeof sp.book === "string" ? sp.book : undefined;
   const minEv = typeof sp.min === "string" ? Number(sp.min) : undefined;
 
-  const { data, error } = await api.GET("/v1/value-bets", {
-    params: { query: { book, min_ev: minEv, limit: 300 } },
-    cache: "no-store",
-  });
+  // A network failure throws instead of returning an error; both render the fallback below.
+  const { data, error } = await api
+    .GET("/v1/value-bets", {
+      params: { query: { book, min_ev: minEv, limit: 300 } },
+      cache: "no-store",
+    })
+    .catch((e: unknown) => ({ data: undefined, error: e }));
   const now = Date.now();
 
   if (error || !data) {
