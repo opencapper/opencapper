@@ -30,7 +30,7 @@ export default async function SettingsPage(props: Props) {
         className="mb-0"
         label={t("LABEL")}
         title={t("HEADING")}
-        description={account ? t("SUBHEADING", { email: account.user.email }) : t("SUBHEADING_SIGNED_OUT")}
+        description={account ? t("SUBHEADING", { name: account.user.display_name }) : t("SUBHEADING_SIGNED_OUT")}
       />
       {account ? (
         <SettingsForm settings={account.settings} books={books} />

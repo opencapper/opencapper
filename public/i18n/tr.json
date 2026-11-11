@@ -160,7 +160,6 @@
   "AUTH": {
     "SIGN_IN": "Giriş yap",
     "MENU": "Hesap menüsü",
-    "SIGNED_IN_AS": "{email} olarak giriş yapıldı",
     "TRACKER": "Bahis takibi",
     "HEALTH": "Hesap sağlığı",
     "SETTINGS": "Ayarlar",
@@ -696,28 +695,23 @@
   "ACCOUNT": {
     "LABEL": "Hesap",
     "SIGN_IN_HEADING": "OpenEV'ye giriş yap",
-    "REGISTER_HEADING": "Hesabını oluştur",
-    "WHY": "Hesap; bahis takibini, miktar ayarlarını ve hesap sağlığını tek bir yerde tutar. Panonun kendisi ücretsiz görüntülenmeye devam eder.",
-    "SIGN_IN_TITLE": "Giriş yap",
-    "SIGN_IN_HINT": "Kayıt olduğun e-posta ve şifreyle.",
-    "REGISTER_TITLE": "Kayıt ol",
-    "REGISTER_HINT": "Yalnızca e-posta ve şifre. Bahis şirketi bilgisi gerekmez.",
-    "EMAIL": "E-posta",
-    "PASSWORD": "Şifre",
-    "PASSWORD_HINT": "En az 8 karakter.",
+    "WHY": "Discord hesabın, OpenEV hesabındır: hatırlaman gereken bir şifre yok ve değerli bahis uyarıları sana Discord'dan ulaşır. Panonun kendisi ücretsiz görüntülenmeye devam eder.",
     "SIGN_IN": "Giriş yap",
-    "REGISTER": "Kayıt ol",
-    "NO_ACCOUNT": "Henüz hesabın yok mu?",
-    "HAVE_ACCOUNT": "Zaten kayıtlı mısın?",
+    "CONTINUE_DISCORD": "Discord ile devam et",
+    "DISCORD_HINT": "Zaten kullandığın Discord hesabıyla tek tık.",
+    "SCOPE_NOTE": "OpenEV yalnızca Discord kullanıcı adını ve avatarını okur. Asla senin adına paylaşım yapmaz, mesajlarını veya sunucularını görmez.",
     "PROMPT_TITLE": "Devam etmek için giriş yap",
-    "PROMPT_BODY": "Bahislerini takip et, kapanış çizgisine göre kârını gör ve bahis şirketlerinin hesaplarını nasıl gördüğünü izle."
+    "PROMPT_BODY": "Bahislerini takip et, kapanış çizgisine göre kârını gör ve bahis şirketlerinin hesaplarını nasıl gördüğünü izle.",
+    "LOGIN_ERRORS": {
+      "INVALID_STATE": "Giriş süresi doldu ya da başka bir tarayıcıda başlatıldı. Tekrar dene.",
+      "INVALID_REDIRECT_URI": "Discord ile giriş bu adres için ayarlanmamış. OpenEV'i her zamanki adresinden aç ve tekrar dene.",
+      "DISCORD_DENIED": "Discord girişi onaylamadı. Tekrar dene ve Yetkilendir'i seç.",
+      "DISCORD_UNAVAILABLE": "Discord ile girişe şu anda ulaşılamıyor. Bir dakika sonra tekrar dene."
+    }
   },
   "ERRORS": {
     "SIGNED_OUT": "Oturumun sona erdi. Tekrar giriş yap.",
     "NOT_FOUND": "Bu artık yok. Value bahis, oran değiştiğinde veya maç başladığında kaybolur.",
-    "TAKEN": "Bu e-posta zaten kayıtlı. Bunun yerine giriş yap.",
-    "CREDENTIALS": "E-posta veya şifre yanlış.",
-    "PASSWORD_LENGTH": "Şifre en az 8 karakter olmalı.",
     "UNREACHABLE": "Sunucuya şu anda ulaşılamıyor. Bir dakika sonra tekrar dene.",
     "INVALID": "Bazı değerler geçersiz. Oranı, miktarı ve diğer alanları kontrol et."
   },
@@ -771,7 +765,7 @@
   "SETTINGS": {
     "LABEL": "Hesap",
     "HEADING": "Ayarlar",
-    "SUBHEADING": "{email} olarak giriş yapıldı. Bu ayarlar panodaki ve takibindeki miktarları belirler.",
+    "SUBHEADING": "{name} olarak giriş yapıldı. Bu ayarlar panodaki ve takibindeki miktarları belirler.",
     "SUBHEADING_SIGNED_OUT": "Kasanı, Kelly oranını, para birimini ve bahis şirketlerini ayarlamak için giriş yap.",
     "STAKING_TITLE": "Miktar ayarları",
     "STAKING_HINT": "Panodaki miktarlar, bu kasadaki Kelly miktarının bu payıdır ve bir bahsi takip ettiğinde tam sayıya yuvarlanır.",

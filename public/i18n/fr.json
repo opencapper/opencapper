@@ -160,7 +160,6 @@
   "AUTH": {
     "SIGN_IN": "Se connecter",
     "MENU": "Menu du compte",
-    "SIGNED_IN_AS": "Connecté en tant que {email}",
     "TRACKER": "Suivi des paris",
     "HEALTH": "Santé des comptes",
     "SETTINGS": "Paramètres",
@@ -696,28 +695,23 @@
   "ACCOUNT": {
     "LABEL": "Compte",
     "SIGN_IN_HEADING": "Connectez-vous à OpenEV",
-    "REGISTER_HEADING": "Créez votre compte",
-    "WHY": "Un compte réunit votre suivi des paris, vos réglages de mise et la santé de vos comptes au même endroit. Le tableau lui-même reste consultable gratuitement.",
-    "SIGN_IN_TITLE": "Se connecter",
-    "SIGN_IN_HINT": "Avec l'e-mail et le mot de passe utilisés lors de l'inscription.",
-    "REGISTER_TITLE": "S'inscrire",
-    "REGISTER_HINT": "Juste un e-mail et un mot de passe. Aucune donnée de bookmaker requise.",
-    "EMAIL": "E-mail",
-    "PASSWORD": "Mot de passe",
-    "PASSWORD_HINT": "Au moins 8 caractères.",
+    "WHY": "Votre compte Discord est votre compte OpenEV : aucun mot de passe à retenir, et les alertes de value bets vous arrivent sur Discord. Le tableau lui-même reste consultable gratuitement.",
     "SIGN_IN": "Se connecter",
-    "REGISTER": "S'inscrire",
-    "NO_ACCOUNT": "Pas encore de compte ?",
-    "HAVE_ACCOUNT": "Déjà inscrit ?",
+    "CONTINUE_DISCORD": "Continuer avec Discord",
+    "DISCORD_HINT": "Un clic avec le compte Discord que vous utilisez déjà.",
+    "SCOPE_NOTE": "OpenEV lit seulement votre nom d'utilisateur et votre avatar Discord. Il ne publie jamais à votre place et ne voit ni vos messages ni vos serveurs.",
     "PROMPT_TITLE": "Connectez-vous pour continuer",
-    "PROMPT_BODY": "Suivez vos paris, comparez vos gains à la cote de clôture et gardez un œil sur la façon dont les bookmakers voient vos comptes."
+    "PROMPT_BODY": "Suivez vos paris, comparez vos gains à la cote de clôture et gardez un œil sur la façon dont les bookmakers voient vos comptes.",
+    "LOGIN_ERRORS": {
+      "INVALID_STATE": "La connexion a expiré ou a été lancée dans un autre navigateur. Réessayez.",
+      "INVALID_REDIRECT_URI": "La connexion Discord n'est pas configurée pour cette adresse. Ouvrez OpenEV à son adresse habituelle et réessayez.",
+      "DISCORD_DENIED": "Discord n'a pas confirmé la connexion. Réessayez et choisissez Autoriser.",
+      "DISCORD_UNAVAILABLE": "La connexion Discord est injoignable pour le moment. Réessayez dans une minute."
+    }
   },
   "ERRORS": {
     "SIGNED_OUT": "Votre session a expiré. Reconnectez-vous.",
     "NOT_FOUND": "Ce pari n'existe plus. Un pari value disparaît dès que la cote bouge ou que le match commence.",
-    "TAKEN": "Cet e-mail est déjà inscrit. Connectez-vous plutôt.",
-    "CREDENTIALS": "E-mail ou mot de passe incorrect.",
-    "PASSWORD_LENGTH": "Le mot de passe doit contenir au moins 8 caractères.",
     "UNREACHABLE": "Le serveur est injoignable pour le moment. Réessayez dans une minute.",
     "INVALID": "Certaines valeurs ne sont pas valides. Vérifiez la cote, la mise et les autres champs."
   },
@@ -771,7 +765,7 @@
   "SETTINGS": {
     "LABEL": "Compte",
     "HEADING": "Paramètres",
-    "SUBHEADING": "Connecté en tant que {email}. Ces paramètres déterminent les mises affichées sur le tableau et dans votre suivi.",
+    "SUBHEADING": "Connecté en tant que {name}. Ces paramètres déterminent les mises affichées sur le tableau et dans votre suivi.",
     "SUBHEADING_SIGNED_OUT": "Connectez-vous pour définir votre bankroll, votre fraction de Kelly, votre devise et vos bookmakers.",
     "STAKING_TITLE": "Mises",
     "STAKING_HINT": "Les mises du tableau sont cette part de la mise Kelly sur cette bankroll, arrondies à des nombres entiers quand vous suivez un pari.",

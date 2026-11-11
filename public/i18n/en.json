@@ -160,7 +160,6 @@
   "AUTH": {
     "SIGN_IN": "Sign in",
     "MENU": "Account menu",
-    "SIGNED_IN_AS": "Signed in as {email}",
     "TRACKER": "Bet tracker",
     "HEALTH": "Account health",
     "SETTINGS": "Settings",
@@ -696,28 +695,23 @@
   "ACCOUNT": {
     "LABEL": "Account",
     "SIGN_IN_HEADING": "Sign in to OpenEV",
-    "REGISTER_HEADING": "Create your account",
-    "WHY": "An account keeps your bet tracker, staking settings and account health in one place. The board itself stays free to view.",
-    "SIGN_IN_TITLE": "Sign in",
-    "SIGN_IN_HINT": "With the email and password you registered.",
-    "REGISTER_TITLE": "Register",
-    "REGISTER_HINT": "Only an email and a password. No bookmaker details needed.",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "PASSWORD_HINT": "At least 8 characters.",
+    "WHY": "Your Discord account is your OpenEV account: no password to remember, and value bet alerts reach you on Discord. The board itself stays free to view.",
     "SIGN_IN": "Sign in",
-    "REGISTER": "Register",
-    "NO_ACCOUNT": "No account yet?",
-    "HAVE_ACCOUNT": "Already registered?",
+    "CONTINUE_DISCORD": "Continue with Discord",
+    "DISCORD_HINT": "One click with the Discord account you already use.",
+    "SCOPE_NOTE": "OpenEV only reads your Discord username and avatar. It never posts for you and never sees your messages or servers.",
     "PROMPT_TITLE": "Sign in to continue",
-    "PROMPT_BODY": "Track your bets, see your profit against the closing line and keep an eye on how bookmakers see your accounts."
+    "PROMPT_BODY": "Track your bets, see your profit against the closing line and keep an eye on how bookmakers see your accounts.",
+    "LOGIN_ERRORS": {
+      "INVALID_STATE": "The sign in expired or was started in another browser. Try again.",
+      "INVALID_REDIRECT_URI": "Discord sign in is not set up for this address. Open OpenEV at its usual address and try again.",
+      "DISCORD_DENIED": "Discord did not confirm the sign in. Try again and choose Authorize.",
+      "DISCORD_UNAVAILABLE": "Discord sign in is not reachable right now. Try again in a minute."
+    }
   },
   "ERRORS": {
     "SIGNED_OUT": "Your session ended. Sign in again.",
     "NOT_FOUND": "This is gone. A value bet disappears once the price moves or the game starts.",
-    "TAKEN": "This email is already registered. Sign in instead.",
-    "CREDENTIALS": "Wrong email or password.",
-    "PASSWORD_LENGTH": "The password needs at least 8 characters.",
     "UNREACHABLE": "The server is not reachable right now. Try again in a minute.",
     "INVALID": "Some values are not valid. Check the odds, the stake and the other fields."
   },
@@ -771,7 +765,7 @@
   "SETTINGS": {
     "LABEL": "Account",
     "HEADING": "Settings",
-    "SUBHEADING": "Signed in as {email}. These settings shape the stakes on the board and in your tracker.",
+    "SUBHEADING": "Signed in as {name}. These settings shape the stakes on the board and in your tracker.",
     "SUBHEADING_SIGNED_OUT": "Sign in to set your bankroll, Kelly fraction, currency and bookmakers.",
     "STAKING_TITLE": "Staking",
     "STAKING_HINT": "Stakes on the board are this share of the Kelly stake on this bankroll, rounded to whole numbers when you track a bet.",

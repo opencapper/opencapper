@@ -160,7 +160,6 @@
   "AUTH": {
     "SIGN_IN": "Anmelden",
     "MENU": "Kontomenü",
-    "SIGNED_IN_AS": "Angemeldet als {email}",
     "TRACKER": "Wett-Tracker",
     "HEALTH": "Kontogesundheit",
     "SETTINGS": "Einstellungen",
@@ -696,28 +695,23 @@
   "ACCOUNT": {
     "LABEL": "Konto",
     "SIGN_IN_HEADING": "Bei OpenEV anmelden",
-    "REGISTER_HEADING": "Konto erstellen",
-    "WHY": "Mit einem Konto hast du Wett-Tracker, Einsatzeinstellungen und Kontogesundheit an einem Ort. Das Board selbst bleibt kostenlos sichtbar.",
-    "SIGN_IN_TITLE": "Anmelden",
-    "SIGN_IN_HINT": "Mit der E-Mail-Adresse und dem Passwort, mit denen du dich registriert hast.",
-    "REGISTER_TITLE": "Registrieren",
-    "REGISTER_HINT": "Nur E-Mail-Adresse und Passwort. Keine Buchmacherdaten nötig.",
-    "EMAIL": "E-Mail",
-    "PASSWORD": "Passwort",
-    "PASSWORD_HINT": "Mindestens 8 Zeichen.",
+    "WHY": "Dein Discord-Konto ist dein OpenEV-Konto: kein Passwort zum Merken, und Meldungen zu Value-Wetten erreichen dich direkt in Discord. Das Board selbst bleibt kostenlos sichtbar.",
     "SIGN_IN": "Anmelden",
-    "REGISTER": "Registrieren",
-    "NO_ACCOUNT": "Noch kein Konto?",
-    "HAVE_ACCOUNT": "Schon registriert?",
+    "CONTINUE_DISCORD": "Weiter mit Discord",
+    "DISCORD_HINT": "Ein Klick mit dem Discord-Konto, das du ohnehin nutzt.",
+    "SCOPE_NOTE": "OpenEV liest nur deinen Discord-Benutzernamen und dein Profilbild. Es postet nie in deinem Namen und sieht weder deine Nachrichten noch deine Server.",
     "PROMPT_TITLE": "Melde dich an, um fortzufahren",
-    "PROMPT_BODY": "Erfasse deine Wetten, sieh deinen Gewinn im Vergleich zur Schlussquote und behalte im Blick, wie die Buchmacher deine Konten einschätzen."
+    "PROMPT_BODY": "Erfasse deine Wetten, sieh deinen Gewinn im Vergleich zur Schlussquote und behalte im Blick, wie die Buchmacher deine Konten einschätzen.",
+    "LOGIN_ERRORS": {
+      "INVALID_STATE": "Die Anmeldung ist abgelaufen oder wurde in einem anderen Browser gestartet. Versuch es noch einmal.",
+      "INVALID_REDIRECT_URI": "Die Discord-Anmeldung ist für diese Adresse nicht eingerichtet. Öffne OpenEV über die gewohnte Adresse und versuch es erneut.",
+      "DISCORD_DENIED": "Discord hat die Anmeldung nicht bestätigt. Versuch es noch einmal und wähle Autorisieren.",
+      "DISCORD_UNAVAILABLE": "Die Discord-Anmeldung ist gerade nicht erreichbar. Versuch es in einer Minute noch einmal."
+    }
   },
   "ERRORS": {
     "SIGNED_OUT": "Deine Sitzung ist abgelaufen. Melde dich erneut an.",
     "NOT_FOUND": "Das gibt es nicht mehr. Eine Value-Wette verschwindet, sobald sich die Quote bewegt oder das Spiel beginnt.",
-    "TAKEN": "Diese E-Mail-Adresse ist bereits registriert. Melde dich stattdessen an.",
-    "CREDENTIALS": "E-Mail-Adresse oder Passwort falsch.",
-    "PASSWORD_LENGTH": "Das Passwort braucht mindestens 8 Zeichen.",
     "UNREACHABLE": "Der Server ist gerade nicht erreichbar. Versuch es in einer Minute noch einmal.",
     "INVALID": "Einige Werte sind ungültig. Prüfe die Quote, den Einsatz und die übrigen Felder."
   },
@@ -771,7 +765,7 @@
   "SETTINGS": {
     "LABEL": "Konto",
     "HEADING": "Einstellungen",
-    "SUBHEADING": "Angemeldet als {email}. Diese Einstellungen bestimmen die Einsätze auf dem Board und in deinem Tracker.",
+    "SUBHEADING": "Angemeldet als {name}. Diese Einstellungen bestimmen die Einsätze auf dem Board und in deinem Tracker.",
     "SUBHEADING_SIGNED_OUT": "Melde dich an, um Bankroll, Kelly-Fraktion, Währung und Buchmacher festzulegen.",
     "STAKING_TITLE": "Einsätze",
     "STAKING_HINT": "Die Einsätze auf dem Board sind dieser Anteil des Kelly-Einsatzes bei dieser Bankroll, auf ganze Zahlen gerundet, wenn du eine Wette erfasst.",

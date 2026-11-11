@@ -4,6 +4,18 @@ import { cache } from "react";
 
 export const SESSION_COOKIE = "openev_session";
 
+export function sessionCookie(token: string, expiresAt: string) {
+  return {
+    name: SESSION_COOKIE,
+    value: token,
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax" as const,
+    path: "/",
+    expires: new Date(expiresAt),
+  };
+}
+
 export type Account = { user: User; settings: Settings };
 
 export async function sessionToken(): Promise<string | undefined> {

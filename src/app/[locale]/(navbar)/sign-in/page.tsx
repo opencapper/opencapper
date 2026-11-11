@@ -15,5 +15,5 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function SignInPage(props: Props) {
   setRequestLocale(await serverLocale(props));
-  return <AuthPage mode="sign_in" searchParams={props.searchParams} />;
+  return <AuthPage searchParams={props.searchParams} />;
 }

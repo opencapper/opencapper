@@ -160,7 +160,6 @@
   "AUTH": {
     "SIGN_IN": "Entrar",
     "MENU": "Menu da conta",
-    "SIGNED_IN_AS": "Conectado como {email}",
     "TRACKER": "Controle de apostas",
     "HEALTH": "Saúde da conta",
     "SETTINGS": "Configurações",
@@ -696,28 +695,23 @@
   "ACCOUNT": {
     "LABEL": "Conta",
     "SIGN_IN_HEADING": "Entrar no OpenEV",
-    "REGISTER_HEADING": "Crie sua conta",
-    "WHY": "Uma conta reúne seu controle de apostas, as configurações de stake e a saúde das contas em um só lugar. O painel continua grátis para ver.",
-    "SIGN_IN_TITLE": "Entrar",
-    "SIGN_IN_HINT": "Com o e-mail e a senha que você cadastrou.",
-    "REGISTER_TITLE": "Cadastrar",
-    "REGISTER_HINT": "Só um e-mail e uma senha. Nenhum dado de casa de apostas é necessário.",
-    "EMAIL": "E-mail",
-    "PASSWORD": "Senha",
-    "PASSWORD_HINT": "Pelo menos 8 caracteres.",
+    "WHY": "Sua conta do Discord é a sua conta do OpenEV: nenhuma senha para lembrar, e os alertas de apostas de valor chegam até você no Discord. O painel continua grátis para ver.",
     "SIGN_IN": "Entrar",
-    "REGISTER": "Cadastrar",
-    "NO_ACCOUNT": "Ainda não tem conta?",
-    "HAVE_ACCOUNT": "Já tem cadastro?",
+    "CONTINUE_DISCORD": "Continuar com o Discord",
+    "DISCORD_HINT": "Um clique com a conta do Discord que você já usa.",
+    "SCOPE_NOTE": "O OpenEV só lê seu nome de usuário e seu avatar do Discord. Ele nunca publica por você e nunca vê suas mensagens ou servidores.",
     "PROMPT_TITLE": "Entre para continuar",
-    "PROMPT_BODY": "Registre suas apostas, veja seu lucro contra a odd de fechamento e acompanhe como as casas de apostas enxergam suas contas."
+    "PROMPT_BODY": "Registre suas apostas, veja seu lucro contra a odd de fechamento e acompanhe como as casas de apostas enxergam suas contas.",
+    "LOGIN_ERRORS": {
+      "INVALID_STATE": "O login expirou ou foi iniciado em outro navegador. Tente de novo.",
+      "INVALID_REDIRECT_URI": "O login com Discord não está configurado para este endereço. Abra o OpenEV pelo endereço de sempre e tente de novo.",
+      "DISCORD_DENIED": "O Discord não confirmou o login. Tente de novo e escolha Autorizar.",
+      "DISCORD_UNAVAILABLE": "O login com Discord não está acessível agora. Tente de novo em um minuto."
+    }
   },
   "ERRORS": {
     "SIGNED_OUT": "Sua sessão expirou. Entre novamente.",
     "NOT_FOUND": "Isso não existe mais. Uma aposta de valor some assim que a odd se move ou o jogo começa.",
-    "TAKEN": "Este e-mail já está cadastrado. Entre em vez disso.",
-    "CREDENTIALS": "E-mail ou senha incorretos.",
-    "PASSWORD_LENGTH": "A senha precisa ter pelo menos 8 caracteres.",
     "UNREACHABLE": "O servidor não está acessível agora. Tente de novo em um minuto.",
     "INVALID": "Alguns valores não são válidos. Confira a odd, a stake e os outros campos."
   },
@@ -771,7 +765,7 @@
   "SETTINGS": {
     "LABEL": "Conta",
     "HEADING": "Configurações",
-    "SUBHEADING": "Conectado como {email}. Estas configurações definem as stakes no painel e no seu controle.",
+    "SUBHEADING": "Conectado como {name}. Estas configurações definem as stakes no painel e no seu controle.",
     "SUBHEADING_SIGNED_OUT": "Entre para definir sua banca, fração de Kelly, moeda e casas de apostas.",
     "STAKING_TITLE": "Stakes",
     "STAKING_HINT": "As stakes no painel são esta parte da stake de Kelly com esta banca, arredondadas para números inteiros quando você registra uma aposta.",

@@ -160,7 +160,6 @@
   "AUTH": {
     "SIGN_IN": "Iniciar sesión",
     "MENU": "Menú de la cuenta",
-    "SIGNED_IN_AS": "Sesión iniciada como {email}",
     "TRACKER": "Seguimiento de apuestas",
     "HEALTH": "Salud de la cuenta",
     "SETTINGS": "Ajustes",
@@ -696,28 +695,23 @@
   "ACCOUNT": {
     "LABEL": "Cuenta",
     "SIGN_IN_HEADING": "Inicia sesión en OpenEV",
-    "REGISTER_HEADING": "Crea tu cuenta",
-    "WHY": "Con una cuenta tienes el seguimiento de apuestas, los ajustes de importe y la salud de la cuenta en un solo lugar. El panel sigue siendo gratis.",
-    "SIGN_IN_TITLE": "Iniciar sesión",
-    "SIGN_IN_HINT": "Con el correo y la contraseña con los que te registraste.",
-    "REGISTER_TITLE": "Registrarse",
-    "REGISTER_HINT": "Solo un correo y una contraseña. No hace falta ningún dato de casas de apuestas.",
-    "EMAIL": "Correo electrónico",
-    "PASSWORD": "Contraseña",
-    "PASSWORD_HINT": "Al menos 8 caracteres.",
+    "WHY": "Tu cuenta de Discord es tu cuenta de OpenEV: no hay contraseña que recordar y las alertas de apuestas de valor te llegan por Discord. El panel sigue siendo gratis.",
     "SIGN_IN": "Iniciar sesión",
-    "REGISTER": "Registrarse",
-    "NO_ACCOUNT": "¿Aún no tienes cuenta?",
-    "HAVE_ACCOUNT": "¿Ya estás registrado?",
+    "CONTINUE_DISCORD": "Continuar con Discord",
+    "DISCORD_HINT": "Un clic con la cuenta de Discord que ya usas.",
+    "SCOPE_NOTE": "OpenEV solo lee tu nombre de usuario y tu avatar de Discord. Nunca publica por ti y nunca ve tus mensajes ni tus servidores.",
     "PROMPT_TITLE": "Inicia sesión para continuar",
-    "PROMPT_BODY": "Registra tus apuestas, mira tu beneficio frente a la cuota de cierre y vigila cómo ven tus cuentas las casas de apuestas."
+    "PROMPT_BODY": "Registra tus apuestas, mira tu beneficio frente a la cuota de cierre y vigila cómo ven tus cuentas las casas de apuestas.",
+    "LOGIN_ERRORS": {
+      "INVALID_STATE": "El inicio de sesión caducó o se empezó en otro navegador. Inténtalo de nuevo.",
+      "INVALID_REDIRECT_URI": "El inicio de sesión con Discord no está configurado para esta dirección. Abre OpenEV desde su dirección habitual e inténtalo de nuevo.",
+      "DISCORD_DENIED": "Discord no confirmó el inicio de sesión. Inténtalo de nuevo y elige Autorizar.",
+      "DISCORD_UNAVAILABLE": "Ahora mismo no se puede conectar con Discord. Inténtalo de nuevo en un minuto."
+    }
   },
   "ERRORS": {
     "SIGNED_OUT": "Tu sesión ha terminado. Vuelve a iniciar sesión.",
     "NOT_FOUND": "Esto ya no está. Una apuesta de valor desaparece en cuanto se mueve la cuota o empieza el partido.",
-    "TAKEN": "Este correo ya está registrado. Inicia sesión.",
-    "CREDENTIALS": "Correo o contraseña incorrectos.",
-    "PASSWORD_LENGTH": "La contraseña necesita al menos 8 caracteres.",
     "UNREACHABLE": "Ahora mismo no se puede conectar con el servidor. Inténtalo de nuevo en un minuto.",
     "INVALID": "Algunos valores no son válidos. Revisa la cuota, el importe y los demás campos."
   },
@@ -771,7 +765,7 @@
   "SETTINGS": {
     "LABEL": "Cuenta",
     "HEADING": "Ajustes",
-    "SUBHEADING": "Sesión iniciada como {email}. Estos ajustes definen los importes del panel y de tu seguimiento.",
+    "SUBHEADING": "Sesión iniciada como {name}. Estos ajustes definen los importes del panel y de tu seguimiento.",
     "SUBHEADING_SIGNED_OUT": "Inicia sesión para configurar tu bankroll, fracción de Kelly, moneda y casas de apuestas.",
     "STAKING_TITLE": "Importes",
     "STAKING_HINT": "Los importes del panel son esta parte del importe de Kelly con este bankroll, redondeados a números enteros al registrar una apuesta.",

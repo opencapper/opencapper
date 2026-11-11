@@ -66,7 +66,7 @@ export async function LandingHero(props: { data: LandingData }) {
 
           <div className="flex flex-wrap items-center gap-3 pt-6">
             <Link
-              href={signedIn ? "/value-bets" : "/register"}
+              href={signedIn ? "/value-bets" : "/sign-in"}
               className="bg-primary text-primary-foreground focus-visible:ring-ring/50 inline-flex items-center gap-1.5 rounded-md px-5 py-2 text-sm font-medium transition-opacity outline-none hover:opacity-90 focus-visible:ring-3"
             >
               {signedIn ? t("CTA_VALUE_BETS") : t("CTA_REGISTER")}

@@ -160,7 +160,6 @@
   "AUTH": {
     "SIGN_IN": "Accedi",
     "MENU": "Menu account",
-    "SIGNED_IN_AS": "Accesso effettuato come {email}",
     "TRACKER": "Tracker delle scommesse",
     "HEALTH": "Salute degli account",
     "SETTINGS": "Impostazioni",
@@ -696,28 +695,23 @@
   "ACCOUNT": {
     "LABEL": "Account",
     "SIGN_IN_HEADING": "Accedi a OpenEV",
-    "REGISTER_HEADING": "Crea il tuo account",
-    "WHY": "Un account riunisce in un unico posto il tuo tracker delle scommesse, le impostazioni di puntata e la salute dei tuoi account. La bacheca resta consultabile gratis.",
-    "SIGN_IN_TITLE": "Accedi",
-    "SIGN_IN_HINT": "Con l'email e la password con cui ti sei registrato.",
-    "REGISTER_TITLE": "Registrati",
-    "REGISTER_HINT": "Solo un'email e una password. Nessun dato del bookmaker richiesto.",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "PASSWORD_HINT": "Almeno 8 caratteri.",
+    "WHY": "Il tuo account Discord è il tuo account OpenEV: nessuna password da ricordare, e gli avvisi sulle value bet ti arrivano su Discord. La bacheca resta consultabile gratis.",
     "SIGN_IN": "Accedi",
-    "REGISTER": "Registrati",
-    "NO_ACCOUNT": "Non hai ancora un account?",
-    "HAVE_ACCOUNT": "Sei già registrato?",
+    "CONTINUE_DISCORD": "Continua con Discord",
+    "DISCORD_HINT": "Un clic con l'account Discord che usi già.",
+    "SCOPE_NOTE": "OpenEV legge solo il tuo nome utente e il tuo avatar di Discord. Non pubblica mai al posto tuo e non vede mai i tuoi messaggi o i tuoi server.",
     "PROMPT_TITLE": "Accedi per continuare",
-    "PROMPT_BODY": "Traccia le tue scommesse, confronta il tuo profitto con la quota di chiusura e tieni d'occhio come i bookmaker vedono i tuoi account."
+    "PROMPT_BODY": "Traccia le tue scommesse, confronta il tuo profitto con la quota di chiusura e tieni d'occhio come i bookmaker vedono i tuoi account.",
+    "LOGIN_ERRORS": {
+      "INVALID_STATE": "L'accesso è scaduto o è stato avviato in un altro browser. Riprova.",
+      "INVALID_REDIRECT_URI": "L'accesso con Discord non è configurato per questo indirizzo. Apri OpenEV dal solito indirizzo e riprova.",
+      "DISCORD_DENIED": "Discord non ha confermato l'accesso. Riprova e scegli Autorizza.",
+      "DISCORD_UNAVAILABLE": "L'accesso con Discord non è raggiungibile al momento. Riprova tra un minuto."
+    }
   },
   "ERRORS": {
     "SIGNED_OUT": "La tua sessione è scaduta. Accedi di nuovo.",
     "NOT_FOUND": "Non c'è più. Una value bet sparisce appena la quota si muove o la partita inizia.",
-    "TAKEN": "Questa email è già registrata. Accedi invece.",
-    "CREDENTIALS": "Email o password errata.",
-    "PASSWORD_LENGTH": "La password deve avere almeno 8 caratteri.",
     "UNREACHABLE": "Il server non è raggiungibile al momento. Riprova tra un minuto.",
     "INVALID": "Alcuni valori non sono validi. Controlla la quota, la puntata e gli altri campi."
   },
@@ -771,7 +765,7 @@
   "SETTINGS": {
     "LABEL": "Account",
     "HEADING": "Impostazioni",
-    "SUBHEADING": "Accesso effettuato come {email}. Queste impostazioni determinano le puntate sulla bacheca e nel tuo tracker.",
+    "SUBHEADING": "Accesso effettuato come {name}. Queste impostazioni determinano le puntate sulla bacheca e nel tuo tracker.",
     "SUBHEADING_SIGNED_OUT": "Accedi per impostare bankroll, frazione di Kelly, valuta e bookmaker.",
     "STAKING_TITLE": "Puntate",
     "STAKING_HINT": "Le puntate sulla bacheca sono questa quota della puntata Kelly su questo bankroll, arrotondate a numeri interi quando tracci una scommessa.",

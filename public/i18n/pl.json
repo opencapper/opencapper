@@ -160,7 +160,6 @@
   "AUTH": {
     "SIGN_IN": "Zaloguj się",
     "MENU": "Menu konta",
-    "SIGNED_IN_AS": "Zalogowano jako {email}",
     "TRACKER": "Tracker zakładów",
     "HEALTH": "Kondycja kont",
     "SETTINGS": "Ustawienia",
@@ -696,28 +695,23 @@
   "ACCOUNT": {
     "LABEL": "Konto",
     "SIGN_IN_HEADING": "Zaloguj się do OpenEV",
-    "REGISTER_HEADING": "Załóż konto",
-    "WHY": "Konto trzyma w jednym miejscu tracker zakładów, ustawienia stawek i kondycję kont. Sama tablica pozostaje dostępna za darmo.",
-    "SIGN_IN_TITLE": "Logowanie",
-    "SIGN_IN_HINT": "Adresem e-mail i hasłem podanymi przy rejestracji.",
-    "REGISTER_TITLE": "Rejestracja",
-    "REGISTER_HINT": "Tylko e-mail i hasło. Bez danych bukmacherów.",
-    "EMAIL": "E-mail",
-    "PASSWORD": "Hasło",
-    "PASSWORD_HINT": "Co najmniej 8 znaków.",
+    "WHY": "Twoje konto Discord jest Twoim kontem OpenEV: bez hasła do zapamiętania, a alerty o zakładach value trafiają do Ciebie na Discordzie. Sama tablica pozostaje dostępna za darmo.",
     "SIGN_IN": "Zaloguj się",
-    "REGISTER": "Zarejestruj się",
-    "NO_ACCOUNT": "Nie masz jeszcze konta?",
-    "HAVE_ACCOUNT": "Masz już konto?",
+    "CONTINUE_DISCORD": "Kontynuuj z Discordem",
+    "DISCORD_HINT": "Jedno kliknięcie kontem Discord, którego już używasz.",
+    "SCOPE_NOTE": "OpenEV odczytuje tylko Twoją nazwę użytkownika i awatar z Discorda. Nigdy nie publikuje w Twoim imieniu i nie widzi Twoich wiadomości ani serwerów.",
     "PROMPT_TITLE": "Zaloguj się, aby kontynuować",
-    "PROMPT_BODY": "Śledź swoje zakłady, sprawdzaj zysk względem kursu zamknięcia i miej oko na to, jak bukmacherzy widzą twoje konta."
+    "PROMPT_BODY": "Śledź swoje zakłady, sprawdzaj zysk względem kursu zamknięcia i miej oko na to, jak bukmacherzy widzą twoje konta.",
+    "LOGIN_ERRORS": {
+      "INVALID_STATE": "Logowanie wygasło albo zostało rozpoczęte w innej przeglądarce. Spróbuj ponownie.",
+      "INVALID_REDIRECT_URI": "Logowanie przez Discorda nie jest skonfigurowane dla tego adresu. Otwórz OpenEV pod zwykłym adresem i spróbuj ponownie.",
+      "DISCORD_DENIED": "Discord nie potwierdził logowania. Spróbuj ponownie i wybierz Autoryzuj.",
+      "DISCORD_UNAVAILABLE": "Logowanie przez Discorda jest teraz niedostępne. Spróbuj ponownie za minutę."
+    }
   },
   "ERRORS": {
     "SIGNED_OUT": "Sesja wygasła. Zaloguj się ponownie.",
     "NOT_FOUND": "Tego już nie ma. Value bet znika, gdy kurs się zmieni lub mecz się zacznie.",
-    "TAKEN": "Ten e-mail jest już zarejestrowany. Zaloguj się.",
-    "CREDENTIALS": "Nieprawidłowy e-mail lub hasło.",
-    "PASSWORD_LENGTH": "Hasło musi mieć co najmniej 8 znaków.",
     "UNREACHABLE": "Serwer jest teraz niedostępny. Spróbuj ponownie za minutę.",
     "INVALID": "Niektóre wartości są nieprawidłowe. Sprawdź kurs, stawkę i pozostałe pola."
   },
@@ -771,7 +765,7 @@
   "SETTINGS": {
     "LABEL": "Konto",
     "HEADING": "Ustawienia",
-    "SUBHEADING": "Zalogowano jako {email}. Te ustawienia wpływają na stawki na tablicy i w trackerze.",
+    "SUBHEADING": "Zalogowano jako {name}. Te ustawienia wpływają na stawki na tablicy i w trackerze.",
     "SUBHEADING_SIGNED_OUT": "Zaloguj się, aby ustawić bankroll, ułamek Kelly, walutę i bukmacherów.",
     "STAKING_TITLE": "Stawki",
     "STAKING_HINT": "Stawki na tablicy to taki ułamek stawki Kelly przy tym bankrollu, zaokrąglany do pełnych liczb, gdy śledzisz zakład.",

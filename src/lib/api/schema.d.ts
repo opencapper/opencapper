@@ -20,7 +20,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/auth/login": {
+    "/v1/auth/discord/authorize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["discord_authorize"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/discord/callback": {
         parameters: {
             query?: never;
             header?: never;
@@ -29,7 +45,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["login"];
+        post: operations["discord_callback"];
         delete?: never;
         options?: never;
         head?: never;
@@ -46,22 +62,6 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["logout"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/auth/register": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["register"];
         delete?: never;
         options?: never;
         head?: never;
@@ -571,10 +571,6 @@ export interface components {
         };
         /** @enum {string} */
         Confidence: "high" | "medium" | "low" | "check";
-        Credentials: {
-            email: string;
-            password: string;
-        };
         DailyProfit: {
             cumulative_profit: string;
             /**
@@ -596,7 +592,20 @@ export interface components {
             /** Format: double */
             worst_case: number;
         };
+        DiscordAuthorize: {
+            /** @description Echoed back by Discord; pass it to the callback unchanged. */
+            state: string;
+            /** @description Discord consent page to send the user to. */
+            url: string;
+        };
+        DiscordCallback: {
+            code: string;
+            redirect_uri: string;
+            state: string;
+        };
         ErrorBody: {
+            /** @description Stable machine readable code for errors the client translates. */
+            code?: string | null;
             error: string;
         };
         Game: {
@@ -782,13 +791,15 @@ export interface components {
             starts_at: string;
         };
         User: {
+            avatar_url: string;
             /** Format: date-time */
             created_at: string;
-            /** @description Discord OAuth is not wired yet; true once a Discord account is linked. */
-            discord_linked: boolean;
-            email: string;
+            discord_id: string;
+            /** @description Discord global name, or the username when none is set. */
+            display_name: string;
             /** Format: uuid */
             id: string;
+            username: string;
         };
         ValueBet: {
             away: string;
@@ -877,7 +888,48 @@ export interface operations {
             };
         };
     };
-    login: {
+    discord_authorize: {
+        parameters: {
+            query: {
+                /** @description Where Discord sends the user back; must be in `DISCORD_REDIRECT_URIS`. */
+                redirect_uri: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Discord consent URL and the state to check on return */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscordAuthorize"];
+                };
+            };
+            /** @description redirect_uri not allowed (code invalid_redirect_uri) */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Discord login is not configured (code discord_unavailable) */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    discord_callback: {
         parameters: {
             query?: never;
             header?: never;
@@ -886,11 +938,11 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["Credentials"];
+                "application/json": components["schemas"]["DiscordCallback"];
             };
         };
         responses: {
-            /** @description Signed in */
+            /** @description Signed in; the account is created on first login */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -899,8 +951,26 @@ export interface operations {
                     "application/json": components["schemas"]["AuthSession"];
                 };
             };
-            /** @description Wrong email or password */
+            /** @description State unknown, expired, used or for another redirect_uri (code invalid_state), or redirect_uri not allowed (code invalid_redirect_uri) */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Discord refused the code (code discord_denied) */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Discord unreachable or login not configured (code discord_unavailable) */
+            502: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -928,48 +998,6 @@ export interface operations {
             };
             /** @description Not signed in */
             401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorBody"];
-                };
-            };
-        };
-    };
-    register: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Credentials"];
-            };
-        };
-        responses: {
-            /** @description Account created and signed in */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AuthSession"];
-                };
-            };
-            /** @description Invalid email or password */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorBody"];
-                };
-            };
-            /** @description Email already registered */
-            409: {
                 headers: {
                     [name: string]: unknown;
                 };

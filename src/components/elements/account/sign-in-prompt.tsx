@@ -13,15 +13,10 @@ export function SignInPrompt(props: { next: string; body?: string }) {
         <Icon name="lock" className="text-muted-foreground size-8" />
         <p className="font-medium">{t("PROMPT_TITLE")}</p>
         <p className="text-muted-foreground max-w-md text-sm">{props.body ?? t("PROMPT_BODY")}</p>
-        <div className="flex flex-wrap justify-center gap-2">
-          <Button nativeButton={false} render={<Link href={query("/sign-in", { next: props.next })} />}>
-            <Icon name="log-in" />
-            {t("SIGN_IN")}
-          </Button>
-          <Button variant="outline" nativeButton={false} render={<Link href={query("/register", { next: props.next })} />}>
-            {t("REGISTER")}
-          </Button>
-        </div>
+        <Button nativeButton={false} render={<Link href={query("/sign-in", { next: props.next })} />}>
+          <Icon name="log-in" />
+          {t("SIGN_IN")}
+        </Button>
       </CardContent>
     </Card>
   );

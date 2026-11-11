@@ -104,7 +104,7 @@ export async function LandingReadme(props: { data: LandingData }) {
             {signedIn ? t("CTA_TRACKER") : t("CTA_PROOF")}
           </Link>
           <Link
-            href={signedIn ? "/value-bets" : "/register"}
+            href={signedIn ? "/value-bets" : "/sign-in"}
             className="group label-mono bg-primary text-primary-foreground inline-flex items-center gap-1.5 rounded-md px-4 py-2.5 transition-opacity hover:opacity-90"
           >
             {signedIn ? t("CTA_VALUE_BETS") : t("CTA_REGISTER")}

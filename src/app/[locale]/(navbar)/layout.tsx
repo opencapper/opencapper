@@ -10,7 +10,7 @@ export default async function NavbarLayout(props: Props) {
   const account = await getAccount();
   return (
     <>
-      <Navbar email={account?.user.email} />
+      <Navbar user={account?.user} />
       <main className="bg-background flex-1 pt-12">{props.children}</main>
       <div className="bg-background">
         <Footer />

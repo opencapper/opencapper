@@ -4,6 +4,7 @@ import { CompanyName, LogoImage } from "@/components/elements/brand/brand";
 import { LanguageToggle } from "@/components/toggle/language-toggle";
 import { ThemeToggle } from "@/components/toggle/theme-toggle";
 import { Link, usePathname } from "@/i18n/navigation";
+import type { User } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { MobileNav } from "./mobile-nav";
@@ -14,7 +15,7 @@ import { UserMenu } from "./user-menu";
 const TAB =
   "group/tab relative flex h-full flex-1 items-center justify-center gap-1.5 border-r border-foreground/6 px-2 transition-colors 2xl:px-4";
 
-export function Navbar(props: { email?: string }) {
+export function Navbar(props: { user?: User }) {
   const t = useTranslations();
   const pathname = usePathname();
 
@@ -61,12 +62,12 @@ export function Navbar(props: { email?: string }) {
           <ThemeToggle />
         </div>
         <div className="flex items-stretch [&>a]:h-full [&>a]:rounded-none [&>a]:px-5 [&>a]:font-mono [&>a]:text-xs [&>a]:tracking-wider [&>a]:uppercase [&>button]:mx-2 [&>button]:my-auto">
-          <UserMenu email={props.email} />
+          <UserMenu user={props.user} />
         </div>
       </div>
 
       <div className="bg-background border-foreground/6 flex items-center gap-1 border-b pr-2 xl:hidden">
-        <UserMenu email={props.email} />
+        <UserMenu user={props.user} />
         <MobileNav />
       </div>
     </nav>

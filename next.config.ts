@@ -20,6 +20,15 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForBuild: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/:locale/register",
+        destination: "/:locale/sign-in",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const withNextIntl = createNextIntlPlugin({

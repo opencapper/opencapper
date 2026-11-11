@@ -160,7 +160,6 @@
   "AUTH": {
     "SIGN_IN": "Inloggen",
     "MENU": "Accountmenu",
-    "SIGNED_IN_AS": "Ingelogd als {email}",
     "TRACKER": "Bettracker",
     "HEALTH": "Accountgezondheid",
     "SETTINGS": "Instellingen",
@@ -696,28 +695,23 @@
   "ACCOUNT": {
     "LABEL": "Account",
     "SIGN_IN_HEADING": "Inloggen bij OpenEV",
-    "REGISTER_HEADING": "Maak je account aan",
-    "WHY": "Een account houdt je bettracker, inzetinstellingen en accountgezondheid op één plek bij. Het bord zelf blijft gratis te bekijken.",
-    "SIGN_IN_TITLE": "Inloggen",
-    "SIGN_IN_HINT": "Met het e-mailadres en wachtwoord waarmee je je hebt geregistreerd.",
-    "REGISTER_TITLE": "Registreren",
-    "REGISTER_HINT": "Alleen een e-mailadres en een wachtwoord. Geen bookmakergegevens nodig.",
-    "EMAIL": "E-mailadres",
-    "PASSWORD": "Wachtwoord",
-    "PASSWORD_HINT": "Minstens 8 tekens.",
+    "WHY": "Je Discord-account is je OpenEV-account: geen wachtwoord om te onthouden, en meldingen over value bets komen bij je binnen op Discord. Het bord zelf blijft gratis te bekijken.",
     "SIGN_IN": "Inloggen",
-    "REGISTER": "Registreren",
-    "NO_ACCOUNT": "Nog geen account?",
-    "HAVE_ACCOUNT": "Al geregistreerd?",
+    "CONTINUE_DISCORD": "Doorgaan met Discord",
+    "DISCORD_HINT": "Eén klik met het Discord-account dat je al gebruikt.",
+    "SCOPE_NOTE": "OpenEV leest alleen je Discord-gebruikersnaam en avatar. Het plaatst nooit iets namens jou en ziet nooit je berichten of servers.",
     "PROMPT_TITLE": "Log in om verder te gaan",
-    "PROMPT_BODY": "Houd je bets bij, zie je winst tegenover de slotlijn en houd in de gaten hoe bookmakers je accounts zien."
+    "PROMPT_BODY": "Houd je bets bij, zie je winst tegenover de slotlijn en houd in de gaten hoe bookmakers je accounts zien.",
+    "LOGIN_ERRORS": {
+      "INVALID_STATE": "Het inloggen is verlopen of in een andere browser gestart. Probeer het opnieuw.",
+      "INVALID_REDIRECT_URI": "Inloggen met Discord is niet ingesteld voor dit adres. Open OpenEV via het gewone adres en probeer het opnieuw.",
+      "DISCORD_DENIED": "Discord heeft het inloggen niet bevestigd. Probeer het opnieuw en kies Autoriseren.",
+      "DISCORD_UNAVAILABLE": "Inloggen met Discord is nu niet bereikbaar. Probeer het over een minuut opnieuw."
+    }
   },
   "ERRORS": {
     "SIGNED_OUT": "Je sessie is verlopen. Log opnieuw in.",
     "NOT_FOUND": "Deze is weg. Een valuebet verdwijnt zodra de odd beweegt of de wedstrijd begint.",
-    "TAKEN": "Dit e-mailadres is al geregistreerd. Log in plaats daarvan in.",
-    "CREDENTIALS": "Verkeerd e-mailadres of wachtwoord.",
-    "PASSWORD_LENGTH": "Het wachtwoord moet minstens 8 tekens hebben.",
     "UNREACHABLE": "De server is nu niet bereikbaar. Probeer het over een minuut opnieuw.",
     "INVALID": "Sommige waarden zijn ongeldig. Controleer de odds, de inzet en de andere velden."
   },
@@ -771,7 +765,7 @@
   "SETTINGS": {
     "LABEL": "Account",
     "HEADING": "Instellingen",
-    "SUBHEADING": "Ingelogd als {email}. Deze instellingen bepalen de inzetten op het bord en in je tracker.",
+    "SUBHEADING": "Ingelogd als {name}. Deze instellingen bepalen de inzetten op het bord en in je tracker.",
     "SUBHEADING_SIGNED_OUT": "Log in om je bankroll, Kelly-fractie, valuta en bookmakers in te stellen.",
     "STAKING_TITLE": "Inzetten",
     "STAKING_HINT": "Inzetten op het bord zijn dit deel van de Kelly-inzet op deze bankroll, afgerond op hele getallen wanneer je een bet bijhoudt.",
