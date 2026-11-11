@@ -6,7 +6,8 @@ import { DataTable } from "@/components/elements/table/data-table";
 import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import { Link } from "@/i18n/navigation";
 import type { TableFeats } from "@/lib/config/table-features";
-import { ago, BANKROLL, bookName, kelly, KELLY_FRACTION, kickoff, marketName, money, odds, sideName, until, type Translate } from "@/lib/format";
+import { TrackBet } from "@/components/elements/account/track-bet";
+import { ago, bookName, DEFAULT_PLAN, feeOf, fractionLabel, kelly, kickoff, marketName, money, netOdds, odds, sideName, until, type BookFee, type StakePlan, type Translate } from "@/lib/format";
 import type { GroupedBet } from "@/lib/group";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
@@ -14,11 +15,17 @@ import { useLocale, useTranslations } from "next-intl";
 const RIGHT = { headerClassName: "text-right", cellClassName: "text-right" };
 const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1, check: 0 };
 
-function stakeOf(g: GroupedBet): number {
-  return kelly(Number(g.best.odds), g.best.fair_probability, KELLY_FRACTION) * BANKROLL;
+type Ctx = { t: Translate; locale: string; now: number; plan: StakePlan; signedIn: boolean; fees: BookFee[] };
+
+function stakeOf(g: GroupedBet, ctx: Ctx): number {
+  const price = netOdds(Number(g.best.odds), feeOf(ctx.fees, g.best.book));
+  return kelly(price, g.best.fair_probability, ctx.plan.fraction) * ctx.plan.bankroll;
 }
 
-function columns(t: Translate, locale: string, now: number): ColumnDef<TableFeats, GroupedBet>[] {
+function columns(c: Ctx): ColumnDef<TableFeats, GroupedBet>[] {
+  const t = c.t;
+  const locale = c.locale;
+  const now = c.now;
   return [
     {
       id: "ev",
@@ -43,7 +50,7 @@ function columns(t: Translate, locale: string, now: number): ColumnDef<TableFeat
       id: "event",
       accessorFn: (g) => new Date(g.best.starts_at).getTime(),
       header: (ctx) => <DataTableColumnHeader column={ctx.column} title="VALUE_BETS.COL_EVENT" />,
-      size: 240,
+      size: 220,
       meta: { cellClassName: "whitespace-normal" },
       cell: (ctx) => {
         const b = ctx.row.original.best;
@@ -129,14 +136,14 @@ function columns(t: Translate, locale: string, now: number): ColumnDef<TableFeat
     },
     {
       id: "stake",
-      accessorFn: stakeOf,
+      accessorFn: (g) => stakeOf(g, c),
       header: (ctx) => <DataTableColumnHeader column={ctx.column} title="VALUE_BETS.COL_STAKE" className="justify-end" />,
       size: 80,
       meta: RIGHT,
       cell: (ctx) => {
-        const stake = stakeOf(ctx.row.original);
+        const stake = stakeOf(ctx.row.original, c);
         return (
-          <span className="tabular" title={t("VALUE_BETS.STAKE_HINT", { bankroll: String(BANKROLL) })}>
+          <span className="tabular" title={t("VALUE_BETS.STAKE_HINT", { fraction: fractionLabel(c.plan.fraction), bankroll: money(c.plan.bankroll, locale) })}>
             {stake >= 1 ? money(stake, locale) : "<1"}
           </span>
         );
@@ -160,17 +167,51 @@ function columns(t: Translate, locale: string, now: number): ColumnDef<TableFeat
         </span>
       ),
     },
+    {
+      id: "track",
+      enableSorting: false,
+      header: () => <span className="sr-only">{t("TRACK.ACTION")}</span>,
+      size: 48,
+      meta: RIGHT,
+      cell: (ctx) => {
+        const b = ctx.row.original.best;
+        return (
+          <TrackBet
+            compact
+            valueBetId={b.id}
+            odds={b.odds}
+            probability={b.fair_probability}
+            fee={feeOf(c.fees, b.book)}
+            title={t("OVERVIEW.BET_AT", { bet: sideName(b, t), book: bookName(b.book) })}
+            plan={c.signedIn ? c.plan : undefined}
+          />
+        );
+      },
+    },
   ];
 }
 
-export function ValueBetsTable(props: { groups: GroupedBet[]; now: number }) {
+export function ValueBetsTable(props: {
+  groups: GroupedBet[];
+  now: number;
+  plan?: StakePlan;
+  fees: BookFee[];
+}) {
   const t = useTranslations();
   const locale = useLocale();
+  const ctx: Ctx = {
+    t,
+    locale,
+    now: props.now,
+    plan: props.plan ?? DEFAULT_PLAN,
+    signedIn: !!props.plan,
+    fees: props.fees,
+  };
   return (
     <DataTable
       id="VALUE_BETS"
       data={props.groups}
-      columns={columns(t, locale, props.now)}
+      columns={columns(ctx)}
       localSorting
       emptyState={<span className="text-muted-foreground text-sm">{t("VALUE_BETS.EMPTY")}</span>}
     />

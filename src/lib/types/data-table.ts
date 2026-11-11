@@ -1,4 +1,4 @@
-export const DATA_TABLE_IDS = ["VALUE_BETS", "PROOF_LEDGER", "BOOKMAKERS"] as const;
+export const DATA_TABLE_IDS = ["VALUE_BETS", "PROOF_LEDGER", "BOOKMAKERS", "TRACKER_BETS"] as const;
 
 export type DataTableId = (typeof DATA_TABLE_IDS)[number];
 

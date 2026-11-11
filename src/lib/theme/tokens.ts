@@ -12,7 +12,6 @@ export type TokenGroup =
   | "text"
   | "control"
   | "status"
-  | "pick"
   | "chart"
   | "sidebar"
   | "typography"
@@ -126,11 +125,6 @@ export const TOKENS: readonly TokenDef[] = [
   color("warning", "status", "THEME.TOKEN.WARNING"),
   color("info", "status", "THEME.TOKEN.INFO"),
 
-  color("pick-win", "pick", "THEME.TOKEN.PICK_WIN"),
-  color("pick-loss", "pick", "THEME.TOKEN.PICK_LOSS"),
-  color("pick-push", "pick", "THEME.TOKEN.PICK_PUSH"),
-  color("pick-void", "pick", "THEME.TOKEN.PICK_VOID"),
-  color("pick-pending", "pick", "THEME.TOKEN.PICK_PENDING"),
 
   color("chart-1", "chart", "THEME.TOKEN.CHART_1"),
   color("chart-2", "chart", "THEME.TOKEN.CHART_2"),

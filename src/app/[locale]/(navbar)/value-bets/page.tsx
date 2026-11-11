@@ -1,6 +1,7 @@
 import { ValueBets } from "@/components/pages/navbar/value-bets/value-bets";
 import { api, load } from "@/lib/api/client";
-import { param } from "@/lib/format";
+import { getAccount } from "@/lib/auth/session";
+import { param, planOf } from "@/lib/format";
 import { serverLocale } from "@/lib/utils/server";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -25,14 +26,29 @@ export default async function ValueBetsPage(props: Props) {
     min: param(sp.min),
     market: param(sp.market),
     solid: param(sp.solid),
+    mine: param(sp.mine),
   };
-  const data = await load(
+  const results = await Promise.all([
+    load(
     api.GET("/v1/value-bets", {
       params: {
         query: { book: filters.book, min_ev: filters.min ? Number(filters.min) : undefined, limit: 1000 },
       },
       cache: "no-store",
     }),
+    ),
+    load(api.GET("/v1/books", { cache: "no-store" })),
+    getAccount(),
+  ]);
+  const account = results[2];
+  return (
+    <ValueBets
+      data={results[0]}
+      filters={filters}
+      now={Date.now()}
+      plan={account ? planOf(account.settings) : undefined}
+      preferred={account?.settings.preferred_books ?? []}
+      fees={results[1] ?? []}
+    />
   );
-  return <ValueBets data={data} filters={filters} now={Date.now()} />;
 }

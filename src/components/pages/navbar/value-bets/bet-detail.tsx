@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
 import type { BetDetail } from "@/lib/api/client";
-import { ago, bookName, count, kickoff, marketName, odds, percent, prob, sideName, until } from "@/lib/format";
+import { TrackBet } from "@/components/elements/account/track-bet";
+import { ago, bookName, count, DEFAULT_PLAN, feeOf, kickoff, marketName, netOdds, odds, percent, prob, sideName, until, type BookFee, type StakePlan } from "@/lib/format";
 import { useLocale, useTranslations } from "next-intl";
 
 const BOOK_COLOR = "#3b82f6";
@@ -27,7 +28,7 @@ const METHODS = [
 
 const HEAD = "label-mono text-foreground/45 px-4 py-2 text-[10px] font-normal";
 
-export function BetDetailView(props: { data?: BetDetail; now: number }) {
+export function BetDetailView(props: { data?: BetDetail; fees: BookFee[]; plan?: StakePlan; now: number }) {
   const t = useTranslations();
   const tb = useTranslations("BET");
   const locale = useLocale();
@@ -50,6 +51,9 @@ export function BetDetailView(props: { data?: BetDetail; now: number }) {
   const data = props.data;
   const b = data.bet;
   const book = bookName(b.book);
+  const fee = feeOf(props.fees, b.book);
+  const net = netOdds(Number(b.odds), fee);
+  const title = tb("TITLE", { bet: sideName(b, t), book });
   const outcome = data.market.outcomes.find((o) => o.side === b.side);
   const others = outcome?.prices.filter((p) => p.book !== b.book) ?? [];
 
@@ -68,7 +72,7 @@ export function BetDetailView(props: { data?: BetDetail; now: number }) {
       <PageHeading
         className="mb-0"
         label={`${b.league}, ${kickoff(b.starts_at, locale)}, ${until(b.starts_at, now, locale, t)}`}
-        title={tb("TITLE", { bet: sideName(b, t), book })}
+        title={title}
         description={tb("SUMMARY", {
           market: marketName(b, t),
           home: b.home,
@@ -78,7 +82,18 @@ export function BetDetailView(props: { data?: BetDetail; now: number }) {
           fair: odds(b.fair_odds),
           chance: prob(b.fair_probability),
         })}
-      />
+      >
+        <div className="mt-4">
+          <TrackBet
+            valueBetId={b.id}
+            odds={b.odds}
+            probability={b.fair_probability}
+            fee={fee}
+            title={title}
+            plan={props.plan}
+          />
+        </div>
+      </PageHeading>
 
       <StatGrid className="sm:grid-cols-5">
         <StatCard label={tb("STAT_EV")} value={percent(b.ev)} tone="win" />
@@ -118,7 +133,7 @@ export function BetDetailView(props: { data?: BetDetail; now: number }) {
                     <th className={`${HEAD} text-left`}>{tb("COL_METHOD")}</th>
                     <th className={`${HEAD} text-right`}>{tb("COL_CHANCE")}</th>
                     <th className={`${HEAD} text-right`}>{tb("COL_FAIR_ODDS")}</th>
-                    <th className={`${HEAD} text-right`}>{tb("COL_EV_AT", { odds: odds(b.odds) })}</th>
+                    <th className={`${HEAD} text-right`}>{tb("COL_EV_AT", { odds: odds(net) })}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -133,7 +148,7 @@ export function BetDetailView(props: { data?: BetDetail; now: number }) {
                         <td className="tabular px-4 py-2.5 text-right">{prob(p)}</td>
                         <td className="tabular px-4 py-2.5 text-right">{odds(1 / p)}</td>
                         <td className="px-4 py-2.5 text-right">
-                          <Ev value={Number(b.odds) * p - 1} />
+                          <Ev value={net * p - 1} />
                         </td>
                       </tr>
                     );
@@ -141,6 +156,23 @@ export function BetDetailView(props: { data?: BetDetail; now: number }) {
                 </tbody>
               </table>
             </div>
+            {fee && (
+              <p className="text-warning border-t px-4 py-3 text-xs leading-relaxed">
+                {fee.commission
+                  ? tb("FEE_COMMISSION", {
+                      book,
+                      commission: `${Math.round(fee.commission * 1000) / 10}%`,
+                      odds: odds(b.odds),
+                      net: odds(net),
+                    })
+                  : tb("FEE_TAKER", {
+                      book,
+                      fee: `${Math.round((fee.taker_fee ?? 0) * 1000) / 10}%`,
+                      odds: odds(b.odds),
+                      net: odds(net),
+                    })}
+              </p>
+            )}
             <p className="text-muted-foreground border-t px-4 py-3 text-xs leading-relaxed">
               {tb("DEVIG_NOTE", {
                 margin: percent(b.sharp_overround),
@@ -155,7 +187,7 @@ export function BetDetailView(props: { data?: BetDetail; now: number }) {
 
         <div className="flex flex-col gap-6">
           <Panel title={tb("STAKE_TITLE")}>
-            <StakeCalculator odds={Number(b.odds)} probability={b.fair_probability} />
+            <StakeCalculator odds={net} probability={b.fair_probability} plan={props.plan ?? DEFAULT_PLAN} />
           </Panel>
 
           <Panel title={tb("ELSEWHERE_TITLE")}>

@@ -156,7 +156,7 @@ export function useThemeEditor() {
       JSON.stringify(INITIAL_USER_THEME.presets) &&
     Object.keys(theme.global).length === 0;
 
-  // Presets, fonts and radius only; pick status colours stay meaningful.
+  // Presets, fonts and radius only; status colours stay meaningful.
   const shuffle = () => {
     const all: TokenValues = {
       ...(theme.global.all ?? {}),

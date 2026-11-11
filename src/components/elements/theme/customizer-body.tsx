@@ -54,7 +54,6 @@ const COLOR_GROUPS: readonly {
 
 const SECTIONS: readonly { id: string; labelKey: MessageKey }[] = [
   { id: "presets", labelKey: "THEME.CATEGORY.PRESETS" },
-  { id: "picks", labelKey: "THEME.CATEGORY.PICKS" },
   { id: "typography", labelKey: "THEME.CATEGORY.TYPOGRAPHY" },
   { id: "shape", labelKey: "THEME.CATEGORY.SHAPE" },
   { id: "colors", labelKey: "THEME.CATEGORY.COLORS" },
@@ -138,15 +137,6 @@ export function ThemeCustomizerBody() {
 
   const content: Record<string, ReactNode> = {
     presets: <PresetsSection editor={editor} />,
-    picks: (
-      <>
-        {colorTabs}
-        <p className="text-muted-foreground px-1 text-[11px]">
-          {t("THEME.GROUP.PICK_HINT")}
-        </p>
-        {fields("pick")}
-      </>
-    ),
     typography: fields("typography"),
     shape: fields("shape"),
     colors: (

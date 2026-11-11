@@ -214,6 +214,60 @@ export function param(value: string | string[] | undefined): string | undefined 
   return typeof value === "string" && value !== "" ? value : undefined;
 }
 
-// The board's stake column: quarter Kelly on a round bankroll.
+// The board's stake column when signed out: quarter Kelly on a round bankroll.
 export const BANKROLL = 1000;
 export const KELLY_FRACTION = 0.25;
+
+export type StakePlan = { bankroll: number; fraction: number; currency?: string };
+
+export const DEFAULT_PLAN: StakePlan = { bankroll: BANKROLL, fraction: KELLY_FRACTION };
+
+export function planOf(settings: { bankroll: string; kelly_fraction: string; currency: string }): StakePlan {
+  return {
+    bankroll: Number(settings.bankroll),
+    fraction: Number(settings.kelly_fraction),
+    currency: settings.currency,
+  };
+}
+
+export type BookFee = { book: string; commission?: number | null; taker_fee?: number | null };
+
+// Mirrors the engine: exchanges take commission on net winnings, prediction markets a taker fee rate x P x (1 minus P).
+export function netOdds(decimalOdds: number, fee: BookFee | undefined): number {
+  if (fee?.commission) return 1 + (decimalOdds - 1) * (1 - fee.commission);
+  if (fee?.taker_fee) {
+    const p = 1 / decimalOdds;
+    return 1 / (p + fee.taker_fee * p * (1 - p));
+  }
+  return decimalOdds;
+}
+
+export function feeOf(books: BookFee[] | undefined, book: string): BookFee | undefined {
+  const fee = books?.find((b) => b.book === book);
+  return fee && (fee.commission || fee.taker_fee) ? fee : undefined;
+}
+
+export function currency(x: number, locale: string, code: string): string {
+  try {
+    return new Intl.NumberFormat(intl(locale), {
+      style: "currency",
+      currency: code,
+      maximumFractionDigits: 2,
+    }).format(x);
+  } catch {
+    return `${x.toFixed(2)} ${code}`;
+  }
+}
+
+// A stake you could type at a bookmaker: whole units, odd amounts get accounts flagged.
+export function roundStake(x: number): number {
+  return Math.max(0, Math.round(x));
+}
+
+export function suggestedStake(price: number, probability: number, fee: BookFee | undefined, plan: StakePlan): number {
+  return roundStake(kelly(netOdds(price, fee), probability, plan.fraction) * plan.bankroll);
+}
+
+export function fractionLabel(fraction: number): string {
+  return `${Math.round(fraction * 1000) / 10}%`;
+}

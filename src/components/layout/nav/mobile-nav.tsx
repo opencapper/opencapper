@@ -17,7 +17,6 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { isActiveLink, navigation } from "./navigation";
 import { PrefetchLink } from "./prefetch-link";
-import { SoonMark } from "./soon-mark";
 
 const ROW =
   "border-foreground/6 flex items-center gap-3 border-b px-5 py-3 transition-colors";
@@ -75,7 +74,6 @@ export function MobileNav() {
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className="label-mono">{t(item.name)}</span>
-                {item.soon && <SoonMark />}
               </PrefetchLink>
             );
           })}

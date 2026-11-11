@@ -7,7 +7,6 @@ export type NavigationItem = {
   href: LinkHref;
   iconName: IconName;
   exact?: boolean;
-  soon?: boolean;
 };
 
 const resolveHref = (href: LinkHref) =>
@@ -37,5 +36,5 @@ export const navigation: NavigationItem[] = [
   { name: "NAV.PROOF", href: "/proof", iconName: "shield-check" },
   { name: "NAV.BOOKS", href: "/books", iconName: "store" },
   { name: "NAV.TOOLS", href: "/tools", iconName: "calculator" },
-  { name: "NAV.TRACKER", href: "/tracker", iconName: "wallet", soon: true },
+  { name: "NAV.TRACKER", href: "/tracker", iconName: "wallet" },
 ];

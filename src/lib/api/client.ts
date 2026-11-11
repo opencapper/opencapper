@@ -18,6 +18,17 @@ export type LedgerStats = Schemas["LedgerStats"];
 export type BookStatus = Schemas["BookStatus"];
 export type PricePoint = Schemas["PricePoint"];
 export type Confidence = ValueBet["confidence"];
+export type User = Schemas["User"];
+export type Settings = Schemas["Settings"];
+export type Bet = Schemas["Bet"];
+export type BetStatus = Schemas["BetStatus"];
+export type BetPatch = Schemas["BetPatch"];
+export type NewBet = Schemas["NewBet"];
+export type BetStats = Schemas["BetStats"];
+export type BetTotals = Schemas["BetTotals"];
+export type BookHealth = Schemas["BookHealth"];
+export type HealthRisk = Schemas["HealthRisk"];
+export type HealthWarningCode = Schemas["HealthWarningCode"];
 
 // Server side only: the API sits on the internal network next to this app.
 export const api = createClient<paths>({

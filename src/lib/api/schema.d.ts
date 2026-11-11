@@ -20,6 +20,118 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["register"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/bets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["list_bets"];
+        put?: never;
+        post: operations["create_bet"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/bets/books-health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["books_health"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/bets/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["stats"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/bets/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["get_bet"];
+        put?: never;
+        post?: never;
+        delete: operations["delete_bet"];
+        options?: never;
+        head?: never;
+        patch: operations["update_bet"];
+        trace?: never;
+    };
     "/v1/books": {
         parameters: {
             query?: never;
@@ -132,6 +244,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["me"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["get_settings"];
+        put: operations["put_settings"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/stats": {
         parameters: {
             query?: never;
@@ -217,12 +361,159 @@ export interface components {
              */
             stake_share: number;
         };
+        AuthSession: {
+            /** Format: date-time */
+            expires_at: string;
+            /** @description Opaque bearer token; only its hash is stored, so it cannot be shown again. */
+            token: string;
+            user: components["schemas"]["User"];
+        };
+        Bet: {
+            away: string;
+            book: string;
+            closing_fair_odds?: string | null;
+            /**
+             * Format: double
+             * @description odds / closing_fair_odds - 1: above zero means the bet beat the close.
+             */
+            clv?: number | null;
+            /** Format: date-time */
+            created_at: string;
+            /**
+             * Format: double
+             * @description odds / fair_odds_at_bet - 1.
+             */
+            ev_at_bet?: number | null;
+            /** @description Sharp fair odds when the bet was placed. */
+            fair_odds_at_bet?: string | null;
+            home: string;
+            /** Format: uuid */
+            id: string;
+            league: string;
+            line?: string | null;
+            /** @description True once kickoff passed and the closing line was looked up. */
+            line_closed: boolean;
+            /** @description three_way, two_way, total or asian_handicap. */
+            market: string;
+            notes: string;
+            odds: string;
+            /** @description Total returned including stake; set once settled. */
+            payout?: string | null;
+            /** @description full_time, regular_time, first_half or other. */
+            period: string;
+            /** Format: date-time */
+            placed_at: string;
+            /** @description payout - stake; set once settled. */
+            profit?: string | null;
+            /** Format: date-time */
+            settled_at?: string | null;
+            sharp_key?: string | null;
+            /** @description Largest stake the sharp book took on this market when the bet was placed: the liquidity signal. */
+            sharp_max_stake?: string | null;
+            /** @description home, draw, away, over or under. */
+            side: string;
+            stake: string;
+            /** Format: date-time */
+            starts_at: string;
+            status: components["schemas"]["BetStatus"];
+            /** @description The value bet this was tracked from, if any. */
+            value_bet_id?: string | null;
+        };
         BetDetail: {
             bet: components["schemas"]["ValueBet"];
             book_history: components["schemas"]["PricePoint"][];
             game: components["schemas"]["GameSummary"];
             market: components["schemas"]["Market"];
             sharp_history: components["schemas"]["PricePoint"][];
+        };
+        /**
+         * @description Every field is optional; only given fields change. Settling: set `status`; `payout` defaults to
+         *     stake times odds for won, 0 for lost, the stake for push and void (pass it for half wins).
+         */
+        BetPatch: {
+            away?: string | null;
+            book?: string | null;
+            home?: string | null;
+            league?: string | null;
+            notes?: string | null;
+            odds?: string | null;
+            payout?: string | null;
+            /** Format: date-time */
+            placed_at?: string | null;
+            /**
+             * Format: date-time
+             * @description Defaults to now when the bet is settled.
+             */
+            settled_at?: string | null;
+            stake?: string | null;
+            /** Format: date-time */
+            starts_at?: string | null;
+            status?: components["schemas"]["BetStatus"] | null;
+        };
+        BetStats: {
+            /** @description Most bets first. */
+            by_book: components["schemas"]["BookTotals"][];
+            /** @description Oldest first. */
+            by_month: components["schemas"]["MonthTotals"][];
+            /** @description One point per day with a settled bet, oldest first, for the profit chart. */
+            daily: components["schemas"]["DailyProfit"][];
+            totals: components["schemas"]["BetTotals"];
+        };
+        /** @enum {string} */
+        BetStatus: "open" | "won" | "lost" | "push" | "void";
+        BetTotals: {
+            /** Format: double */
+            avg_clv?: number | null;
+            /** Format: double */
+            avg_ev_at_bet?: number | null;
+            /**
+             * Format: double
+             * @description Share of bets with a closing line that beat it.
+             */
+            beat_close_share?: number | null;
+            bets: number;
+            /** @description Bets with a closing line. */
+            closed: number;
+            /** @description Sum of stake times EV at bet over every non void bet with a fair price: what the bets were worth. */
+            expected_profit: string;
+            lost: number;
+            open: number;
+            profit: string;
+            push: number;
+            /**
+             * Format: double
+             * @description profit / staked.
+             */
+            roi?: number | null;
+            /** @description Stakes of settled bets (won, lost, push); void stakes came back and do not count. */
+            staked: string;
+            void: number;
+            won: number;
+        };
+        BookHealth: {
+            avg_stake: string;
+            /** Format: double */
+            beat_close_share?: number | null;
+            bets: number;
+            book: string;
+            /**
+             * Format: double
+             * @description Share of bets with a known sharp limit that were on a market where it was under 1000; None without limit data.
+             */
+            low_liquidity_share?: number | null;
+            /** @description Unknown under 5 bets; otherwise low with no warning, medium with one, high with two or more. */
+            risk: components["schemas"]["HealthRisk"];
+            /**
+             * Format: double
+             * @description Share of stakes that are a whole multiple of 5.
+             */
+            round_stake_share: number;
+            /**
+             * Format: double
+             * @description Share of bets tracked from a value bet or placed above the fair price.
+             */
+            value_bet_share: number;
+            warnings: components["schemas"]["HealthWarning"][];
         };
         BookPrice: {
             book: string;
@@ -239,6 +530,8 @@ export interface components {
             odds: string;
             /** Format: date-time */
             seen_at: string;
+            /** @description Missed by the book's latest sweep: shown, but kept out of value bets and arbs. */
+            stale: boolean;
         };
         BookStatus: {
             book: string;
@@ -258,9 +551,32 @@ export interface components {
             /** Format: date-time */
             newest_seen_at?: string | null;
             quotes: number;
+            /**
+             * Format: double
+             * @description Prediction market taker fee rate: each contract bought at price p costs rate x p x (1 minus p) on top.
+             */
+            taker_fee?: number | null;
+        };
+        BookTotals: {
+            book: string;
+            totals: components["schemas"]["BetTotals"];
         };
         /** @enum {string} */
         Confidence: "high" | "medium" | "low" | "check";
+        Credentials: {
+            email: string;
+            password: string;
+        };
+        DailyProfit: {
+            cumulative_profit: string;
+            /**
+             * Format: date
+             * @description Settlement day, UTC.
+             */
+            date: string;
+            profit: string;
+            settled: number;
+        };
         /** @description Fair probability of one outcome under each devig method. */
         Devig: {
             /** Format: double */
@@ -271,6 +587,9 @@ export interface components {
             power: number;
             /** Format: double */
             worst_case: number;
+        };
+        ErrorBody: {
+            error: string;
         };
         Game: {
             markets: components["schemas"]["Market"][];
@@ -294,6 +613,16 @@ export interface components {
         Health: {
             ok: boolean;
         };
+        /** @enum {string} */
+        HealthRisk: "unknown" | "low" | "medium" | "high";
+        HealthWarning: {
+            /** @description Stable code for translations. */
+            code: components["schemas"]["HealthWarningCode"];
+            /** @description Plain English text. */
+            message: string;
+        };
+        /** @enum {string} */
+        HealthWarningCode: "all_value_bets" | "never_round_stakes" | "low_liquidity" | "beats_close";
         LedgerEntry: {
             /** Format: double */
             alert_ev: number;
@@ -351,6 +680,44 @@ export interface components {
             /** Format: double */
             sharp_overround?: number | null;
         };
+        MonthTotals: {
+            /** @description YYYY-MM of placed_at, UTC. */
+            month: string;
+            totals: components["schemas"]["BetTotals"];
+        };
+        /**
+         * @description Either `from_value_bet` (copies the event, market, fair odds and sharp key from the current
+         *     value bet) or the manual fields `book`, `home`, `away`, `starts_at`, `market`, `side`, `odds`.
+         */
+        NewBet: {
+            away?: string | null;
+            /** @description Overrides the value bet's book when given. */
+            book?: string | null;
+            /** @description Fair odds for a manual bet, if the user knows them. */
+            fair_odds?: string | null;
+            /** @description Id of a value bet in the current snapshot (`GET /v1/value-bets`). */
+            from_value_bet?: string | null;
+            home?: string | null;
+            league?: string | null;
+            line?: string | null;
+            market?: string | null;
+            notes?: string | null;
+            /** @description Odds actually taken; defaults to the value bet's odds, required for manual bets. */
+            odds?: string | null;
+            /** @description Defaults to full_time. */
+            period?: string | null;
+            /**
+             * Format: date-time
+             * @description Defaults to now.
+             */
+            placed_at?: string | null;
+            /** @description Sharp outcome key for a manual bet; enables the closing line. */
+            sharp_key?: string | null;
+            side?: string | null;
+            stake: string;
+            /** Format: date-time */
+            starts_at?: string | null;
+        };
         Outcome: {
             fair?: components["schemas"]["Devig"] | null;
             fair_odds?: string | null;
@@ -364,6 +731,16 @@ export interface components {
             at: string;
             odds: string;
             open: boolean;
+        };
+        Settings: {
+            /** @description Bankroll in `currency`, the base for Kelly stakes. */
+            bankroll: string;
+            /** @description ISO 4217 code, e.g. EUR. */
+            currency: string;
+            /** @description Share of full Kelly to stake, e.g. 0.25 for quarter Kelly. */
+            kelly_fraction: string;
+            /** @description Books the user holds accounts at (book ids as in value bets). */
+            preferred_books: string[];
         };
         Stats: {
             arbs: number;
@@ -387,6 +764,15 @@ export interface components {
             /** Format: date-time */
             starts_at: string;
         };
+        User: {
+            /** Format: date-time */
+            created_at: string;
+            /** @description Discord OAuth is not wired yet; true once a Discord account is linked. */
+            discord_linked: boolean;
+            email: string;
+            /** Format: uuid */
+            id: string;
+        };
         ValueBet: {
             away: string;
             book: string;
@@ -405,6 +791,11 @@ export interface components {
              * @description Expected value against the least favourable devig method; the cautious number.
              */
             ev_conservative: number;
+            /**
+             * Format: double
+             * @description Fair probability from Betfair Exchange and Matchbook back prices, when either has a tight book on this market.
+             */
+            exchange_probability?: number | null;
             fair: components["schemas"]["Devig"];
             fair_odds: string;
             /** Format: double */
@@ -462,6 +853,396 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Arb"][];
+                };
+            };
+        };
+    };
+    login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Credentials"];
+            };
+        };
+        responses: {
+            /** @description Signed in */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthSession"];
+                };
+            };
+            /** @description Wrong email or password */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Session ended */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    register: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Credentials"];
+            };
+        };
+        responses: {
+            /** @description Account created and signed in */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthSession"];
+                };
+            };
+            /** @description Invalid email or password */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Email already registered */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    list_bets: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["BetStatus"];
+                book?: string;
+                /** @description Placed at or after. */
+                from?: string;
+                /** @description Placed before. */
+                to?: string;
+                /** @description Newest first; defaults to 500. */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The user's bets, newest first */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Bet"][];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    create_bet: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NewBet"];
+            };
+        };
+        responses: {
+            /** @description Tracked bet */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Bet"];
+                };
+            };
+            /** @description Missing or invalid field */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description The value bet is no longer in the snapshot */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    books_health: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Per book betting patterns that books use to limit accounts, from the user's own bets, most bets first */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookHealth"][];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    stats: {
+        parameters: {
+            query?: {
+                status?: components["schemas"]["BetStatus"];
+                book?: string;
+                /** @description Placed at or after. */
+                from?: string;
+                /** @description Placed before. */
+                to?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Profit, ROI, EV and CLV over the filtered bets */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BetStats"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    get_bet: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Bet id */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description One bet */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Bet"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description No such bet */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    delete_bet: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Bet id */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description No such bet */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    update_bet: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Bet id */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BetPatch"];
+            };
+        };
+        responses: {
+            /** @description Updated bet */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Bet"];
+                };
+            };
+            /** @description Invalid value */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description No such bet */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
                 };
             };
         };
@@ -620,6 +1401,106 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LedgerView"];
+                };
+            };
+        };
+    };
+    me: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The signed in user */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    get_settings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Bankroll and staking settings, defaults until first saved */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Settings"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    put_settings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Settings"];
+            };
+        };
+        responses: {
+            /** @description Saved settings */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Settings"];
+                };
+            };
+            /** @description Invalid value */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
                 };
             };
         };

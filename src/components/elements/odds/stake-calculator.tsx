@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { kelly, money } from "@/lib/format";
+import { kelly, money, type StakePlan } from "@/lib/format";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -13,12 +13,12 @@ const KELLY_FRACTIONS = [
   { key: "EIGHTH", value: 0.125 },
 ] as const;
 
-export function StakeCalculator(props: { odds: number; probability: number }) {
+export function StakeCalculator(props: { odds: number; probability: number; plan: StakePlan }) {
   const t = useTranslations("STAKE");
   const locale = useLocale();
-  const bankrollState = useState(1000);
+  const bankrollState = useState(props.plan.bankroll);
   const bankroll = bankrollState[0];
-  const fractionState = useState(0.25);
+  const fractionState = useState(props.plan.fraction);
   const fraction = fractionState[0];
   const share = kelly(props.odds, props.probability, fraction);
   const stake = share * bankroll;

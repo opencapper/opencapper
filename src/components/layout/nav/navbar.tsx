@@ -9,13 +9,12 @@ import { useTranslations } from "next-intl";
 import { MobileNav } from "./mobile-nav";
 import { isActiveLink, navigation } from "./navigation";
 import { PrefetchLink } from "./prefetch-link";
-import { SoonMark } from "./soon-mark";
 import { UserMenu } from "./user-menu";
 
 const TAB =
   "group/tab relative flex h-full flex-1 items-center justify-center gap-1.5 border-r border-foreground/6 px-2 transition-colors 2xl:px-4";
 
-export function Navbar() {
+export function Navbar(props: { email?: string }) {
   const t = useTranslations();
   const pathname = usePathname();
 
@@ -54,7 +53,6 @@ export function Navbar() {
               >
                 {t(link.name)}
               </span>
-              {link.soon && <SoonMark />}
             </PrefetchLink>
           );
         })}
@@ -63,12 +61,12 @@ export function Navbar() {
           <ThemeToggle />
         </div>
         <div className="flex items-stretch [&>a]:h-full [&>a]:rounded-none [&>a]:px-5 [&>a]:font-mono [&>a]:text-xs [&>a]:tracking-wider [&>a]:uppercase [&>button]:mx-2 [&>button]:my-auto">
-          <UserMenu />
+          <UserMenu email={props.email} />
         </div>
       </div>
 
       <div className="bg-background border-foreground/6 flex items-center gap-1 border-b pr-2 xl:hidden">
-        <UserMenu />
+        <UserMenu email={props.email} />
         <MobileNav />
       </div>
     </nav>
