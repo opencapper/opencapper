@@ -1,6 +1,6 @@
 > **Scope:** ONLY rules, invariants and traps invisible at the call site. Not a tour: open the file. Product decisions live in `../claude.md`. When a change makes a rule wrong, fix it in the same commit.
 
-Next.js 16 + Elysia API in `src/app/api/[[...route]]/route.ts`. The Discord bot (`../opencapper-bot`) is a client of this API. Layout, styling and conventions mirror `../../ai-api/unorouter`; when unsure how something is shaped, copy unorouter.
+Next.js 16 + Elysia API in `src/app/api/[[...route]]/route.ts`. The Discord bot (`../openev-bot`) is a client of this API. Layout, styling and conventions mirror `../../ai-api/unorouter`; when unsure how something is shaped, copy unorouter.
 
 ## Rules
 

@@ -1,12 +1,15 @@
 services:
-  opencapper-db:
-    container_name: opencapper-db
+  openev-db:
+    container_name: openev-db
     image: postgres:18-alpine
     restart: always
     volumes:
-      - opencapper-db-data:/var/lib/postgresql
+      - db-data:/var/lib/postgresql
     networks:
-      - proxy
+      proxy:
+        # old hostname kept so anything still pointing at opencapper-db keeps working
+        aliases:
+          - opencapper-db
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -21,8 +24,8 @@ services:
       timeout: 5s
       retries: 10
 
-  opencapper-pgbackup:
-    container_name: opencapper-pgbackup
+  openev-pgbackup:
+    container_name: openev-pgbackup
     image: prodrigestivill/postgres-backup-local:18-alpine
     restart: always
     networks:
@@ -30,10 +33,10 @@ services:
     volumes:
       - ~/duplicati-volume/source/opencapper-db-pgbackup:/backups
     depends_on:
-      opencapper-db:
+      openev-db:
         condition: service_healthy
     environment:
-      - POSTGRES_HOST=opencapper-db
+      - POSTGRES_HOST=openev-db
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -42,8 +45,8 @@ services:
       - BACKUP_KEEP_DAYS=7
       - HEALTHCHECK_PORT=8080
 
-  opencapper:
-    container_name: opencapper
+  openev:
+    container_name: openev
     build:
       context: .
       dockerfile: Dockerfile
@@ -59,11 +62,11 @@ services:
     networks:
       - proxy
     depends_on:
-      opencapper-db:
+      openev-db:
         condition: service_healthy
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@opencapper-db:5432/${POSTGRES_DB}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@openev-db:5432/${POSTGRES_DB}
     healthcheck:
       test:
         [
@@ -81,12 +84,14 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.opencapper.rule=Host(`opencapper.coding-global.com`)"
-      - "traefik.http.routers.opencapper.entrypoints=websecure"
-      - "traefik.http.services.opencapper.loadbalancer.server.port=3000"
+      - "traefik.http.routers.openev.rule=Host(`opencapper.coding-global.com`)"
+      - "traefik.http.routers.openev.entrypoints=websecure"
+      - "traefik.http.services.openev.loadbalancer.server.port=3000"
 
 volumes:
-  opencapper-db-data:
+  db-data:
+    # existing production volume, kept so no data is lost
+    name: opencapper_opencapper-db-data
 
 networks:
   proxy:

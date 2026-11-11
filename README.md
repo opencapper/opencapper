@@ -2,7 +2,7 @@
 
 Verified sports picks. Every pick is timestamped, numbered and locked before the game. The platform captures the odds, records are graded by ROI, and there are no sportsbook affiliate deals.
 
-This repo is the web app and the API (Elysia mounted inside Next.js). The Discord bot lives in `opencapper-bot` and calls this API.
+This repo is the web app and the API (Elysia mounted inside Next.js). The Discord bot lives in `openev-bot` and calls this API.
 
 ## Stack
 
