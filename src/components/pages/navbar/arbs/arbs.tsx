@@ -1,4 +1,7 @@
-import { AutoRefresh } from "@/components/elements/odds/auto-refresh";
+"use client";
+
+import { LiveStatusBadge } from "@/components/elements/live/live-status";
+import { TickCell } from "@/components/elements/live/tick-cell";
 import { LeagueLabel } from "@/components/elements/flag/league-label";
 import { Chip, FilterRow } from "@/components/elements/odds/filter-chips";
 import { Matchup } from "@/components/elements/participant/matchup";
@@ -10,22 +13,45 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
 import type { Arb } from "@/lib/api/client";
 import { ago, kickoff, marketName, money, odds, percent, query, sideName, until } from "@/lib/format";
+import { useLiveQuery, useNow } from "@/hooks/live/use-live-query-hook";
+import { useRowFlash } from "@/hooks/live/use-row-flash-hook";
+import { applyArbs } from "@/lib/live/apply";
+import { fetchArbs } from "@/lib/live/actions";
+import { queryKeys } from "@/lib/react-query/keys";
 import { useLocale, useTranslations } from "next-intl";
 
 const TOTAL = 100;
+
+function keyOf(a: Arb): string {
+  return a.id;
+}
+
+function sigOf(a: Arb): string {
+  return `${a.profit.toFixed(5)}:${a.check}:${a.legs.map((l) => `${l.key}@${l.odds}`).join(",")}`;
+}
 
 export function Arbs(props: { data?: Arb[]; all: boolean; now: number }) {
   const t = useTranslations();
   const ta = useTranslations("ARBS");
   const locale = useLocale();
-  const now = props.now;
-  const data = props.data;
+  const all = props.all;
+  const live = useLiveQuery({
+    queryKey: queryKeys.arbs(all),
+    initialData: props.data ?? null,
+    fetch: () => fetchArbs(all),
+    topic: "arbs",
+    filters: { include_check: all },
+    apply: applyArbs,
+  });
+  const now = useNow(props.now);
+  const data = live.data;
+  const shown = useRowFlash(data ?? [], String(all), keyOf, sigOf);
 
   return (
     <PageShell>
-      <AutoRefresh seconds={15} />
       <PageHeading
         className="mb-0"
+        status={<LiveStatusBadge status={live.status} />}
         label={ta("LABEL")}
         title={ta("HEADING")}
         description={ta("SUBHEADING", { total: String(TOTAL) })}
@@ -48,9 +74,10 @@ export function Arbs(props: { data?: Arb[]; all: boolean; now: number }) {
       )}
       {data && data.length > 0 && (
         <div className="grid gap-4 md:grid-cols-2">
-          {data.map((a) => (
+          {shown.rows.map((a) => (
             <Panel
               key={a.id}
+              className={shown.flash(a.id)}
               title={ta("PROFIT", { profit: percent(a.profit, 2) })}
               action={
                 a.check ? (
@@ -83,7 +110,9 @@ export function Arbs(props: { data?: Arb[]; all: boolean; now: number }) {
                         <td className="text-muted-foreground px-4 py-2 whitespace-nowrap">
                           <VendorLabel vendorKey={l.book} />
                         </td>
-                        <td className="tabular px-4 py-2 text-right">{odds(l.odds)}</td>
+                        <TickCell value={Number(l.odds)} className="tabular px-4 py-2 text-right">
+                          {odds(l.odds)}
+                        </TickCell>
                         <td className="tabular px-4 py-2 text-right" title={ta("STAKE_HINT")}>
                           {(l.stake_share * TOTAL).toFixed(2)}
                         </td>

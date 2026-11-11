@@ -1,5 +1,7 @@
+"use client";
+
 import { LeagueLabel } from "@/components/elements/flag/league-label";
-import { AutoRefresh } from "@/components/elements/odds/auto-refresh";
+import { LiveStatusBadge } from "@/components/elements/live/live-status";
 import { Matchup } from "@/components/elements/participant/matchup";
 import { MarketTable } from "@/components/elements/odds/market-table";
 import { Panel } from "@/components/elements/odds/panel";
@@ -12,18 +14,37 @@ import { Link } from "@/i18n/navigation";
 import type { Game } from "@/lib/api/client";
 import { bookName } from "@/lib/config/vendor-registry";
 import { count, kickoff, percent, until } from "@/lib/format";
+import { useLiveQuery, useNow } from "@/hooks/live/use-live-query-hook";
+import { applyGame } from "@/lib/live/apply";
+import { fetchGame } from "@/lib/live/actions";
+import { queryKeys } from "@/lib/react-query/keys";
 import { useLocale, useTranslations } from "next-intl";
 
-export function GameView(props: { data?: Game; now: number }) {
+export function GameView(props: { id: string; data?: Game; now: number }) {
   const t = useTranslations();
   const tg = useTranslations("GAME");
   const locale = useLocale();
-  const now = props.now;
+  const id = props.id;
+  const live = useLiveQuery({
+    queryKey: queryKeys.game(id),
+    initialData: props.data ?? null,
+    fetch: () => fetchGame(id),
+    topic: `game:${id}`,
+    apply: applyGame,
+  });
+  const now = useNow(props.now);
+  const status = <LiveStatusBadge status={live.status} />;
 
-  if (!props.data) {
+  if (!live.data) {
     return (
       <PageShell>
-        <PageHeading className="mb-0" label={t("NAV.ODDS")} title={tg("GONE_TITLE")} description={tg("GONE_BODY")} />
+        <PageHeading
+          className="mb-0"
+          status={status}
+          label={t("NAV.ODDS")}
+          title={tg("GONE_TITLE")}
+          description={tg("GONE_BODY")}
+        />
         <div>
           <Button variant="outline" nativeButton={false} render={<Link href="/games" />}>
             <Icon name="chevron-left" />
@@ -34,10 +55,10 @@ export function GameView(props: { data?: Game; now: number }) {
     );
   }
 
-  const g = props.data.summary;
+  const data = live.data;
+  const g = data.summary;
   return (
     <PageShell>
-      <AutoRefresh seconds={30} />
       <nav className="text-muted-foreground flex flex-wrap items-center gap-1 text-xs">
         <Link href="/games" className="hover:text-foreground">
           {t("NAV.ODDS")}
@@ -47,6 +68,7 @@ export function GameView(props: { data?: Game; now: number }) {
       </nav>
       <PageHeading
         className="mb-0"
+        status={status}
         label={`${g.league}, ${kickoff(g.starts_at, locale)}, ${until(g.starts_at, now, locale, t)}`}
         title={<Matchup event={g} size="default" className="gap-x-3" />}
         description={tg("SUBHEADING")}
@@ -67,7 +89,7 @@ export function GameView(props: { data?: Game; now: number }) {
           tone={g.best_ev ? "win" : undefined}
         />
       </StatGrid>
-      {props.data.markets.map((m) => (
+      {data.markets.map((m) => (
         <Panel key={`${m.kind}:${m.period}:${m.line ?? ""}`}>
           <MarketTable market={m} home={g.home} away={g.away} now={now} valueLinks />
         </Panel>

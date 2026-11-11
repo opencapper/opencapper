@@ -29,6 +29,9 @@ export type BetTotals = Schemas["BetTotals"];
 export type BookHealth = Schemas["BookHealth"];
 export type HealthRisk = Schemas["HealthRisk"];
 export type HealthWarningCode = Schemas["HealthWarningCode"];
+export type ServerMessage = Schemas["ServerMessage"];
+export type ClientMessage = Schemas["ClientMessage"];
+export type LivePrice = Schemas["LivePrice"];
 
 // Server side only: the API sits on the internal network next to this app.
 export const api = createClient<paths>({

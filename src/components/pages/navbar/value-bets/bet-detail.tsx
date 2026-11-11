@@ -1,4 +1,7 @@
-import { AutoRefresh } from "@/components/elements/odds/auto-refresh";
+"use client";
+
+import { LiveStatusBadge } from "@/components/elements/live/live-status";
+import { TickText } from "@/components/elements/live/tick-cell";
 import { ConfidenceBadge } from "@/components/elements/odds/confidence-badge";
 import { Ev } from "@/components/elements/odds/ev";
 import { LeagueLabel } from "@/components/elements/flag/league-label";
@@ -18,6 +21,10 @@ import type { BetDetail } from "@/lib/api/client";
 import { TrackBet } from "@/components/elements/account/track-bet";
 import { bookName } from "@/lib/config/vendor-registry";
 import { ago, count, DEFAULT_PLAN, feeOf, kickoff, marketName, netOdds, odds, percent, prob, sideName, until, type BookFee, type StakePlan } from "@/lib/format";
+import { useLiveQuery, useNow } from "@/hooks/live/use-live-query-hook";
+import { applyBet, betNeedsReload } from "@/lib/live/apply";
+import { fetchBet } from "@/lib/live/actions";
+import { queryKeys } from "@/lib/react-query/keys";
 import { useLocale, useTranslations } from "next-intl";
 
 const BOOK_COLOR = "#3b82f6";
@@ -32,16 +39,32 @@ const METHODS = [
 
 const HEAD = "label-mono text-foreground/45 px-4 py-2 text-[10px] font-normal";
 
-export function BetDetailView(props: { data?: BetDetail; fees: BookFee[]; plan?: StakePlan; now: number }) {
+export function BetDetailView(props: { id: string; data?: BetDetail; fees: BookFee[]; plan?: StakePlan; now: number }) {
   const t = useTranslations();
   const tb = useTranslations("BET");
   const locale = useLocale();
-  const now = props.now;
+  const id = props.id;
+  const live = useLiveQuery({
+    queryKey: queryKeys.bet(id),
+    initialData: props.data ?? null,
+    fetch: () => fetchBet(id),
+    topic: `bet:${id}`,
+    apply: applyBet,
+    reloadWhen: betNeedsReload,
+  });
+  const now = useNow(props.now);
+  const status = <LiveStatusBadge status={live.status} />;
 
-  if (!props.data) {
+  if (!live.data) {
     return (
       <PageShell>
-        <PageHeading className="mb-0" label={tb("LABEL")} title={tb("GONE_TITLE")} description={tb("GONE_BODY")} />
+        <PageHeading
+          className="mb-0"
+          status={status}
+          label={tb("LABEL")}
+          title={tb("GONE_TITLE")}
+          description={tb("GONE_BODY")}
+        />
         <div>
           <Button variant="outline" nativeButton={false} render={<Link href="/value-bets" />}>
             <Icon name="chevron-left" />
@@ -52,7 +75,7 @@ export function BetDetailView(props: { data?: BetDetail; fees: BookFee[]; plan?:
     );
   }
 
-  const data = props.data;
+  const data = live.data;
   const b = data.bet;
   const book = bookName(b.book);
   const fee = feeOf(props.fees, b.book);
@@ -63,7 +86,6 @@ export function BetDetailView(props: { data?: BetDetail; fees: BookFee[]; plan?:
 
   return (
     <PageShell>
-      <AutoRefresh seconds={30} />
       <nav className="text-muted-foreground flex flex-wrap items-center gap-1 text-xs">
         <Link href="/value-bets" className="hover:text-foreground">
           {t("NAV.VALUE_BETS")}
@@ -75,6 +97,7 @@ export function BetDetailView(props: { data?: BetDetail; fees: BookFee[]; plan?:
       </nav>
       <PageHeading
         className="mb-0"
+        status={status}
         label={`${b.league}, ${kickoff(b.starts_at, locale)}, ${until(b.starts_at, now, locale, t)}`}
         title={
           <span className="inline-flex items-center gap-3">
@@ -111,15 +134,15 @@ export function BetDetailView(props: { data?: BetDetail; fees: BookFee[]; plan?:
       </PageHeading>
 
       <StatGrid className="sm:grid-cols-5">
-        <StatCard label={tb("STAT_EV")} value={percent(b.ev)} tone="win" />
+        <StatCard label={tb("STAT_EV")} value={<TickText value={b.ev}>{percent(b.ev)}</TickText>} tone="win" />
         <StatCard
           label={tb("STAT_SAFE_EV")}
           value={percent(b.ev_conservative)}
           tone={b.ev_conservative > 0 ? "win" : "warn"}
           hint={tb("SAFE_HINT")}
         />
-        <StatCard label={tb("STAT_ODDS")} value={odds(b.odds)} />
-        <StatCard label={tb("STAT_FAIR")} value={odds(b.fair_odds)} />
+        <StatCard label={tb("STAT_ODDS")} value={<TickText value={Number(b.odds)}>{odds(b.odds)}</TickText>} />
+        <StatCard label={tb("STAT_FAIR")} value={<TickText value={Number(b.fair_odds)}>{odds(b.fair_odds)}</TickText>} />
         <StatCard label={tb("STAT_CONFIDENCE")} value={<ConfidenceBadge value={b.confidence} />} />
       </StatGrid>
 

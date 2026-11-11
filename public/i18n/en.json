@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "The odds engine is not reachable",
     "UNREACHABLE_BODY": "No prices can be loaded right now. Try again in a minute."
   },
+  "LIVE": {
+    "CONNECTING": "Connecting",
+    "LIVE": "Live",
+    "RECONNECTING": "Reconnecting",
+    "OFFLINE": "Offline",
+    "HINT_LIVE": "Prices update the moment they change.",
+    "HINT_FALLBACK": "Live updates paused, refreshing every 20 seconds."
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "Over {line}",

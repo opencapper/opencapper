@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "Oran motoruna ulaşılamıyor",
     "UNREACHABLE_BODY": "Şu anda oranlar yüklenemiyor. Bir dakika sonra tekrar dene."
   },
+  "LIVE": {
+    "CONNECTING": "Bağlanıyor",
+    "LIVE": "Canlı",
+    "RECONNECTING": "Yeniden bağlanıyor",
+    "OFFLINE": "Çevrimdışı",
+    "HINT_LIVE": "Oranlar değiştiği anda güncellenir.",
+    "HINT_FALLBACK": "Canlı güncellemeler duraklatıldı, her 20 saniyede yenileniyor."
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "Üst {line}",

@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "Le moteur de cotes est injoignable",
     "UNREACHABLE_BODY": "Aucune cote ne peut être chargée pour le moment. Réessayez dans une minute."
   },
+  "LIVE": {
+    "CONNECTING": "Connexion",
+    "LIVE": "En direct",
+    "RECONNECTING": "Reconnexion",
+    "OFFLINE": "Hors ligne",
+    "HINT_LIVE": "Les cotes se mettent à jour dès qu’elles changent.",
+    "HINT_FALLBACK": "Temps réel en pause, actualisation toutes les 20 secondes."
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "Plus de {line}",

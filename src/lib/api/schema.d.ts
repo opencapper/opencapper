@@ -324,6 +324,37 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/ws": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Live push over WebSocket, protocol v1.
+         * @description The client sends JSON text frames (`ClientMessage`): `{"type":"subscribe","topic":"value_bets","min_ev":0.02}`,
+         *     `{"type":"unsubscribe","topic":"..."}`, `{"type":"ping"}`. Topics: `value_bets` (filters `min_ev`, `book`,
+         *     `include_check`, as on /v1/value-bets), `arbs` (`min_profit`, `include_check`), `ledger`, `game:{id}`
+         *     and `bet:{id}`. Every server frame is a `ServerMessage`: `v` (1), `seq` (per connection, starts at 1 and
+         *     rises by one), `ts`, `topic` and a `type`. The first frame is `welcome`. A subscribe is answered with a
+         *     snapshot (`value_bets_snapshot`, `arbs_snapshot`, `ledger_snapshot`, `game_snapshot`, `bet_snapshot`),
+         *     then diffs follow: value bet and arb added, updated, removed (computed every 10 s); ledger added,
+         *     updated, closed; price changed and removed and game removed (within about a second of the collector
+         *     publishing the price). Diffs carry whole objects keyed by id, so applying one twice is harmless.
+         *     The server pings every 20 s and closes a connection silent for 60 s (code 1001), one that falls
+         *     256 batches behind (1013) and one whose frame is not taken within 10 s. Reconnect and resubscribe
+         *     after a close; snapshots restore the state. Answers 503 when the server is at its connection limit.
+         */
+        get: operations["ws"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -434,6 +465,11 @@ export interface components {
             market: components["schemas"]["Market"];
             sharp_history: components["schemas"]["PricePoint"][];
         };
+        /**
+         * @description A value bet field that moved since the previous snapshot.
+         * @enum {string}
+         */
+        BetField: "odds" | "fair_odds" | "ev" | "ev_conservative" | "confidence" | "sharp_odds" | "sharp_max_stake" | "exchange_probability";
         /**
          * @description Every field is optional; only given fields change. Settling: set `status`; `payout` defaults to
          *     stake times odds for won, 0 for lost, the stake for push and void (pass it for half wins).
@@ -569,6 +605,37 @@ export interface components {
             book: string;
             totals: components["schemas"]["BetTotals"];
         };
+        /** @description Everything a client sends, as JSON text frames. */
+        ClientMessage: {
+            /** @description `value_bets`: only this book. */
+            book?: string | null;
+            /** @description `value_bets` and `arbs`: include entries flagged for review. */
+            include_check?: boolean | null;
+            /**
+             * Format: double
+             * @description `value_bets`: minimum expected value, e.g. 0.02.
+             */
+            min_ev?: number | null;
+            /**
+             * Format: double
+             * @description `arbs`: minimum profit.
+             */
+            min_profit?: number | null;
+            topic: string;
+            /** @enum {string} */
+            type: "subscribe";
+        } | {
+            topic: string;
+            /** @enum {string} */
+            type: "unsubscribe";
+        } | {
+            token: string;
+            /** @enum {string} */
+            type: "auth";
+        } | {
+            /** @enum {string} */
+            type: "ping";
+        };
         /** @enum {string} */
         Confidence: "high" | "medium" | "low" | "check";
         DailyProfit: {
@@ -607,6 +674,108 @@ export interface components {
             /** @description Stable machine readable code for errors the client translates. */
             code?: string | null;
             error: string;
+        };
+        /** @enum {string} */
+        ErrorCode: "bad_message" | "unknown_topic" | "too_many_subscriptions" | "auth_required" | "auth_unavailable";
+        /** @description Everything the server sends. Diffs carry whole objects, so applying one twice changes nothing. */
+        Event: {
+            /** Format: int64 */
+            heartbeat_secs: number;
+            max_subscriptions: number;
+            /** Format: int32 */
+            protocol: number;
+            /** @enum {string} */
+            type: "welcome";
+        } | {
+            bets: components["schemas"]["ValueBet"][];
+            stats: components["schemas"]["Stats"];
+            /** @enum {string} */
+            type: "value_bets_snapshot";
+        } | {
+            bet: components["schemas"]["ValueBet"];
+            /** @enum {string} */
+            type: "value_bet_added";
+        } | {
+            bet: components["schemas"]["ValueBet"];
+            changed: components["schemas"]["BetField"][];
+            /** @enum {string} */
+            type: "value_bet_updated";
+        } | {
+            game_id: string;
+            id: string;
+            /** @enum {string} */
+            type: "value_bet_removed";
+        } | {
+            arbs: components["schemas"]["Arb"][];
+            /** @enum {string} */
+            type: "arbs_snapshot";
+        } | {
+            arb: components["schemas"]["Arb"];
+            /** @enum {string} */
+            type: "arb_added";
+        } | {
+            arb: components["schemas"]["Arb"];
+            /** @enum {string} */
+            type: "arb_updated";
+        } | {
+            game_id: string;
+            id: string;
+            /** @enum {string} */
+            type: "arb_removed";
+        } | {
+            entries: components["schemas"]["LedgerEntry"][];
+            stats: components["schemas"]["LedgerStats"];
+            /** @enum {string} */
+            type: "ledger_snapshot";
+        } | {
+            entry: components["schemas"]["LedgerEntry"];
+            stats: components["schemas"]["LedgerStats"];
+            /** @enum {string} */
+            type: "ledger_added";
+        } | {
+            entry: components["schemas"]["LedgerEntry"];
+            stats: components["schemas"]["LedgerStats"];
+            /** @enum {string} */
+            type: "ledger_updated";
+        } | {
+            entry: components["schemas"]["LedgerEntry"];
+            stats: components["schemas"]["LedgerStats"];
+            /** @enum {string} */
+            type: "ledger_closed";
+        } | {
+            game?: components["schemas"]["Game"] | null;
+            game_id: string;
+            /** @enum {string} */
+            type: "game_snapshot";
+        } | {
+            bet?: components["schemas"]["ValueBet"] | null;
+            id: string;
+            /** @enum {string} */
+            type: "bet_snapshot";
+        } | {
+            price: components["schemas"]["LivePrice"];
+            /** @enum {string} */
+            type: "price_changed";
+        } | {
+            game_id: string;
+            key: string;
+            /** @enum {string} */
+            type: "price_removed";
+        } | {
+            game_id: string;
+            /** @enum {string} */
+            type: "game_removed";
+        } | {
+            /** @enum {string} */
+            type: "unsubscribed";
+        } | {
+            /** @enum {string} */
+            type: "pong";
+        } | {
+            code: components["schemas"]["ErrorCode"];
+            message: string;
+            /** @enum {string} */
+            type: "error";
         };
         Game: {
             markets: components["schemas"]["Market"][];
@@ -697,6 +866,23 @@ export interface components {
             entries: components["schemas"]["LedgerEntry"][];
             stats: components["schemas"]["LedgerStats"];
         };
+        /** @description One book's price on one outcome of a game. */
+        LivePrice: {
+            book: string;
+            /** Format: double */
+            ev?: number | null;
+            game_id: string;
+            /** @description Outcome key at this book, as in `BookPrice.key`. */
+            key: string;
+            line?: string | null;
+            market: string;
+            odds: string;
+            period: string;
+            /** Format: date-time */
+            seen_at: string;
+            side: string;
+            stale: boolean;
+        };
         Market: {
             kind: string;
             line?: string | null;
@@ -757,6 +943,23 @@ export interface components {
             at: string;
             odds: string;
             open: boolean;
+        };
+        /** @description Envelope of every server message on `/v1/ws` and on the `openev:events` channel. */
+        ServerMessage: components["schemas"]["Event"] & {
+            /**
+             * Format: int64
+             * @description Increases by one with every message on a connection (per API instance on Pub/Sub).
+             */
+            seq: number;
+            /** @description The subscription this message answers or belongs to. */
+            topic?: string | null;
+            /** Format: date-time */
+            ts: string;
+            /**
+             * Format: int32
+             * @description Protocol version, 1.
+             */
+            v: number;
         };
         Settings: {
             /** @description Bankroll in `currency`, the base for Kelly stakes. */
@@ -1623,6 +1826,33 @@ export interface operations {
             };
             /** @description No longer a value bet */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ws: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Switches to the WebSocket protocol; every frame is a ServerMessage */
+            101: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ServerMessage"];
+                };
+            };
+            /** @description Connection limit reached */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };

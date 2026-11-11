@@ -1,32 +1,19 @@
 import { Icon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
 import { env } from "@/lib/config/env";
-import { ago, count } from "@/lib/format";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { LandingMark } from "./landing-mark";
 import type { LandingData } from "./landing-data";
 import { LineFieldBackground } from "./line-field-bg";
+import { LiveCounters } from "./live-landing";
 
 const DIAGONAL =
   "repeating-linear-gradient(-45deg, transparent, transparent 4px, currentColor 4px, currentColor 5px)";
 
-function Counter(props: { label: string; value: string; tone?: string }) {
-  return (
-    <div className="bg-background/85 flex min-w-0 flex-col gap-1 px-3 py-2.5 backdrop-blur-sm">
-      <span className="label-mono text-foreground/45 truncate text-[9px]">{props.label}</span>
-      <span className={props.tone ?? "tabular text-foreground/90 truncate text-lg font-medium tracking-tight"}>
-        {props.value}
-      </span>
-    </div>
-  );
-}
-
 export async function LandingHero(props: { data: LandingData }) {
   const t = await getTranslations("LANDING");
-  const locale = await getLocale();
   const live = props.data.live;
   const signedIn = props.data.signedIn;
-  const updated = live?.list.stats.updated_at;
 
   return (
     <section className="bg-background border-border relative z-10 w-full border-b px-5 sm:px-6 lg:sticky lg:top-0 lg:h-dvh lg:w-[40%] lg:shrink-0 lg:overflow-clip lg:border-r lg:border-b-0 lg:px-7">
@@ -94,26 +81,7 @@ export async function LandingHero(props: { data: LandingData }) {
             </Link>
           </div>
 
-          {live && (
-            <div className="mt-8 max-w-md 2xl:max-w-none">
-              <div className="bg-foreground/8 border-foreground/8 grid grid-cols-2 gap-px overflow-hidden rounded-md border 2xl:grid-cols-4">
-                <Counter label={t("COUNTERS.BOOKS")} value={count(live.soft.length, locale)} />
-                <Counter label={t("COUNTERS.PRICES")} value={count(live.list.stats.quotes, locale)} />
-                <Counter label={t("COUNTERS.MATCHED")} value={count(live.list.stats.matched_events, locale)} />
-                <Counter
-                  label={t("COUNTERS.VALUE")}
-                  value={count(live.groups.length, locale)}
-                  tone="tabular text-success truncate text-lg font-medium tracking-tight"
-                />
-              </div>
-              <p className="label-mono text-foreground/45 mt-2 flex items-center gap-1.5 text-[9px]">
-                <span className="bg-success size-1.5 animate-pulse rounded-full motion-reduce:animate-none" />
-                {updated
-                  ? t("COUNTERS.UPDATED", { ago: ago(updated, props.data.now, locale) })
-                  : t("COUNTERS.LIVE")}
-              </p>
-            </div>
-          )}
+          {live && <LiveCounters list={live.list} soft={live.soft.length} now={props.data.now} />}
         </div>
       </div>
 

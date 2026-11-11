@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "De odds-engine is niet bereikbaar",
     "UNREACHABLE_BODY": "Er kunnen nu geen odds worden geladen. Probeer het over een minuut opnieuw."
   },
+  "LIVE": {
+    "CONNECTING": "Verbinden",
+    "LIVE": "Live",
+    "RECONNECTING": "Opnieuw verbinden",
+    "OFFLINE": "Offline",
+    "HINT_LIVE": "Odds worden bijgewerkt zodra ze veranderen.",
+    "HINT_FALLBACK": "Realtime gepauzeerd, verversen elke 20 seconden."
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "Meer dan {line}",

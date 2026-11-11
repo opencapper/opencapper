@@ -7,6 +7,7 @@ import { Matchup } from "@/components/elements/participant/matchup";
 import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import { DataTable } from "@/components/elements/table/data-table";
 import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
+import { useRowFlash } from "@/hooks/live/use-row-flash-hook";
 import { Link } from "@/i18n/navigation";
 import type { TableFeats } from "@/lib/config/table-features";
 import { TrackBet } from "@/components/elements/account/track-bet";
@@ -198,8 +199,17 @@ function columns(c: Ctx): ColumnDef<TableFeats, GroupedBet>[] {
   ];
 }
 
+function keyOf(g: GroupedBet): string {
+  return g.key;
+}
+
+function sigOf(g: GroupedBet): string {
+  return `${g.best.id}:${g.best.odds}:${g.best.ev.toFixed(4)}:${g.best.confidence}:${g.offers.length}`;
+}
+
 export function ValueBetsTable(props: {
   groups: GroupedBet[];
+  scope: string;
   now: number;
   plan?: StakePlan;
   fees: BookFee[];
@@ -214,10 +224,13 @@ export function ValueBetsTable(props: {
     signedIn: !!props.plan,
     fees: props.fees,
   };
+  const live = useRowFlash(props.groups, props.scope, keyOf, sigOf);
   return (
     <DataTable
       id="VALUE_BETS"
-      data={props.groups}
+      data={live.rows}
+      getRowId={keyOf}
+      rowClassName={(row) => live.flash(row.original.key)}
       columns={columns(ctx)}
       localSorting
       emptyState={<span className="text-muted-foreground text-sm">{t("VALUE_BETS.EMPTY")}</span>}

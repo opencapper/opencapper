@@ -15,6 +15,7 @@ import type { DataTableId } from "@/lib/types/data-table";
 import { cn } from "@/lib/utils";
 import { createTableAtoms } from "@/store/data-table-store";
 import {
+  type Cell,
   type ColumnDef,
   type OnChangeFn,
   type PaginationState,
@@ -67,6 +68,7 @@ interface DataTableProps<TData extends RowData> {
   emptyState?: ReactNode;
   onRowClick?: (row: TData) => void;
   rowClassName?: (row: Row<TableFeats, TData>) => string | undefined;
+  getRowId?: (row: TData) => string;
   filter?: (props: { table: ReactTable<TableFeats, TData> }) => ReactNode;
   actions?: (props: { table: ReactTable<TableFeats, TData> }) => ReactNode;
   renderExpandedRow?: (row: Row<TableFeats, TData>) => ReactNode;
@@ -78,6 +80,12 @@ interface DataTableProps<TData extends RowData> {
   onSortingChange?: OnChangeFn<SortingState>;
   pagination?: PaginationState;
   onPaginationChange?: OnChangeFn<PaginationState>;
+}
+
+// Called, not mounted: column defs are rebuilt every render, and a fresh component type would remount every cell.
+function renderCell<TData extends RowData>(cell: Cell<TableFeats, TData>): ReactNode {
+  const def = cell.column.columnDef.cell;
+  return typeof def === "function" ? def(cell.getContext()) : def;
 }
 
 export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
@@ -128,6 +136,7 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
       ? Math.ceil(props.total / pagination.pageSize)
       : undefined,
     getRowCanExpand: props.getRowCanExpand,
+    getRowId: props.getRowId,
     onExpandedChange: setExpanded,
     onGlobalFilterChange: setGlobalFilter,
     onColumnVisibilityChange: setColumnVisibility,
@@ -254,7 +263,7 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
             const meta = cell.column.columnDef.meta;
             return (
               <TableCell key={cell.id} className={cn(meta?.cellClassName)}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                {renderCell(cell)}
               </TableCell>
             );
           })}

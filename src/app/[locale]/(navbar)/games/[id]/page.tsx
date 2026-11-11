@@ -20,5 +20,5 @@ export default async function GamePage(props: Props) {
   await connection();
   const id = decodeURIComponent((await props.params).id);
   const data = await load(api.GET("/v1/games/{id}", { params: { path: { id } }, cache: "no-store" }));
-  return <GameView data={data} now={Date.now()} />;
+  return <GameView id={id} data={data} now={Date.now()} />;
 }

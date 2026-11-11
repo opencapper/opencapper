@@ -1,4 +1,6 @@
-import { AutoRefresh } from "@/components/elements/odds/auto-refresh";
+"use client";
+
+import { LiveStatusBadge } from "@/components/elements/live/live-status";
 import { Chip, FilterRow } from "@/components/elements/odds/filter-chips";
 import { Unreachable } from "@/components/elements/odds/panel";
 import { StatCard, StatGrid } from "@/components/elements/odds/stat-card";
@@ -8,6 +10,10 @@ import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import type { ValueBetList } from "@/lib/api/client";
 import { ago, count, fractionLabel, money, query, type BookFee, type StakePlan } from "@/lib/format";
 import { groupBets } from "@/lib/group";
+import { useLiveQuery, useNow } from "@/hooks/live/use-live-query-hook";
+import { applyValueBets } from "@/lib/live/apply";
+import { fetchValueBets } from "@/lib/live/actions";
+import { queryKeys } from "@/lib/react-query/keys";
 import { useLocale, useTranslations } from "next-intl";
 import { ValueBetsTable } from "./value-bets-table";
 
@@ -44,12 +50,22 @@ export function ValueBets(props: {
 }) {
   const t = useTranslations();
   const locale = useLocale();
-  const data = props.data;
   const f = props.filters;
+  const live = useLiveQuery({
+    queryKey: queryKeys.valueBets(f.book, f.min),
+    initialData: props.data ?? null,
+    fetch: () => fetchValueBets(f.book, f.min),
+    topic: "value_bets",
+    filters: { book: f.book, min_ev: f.min ? Number(f.min) : undefined },
+    apply: applyValueBets,
+  });
+  const data = live.data;
+  const now = useNow(props.now);
 
   const heading = (
     <PageHeading
       className="mb-0"
+      status={<LiveStatusBadge status={live.status} />}
       label={t("VALUE_BETS.LABEL")}
       title={t("VALUE_BETS.HEADING")}
       description={t("VALUE_BETS.SUBHEADING")}
@@ -76,7 +92,6 @@ export function ValueBets(props: {
 
   return (
     <PageShell>
-      <AutoRefresh seconds={20} />
       {heading}
 
       <StatGrid className="sm:grid-cols-4">
@@ -90,7 +105,7 @@ export function ValueBets(props: {
         <StatCard
           icon="clock"
           label={t("COMMON.UPDATED")}
-          value={data.stats.updated_at ? ago(data.stats.updated_at, props.now, locale) : t("FORMAT.NEVER")}
+          value={data.stats.updated_at ? ago(data.stats.updated_at, now, locale) : t("FORMAT.NEVER")}
         />
       </StatGrid>
 
@@ -130,7 +145,7 @@ export function ValueBets(props: {
         </FilterRow>
       </div>
 
-      <ValueBetsTable groups={groups} now={props.now} plan={props.plan} fees={props.fees} />
+      <ValueBetsTable groups={groups} scope={`${f.book}|${f.min}|${f.market}|${f.solid}|${f.mine}`} now={now} plan={props.plan} fees={props.fees} />
 
       <div className="text-muted-foreground grid gap-3 text-xs leading-relaxed sm:grid-cols-3">
         <p>{t("VALUE_BETS.NOTE_FAIR")}</p>

@@ -6,6 +6,7 @@ import { Matchup } from "@/components/elements/participant/matchup";
 import { DataTable } from "@/components/elements/table/data-table";
 import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
+import { useRowFlash } from "@/hooks/live/use-row-flash-hook";
 import type { LedgerEntry } from "@/lib/api/client";
 import type { TableFeats } from "@/lib/config/table-features";
 import { bookName } from "@/lib/config/vendor-registry";
@@ -129,13 +130,24 @@ function columns(t: Translate, locale: string): ColumnDef<TableFeats, LedgerEntr
   ];
 }
 
+function keyOf(e: LedgerEntry): string {
+  return e.id;
+}
+
+function sigOf(e: LedgerEntry): string {
+  return `${e.status}:${e.last_fair_odds ?? ""}:${e.closing_fair_odds ?? ""}`;
+}
+
 export function LedgerTable(props: { entries: LedgerEntry[] }) {
   const t = useTranslations();
   const locale = useLocale();
+  const live = useRowFlash(props.entries, "", keyOf, sigOf);
   return (
     <DataTable
       id="PROOF_LEDGER"
-      data={props.entries}
+      data={live.rows}
+      getRowId={keyOf}
+      rowClassName={(row) => live.flash(row.original.id)}
       columns={columns(t, locale)}
       localSorting
       windowVirtual

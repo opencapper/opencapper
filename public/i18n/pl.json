@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "Silnik kursów jest niedostępny",
     "UNREACHABLE_BODY": "Nie można teraz wczytać kursów. Spróbuj ponownie za minutę."
   },
+  "LIVE": {
+    "CONNECTING": "Łączenie",
+    "LIVE": "Na żywo",
+    "RECONNECTING": "Ponowne łączenie",
+    "OFFLINE": "Offline",
+    "HINT_LIVE": "Kursy aktualizują się, gdy tylko się zmienią.",
+    "HINT_FALLBACK": "Aktualizacje na żywo wstrzymane, odświeżanie co 20 sekund."
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "Powyżej {line}",

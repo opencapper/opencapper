@@ -43,10 +43,20 @@ export function PageHeading(props: {
   description?: ReactNode;
   children?: ReactNode;
   className?: string;
+  status?: ReactNode;
 }) {
   return (
     <header className={cn("mb-10", props.className)}>
-      <SectionLabel as="p">{props.label}</SectionLabel>
+      {props.status ? (
+        <div className="flex items-center gap-3">
+          <SectionLabel as="p" className="min-w-0 flex-1">
+            {props.label}
+          </SectionLabel>
+          {props.status}
+        </div>
+      ) : (
+        <SectionLabel as="p">{props.label}</SectionLabel>
+      )}
       <h1 className="text-foreground/95 mt-6 text-2xl font-medium tracking-tight text-balance sm:text-3xl">
         {props.title}
       </h1>

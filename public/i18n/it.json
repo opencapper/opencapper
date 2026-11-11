@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "Il motore delle quote non è raggiungibile",
     "UNREACHABLE_BODY": "Al momento non è possibile caricare le quote. Riprova tra un minuto."
   },
+  "LIVE": {
+    "CONNECTING": "Connessione",
+    "LIVE": "In diretta",
+    "RECONNECTING": "Riconnessione",
+    "OFFLINE": "Offline",
+    "HINT_LIVE": "Le quote si aggiornano appena cambiano.",
+    "HINT_FALLBACK": "Tempo reale in pausa, aggiornamento ogni 20 secondi."
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "Over {line}",

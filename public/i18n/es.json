@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "No se puede conectar con el motor de cuotas",
     "UNREACHABLE_BODY": "Ahora mismo no se pueden cargar cuotas. Vuelve a intentarlo en un minuto."
   },
+  "LIVE": {
+    "CONNECTING": "Conectando",
+    "LIVE": "En vivo",
+    "RECONNECTING": "Reconectando",
+    "OFFLINE": "Sin conexión",
+    "HINT_LIVE": "Las cuotas se actualizan en cuanto cambian.",
+    "HINT_FALLBACK": "Tiempo real en pausa, se actualiza cada 20 segundos."
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "Más de {line}",

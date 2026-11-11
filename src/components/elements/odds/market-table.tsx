@@ -1,3 +1,4 @@
+import { TickCell } from "@/components/elements/live/tick-cell";
 import { VendorLabel, VendorLogo } from "@/components/elements/vendor/vendor-logo";
 import { Link } from "@/i18n/navigation";
 import type { BookPrice, Market } from "@/lib/api/client";
@@ -79,9 +80,9 @@ export function MarketTable(props: {
                   >
                     {o.fair_odds ? odds(o.fair_odds) : <span className="text-muted-foreground">{t("FORMAT.NA")}</span>}
                   </td>
-                  <td className="tabular text-warning px-3 py-2 text-right">
+                  <TickCell value={o.sharp ? Number(o.sharp.odds) : 0} className="tabular text-warning px-3 py-2 text-right">
                     {o.sharp ? odds(o.sharp.odds) : <span className="text-muted-foreground">{t("FORMAT.NA")}</span>}
-                  </td>
+                  </TickCell>
                   {books.map((b) => {
                     const p = o.prices.find((x) => x.book === b);
                     if (!p) {
@@ -106,8 +107,9 @@ export function MarketTable(props: {
                             seen: ago(p.seen_at, props.now, locale),
                           });
                     return (
-                      <td
+                      <TickCell
                         key={b}
+                        value={Number(p.odds)}
                         title={title}
                         className={cn(
                           "tabular px-3 py-2 text-right",
@@ -125,7 +127,7 @@ export function MarketTable(props: {
                         ) : (
                           odds(p.odds)
                         )}
-                      </td>
+                      </TickCell>
                     );
                   })}
                 </tr>

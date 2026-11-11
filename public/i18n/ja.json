@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "オッズエンジンに接続できません",
     "UNREACHABLE_BODY": "現在オッズを読み込めません。1分後にもう一度お試しください。"
   },
+  "LIVE": {
+    "CONNECTING": "接続中",
+    "LIVE": "ライブ",
+    "RECONNECTING": "再接続中",
+    "OFFLINE": "オフライン",
+    "HINT_LIVE": "オッズは変動と同時に更新されます。",
+    "HINT_FALLBACK": "リアルタイム更新を一時停止中。20秒ごとに更新します。"
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "オーバー {line}",

@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "O motor de odds está fora do ar",
     "UNREACHABLE_BODY": "Não é possível carregar odds agora. Tente de novo em um minuto."
   },
+  "LIVE": {
+    "CONNECTING": "Conectando",
+    "LIVE": "Ao vivo",
+    "RECONNECTING": "Reconectando",
+    "OFFLINE": "Offline",
+    "HINT_LIVE": "As odds são atualizadas assim que mudam.",
+    "HINT_FALLBACK": "Tempo real pausado, atualizando a cada 20 segundos."
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "Mais de {line}",

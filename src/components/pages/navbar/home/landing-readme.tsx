@@ -4,14 +4,13 @@ import { Link } from "@/i18n/navigation";
 import { msg } from "@/lib/config/constants";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
-import { BetShowcase } from "./bet-showcase";
-import { BoardMock, DiscordMock, TrackerMock } from "./bet-mocks";
 import { BooksMarquee } from "./books-marquee";
 import { CheckSection } from "./check-section";
 import { DashSection } from "./dash/dash-section";
 import { FeatureGrid } from "./feature-grid";
 import { CoverageGrid, ToolsGrid } from "./integrations-grid";
 import type { LandingData } from "./landing-data";
+import { LiveShowcase } from "./live-landing";
 import { ProofSection } from "./proof-section";
 
 const strong = (chunks: ReactNode) => <span className="text-foreground/95 font-medium">{chunks}</span>;
@@ -61,14 +60,7 @@ export async function LandingReadme(props: { data: LandingData }) {
 
       {live && (
         <>
-          <BetShowcase
-            slides={live.featured.map((group) => ({
-              key: group.key,
-              board: <BoardMock group={group} />,
-              discord: <DiscordMock group={group} />,
-              tracker: <TrackerMock group={group} books={live.books} />,
-            }))}
-          />
+          <LiveShowcase list={live.list} keys={live.featured.map((g) => g.key)} books={live.books} />
           <BooksMarquee books={live.books} soft={live.soft.length} />
           <DashSection live={live} now={props.data.now} />
           <div className="mb-4">

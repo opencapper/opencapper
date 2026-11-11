@@ -179,6 +179,14 @@
     "UNREACHABLE_TITLE": "Die Quoten-Engine ist nicht erreichbar",
     "UNREACHABLE_BODY": "Gerade können keine Quoten geladen werden. Versuche es in einer Minute erneut."
   },
+  "LIVE": {
+    "CONNECTING": "Verbinde",
+    "LIVE": "Live",
+    "RECONNECTING": "Verbinde neu",
+    "OFFLINE": "Offline",
+    "HINT_LIVE": "Preise aktualisieren sich, sobald sie sich ändern.",
+    "HINT_FALLBACK": "Echtzeit pausiert, neue Daten alle 20 Sekunden."
+  },
   "FORMAT": {
     "SIDE": {
       "OVER": "Über {line}",

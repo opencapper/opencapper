@@ -21,3 +21,9 @@ export function groupBets(bets: ValueBet[]): GroupedBet[] {
   for (const g of groups.values()) g.offers.sort((x, y) => y.ev - x.ev);
   return [...groups.values()].sort((x, y) => y.best.ev - x.best.ev);
 }
+
+// Low and check confidence bets are real but not what the landing page should lead with.
+export function featuredGroups(bets: ValueBet[], count: number): GroupedBet[] {
+  const solid = groupBets(bets.filter((b) => b.confidence === "high" || b.confidence === "medium"));
+  return (solid.length > 0 ? solid : groupBets(bets)).slice(0, count);
+}

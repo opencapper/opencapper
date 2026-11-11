@@ -29,6 +29,7 @@ export default async function BetDetailPage(props: Props) {
   const account = results[2];
   return (
     <BetDetailView
+      id={id}
       data={results[0]}
       fees={results[1] ?? []}
       plan={account ? planOf(account.settings) : undefined}

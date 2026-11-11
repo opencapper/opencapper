@@ -1,9 +1,16 @@
+"use client";
+
+import { LiveStatusBadge } from "@/components/elements/live/live-status";
 import { Unreachable } from "@/components/elements/odds/panel";
 import { StatCard, StatGrid } from "@/components/elements/odds/stat-card";
 import { PageHeading } from "@/components/elements/page/page-heading";
 import { PageShell } from "@/components/elements/page/page-shell";
 import type { LedgerView } from "@/lib/api/client";
 import { count, percent } from "@/lib/format";
+import { useLiveQuery } from "@/hooks/live/use-live-query-hook";
+import { applyLedger } from "@/lib/live/apply";
+import { fetchLedger } from "@/lib/live/actions";
+import { queryKeys } from "@/lib/react-query/keys";
 import { useLocale, useTranslations } from "next-intl";
 import { LedgerTable } from "./ledger-table";
 
@@ -11,10 +18,24 @@ export function Proof(props: { data?: LedgerView }) {
   const t = useTranslations();
   const tp = useTranslations("PROOF");
   const locale = useLocale();
+  const live = useLiveQuery({
+    queryKey: queryKeys.ledger(),
+    initialData: props.data ?? null,
+    fetch: fetchLedger,
+    topic: "ledger",
+    apply: applyLedger,
+  });
+  const data = live.data;
   const heading = (
-    <PageHeading className="mb-0" label={tp("LABEL")} title={tp("HEADING")} description={tp("SUBHEADING")} />
+    <PageHeading
+      className="mb-0"
+      status={<LiveStatusBadge status={live.status} />}
+      label={tp("LABEL")}
+      title={tp("HEADING")}
+      description={tp("SUBHEADING")}
+    />
   );
-  if (!props.data) {
+  if (!data) {
     return (
       <PageShell>
         {heading}
@@ -22,7 +43,7 @@ export function Proof(props: { data?: LedgerView }) {
       </PageShell>
     );
   }
-  const s = props.data.stats;
+  const s = data.stats;
   const beat = s.closed > 0 ? s.beat_close / s.closed : undefined;
   const clv = s.avg_clv ?? undefined;
 
@@ -47,7 +68,7 @@ export function Proof(props: { data?: LedgerView }) {
           hint={tp("CLV_HINT")}
         />
       </StatGrid>
-      <LedgerTable entries={props.data.entries} />
+      <LedgerTable entries={data.entries} />
     </PageShell>
   );
 }

@@ -7,7 +7,7 @@ import {
   type LedgerView,
   type ValueBetList,
 } from "@/lib/api/client";
-import { groupBets, type GroupedBet } from "@/lib/group";
+import { featuredGroups, groupBets, type GroupedBet } from "@/lib/group";
 
 export type LandingLive = {
   list: ValueBetList;
@@ -51,11 +51,8 @@ export async function loadLanding(signedIn: boolean): Promise<LandingData> {
   if (!list || !books || !ledger) return { signedIn, now };
 
   const groups = groupBets(list.bets);
-  // Low and check confidence bets are real but not what the page should lead with.
-  const featured = groupBets(
-    list.bets.filter((b) => b.confidence === "high" || b.confidence === "medium"),
-  ).slice(0, FEATURED);
-  const top = featured[0] ?? groups[0];
+  const featured = featuredGroups(list.bets, FEATURED);
+  const top = featured[0];
   const detail = top
     ? await load(
         api.GET("/v1/value-bets/{id}", {
@@ -69,7 +66,7 @@ export async function loadLanding(signedIn: boolean): Promise<LandingData> {
     live: {
       list,
       groups,
-      featured: featured.length > 0 ? featured : groups.slice(0, FEATURED),
+      featured,
       detail,
       books,
       soft: books.filter((b) => b.book !== "pinnacle"),
