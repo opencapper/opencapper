@@ -5,10 +5,13 @@ import { useTranslations } from "next-intl";
 
 const TABS = [
   { href: "/tracker", key: "TAB_BETS", icon: "wallet" },
+  { href: "/tracker/alerts", key: "TAB_ALERTS", icon: "bell" },
   { href: "/tracker/health", key: "TAB_HEALTH", icon: "shield-check" },
 ] as const;
 
-export function TrackerTabs(props: { active: "/tracker" | "/tracker/health" }) {
+export type TrackerTab = (typeof TABS)[number]["href"];
+
+export function TrackerTabs(props: { active: TrackerTab }) {
   const t = useTranslations("TRACKER");
   return (
     <nav className="bg-muted inline-flex w-fit items-center rounded-lg p-[3px]">

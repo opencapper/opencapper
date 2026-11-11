@@ -3,7 +3,7 @@
 import { actionErrorText } from "@/components/elements/account/action-error";
 import { Choice } from "@/components/elements/account/choice";
 import { CARD_LABEL } from "@/components/elements/page/page-heading";
-import { VendorLogo } from "@/components/elements/vendor/vendor-logo";
+import { BookPicker } from "@/components/elements/vendor/book-picker";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
@@ -12,9 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { Settings } from "@/lib/api/client";
 import { saveSettings, type ActionResult } from "@/lib/auth/actions";
-import { bookName } from "@/lib/config/vendor-registry";
 import { fractionLabel } from "@/lib/format";
-import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -53,8 +51,6 @@ export function SettingsForm(props: { settings: Settings; books: string[] }) {
     },
   });
   const result = mutation.data;
-  const toggle = (book: string) =>
-    preferred[1]((prev) => (prev.includes(book) ? prev.filter((b) => b !== book) : [...prev, book]));
 
   return (
     <form
@@ -125,29 +121,12 @@ export function SettingsForm(props: { settings: Settings; books: string[] }) {
           <CardDescription>{t("SETTINGS.BOOKS_HINT")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-wrap gap-2" role="group" aria-label={t("SETTINGS.BOOKS_TITLE")}>
-            {props.books.map((b) => {
-              const on = preferred[0].includes(b);
-              return (
-                <button
-                  key={b}
-                  type="button"
-                  aria-pressed={on}
-                  onClick={() => toggle(b)}
-                  className={cn(
-                    "inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition-colors",
-                    on
-                      ? "border-foreground/40 bg-foreground/10 text-foreground"
-                      : "text-foreground/55 hover:text-foreground hover:bg-foreground/5",
-                  )}
-                >
-                  <VendorLogo vendorKey={b} size={16} />
-                  {bookName(b)}
-                  {on && <Icon name="check" className="size-3" />}
-                </button>
-              );
-            })}
-          </div>
+          <BookPicker
+            label={t("SETTINGS.BOOKS_TITLE")}
+            books={props.books}
+            selected={preferred[0]}
+            onChange={preferred[1]}
+          />
         </CardContent>
       </Card>
 

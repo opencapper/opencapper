@@ -164,7 +164,8 @@
     "HEALTH": "アカウントの健全性",
     "SETTINGS": "設定",
     "APPEARANCE": "外観",
-    "SIGN_OUT": "ログアウト"
+    "SIGN_OUT": "ログアウト",
+    "ALERTS": "アラート受信箱"
   },
   "NOT_FOUND": {
     "CODE": "404",
@@ -408,7 +409,9 @@
       "STEP_1": "アラートは、その時点のブックメーカーのオッズと公正オッズとともに記録されます。",
       "STEP_2": "Pinnacleのオッズは試合開始まで更新され続けます。",
       "STEP_3": "キックオフ時の最後の公正オッズがクロージングラインになります。",
-      "STEP_4": "CLVはアラート時のオッズをクロージング時の公正オッズで割り、1を引いた値です。プラスならベットがクロージングを上回ったことを意味します。"
+      "STEP_4": "CLVはアラート時のオッズをクロージング時の公正オッズで割り、1を引いた値です。プラスならベットがクロージングを上回ったことを意味します。",
+      "RESULTS_TITLE": "結果",
+      "RESULTS_META": "すべてのアラートに1ユニット固定"
     },
     "STEPS": {
       "TITLE": "使い方",
@@ -574,7 +577,24 @@
     "STATUS_OPEN": "試合開始前",
     "STATUS_CLOSED": "締め切り済み",
     "STATUS_NO_CLOSE": "クロージングオッズなし",
-    "EMPTY": "まだアラートはありません。"
+    "EMPTY": "まだアラートはありません。",
+    "VIEW": "表示",
+    "VIEW_CLV": "クロージングライン",
+    "VIEW_RESULTS": "結果",
+    "RESULTS_NOTE": "結果で実力と運を見分けるには数百件のベットが必要です。クロージングラインバリューはそれをずっと早く示すので、こちらを主要な指標にしています。",
+    "STAT_SETTLED": "精算済み",
+    "SETTLED_HINT": "キックオフ後の{closed}件のうち、最終スコアがあるアラート",
+    "STAT_RECORD": "的中 / 不的中 / 返金",
+    "RECORD_VALUE": "{won} / {lost} / {push}",
+    "RECORD_HINT": "ほかにクォーターラインで半分的中{half_won}件、半分不的中{half_lost}件",
+    "STAT_UNITS": "ユニット",
+    "UNITS_VALUE": "{units} u",
+    "UNITS_HINT": "アラートごとに1ユニット固定で賭けた場合の手数料控除後の損益",
+    "STAT_ROI": "ROI",
+    "ROI_HINT": "精算済みアラートで賭けた1ユニットあたりの獲得ユニット",
+    "COL_RESULT": "結果",
+    "RESULT_PENDING": "スコア待ち",
+    "RESULT_MISSING": "スコアなし"
   },
   "BOOKS": {
     "LABEL": "対応範囲",
@@ -697,8 +717,16 @@
       "WON": "的中",
       "LOST": "不的中",
       "PUSH": "引き分け返金",
-      "VOID": "無効"
-    }
+      "VOID": "無効",
+      "HALF_WON": "半分的中",
+      "HALF_LOST": "半分不的中"
+    },
+    "TAB_ALERTS": "アラート",
+    "AUTO": "自動",
+    "AUTO_HINT": "最終スコアから自動で精算されました",
+    "NEEDS_SETTLE": "手動で精算",
+    "NEEDS_SETTLE_HINT": "この試合の最終スコアが見つかりませんでした。結果を自分で選んでください。",
+    "NEEDS_SETTLE_NOTICE": "{count}件のベットを手動で精算する必要があります。試合の最終スコアが見つかりませんでした。"
   },
   "ACCOUNT": {
     "LABEL": "アカウント",
@@ -786,5 +814,55 @@
     "BOOKS_HINT": "アカウントを持っているブックメーカーです。バリューベットのボードに、これらを絞り込むマイブックメーカーフィルターが追加されます。",
     "SAVE": "設定を保存",
     "SAVED": "設定を保存しました。"
+  },
+  "ALERTS": {
+    "TITLE": "アラート",
+    "HINT": "公開記録のバリューベットを、見つかった瞬間にお届けします。",
+    "OFF_HINT": "アラートはオフです。下の設定は、オンにしたときのために保存されます。",
+    "ENABLED": "アラートを受け取る",
+    "MIN_EV": "最低EV",
+    "MIN_EV_HINT": "フェア価格に対して少なくともこの優位性があるベットだけを送ります。",
+    "MIN_CONFIDENCE": "最低信頼度",
+    "MIN_CONFIDENCE_HINT": "高には、実際の資金が裏付けるシャープなラインと、取引所からの疑義がないことが必要です。",
+    "BOOKS": "ブックメーカー",
+    "BOOKS_HINT": "何も選ばなければ、すべてのブックメーカーのアラートを受け取ります。",
+    "ALL_BOOKS": "すべてのブックメーカー",
+    "MY_BOOKS": "マイブックメーカーを使う",
+    "ARBS": "アービトラージのアラート",
+    "ARBS_HINT": "少なくともこの確定利益があるアーブも送ります。",
+    "MIN_ARB": "最低利益",
+    "CHANNELS": "送信先",
+    "DISCORD_DM": "Discord DM",
+    "DISCORD_DM_HINT": "Discordでは、OpenEVボットと同じサーバーに参加している間だけボットからDMを受け取れます。",
+    "DISCORD_JOIN": "OpenEVのDiscordに参加",
+    "TELEGRAM": "Telegram",
+    "TELEGRAM_HINT": "連携したTelegramチャットにOpenEVボットからメッセージが届きます。",
+    "TELEGRAM_NOT_LINKED": "オンにするには、下でTelegramを連携してください。",
+    "NO_CHANNEL": "少なくとも1つのチャンネルを選んでください。選ばないとアラートは届きません。",
+    "INVALID": "0から100までのパーセント値を入力してください。",
+    "SAVE": "アラートを保存",
+    "SAVED": "アラート設定を保存しました。",
+    "TG_TITLE": "Telegram",
+    "TG_HINT": "Telegramチャットを連携すると、そこでアラートを受け取れます。",
+    "TG_CONNECT": "Telegramを連携",
+    "TG_WAITING": "Telegramを待っています",
+    "TG_WAITING_HINT": "@{bot} とのチャットで開始を押してください。このページは連携を自動で検知します。",
+    "TG_OPEN_AGAIN": "Telegramをもう一度開く",
+    "TG_CANCEL": "キャンセル",
+    "TG_EXPIRED": "Telegramで確認される前にリンクの有効期限が切れました。",
+    "TG_RETRY": "もう一度試す",
+    "TG_LINKED": "{name} として連携済み",
+    "TG_LINKED_NO_NAME": "連携済み",
+    "TG_DISCONNECT": "連携を解除",
+    "TG_DISCONNECTED": "Telegramの連携を解除しました。",
+    "TG_DONE": "Telegramを連携しました。",
+    "TG_UNAVAILABLE": "現在Telegramの連携は利用できません。",
+    "SENT": "送信 {time}",
+    "GONE": "このアラートはもう公開記録にありません。",
+    "INBOX_COUNT": "あなたに送られたアラート{count}件、新しい順。",
+    "INBOX_EMPTY": "まだアラートは送られていません",
+    "INBOX_EMPTY_ON": "アラートはオンです。設定に合う次のバリューベットはここにも表示されます。",
+    "INBOX_EMPTY_OFF": "設定でアラートをオンにすると、送られたバリューベットがすべてここに表示されます。",
+    "INBOX_SETTINGS": "アラート設定"
   }
 }

@@ -30,7 +30,8 @@ import { useMutation } from "@tanstack/react-query";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
-import { BET_STATUSES, STATUS_STYLE, statusLabel } from "./bet-status";
+import { BET_STATUSES, STATUS_ICON, statusLabel } from "@/components/elements/odds/bet-status";
+import { ResultBadge } from "@/components/elements/odds/result-badge";
 
 const RIGHT = { headerClassName: "text-right", cellClassName: "text-right" };
 
@@ -126,12 +127,25 @@ function columns(c: Ctx): ColumnDef<TableFeats, Bet>[] {
       id: "status",
       accessorFn: (b) => b.status,
       header: (ctx) => <DataTableColumnHeader column={ctx.column} title="TRACKER.COL_STATUS" />,
-      size: 90,
-      cell: (ctx) => (
-        <Badge variant="outline" className={cn("rounded-sm font-normal", STATUS_STYLE[ctx.row.original.status])}>
-          {statusLabel(ctx.row.original.status, t)}
-        </Badge>
-      ),
+      size: 130,
+      cell: (ctx) => {
+        const b = ctx.row.original;
+        if (b.status === "open" && b.needs_manual_settle) return <SettleMarker bet={b} ctx={c} />;
+        return (
+          <span className="inline-flex flex-wrap items-center gap-1">
+            <ResultBadge value={b.status} />
+            {b.settled_by === "auto" && (
+              <Badge
+                variant="outline"
+                title={t("TRACKER.AUTO_HINT")}
+                className="text-muted-foreground rounded-sm px-1 font-mono text-[10px] font-normal"
+              >
+                {t("TRACKER.AUTO")}
+              </Badge>
+            )}
+          </span>
+        );
+      },
     },
     {
       id: "profit",
@@ -167,12 +181,7 @@ function columns(c: Ctx): ColumnDef<TableFeats, Bet>[] {
               <Icon name="settings-2" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-44">
-              {BET_STATUSES.filter((s) => s !== b.status).map((s) => (
-                <DropdownMenuItem key={s} onClick={() => c.settle(b, s)}>
-                  <Icon name={s === "open" ? "refresh-ccw" : s === "won" ? "circle-check" : s === "lost" ? "x-circle" : "ban"} />
-                  {s === "open" ? t("TRACKER.REOPEN") : t("TRACKER.MARK", { status: statusLabel(s, t) })}
-                </DropdownMenuItem>
-              ))}
+              <SettleItems bet={b} ctx={c} />
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => c.open({ kind: "edit", bet: b })}>
                 <Icon name="paintbrush" />
@@ -188,6 +197,41 @@ function columns(c: Ctx): ColumnDef<TableFeats, Bet>[] {
       },
     },
   ];
+}
+
+function SettleItems(props: { bet: Bet; ctx: Ctx }) {
+  const t = props.ctx.t;
+  return BET_STATUSES.filter((s) => s !== props.bet.status).map((s) => (
+    <DropdownMenuItem key={s} onClick={() => props.ctx.settle(props.bet, s)}>
+      <Icon name={STATUS_ICON[s]} />
+      {s === "open" ? t("TRACKER.REOPEN") : t("TRACKER.MARK", { status: statusLabel(s, t) })}
+    </DropdownMenuItem>
+  ));
+}
+
+function SettleMarker(props: { bet: Bet; ctx: Ctx }) {
+  const t = props.ctx.t;
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        disabled={props.ctx.busy}
+        render={
+          <button
+            type="button"
+            title={t("TRACKER.NEEDS_SETTLE_HINT")}
+            className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20 inline-flex items-center gap-1 rounded-sm border px-1.5 py-0.5 text-xs whitespace-nowrap transition-colors"
+          />
+        }
+      >
+        <Icon name="triangle-alert" className="size-3" />
+        {t("TRACKER.NEEDS_SETTLE")}
+        <Icon name="chevron-down" className="size-3" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="min-w-44">
+        <SettleItems bet={props.bet} ctx={props.ctx} />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 }
 
 export function BetsTable(props: { bets: Bet[]; currency: string }) {

@@ -164,7 +164,8 @@
     "HEALTH": "Salud de la cuenta",
     "SETTINGS": "Ajustes",
     "APPEARANCE": "Apariencia",
-    "SIGN_OUT": "Cerrar sesión"
+    "SIGN_OUT": "Cerrar sesión",
+    "ALERTS": "Bandeja de alertas"
   },
   "NOT_FOUND": {
     "CODE": "404",
@@ -408,7 +409,9 @@
       "STEP_1": "Se anota una alerta con la cuota de la casa y la cuota justa de ese momento.",
       "STEP_2": "La cuota de Pinnacle se sigue actualizando hasta que empieza el partido.",
       "STEP_3": "Al inicio del partido, el último precio justo pasa a ser la cuota de cierre.",
-      "STEP_4": "El CLV es la cuota de la alerta dividida entre la cuota justa de cierre, menos uno. Si es positivo, la apuesta batió el cierre."
+      "STEP_4": "El CLV es la cuota de la alerta dividida entre la cuota justa de cierre, menos uno. Si es positivo, la apuesta batió el cierre.",
+      "RESULTS_TITLE": "Resultados",
+      "RESULTS_META": "1 unidad fija en cada alerta"
     },
     "STEPS": {
       "TITLE": "Cómo funciona",
@@ -574,7 +577,24 @@
     "STATUS_OPEN": "Antes del inicio",
     "STATUS_CLOSED": "Cerrada",
     "STATUS_NO_CLOSE": "Sin cuota de cierre",
-    "EMPTY": "Aún no hay alertas."
+    "EMPTY": "Aún no hay alertas.",
+    "VIEW": "Vista",
+    "VIEW_CLV": "Línea de cierre",
+    "VIEW_RESULTS": "Resultados",
+    "RESULTS_NOTE": "Los resultados necesitan cientos de apuestas para separar habilidad de suerte. El valor frente a la línea de cierre lo muestra mucho antes, por eso sigue siendo la cifra principal.",
+    "STAT_SETTLED": "Liquidadas",
+    "SETTLED_HINT": "Alertas con resultado final, de {closed} tras el inicio",
+    "STAT_RECORD": "Ganadas / perdidas / devueltas",
+    "RECORD_VALUE": "{won} / {lost} / {push}",
+    "RECORD_HINT": "Más {half_won} medio ganadas y {half_lost} medio perdidas en líneas de cuarto",
+    "STAT_UNITS": "Unidades",
+    "UNITS_VALUE": "{units} u",
+    "UNITS_HINT": "Beneficio con stake fijo de 1 unidad por alerta, tras comisión",
+    "STAT_ROI": "ROI",
+    "ROI_HINT": "Unidades ganadas por unidad apostada en alertas liquidadas",
+    "COL_RESULT": "Resultado",
+    "RESULT_PENDING": "Esperando resultado",
+    "RESULT_MISSING": "Sin resultado"
   },
   "BOOKS": {
     "LABEL": "Cobertura",
@@ -697,8 +717,16 @@
       "WON": "Ganada",
       "LOST": "Perdida",
       "PUSH": "Devuelta",
-      "VOID": "Anulada"
-    }
+      "VOID": "Anulada",
+      "HALF_WON": "Medio ganada",
+      "HALF_LOST": "Medio perdida"
+    },
+    "TAB_ALERTS": "Alertas",
+    "AUTO": "auto",
+    "AUTO_HINT": "Liquidada automáticamente con el resultado final",
+    "NEEDS_SETTLE": "Liquidar a mano",
+    "NEEDS_SETTLE_HINT": "No se encontró el resultado final de este partido. Elige tú el resultado.",
+    "NEEDS_SETTLE_NOTICE": "{count, plural, one {# apuesta necesita} other {# apuestas necesitan}} liquidarse a mano: no se encontró el resultado final del partido."
   },
   "ACCOUNT": {
     "LABEL": "Cuenta",
@@ -786,5 +814,55 @@
     "BOOKS_HINT": "Las casas en las que tienes cuenta. El panel de apuestas de valor tiene un filtro Mis casas para ellas.",
     "SAVE": "Guardar ajustes",
     "SAVED": "Ajustes guardados."
+  },
+  "ALERTS": {
+    "TITLE": "Alertas",
+    "HINT": "Apuestas de valor del registro público, enviadas en cuanto se encuentran.",
+    "OFF_HINT": "Las alertas están desactivadas. Lo que elijas abajo se guarda para cuando las actives.",
+    "ENABLED": "Enviarme alertas",
+    "MIN_EV": "EV mínimo",
+    "MIN_EV_HINT": "Solo apuestas con al menos esta ventaja sobre el precio justo.",
+    "MIN_CONFIDENCE": "Confianza mínima",
+    "MIN_CONFIDENCE_HINT": "Alta exige una línea sharp con dinero real detrás y sin dudas de los exchanges.",
+    "BOOKS": "Casas de apuestas",
+    "BOOKS_HINT": "No elijas ninguna para recibir alertas de todas las casas.",
+    "ALL_BOOKS": "Todas las casas",
+    "MY_BOOKS": "Usar mis casas",
+    "ARBS": "Alertas de arbitraje",
+    "ARBS_HINT": "Enviar también arbs con al menos este beneficio garantizado.",
+    "MIN_ARB": "Beneficio mínimo",
+    "CHANNELS": "Dónde enviarlas",
+    "DISCORD_DM": "Mensaje directo de Discord",
+    "DISCORD_DM_HINT": "Discord solo deja que el bot de OpenEV te escriba mientras compartáis un servidor.",
+    "DISCORD_JOIN": "Únete al Discord de OpenEV",
+    "TELEGRAM": "Telegram",
+    "TELEGRAM_HINT": "Mensajes del bot de OpenEV en tu chat de Telegram vinculado.",
+    "TELEGRAM_NOT_LINKED": "Conecta Telegram abajo para activarlo.",
+    "NO_CHANNEL": "Elige al menos un canal o no te llegará ninguna alerta.",
+    "INVALID": "Introduce porcentajes entre 0 y 100.",
+    "SAVE": "Guardar alertas",
+    "SAVED": "Ajustes de alertas guardados.",
+    "TG_TITLE": "Telegram",
+    "TG_HINT": "Vincula un chat de Telegram para recibir alertas allí.",
+    "TG_CONNECT": "Conectar Telegram",
+    "TG_WAITING": "Esperando a Telegram",
+    "TG_WAITING_HINT": "Pulsa Iniciar en el chat con @{bot}. Esta página detecta el vínculo sola.",
+    "TG_OPEN_AGAIN": "Abrir Telegram otra vez",
+    "TG_CANCEL": "Cancelar",
+    "TG_EXPIRED": "El enlace caducó antes de que Telegram lo confirmara.",
+    "TG_RETRY": "Intentar de nuevo",
+    "TG_LINKED": "Conectado como {name}",
+    "TG_LINKED_NO_NAME": "Conectado",
+    "TG_DISCONNECT": "Desconectar",
+    "TG_DISCONNECTED": "Telegram desconectado.",
+    "TG_DONE": "Telegram conectado.",
+    "TG_UNAVAILABLE": "La vinculación con Telegram no está disponible ahora mismo.",
+    "SENT": "Enviada {time}",
+    "GONE": "Esta alerta ya no está en el registro público.",
+    "INBOX_COUNT": "{count, plural, one {# alerta enviada a ti} other {# alertas enviadas a ti}}, de la más nueva a la más antigua.",
+    "INBOX_EMPTY": "Todavía no te hemos enviado alertas",
+    "INBOX_EMPTY_ON": "Las alertas están activadas. La próxima apuesta de valor que encaje con tus ajustes aparecerá también aquí.",
+    "INBOX_EMPTY_OFF": "Activa las alertas en tus ajustes y cada apuesta de valor que te enviemos aparecerá aquí.",
+    "INBOX_SETTINGS": "Ajustes de alertas"
   }
 }

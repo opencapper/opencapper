@@ -2,6 +2,7 @@
 
 import { ConfidenceBadge } from "@/components/elements/odds/confidence-badge";
 import { Ev } from "@/components/elements/odds/ev";
+import { LedgerResult } from "@/components/elements/odds/ledger-result";
 import { Matchup } from "@/components/elements/participant/matchup";
 import { DataTable } from "@/components/elements/table/data-table";
 import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
@@ -117,6 +118,14 @@ function columns(t: Translate, locale: string): ColumnDef<TableFeats, LedgerEntr
       cell: (ctx) => <Ev value={ctx.row.original.clv} />,
     },
     {
+      id: "result",
+      accessorFn: (e) => e.profit_units ?? -Infinity,
+      header: (ctx) => <DataTableColumnHeader column={ctx.column} title="PROOF.COL_RESULT" className="justify-end" />,
+      size: 110,
+      meta: RIGHT,
+      cell: (ctx) => <LedgerResult entry={ctx.row.original} />,
+    },
+    {
       id: "status",
       accessorFn: (e) => e.status,
       header: (ctx) => <DataTableColumnHeader column={ctx.column} title="PROOF.COL_STATUS" />,
@@ -135,7 +144,7 @@ function keyOf(e: LedgerEntry): string {
 }
 
 function sigOf(e: LedgerEntry): string {
-  return `${e.status}:${e.last_fair_odds ?? ""}:${e.closing_fair_odds ?? ""}`;
+  return `${e.status}:${e.last_fair_odds ?? ""}:${e.closing_fair_odds ?? ""}:${e.result ?? ""}`;
 }
 
 export function LedgerTable(props: { entries: LedgerEntry[] }) {

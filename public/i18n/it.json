@@ -164,7 +164,8 @@
     "HEALTH": "Salute degli account",
     "SETTINGS": "Impostazioni",
     "APPEARANCE": "Aspetto",
-    "SIGN_OUT": "Esci"
+    "SIGN_OUT": "Esci",
+    "ALERTS": "Casella avvisi"
   },
   "NOT_FOUND": {
     "CODE": "404",
@@ -408,7 +409,9 @@
       "STEP_1": "Un avviso viene annotato con la quota del bookmaker e la quota equa di quel momento.",
       "STEP_2": "La quota di Pinnacle continua ad aggiornarsi fino all'inizio della partita.",
       "STEP_3": "Al calcio d'inizio l'ultima quota equa diventa la quota di chiusura.",
-      "STEP_4": "Il CLV è la quota dell'avviso divisa per la quota equa di chiusura, meno uno. Se è positivo, la scommessa ha battuto la chiusura."
+      "STEP_4": "Il CLV è la quota dell'avviso divisa per la quota equa di chiusura, meno uno. Se è positivo, la scommessa ha battuto la chiusura.",
+      "RESULTS_TITLE": "Risultati",
+      "RESULTS_META": "1 unità fissa su ogni avviso"
     },
     "STEPS": {
       "TITLE": "Come funziona",
@@ -574,7 +577,24 @@
     "STATUS_OPEN": "Prima del calcio d'inizio",
     "STATUS_CLOSED": "Chiusa",
     "STATUS_NO_CLOSE": "Nessuna quota di chiusura",
-    "EMPTY": "Ancora nessun avviso."
+    "EMPTY": "Ancora nessun avviso.",
+    "VIEW": "Vista",
+    "VIEW_CLV": "Quota di chiusura",
+    "VIEW_RESULTS": "Risultati",
+    "RESULTS_NOTE": "Servono centinaia di scommesse perché i risultati separino l'abilità dalla fortuna. Il valore rispetto alla chiusura lo mostra molto prima, per questo resta il dato principale.",
+    "STAT_SETTLED": "Refertati",
+    "SETTLED_HINT": "Avvisi con risultato finale, su {closed} dopo il fischio d'inizio",
+    "STAT_RECORD": "Vinte / perse / rimborsate",
+    "RECORD_VALUE": "{won} / {lost} / {push}",
+    "RECORD_HINT": "Più {half_won} mezze vinte e {half_lost} mezze perse sulle linee a quarto",
+    "STAT_UNITS": "Unità",
+    "UNITS_VALUE": "{units} u",
+    "UNITS_HINT": "Profitto con puntata fissa di 1 unità per avviso, al netto della commissione",
+    "STAT_ROI": "ROI",
+    "ROI_HINT": "Unità vinte per unità puntata sugli avvisi refertati",
+    "COL_RESULT": "Esito",
+    "RESULT_PENDING": "In attesa del risultato",
+    "RESULT_MISSING": "Risultato non trovato"
   },
   "BOOKS": {
     "LABEL": "Copertura",
@@ -697,8 +717,16 @@
       "WON": "Vinta",
       "LOST": "Persa",
       "PUSH": "Rimborsata",
-      "VOID": "Annullata"
-    }
+      "VOID": "Annullata",
+      "HALF_WON": "Mezza vinta",
+      "HALF_LOST": "Mezza persa"
+    },
+    "TAB_ALERTS": "Avvisi",
+    "AUTO": "auto",
+    "AUTO_HINT": "Refertata automaticamente dal risultato finale",
+    "NEEDS_SETTLE": "Da refertare a mano",
+    "NEEDS_SETTLE_HINT": "Nessun risultato finale trovato per questa partita. Scegli tu l'esito.",
+    "NEEDS_SETTLE_NOTICE": "{count, plural, one {# scommessa va refertata} other {# scommesse vanno refertate}} a mano: nessun risultato finale trovato per la partita."
   },
   "ACCOUNT": {
     "LABEL": "Account",
@@ -786,5 +814,55 @@
     "BOOKS_HINT": "I bookmaker su cui hai un account. La bacheca delle value bet ottiene un filtro I miei bookmaker per loro.",
     "SAVE": "Salva impostazioni",
     "SAVED": "Impostazioni salvate."
+  },
+  "ALERTS": {
+    "TITLE": "Avvisi",
+    "HINT": "Le value bet del registro pubblico, inviate appena vengono trovate.",
+    "OFF_HINT": "Gli avvisi sono disattivati. Le tue scelte qui sotto restano salvate per quando li attiverai.",
+    "ENABLED": "Inviami avvisi",
+    "MIN_EV": "EV minimo",
+    "MIN_EV_HINT": "Solo scommesse con almeno questo vantaggio sul prezzo equo.",
+    "MIN_CONFIDENCE": "Affidabilità minima",
+    "MIN_CONFIDENCE_HINT": "Alta richiede una linea sharp con soldi veri dietro e nessun dubbio dagli exchange.",
+    "BOOKS": "Bookmaker",
+    "BOOKS_HINT": "Non sceglierne nessuno per ricevere avvisi da tutti i bookmaker.",
+    "ALL_BOOKS": "Tutti i bookmaker",
+    "MY_BOOKS": "Usa i miei bookmaker",
+    "ARBS": "Avvisi di arbitraggio",
+    "ARBS_HINT": "Invia anche gli arb con almeno questo profitto garantito.",
+    "MIN_ARB": "Profitto minimo",
+    "CHANNELS": "Dove inviarli",
+    "DISCORD_DM": "Messaggio diretto Discord",
+    "DISCORD_DM_HINT": "Discord permette al bot di OpenEV di scriverti solo se condividete un server.",
+    "DISCORD_JOIN": "Entra nel Discord di OpenEV",
+    "TELEGRAM": "Telegram",
+    "TELEGRAM_HINT": "Messaggi dal bot di OpenEV nella tua chat Telegram collegata.",
+    "TELEGRAM_NOT_LINKED": "Collega Telegram qui sotto per attivarlo.",
+    "NO_CHANNEL": "Scegli almeno un canale, altrimenti nessun avviso ti raggiunge.",
+    "INVALID": "Inserisci percentuali tra 0 e 100.",
+    "SAVE": "Salva avvisi",
+    "SAVED": "Impostazioni degli avvisi salvate.",
+    "TG_TITLE": "Telegram",
+    "TG_HINT": "Collega una chat Telegram per ricevere lì gli avvisi.",
+    "TG_CONNECT": "Collega Telegram",
+    "TG_WAITING": "In attesa di Telegram",
+    "TG_WAITING_HINT": "Premi Avvia nella chat con @{bot}. Questa pagina rileva il collegamento da sola.",
+    "TG_OPEN_AGAIN": "Apri di nuovo Telegram",
+    "TG_CANCEL": "Annulla",
+    "TG_EXPIRED": "Il link è scaduto prima che Telegram lo confermasse.",
+    "TG_RETRY": "Riprova",
+    "TG_LINKED": "Collegato come {name}",
+    "TG_LINKED_NO_NAME": "Collegato",
+    "TG_DISCONNECT": "Scollega",
+    "TG_DISCONNECTED": "Telegram scollegato.",
+    "TG_DONE": "Telegram collegato.",
+    "TG_UNAVAILABLE": "Il collegamento con Telegram non è disponibile in questo momento.",
+    "SENT": "Inviato {time}",
+    "GONE": "Questo avviso non è più nel registro pubblico.",
+    "INBOX_COUNT": "{count, plural, one {# avviso inviato a te} other {# avvisi inviati a te}}, dal più recente.",
+    "INBOX_EMPTY": "Ancora nessun avviso inviato a te",
+    "INBOX_EMPTY_ON": "Gli avvisi sono attivi. La prossima value bet adatta alle tue impostazioni comparirà anche qui.",
+    "INBOX_EMPTY_OFF": "Attiva gli avvisi nelle impostazioni e ogni value bet inviata a te comparirà qui.",
+    "INBOX_SETTINGS": "Impostazioni avvisi"
   }
 }

@@ -5,4 +5,5 @@ export const queryKeys = {
   arbs: (all: boolean) => ["arbs", all] as const,
   game: (id: string) => ["game", id] as const,
   ledger: () => ["ledger"] as const,
+  telegram: () => ["telegram"] as const,
 };

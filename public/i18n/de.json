@@ -164,7 +164,8 @@
     "HEALTH": "Kontogesundheit",
     "SETTINGS": "Einstellungen",
     "APPEARANCE": "Darstellung",
-    "SIGN_OUT": "Abmelden"
+    "SIGN_OUT": "Abmelden",
+    "ALERTS": "Alarmpostfach"
   },
   "NOT_FOUND": {
     "CODE": "404",
@@ -408,7 +409,9 @@
       "STEP_1": "Eine Meldung wird mit der Quote des Buchmachers und der fairen Quote zu diesem Zeitpunkt festgehalten.",
       "STEP_2": "Pinnacles Quote wird bis zum Spielbeginn laufend aktualisiert.",
       "STEP_3": "Beim Anstoß wird der letzte faire Preis zur Schlussquote.",
-      "STEP_4": "CLV ist die Quote der Meldung geteilt durch die faire Schlussquote, minus eins. Positiv heißt, die Wette hat die Schlussquote geschlagen."
+      "STEP_4": "CLV ist die Quote der Meldung geteilt durch die faire Schlussquote, minus eins. Positiv heißt, die Wette hat die Schlussquote geschlagen.",
+      "RESULTS_TITLE": "Ergebnisse",
+      "RESULTS_META": "1 Einheit fest auf jeden Alarm"
     },
     "STEPS": {
       "TITLE": "So funktioniert es",
@@ -574,7 +577,24 @@
     "STATUS_OPEN": "Vor Anstoß",
     "STATUS_CLOSED": "Geschlossen",
     "STATUS_NO_CLOSE": "Keine Schlussquote",
-    "EMPTY": "Noch keine Meldungen."
+    "EMPTY": "Noch keine Meldungen.",
+    "VIEW": "Ansicht",
+    "VIEW_CLV": "Schlusskurs",
+    "VIEW_RESULTS": "Ergebnisse",
+    "RESULTS_NOTE": "Ergebnisse brauchen Hunderte Wetten, um Können von Glück zu trennen. Der Closing Line Value zeigt es viel früher, deshalb bleibt er die Hauptkennzahl.",
+    "STAT_SETTLED": "Abgerechnet",
+    "SETTLED_HINT": "Alarme mit Endstand, von {closed} nach Anpfiff",
+    "STAT_RECORD": "Gewonnen / verloren / Push",
+    "RECORD_VALUE": "{won} / {lost} / {push}",
+    "RECORD_HINT": "Dazu {half_won} halb gewonnen und {half_lost} halb verloren bei Viertellinien",
+    "STAT_UNITS": "Einheiten",
+    "UNITS_VALUE": "{units} E",
+    "UNITS_HINT": "Gewinn bei festem Einsatz von 1 Einheit pro Alarm, nach Kommission",
+    "STAT_ROI": "ROI",
+    "ROI_HINT": "Gewonnene Einheiten pro eingesetzter Einheit bei abgerechneten Alarmen",
+    "COL_RESULT": "Ergebnis",
+    "RESULT_PENDING": "Endstand ausstehend",
+    "RESULT_MISSING": "Kein Endstand gefunden"
   },
   "BOOKS": {
     "LABEL": "Abdeckung",
@@ -697,8 +717,16 @@
       "WON": "Gewonnen",
       "LOST": "Verloren",
       "PUSH": "Push",
-      "VOID": "Ungültig"
-    }
+      "VOID": "Ungültig",
+      "HALF_WON": "Halb gewonnen",
+      "HALF_LOST": "Halb verloren"
+    },
+    "TAB_ALERTS": "Alarme",
+    "AUTO": "auto",
+    "AUTO_HINT": "Automatisch anhand des Endstands abgerechnet",
+    "NEEDS_SETTLE": "Selbst abrechnen",
+    "NEEDS_SETTLE_HINT": "Für dieses Spiel wurde kein Endstand gefunden. Wähle das Ergebnis selbst.",
+    "NEEDS_SETTLE_NOTICE": "{count, plural, one {# Wette muss} other {# Wetten müssen}} von Hand abgerechnet werden: Für das Spiel wurde kein Endstand gefunden."
   },
   "ACCOUNT": {
     "LABEL": "Konto",
@@ -786,5 +814,55 @@
     "BOOKS_HINT": "Die Buchmacher, bei denen du ein Konto hast. Das Value-Wetten-Board bekommt dafür einen Filter Meine Buchmacher.",
     "SAVE": "Einstellungen speichern",
     "SAVED": "Einstellungen gespeichert."
+  },
+  "ALERTS": {
+    "TITLE": "Alarme",
+    "HINT": "Value-Wetten aus dem öffentlichen Protokoll, an dich geschickt, sobald sie gefunden werden.",
+    "OFF_HINT": "Alarme sind aus. Deine Auswahl unten bleibt für später gespeichert.",
+    "ENABLED": "Alarme an mich senden",
+    "MIN_EV": "Mindest-EV",
+    "MIN_EV_HINT": "Nur Wetten mit mindestens diesem Vorteil gegenüber dem fairen Preis.",
+    "MIN_CONFIDENCE": "Mindestvertrauen",
+    "MIN_CONFIDENCE_HINT": "Hoch verlangt eine scharfe Linie mit echtem Geld dahinter und keine Zweifel von den Börsen.",
+    "BOOKS": "Buchmacher",
+    "BOOKS_HINT": "Wähle keinen aus, um Alarme für alle Buchmacher zu bekommen.",
+    "ALL_BOOKS": "Alle Buchmacher",
+    "MY_BOOKS": "Meine Buchmacher übernehmen",
+    "ARBS": "Arbitrage-Alarme",
+    "ARBS_HINT": "Auch Arbs mit mindestens diesem garantierten Gewinn senden.",
+    "MIN_ARB": "Mindestgewinn",
+    "CHANNELS": "Wohin senden",
+    "DISCORD_DM": "Discord DM",
+    "DISCORD_DM_HINT": "Discord lässt den OpenEV-Bot dir nur schreiben, solange ihr einen gemeinsamen Server habt.",
+    "DISCORD_JOIN": "Dem OpenEV-Discord beitreten",
+    "TELEGRAM": "Telegram",
+    "TELEGRAM_HINT": "Nachrichten vom OpenEV-Bot in deinem verknüpften Telegram-Chat.",
+    "TELEGRAM_NOT_LINKED": "Verbinde unten Telegram, um das einzuschalten.",
+    "NO_CHANNEL": "Wähle mindestens einen Kanal, sonst erreicht dich kein Alarm.",
+    "INVALID": "Gib Prozentwerte zwischen 0 und 100 ein.",
+    "SAVE": "Alarme speichern",
+    "SAVED": "Alarmeinstellungen gespeichert.",
+    "TG_TITLE": "Telegram",
+    "TG_HINT": "Verknüpfe einen Telegram-Chat, um Alarme dort zu bekommen.",
+    "TG_CONNECT": "Telegram verbinden",
+    "TG_WAITING": "Warte auf Telegram",
+    "TG_WAITING_HINT": "Tippe im Chat mit @{bot} auf Start. Diese Seite erkennt die Verknüpfung von selbst.",
+    "TG_OPEN_AGAIN": "Telegram erneut öffnen",
+    "TG_CANCEL": "Abbrechen",
+    "TG_EXPIRED": "Der Link ist abgelaufen, bevor Telegram ihn bestätigt hat.",
+    "TG_RETRY": "Erneut versuchen",
+    "TG_LINKED": "Verbunden als {name}",
+    "TG_LINKED_NO_NAME": "Verbunden",
+    "TG_DISCONNECT": "Trennen",
+    "TG_DISCONNECTED": "Telegram getrennt.",
+    "TG_DONE": "Telegram verbunden.",
+    "TG_UNAVAILABLE": "Telegram kann gerade nicht verknüpft werden.",
+    "SENT": "Gesendet {time}",
+    "GONE": "Dieser Alarm steht nicht mehr im öffentlichen Protokoll.",
+    "INBOX_COUNT": "{count, plural, one {# Alarm an dich gesendet} other {# Alarme an dich gesendet}}, neueste zuerst.",
+    "INBOX_EMPTY": "Noch keine Alarme an dich gesendet",
+    "INBOX_EMPTY_ON": "Alarme sind an. Die nächste passende Value-Wette erscheint auch hier.",
+    "INBOX_EMPTY_OFF": "Schalte Alarme in deinen Einstellungen ein, dann erscheint jede gesendete Value-Wette hier.",
+    "INBOX_SETTINGS": "Alarmeinstellungen"
   }
 }

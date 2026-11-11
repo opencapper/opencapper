@@ -164,7 +164,8 @@
     "HEALTH": "Hesap sağlığı",
     "SETTINGS": "Ayarlar",
     "APPEARANCE": "Görünüm",
-    "SIGN_OUT": "Çıkış yap"
+    "SIGN_OUT": "Çıkış yap",
+    "ALERTS": "Uyarı kutusu"
   },
   "NOT_FOUND": {
     "CODE": "404",
@@ -408,7 +409,9 @@
       "STEP_1": "Uyarı, o andaki şirket oranı ve adil oranla birlikte kaydedilir.",
       "STEP_2": "Pinnacle'ın oranı maç başlayana kadar güncellenmeye devam eder.",
       "STEP_3": "Maç başladığında son adil oran kapanış çizgisi olur.",
-      "STEP_4": "CLV, uyarı oranının kapanış adil oranına bölünüp bir çıkarılmasıdır. Pozitif değer, bahsin kapanışı geçtiği anlamına gelir."
+      "STEP_4": "CLV, uyarı oranının kapanış adil oranına bölünüp bir çıkarılmasıdır. Pozitif değer, bahsin kapanışı geçtiği anlamına gelir.",
+      "RESULTS_TITLE": "Sonuçlar",
+      "RESULTS_META": "Her uyarıya sabit 1 birim"
     },
     "STEPS": {
       "TITLE": "Nasıl çalışır",
@@ -574,7 +577,24 @@
     "STATUS_OPEN": "Başlamadan önce",
     "STATUS_CLOSED": "Kapandı",
     "STATUS_NO_CLOSE": "Kapanış oranı yok",
-    "EMPTY": "Henüz uyarı yok."
+    "EMPTY": "Henüz uyarı yok.",
+    "VIEW": "Görünüm",
+    "VIEW_CLV": "Kapanış oranı",
+    "VIEW_RESULTS": "Sonuçlar",
+    "RESULTS_NOTE": "Sonuçların beceriyi şanstan ayırması için yüzlerce bahis gerekir. Kapanış oranına göre değer bunu çok daha erken gösterir, bu yüzden ana gösterge olarak kalır.",
+    "STAT_SETTLED": "Sonuçlanan",
+    "SETTLED_HINT": "Başlama vuruşu geçmiş {closed} uyarıdan maç sonucu olanlar",
+    "STAT_RECORD": "Kazanan / kaybeden / iade",
+    "RECORD_VALUE": "{won} / {lost} / {push}",
+    "RECORD_HINT": "Ayrıca çeyrek çizgilerde {half_won} yarı kazanan ve {half_lost} yarı kaybeden",
+    "STAT_UNITS": "Birim",
+    "UNITS_VALUE": "{units} b",
+    "UNITS_HINT": "Her uyarıya sabit 1 birim yatırımla kâr, komisyon sonrası",
+    "STAT_ROI": "ROI",
+    "ROI_HINT": "Sonuçlanan uyarılarda yatırılan birim başına kazanılan birim",
+    "COL_RESULT": "Sonuç",
+    "RESULT_PENDING": "Sonuç bekleniyor",
+    "RESULT_MISSING": "Sonuç bulunamadı"
   },
   "BOOKS": {
     "LABEL": "Kapsam",
@@ -697,8 +717,16 @@
       "WON": "Kazandı",
       "LOST": "Kaybetti",
       "PUSH": "İade",
-      "VOID": "İptal"
-    }
+      "VOID": "İptal",
+      "HALF_WON": "Yarı kazandı",
+      "HALF_LOST": "Yarı kaybetti"
+    },
+    "TAB_ALERTS": "Uyarılar",
+    "AUTO": "oto",
+    "AUTO_HINT": "Maç sonucuna göre otomatik sonuçlandırıldı",
+    "NEEDS_SETTLE": "Elle sonuçlandır",
+    "NEEDS_SETTLE_HINT": "Bu maç için sonuç bulunamadı. Sonucu kendin seç.",
+    "NEEDS_SETTLE_NOTICE": "{count} bahsin elle sonuçlandırılması gerekiyor: maç için sonuç bulunamadı."
   },
   "ACCOUNT": {
     "LABEL": "Hesap",
@@ -786,5 +814,55 @@
     "BOOKS_HINT": "Hesabın olan şirketler. Value bahis panosu onlar için bir Şirketlerim filtresi alır.",
     "SAVE": "Ayarları kaydet",
     "SAVED": "Ayarlar kaydedildi."
+  },
+  "ALERTS": {
+    "TITLE": "Uyarılar",
+    "HINT": "Herkese açık kayıttaki value bahisler, bulunduğu anda sana gönderilir.",
+    "OFF_HINT": "Uyarılar kapalı. Aşağıdaki seçimlerin açtığın zaman için saklanır.",
+    "ENABLED": "Bana uyarı gönder",
+    "MIN_EV": "En düşük EV",
+    "MIN_EV_HINT": "Yalnızca adil fiyata göre en az bu kadar avantajı olan bahisler.",
+    "MIN_CONFIDENCE": "En düşük güven",
+    "MIN_CONFIDENCE_HINT": "Yüksek, arkasında gerçek para olan keskin bir çizgi ister ve borsalardan şüphe gelmemelidir.",
+    "BOOKS": "Bahis şirketleri",
+    "BOOKS_HINT": "Tüm şirketler için uyarı almak istiyorsan hiçbirini seçme.",
+    "ALL_BOOKS": "Tüm şirketler",
+    "MY_BOOKS": "Şirketlerimi kullan",
+    "ARBS": "Arbitraj uyarıları",
+    "ARBS_HINT": "En az bu kadar garantili kârı olan arb'ları da gönder.",
+    "MIN_ARB": "En düşük kâr",
+    "CHANNELS": "Nereye gönderilsin",
+    "DISCORD_DM": "Discord özel mesajı",
+    "DISCORD_DM_HINT": "Discord, OpenEV botunun sana yalnızca ortak bir sunucuda olduğunuz sürece yazmasına izin verir.",
+    "DISCORD_JOIN": "OpenEV Discord'una katıl",
+    "TELEGRAM": "Telegram",
+    "TELEGRAM_HINT": "Bağlı Telegram sohbetinde OpenEV botundan mesajlar.",
+    "TELEGRAM_NOT_LINKED": "Bunu açmak için aşağıdan Telegram'ı bağla.",
+    "NO_CHANNEL": "En az bir kanal seç, yoksa hiçbir uyarı sana ulaşmaz.",
+    "INVALID": "0 ile 100 arasında yüzde değerleri gir.",
+    "SAVE": "Uyarıları kaydet",
+    "SAVED": "Uyarı ayarları kaydedildi.",
+    "TG_TITLE": "Telegram",
+    "TG_HINT": "Uyarıları orada almak için bir Telegram sohbeti bağla.",
+    "TG_CONNECT": "Telegram'ı bağla",
+    "TG_WAITING": "Telegram bekleniyor",
+    "TG_WAITING_HINT": "@{bot} ile sohbette Başlat'a dokun. Bu sayfa bağlantıyı kendisi fark eder.",
+    "TG_OPEN_AGAIN": "Telegram'ı yeniden aç",
+    "TG_CANCEL": "Vazgeç",
+    "TG_EXPIRED": "Bağlantının süresi Telegram onaylamadan doldu.",
+    "TG_RETRY": "Tekrar dene",
+    "TG_LINKED": "{name} olarak bağlandı",
+    "TG_LINKED_NO_NAME": "Bağlandı",
+    "TG_DISCONNECT": "Bağlantıyı kes",
+    "TG_DISCONNECTED": "Telegram bağlantısı kesildi.",
+    "TG_DONE": "Telegram bağlandı.",
+    "TG_UNAVAILABLE": "Telegram bağlama şu anda kullanılamıyor.",
+    "SENT": "Gönderildi {time}",
+    "GONE": "Bu uyarı artık herkese açık kayıtta değil.",
+    "INBOX_COUNT": "Sana gönderilen {count} uyarı, en yeniden eskiye.",
+    "INBOX_EMPTY": "Sana henüz uyarı gönderilmedi",
+    "INBOX_EMPTY_ON": "Uyarılar açık. Ayarlarına uyan bir sonraki value bahis burada da görünür.",
+    "INBOX_EMPTY_OFF": "Ayarlarından uyarıları aç, sana gönderilen her value bahis burada görünür.",
+    "INBOX_SETTINGS": "Uyarı ayarları"
   }
 }

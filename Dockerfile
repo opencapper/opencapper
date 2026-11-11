@@ -14,6 +14,8 @@ ARG TARGETARCH
 ARG GIT_SHA=dev
 ARG NEXT_PUBLIC_SITE_URL=https://openev.coding-global.com
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_DISCORD_INVITE=
+ENV NEXT_PUBLIC_DISCORD_INVITE=$NEXT_PUBLIC_DISCORD_INVITE
 ENV NEXT_PUBLIC_RELEASE_VERSION=$GIT_SHA
 # Komodo passes no commit, so a timestamp keeps asset URLs unique per deploy: a 404 cached at the edge during a container swap must not outlive that deploy.
 RUN --mount=type=cache,target=/app/.next/cache \

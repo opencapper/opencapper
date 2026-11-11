@@ -186,7 +186,7 @@ function columns(c: Ctx): ColumnDef<TableFeats, GroupedBet>[] {
         return (
           <TrackBet
             compact
-            valueBetId={b.id}
+            source={{ from_value_bet: b.id }}
             odds={b.odds}
             probability={b.fair_probability}
             fee={feeOf(c.fees, b.book)}

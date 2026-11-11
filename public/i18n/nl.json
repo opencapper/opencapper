@@ -164,7 +164,8 @@
     "HEALTH": "Accountgezondheid",
     "SETTINGS": "Instellingen",
     "APPEARANCE": "Weergave",
-    "SIGN_OUT": "Uitloggen"
+    "SIGN_OUT": "Uitloggen",
+    "ALERTS": "Alertinbox"
   },
   "NOT_FOUND": {
     "CODE": "404",
@@ -408,7 +409,9 @@
       "STEP_1": "Een melding wordt vastgelegd met de odds van de bookmaker en de eerlijke odds op dat moment.",
       "STEP_2": "De odd van Pinnacle blijft bijwerken tot de wedstrijd begint.",
       "STEP_3": "Bij de aftrap wordt de laatste eerlijke odd de slotlijn.",
-      "STEP_4": "CLV is de odds van de melding gedeeld door de eerlijke slotodds, min één. Positief betekent dat de bet de slotlijn versloeg."
+      "STEP_4": "CLV is de odds van de melding gedeeld door de eerlijke slotodds, min één. Positief betekent dat de bet de slotlijn versloeg.",
+      "RESULTS_TITLE": "Uitslagen",
+      "RESULTS_META": "Vast 1 unit op elke alert"
     },
     "STEPS": {
       "TITLE": "Hoe het werkt",
@@ -574,7 +577,24 @@
     "STATUS_OPEN": "Voor de aftrap",
     "STATUS_CLOSED": "Gesloten",
     "STATUS_NO_CLOSE": "Geen slotodd",
-    "EMPTY": "Nog geen meldingen."
+    "EMPTY": "Nog geen meldingen.",
+    "VIEW": "Weergave",
+    "VIEW_CLV": "Slotlijn",
+    "VIEW_RESULTS": "Uitslagen",
+    "RESULTS_NOTE": "Uitslagen hebben honderden weddenschappen nodig om vaardigheid van geluk te scheiden. Closing line value laat het veel eerder zien, daarom blijft dat het hoofdcijfer.",
+    "STAT_SETTLED": "Afgerekend",
+    "SETTLED_HINT": "Alerts met een eindstand, van {closed} na de aftrap",
+    "STAT_RECORD": "Gewonnen / verloren / push",
+    "RECORD_VALUE": "{won} / {lost} / {push}",
+    "RECORD_HINT": "Plus {half_won} half gewonnen en {half_lost} half verloren op kwartlijnen",
+    "STAT_UNITS": "Units",
+    "UNITS_VALUE": "{units} u",
+    "UNITS_HINT": "Winst bij een vaste inzet van 1 unit per alert, na commissie",
+    "STAT_ROI": "ROI",
+    "ROI_HINT": "Gewonnen units per ingezette unit op afgerekende alerts",
+    "COL_RESULT": "Uitslag",
+    "RESULT_PENDING": "Wacht op eindstand",
+    "RESULT_MISSING": "Geen eindstand gevonden"
   },
   "BOOKS": {
     "LABEL": "Dekking",
@@ -697,8 +717,16 @@
       "WON": "Gewonnen",
       "LOST": "Verloren",
       "PUSH": "Push",
-      "VOID": "Ongeldig"
-    }
+      "VOID": "Ongeldig",
+      "HALF_WON": "Half gewonnen",
+      "HALF_LOST": "Half verloren"
+    },
+    "TAB_ALERTS": "Alerts",
+    "AUTO": "auto",
+    "AUTO_HINT": "Automatisch afgerekend op basis van de eindstand",
+    "NEEDS_SETTLE": "Zelf afrekenen",
+    "NEEDS_SETTLE_HINT": "Er is geen eindstand gevonden voor deze wedstrijd. Kies zelf de uitslag.",
+    "NEEDS_SETTLE_NOTICE": "{count, plural, one {# weddenschap moet} other {# weddenschappen moeten}} met de hand worden afgerekend: er is geen eindstand gevonden voor de wedstrijd."
   },
   "ACCOUNT": {
     "LABEL": "Account",
@@ -786,5 +814,55 @@
     "BOOKS_HINT": "De bookmakers waar je een account hebt. Het valuebetbord krijgt een filter Mijn bookmakers voor ze.",
     "SAVE": "Instellingen opslaan",
     "SAVED": "Instellingen opgeslagen."
+  },
+  "ALERTS": {
+    "TITLE": "Alerts",
+    "HINT": "Value bets uit het openbare register, naar je gestuurd zodra ze gevonden worden.",
+    "OFF_HINT": "Alerts staan uit. Je keuzes hieronder blijven bewaard voor als je ze aanzet.",
+    "ENABLED": "Stuur mij alerts",
+    "MIN_EV": "Minimale EV",
+    "MIN_EV_HINT": "Alleen weddenschappen met minstens dit voordeel op de eerlijke prijs.",
+    "MIN_CONFIDENCE": "Minimaal vertrouwen",
+    "MIN_CONFIDENCE_HINT": "Hoog vraagt een scherpe lijn met echt geld erachter en geen twijfel vanuit de exchanges.",
+    "BOOKS": "Bookmakers",
+    "BOOKS_HINT": "Kies er geen om alerts voor alle bookmakers te krijgen.",
+    "ALL_BOOKS": "Alle bookmakers",
+    "MY_BOOKS": "Mijn bookmakers gebruiken",
+    "ARBS": "Arbitrage-alerts",
+    "ARBS_HINT": "Stuur ook arbs met minstens deze gegarandeerde winst.",
+    "MIN_ARB": "Minimale winst",
+    "CHANNELS": "Waarheen sturen",
+    "DISCORD_DM": "Discord DM",
+    "DISCORD_DM_HINT": "Discord laat de OpenEV-bot je alleen een bericht sturen zolang jullie een server delen.",
+    "DISCORD_JOIN": "Word lid van de OpenEV-Discord",
+    "TELEGRAM": "Telegram",
+    "TELEGRAM_HINT": "Berichten van de OpenEV-bot in je gekoppelde Telegram-chat.",
+    "TELEGRAM_NOT_LINKED": "Koppel hieronder Telegram om dit aan te zetten.",
+    "NO_CHANNEL": "Kies minstens één kanaal, anders bereikt geen enkele alert je.",
+    "INVALID": "Vul percentages tussen 0 en 100 in.",
+    "SAVE": "Alerts opslaan",
+    "SAVED": "Alertinstellingen opgeslagen.",
+    "TG_TITLE": "Telegram",
+    "TG_HINT": "Koppel een Telegram-chat om daar alerts te ontvangen.",
+    "TG_CONNECT": "Telegram koppelen",
+    "TG_WAITING": "Wachten op Telegram",
+    "TG_WAITING_HINT": "Tik op Start in de chat met @{bot}. Deze pagina ziet de koppeling vanzelf.",
+    "TG_OPEN_AGAIN": "Telegram opnieuw openen",
+    "TG_CANCEL": "Annuleren",
+    "TG_EXPIRED": "De link is verlopen voordat Telegram hem bevestigde.",
+    "TG_RETRY": "Opnieuw proberen",
+    "TG_LINKED": "Gekoppeld als {name}",
+    "TG_LINKED_NO_NAME": "Gekoppeld",
+    "TG_DISCONNECT": "Ontkoppelen",
+    "TG_DISCONNECTED": "Telegram ontkoppeld.",
+    "TG_DONE": "Telegram gekoppeld.",
+    "TG_UNAVAILABLE": "Koppelen met Telegram is nu niet beschikbaar.",
+    "SENT": "Verstuurd {time}",
+    "GONE": "Deze alert staat niet meer in het openbare register.",
+    "INBOX_COUNT": "{count, plural, one {# alert naar je gestuurd} other {# alerts naar je gestuurd}}, nieuwste eerst.",
+    "INBOX_EMPTY": "Nog geen alerts naar je gestuurd",
+    "INBOX_EMPTY_ON": "Alerts staan aan. De volgende value bet die bij je instellingen past, verschijnt ook hier.",
+    "INBOX_EMPTY_OFF": "Zet alerts aan in je instellingen en elke value bet die naar je gestuurd wordt, verschijnt hier.",
+    "INBOX_SETTINGS": "Alertinstellingen"
   }
 }

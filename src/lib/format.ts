@@ -219,3 +219,13 @@ export function suggestedStake(price: number, probability: number, fee: BookFee 
 export function fractionLabel(fraction: number): string {
   return `${Math.round(fraction * 1000) / 10}%`;
 }
+
+export function units(x: number): string {
+  return `${x > 0 ? "+" : ""}${x.toFixed(2)}`;
+}
+
+export function score(e: { home_score?: number | null; away_score?: number | null }): string | undefined {
+  if (e.home_score === null || e.home_score === undefined || e.away_score === null || e.away_score === undefined)
+    return undefined;
+  return `${e.home_score}:${e.away_score}`;
+}

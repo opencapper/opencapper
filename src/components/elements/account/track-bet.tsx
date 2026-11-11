@@ -13,6 +13,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import type { NewBet } from "@/lib/api/client";
 import { trackBet, type ActionResult } from "@/lib/auth/actions";
 import { odds, query, suggestedStake, type BookFee, type StakePlan } from "@/lib/format";
 import { useMutation } from "@tanstack/react-query";
@@ -20,8 +21,11 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 
+// Either a live value bet id or the full description of a bet the board no longer lists.
+export type BetSource = Omit<NewBet, "stake" | "odds">;
+
 export function TrackBet(props: {
-  valueBetId: string;
+  source: BetSource;
   odds: string;
   probability: number;
   fee?: BookFee;
@@ -72,7 +76,7 @@ export function TrackBet(props: {
 }
 
 function TrackForm(props: {
-  valueBetId: string;
+  source: BetSource;
   odds: string;
   probability: number;
   fee?: BookFee;
@@ -86,7 +90,7 @@ function TrackForm(props: {
   const stake = useState(String(suggestedStake(Number(props.odds), props.probability, props.fee, props.plan)));
   const mutation = useMutation({
     mutationFn: (): Promise<ActionResult> =>
-      trackBet({ from_value_bet: props.valueBetId, stake: stake[0], odds: price[0] }),
+      trackBet({ ...props.source, stake: stake[0], odds: price[0] }),
     onSuccess: (result) => {
       if (!result.ok) return;
       toast.success(t("TRACK.DONE"), {

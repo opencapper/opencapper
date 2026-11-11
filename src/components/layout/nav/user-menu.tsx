@@ -81,6 +81,10 @@ function SignedInMenu(props: { user: User }) {
           <Icon name="wallet" />
           {t("TRACKER")}
         </DropdownMenuItem>
+        <DropdownMenuItem render={<Link href="/tracker/alerts" />}>
+          <Icon name="bell" />
+          {t("ALERTS")}
+        </DropdownMenuItem>
         <DropdownMenuItem render={<Link href="/tracker/health" />}>
           <Icon name="shield-check" />
           {t("HEALTH")}

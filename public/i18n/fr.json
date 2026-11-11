@@ -164,7 +164,8 @@
     "HEALTH": "Santé des comptes",
     "SETTINGS": "Paramètres",
     "APPEARANCE": "Apparence",
-    "SIGN_OUT": "Se déconnecter"
+    "SIGN_OUT": "Se déconnecter",
+    "ALERTS": "Boîte d'alertes"
   },
   "NOT_FOUND": {
     "CODE": "404",
@@ -408,7 +409,9 @@
       "STEP_1": "Une alerte est notée avec la cote du bookmaker et la cote juste à cet instant.",
       "STEP_2": "La cote de Pinnacle continue d'évoluer jusqu'au début du match.",
       "STEP_3": "Au coup d'envoi, la dernière cote juste devient la cote de clôture.",
-      "STEP_4": "La CLV est la cote de l'alerte divisée par la cote juste de clôture, moins un. Positive signifie que le pari a battu la clôture."
+      "STEP_4": "La CLV est la cote de l'alerte divisée par la cote juste de clôture, moins un. Positive signifie que le pari a battu la clôture.",
+      "RESULTS_TITLE": "Résultats",
+      "RESULTS_META": "1 unité fixe sur chaque alerte"
     },
     "STEPS": {
       "TITLE": "Comment ça marche",
@@ -574,7 +577,24 @@
     "STATUS_OPEN": "Avant le coup d'envoi",
     "STATUS_CLOSED": "Clôturé",
     "STATUS_NO_CLOSE": "Pas de cote de clôture",
-    "EMPTY": "Aucune alerte pour l'instant."
+    "EMPTY": "Aucune alerte pour l'instant.",
+    "VIEW": "Vue",
+    "VIEW_CLV": "Cote de clôture",
+    "VIEW_RESULTS": "Résultats",
+    "RESULTS_NOTE": "Il faut des centaines de paris pour que les résultats séparent le talent de la chance. La valeur face à la clôture le montre bien plus tôt, elle reste donc le chiffre principal.",
+    "STAT_SETTLED": "Réglées",
+    "SETTLED_HINT": "Alertes avec score final, sur {closed} après le coup d'envoi",
+    "STAT_RECORD": "Gagnés / perdus / remboursés",
+    "RECORD_VALUE": "{won} / {lost} / {push}",
+    "RECORD_HINT": "Plus {half_won} moitié gagnés et {half_lost} moitié perdus sur les lignes en quart",
+    "STAT_UNITS": "Unités",
+    "UNITS_VALUE": "{units} u",
+    "UNITS_HINT": "Gain avec une mise fixe de 1 unité par alerte, après commission",
+    "STAT_ROI": "ROI",
+    "ROI_HINT": "Unités gagnées par unité misée sur les alertes réglées",
+    "COL_RESULT": "Résultat",
+    "RESULT_PENDING": "Score en attente",
+    "RESULT_MISSING": "Aucun score trouvé"
   },
   "BOOKS": {
     "LABEL": "Couverture",
@@ -697,8 +717,16 @@
       "WON": "Gagné",
       "LOST": "Perdu",
       "PUSH": "Remboursé",
-      "VOID": "Annulé"
-    }
+      "VOID": "Annulé",
+      "HALF_WON": "Moitié gagné",
+      "HALF_LOST": "Moitié perdu"
+    },
+    "TAB_ALERTS": "Alertes",
+    "AUTO": "auto",
+    "AUTO_HINT": "Réglé automatiquement d'après le score final",
+    "NEEDS_SETTLE": "À régler à la main",
+    "NEEDS_SETTLE_HINT": "Aucun score final trouvé pour ce match. Choisissez vous-même le résultat.",
+    "NEEDS_SETTLE_NOTICE": "{count, plural, one {# pari doit} other {# paris doivent}} être réglés à la main : aucun score final trouvé pour le match."
   },
   "ACCOUNT": {
     "LABEL": "Compte",
@@ -786,5 +814,55 @@
     "BOOKS_HINT": "Les bookmakers chez qui vous avez un compte. Le tableau des paris value obtient un filtre Mes bookmakers pour eux.",
     "SAVE": "Enregistrer les paramètres",
     "SAVED": "Paramètres enregistrés."
+  },
+  "ALERTS": {
+    "TITLE": "Alertes",
+    "HINT": "Les value bets du registre public, envoyés dès qu'ils sont trouvés.",
+    "OFF_HINT": "Les alertes sont désactivées. Vos choix ci-dessous sont gardés pour quand vous les activerez.",
+    "ENABLED": "M'envoyer des alertes",
+    "MIN_EV": "EV minimum",
+    "MIN_EV_HINT": "Seulement les paris avec au moins cet avantage sur le prix juste.",
+    "MIN_CONFIDENCE": "Confiance minimale",
+    "MIN_CONFIDENCE_HINT": "Élevée exige une ligne sharp avec du vrai argent derrière et aucun doute venant des exchanges.",
+    "BOOKS": "Bookmakers",
+    "BOOKS_HINT": "N'en choisissez aucun pour recevoir les alertes de tous les bookmakers.",
+    "ALL_BOOKS": "Tous les bookmakers",
+    "MY_BOOKS": "Utiliser mes bookmakers",
+    "ARBS": "Alertes d'arbitrage",
+    "ARBS_HINT": "Envoyer aussi les arbs avec au moins ce profit garanti.",
+    "MIN_ARB": "Profit minimum",
+    "CHANNELS": "Où les envoyer",
+    "DISCORD_DM": "Message privé Discord",
+    "DISCORD_DM_HINT": "Discord ne laisse le bot OpenEV vous écrire que si vous partagez un serveur avec lui.",
+    "DISCORD_JOIN": "Rejoindre le Discord OpenEV",
+    "TELEGRAM": "Telegram",
+    "TELEGRAM_HINT": "Messages du bot OpenEV dans votre chat Telegram lié.",
+    "TELEGRAM_NOT_LINKED": "Connectez Telegram plus bas pour l'activer.",
+    "NO_CHANNEL": "Choisissez au moins un canal, sinon aucune alerte ne vous parvient.",
+    "INVALID": "Saisissez des pourcentages entre 0 et 100.",
+    "SAVE": "Enregistrer les alertes",
+    "SAVED": "Réglages des alertes enregistrés.",
+    "TG_TITLE": "Telegram",
+    "TG_HINT": "Liez un chat Telegram pour y recevoir les alertes.",
+    "TG_CONNECT": "Connecter Telegram",
+    "TG_WAITING": "En attente de Telegram",
+    "TG_WAITING_HINT": "Appuyez sur Démarrer dans le chat avec @{bot}. Cette page détecte le lien toute seule.",
+    "TG_OPEN_AGAIN": "Rouvrir Telegram",
+    "TG_CANCEL": "Annuler",
+    "TG_EXPIRED": "Le lien a expiré avant que Telegram ne le confirme.",
+    "TG_RETRY": "Réessayer",
+    "TG_LINKED": "Connecté en tant que {name}",
+    "TG_LINKED_NO_NAME": "Connecté",
+    "TG_DISCONNECT": "Déconnecter",
+    "TG_DISCONNECTED": "Telegram déconnecté.",
+    "TG_DONE": "Telegram connecté.",
+    "TG_UNAVAILABLE": "La liaison avec Telegram n'est pas disponible pour le moment.",
+    "SENT": "Envoyée {time}",
+    "GONE": "Cette alerte n'est plus dans le registre public.",
+    "INBOX_COUNT": "{count, plural, one {# alerte envoyée} other {# alertes envoyées}}, de la plus récente à la plus ancienne.",
+    "INBOX_EMPTY": "Aucune alerte envoyée pour l'instant",
+    "INBOX_EMPTY_ON": "Les alertes sont activées. Le prochain value bet qui correspond à vos réglages apparaîtra aussi ici.",
+    "INBOX_EMPTY_OFF": "Activez les alertes dans vos réglages et chaque value bet envoyé apparaîtra ici.",
+    "INBOX_SETTINGS": "Réglages des alertes"
   }
 }

@@ -1,9 +1,11 @@
 import { SignInPrompt } from "@/components/elements/account/sign-in-prompt";
 import { PageHeading } from "@/components/elements/page/page-heading";
 import { PageShell } from "@/components/elements/page/page-shell";
+import { AlertsForm } from "@/components/pages/navbar/settings/alerts-form";
 import { SettingsForm } from "@/components/pages/navbar/settings/settings-form";
+import { TelegramCard } from "@/components/pages/navbar/settings/telegram-card";
 import { api, load } from "@/lib/api/client";
-import { getAccount } from "@/lib/auth/session";
+import { authHeaders, getAccount } from "@/lib/auth/session";
 import { serverLocale } from "@/lib/utils/server";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -21,9 +23,15 @@ export default async function SettingsPage(props: Props) {
   setRequestLocale(locale);
   await connection();
   const t = await getTranslations({ locale, namespace: "SETTINGS" });
-  const results = await Promise.all([getAccount(), load(api.GET("/v1/books", { cache: "no-store" }))]);
+  const headers = await authHeaders();
+  const results = await Promise.all([
+    getAccount(),
+    load(api.GET("/v1/books", { cache: "no-store" })),
+    headers ? load(api.GET("/v1/me/alerts", { headers, cache: "no-store" })) : undefined,
+  ]);
   const account = results[0];
   const books = (results[1] ?? []).map((b) => b.book).filter((b) => b !== "pinnacle");
+  const alerts = results[2];
   return (
     <PageShell className="max-w-3xl">
       <PageHeading
@@ -33,7 +41,18 @@ export default async function SettingsPage(props: Props) {
         description={account ? t("SUBHEADING", { name: account.user.display_name }) : t("SUBHEADING_SIGNED_OUT")}
       />
       {account ? (
-        <SettingsForm settings={account.settings} books={books} />
+        <>
+          <SettingsForm settings={account.settings} books={books} />
+          {alerts && (
+            <AlertsForm
+              prefs={alerts}
+              books={books}
+              preferred={account.settings.preferred_books}
+              telegramLinked={account.user.telegram_linked}
+            />
+          )}
+          <TelegramCard linked={account.user.telegram_linked} username={account.user.telegram_username} />
+        </>
       ) : (
         <SignInPrompt next="/settings" />
       )}

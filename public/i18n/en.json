@@ -164,7 +164,8 @@
     "HEALTH": "Account health",
     "SETTINGS": "Settings",
     "APPEARANCE": "Appearance",
-    "SIGN_OUT": "Sign out"
+    "SIGN_OUT": "Sign out",
+    "ALERTS": "Alert inbox"
   },
   "NOT_FOUND": {
     "CODE": "404",
@@ -408,7 +409,9 @@
       "STEP_1": "An alert is written down with the book's odds and the fair odds at that moment.",
       "STEP_2": "Pinnacle's price keeps updating until the game starts.",
       "STEP_3": "At kickoff the last fair price becomes the closing line.",
-      "STEP_4": "CLV is the alert odds divided by the closing fair odds, minus one. Positive means the bet beat the close."
+      "STEP_4": "CLV is the alert odds divided by the closing fair odds, minus one. Positive means the bet beat the close.",
+      "RESULTS_TITLE": "Results",
+      "RESULTS_META": "1 unit flat on every alert"
     },
     "STEPS": {
       "TITLE": "How it works",
@@ -574,7 +577,24 @@
     "STATUS_OPEN": "Before kickoff",
     "STATUS_CLOSED": "Closed",
     "STATUS_NO_CLOSE": "No closing price",
-    "EMPTY": "No alerts yet."
+    "EMPTY": "No alerts yet.",
+    "VIEW": "View",
+    "VIEW_CLV": "Closing line",
+    "VIEW_RESULTS": "Results",
+    "RESULTS_NOTE": "Results take hundreds of bets to separate skill from luck. Closing line value shows it much sooner, so it stays the headline.",
+    "STAT_SETTLED": "Settled",
+    "SETTLED_HINT": "Alerts with a final score, out of {closed} past kickoff",
+    "STAT_RECORD": "Won / lost / push",
+    "RECORD_VALUE": "{won} / {lost} / {push}",
+    "RECORD_HINT": "Plus {half_won} half won and {half_lost} half lost on quarter lines",
+    "STAT_UNITS": "Units",
+    "UNITS_VALUE": "{units} u",
+    "UNITS_HINT": "Profit at a flat stake of 1 unit per alert, after commission",
+    "STAT_ROI": "ROI",
+    "ROI_HINT": "Units won per unit staked on settled alerts",
+    "COL_RESULT": "Result",
+    "RESULT_PENDING": "Awaiting score",
+    "RESULT_MISSING": "No score found"
   },
   "BOOKS": {
     "LABEL": "Coverage",
@@ -697,8 +717,16 @@
       "WON": "Won",
       "LOST": "Lost",
       "PUSH": "Push",
-      "VOID": "Void"
-    }
+      "VOID": "Void",
+      "HALF_WON": "Half won",
+      "HALF_LOST": "Half lost"
+    },
+    "TAB_ALERTS": "Alerts",
+    "AUTO": "auto",
+    "AUTO_HINT": "Settled automatically from the final score",
+    "NEEDS_SETTLE": "Settle by hand",
+    "NEEDS_SETTLE_HINT": "No final score was found for this game. Pick the result yourself.",
+    "NEEDS_SETTLE_NOTICE": "{count, plural, one {# bet needs} other {# bets need}} settling by hand: no final score was found for the game."
   },
   "ACCOUNT": {
     "LABEL": "Account",
@@ -786,5 +814,55 @@
     "BOOKS_HINT": "The books you have accounts at. The value bet board gets a My books filter for them.",
     "SAVE": "Save settings",
     "SAVED": "Settings saved."
+  },
+  "ALERTS": {
+    "TITLE": "Alerts",
+    "HINT": "Value bets from the public record, sent to you the moment they are found.",
+    "OFF_HINT": "Alerts are off. Your choices below are kept for when you turn them on.",
+    "ENABLED": "Send me alerts",
+    "MIN_EV": "Minimum EV",
+    "MIN_EV_HINT": "Only bets with at least this edge over the fair price.",
+    "MIN_CONFIDENCE": "Minimum confidence",
+    "MIN_CONFIDENCE_HINT": "High needs a sharp line with real money behind it and no doubts from the exchanges.",
+    "BOOKS": "Bookmakers",
+    "BOOKS_HINT": "Pick none to get alerts for every bookmaker.",
+    "ALL_BOOKS": "All bookmakers",
+    "MY_BOOKS": "Use my bookmakers",
+    "ARBS": "Arbitrage alerts",
+    "ARBS_HINT": "Also send arbs with at least this guaranteed profit.",
+    "MIN_ARB": "Minimum profit",
+    "CHANNELS": "Where to send them",
+    "DISCORD_DM": "Discord DM",
+    "DISCORD_DM_HINT": "Discord only lets the OpenEV bot message you while you share a server with it.",
+    "DISCORD_JOIN": "Join the OpenEV Discord",
+    "TELEGRAM": "Telegram",
+    "TELEGRAM_HINT": "Messages from the OpenEV bot in your linked Telegram chat.",
+    "TELEGRAM_NOT_LINKED": "Connect Telegram below to turn this on.",
+    "NO_CHANNEL": "Pick at least one channel, or no alert reaches you.",
+    "INVALID": "Enter percentages between 0 and 100.",
+    "SAVE": "Save alerts",
+    "SAVED": "Alert settings saved.",
+    "TG_TITLE": "Telegram",
+    "TG_HINT": "Link a Telegram chat to receive alerts there.",
+    "TG_CONNECT": "Connect Telegram",
+    "TG_WAITING": "Waiting for Telegram",
+    "TG_WAITING_HINT": "Press Start in the chat with @{bot}. This page notices the link by itself.",
+    "TG_OPEN_AGAIN": "Open Telegram again",
+    "TG_CANCEL": "Cancel",
+    "TG_EXPIRED": "The link expired before Telegram confirmed it.",
+    "TG_RETRY": "Try again",
+    "TG_LINKED": "Connected as {name}",
+    "TG_LINKED_NO_NAME": "Connected",
+    "TG_DISCONNECT": "Disconnect",
+    "TG_DISCONNECTED": "Telegram disconnected.",
+    "TG_DONE": "Telegram connected.",
+    "TG_UNAVAILABLE": "Telegram linking is not available right now.",
+    "SENT": "Sent {time}",
+    "GONE": "This alert is no longer in the public record.",
+    "INBOX_COUNT": "{count, plural, one {# alert sent to you} other {# alerts sent to you}}, newest first.",
+    "INBOX_EMPTY": "No alerts sent to you yet",
+    "INBOX_EMPTY_ON": "Alerts are on. The next value bet that matches your settings shows up here as well.",
+    "INBOX_EMPTY_OFF": "Turn alerts on in your settings and every value bet sent to you shows up here.",
+    "INBOX_SETTINGS": "Alert settings"
   }
 }

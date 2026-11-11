@@ -123,7 +123,7 @@ export function BetDetailView(props: { id: string; data?: BetDetail; fees: BookF
         </div>
         <div className="mt-4">
           <TrackBet
-            valueBetId={b.id}
+            source={{ from_value_bet: b.id }}
             odds={b.odds}
             probability={b.fair_probability}
             fee={fee}

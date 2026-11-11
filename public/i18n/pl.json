@@ -164,7 +164,8 @@
     "HEALTH": "Kondycja kont",
     "SETTINGS": "Ustawienia",
     "APPEARANCE": "Wygląd",
-    "SIGN_OUT": "Wyloguj się"
+    "SIGN_OUT": "Wyloguj się",
+    "ALERTS": "Skrzynka alertów"
   },
   "NOT_FOUND": {
     "CODE": "404",
@@ -408,7 +409,9 @@
       "STEP_1": "Alert jest zapisywany z kursem bukmachera i uczciwym kursem z tej chwili.",
       "STEP_2": "Kurs Pinnacle aktualizuje się aż do rozpoczęcia meczu.",
       "STEP_3": "W chwili rozpoczęcia ostatni uczciwy kurs staje się kursem zamknięcia.",
-      "STEP_4": "CLV to kurs z alertu podzielony przez uczciwy kurs zamknięcia, minus jeden. Wartość dodatnia oznacza, że zakład pobił zamknięcie."
+      "STEP_4": "CLV to kurs z alertu podzielony przez uczciwy kurs zamknięcia, minus jeden. Wartość dodatnia oznacza, że zakład pobił zamknięcie.",
+      "RESULTS_TITLE": "Wyniki",
+      "RESULTS_META": "Stała stawka 1 jednostki na każdy alert"
     },
     "STEPS": {
       "TITLE": "Jak to działa",
@@ -574,7 +577,24 @@
     "STATUS_OPEN": "Przed startem",
     "STATUS_CLOSED": "Zamknięty",
     "STATUS_NO_CLOSE": "Brak kursu zamknięcia",
-    "EMPTY": "Brak alertów."
+    "EMPTY": "Brak alertów.",
+    "VIEW": "Widok",
+    "VIEW_CLV": "Linia zamknięcia",
+    "VIEW_RESULTS": "Wyniki",
+    "RESULTS_NOTE": "Wyniki potrzebują setek zakładów, by oddzielić umiejętności od szczęścia. Wartość względem linii zamknięcia pokazuje to dużo wcześniej, dlatego pozostaje główną liczbą.",
+    "STAT_SETTLED": "Rozliczone",
+    "SETTLED_HINT": "Alerty z wynikiem końcowym, z {closed} po rozpoczęciu meczu",
+    "STAT_RECORD": "Wygrane / przegrane / zwroty",
+    "RECORD_VALUE": "{won} / {lost} / {push}",
+    "RECORD_HINT": "Do tego {half_won} w połowie wygranych i {half_lost} w połowie przegranych na liniach ćwiartkowych",
+    "STAT_UNITS": "Jednostki",
+    "UNITS_VALUE": "{units} j.",
+    "UNITS_HINT": "Zysk przy stałej stawce 1 jednostki na alert, po prowizji",
+    "STAT_ROI": "ROI",
+    "ROI_HINT": "Wygrane jednostki na postawioną jednostkę w rozliczonych alertach",
+    "COL_RESULT": "Wynik",
+    "RESULT_PENDING": "Czeka na wynik",
+    "RESULT_MISSING": "Nie znaleziono wyniku"
   },
   "BOOKS": {
     "LABEL": "Zasięg",
@@ -697,8 +717,16 @@
       "WON": "Wygrany",
       "LOST": "Przegrany",
       "PUSH": "Zwrot",
-      "VOID": "Anulowany"
-    }
+      "VOID": "Anulowany",
+      "HALF_WON": "Połowa wygrana",
+      "HALF_LOST": "Połowa przegrana"
+    },
+    "TAB_ALERTS": "Alerty",
+    "AUTO": "auto",
+    "AUTO_HINT": "Rozliczony automatycznie na podstawie wyniku końcowego",
+    "NEEDS_SETTLE": "Rozlicz ręcznie",
+    "NEEDS_SETTLE_HINT": "Nie znaleziono wyniku końcowego tego meczu. Wybierz wynik sam.",
+    "NEEDS_SETTLE_NOTICE": "{count, plural, one {# zakład wymaga} few {# zakłady wymagają} many {# zakładów wymaga} other {# zakładu wymaga}} ręcznego rozliczenia: nie znaleziono wyniku końcowego meczu."
   },
   "ACCOUNT": {
     "LABEL": "Konto",
@@ -786,5 +814,55 @@
     "BOOKS_HINT": "Bukmacherzy, u których masz konta. Tablica value betów dostaje dla nich filtr Moi bukmacherzy.",
     "SAVE": "Zapisz ustawienia",
     "SAVED": "Ustawienia zapisane."
+  },
+  "ALERTS": {
+    "TITLE": "Alerty",
+    "HINT": "Value bety z publicznego rejestru, wysyłane do ciebie, gdy tylko zostaną znalezione.",
+    "OFF_HINT": "Alerty są wyłączone. Twoje wybory poniżej zostaną zapamiętane na czas, gdy je włączysz.",
+    "ENABLED": "Wysyłaj mi alerty",
+    "MIN_EV": "Minimalne EV",
+    "MIN_EV_HINT": "Tylko zakłady z co najmniej taką przewagą nad uczciwą ceną.",
+    "MIN_CONFIDENCE": "Minimalna pewność",
+    "MIN_CONFIDENCE_HINT": "Wysoka wymaga ostrej linii z prawdziwymi pieniędzmi za nią i bez wątpliwości ze strony giełd.",
+    "BOOKS": "Bukmacherzy",
+    "BOOKS_HINT": "Nie wybieraj żadnego, aby dostawać alerty ze wszystkich bukmacherów.",
+    "ALL_BOOKS": "Wszyscy bukmacherzy",
+    "MY_BOOKS": "Użyj moich bukmacherów",
+    "ARBS": "Alerty arbitrażowe",
+    "ARBS_HINT": "Wysyłaj też arby z co najmniej takim gwarantowanym zyskiem.",
+    "MIN_ARB": "Minimalny zysk",
+    "CHANNELS": "Gdzie wysyłać",
+    "DISCORD_DM": "Wiadomość prywatna na Discordzie",
+    "DISCORD_DM_HINT": "Discord pozwala botowi OpenEV pisać do ciebie tylko wtedy, gdy macie wspólny serwer.",
+    "DISCORD_JOIN": "Dołącz do Discorda OpenEV",
+    "TELEGRAM": "Telegram",
+    "TELEGRAM_HINT": "Wiadomości od bota OpenEV w twoim połączonym czacie Telegram.",
+    "TELEGRAM_NOT_LINKED": "Połącz Telegram poniżej, aby to włączyć.",
+    "NO_CHANNEL": "Wybierz co najmniej jeden kanał, inaczej żaden alert do ciebie nie dotrze.",
+    "INVALID": "Wpisz wartości procentowe od 0 do 100.",
+    "SAVE": "Zapisz alerty",
+    "SAVED": "Ustawienia alertów zapisane.",
+    "TG_TITLE": "Telegram",
+    "TG_HINT": "Połącz czat Telegram, aby dostawać tam alerty.",
+    "TG_CONNECT": "Połącz Telegram",
+    "TG_WAITING": "Czekam na Telegram",
+    "TG_WAITING_HINT": "Naciśnij Start w czacie z @{bot}. Ta strona sama wykryje połączenie.",
+    "TG_OPEN_AGAIN": "Otwórz Telegram ponownie",
+    "TG_CANCEL": "Anuluj",
+    "TG_EXPIRED": "Link wygasł, zanim Telegram go potwierdził.",
+    "TG_RETRY": "Spróbuj ponownie",
+    "TG_LINKED": "Połączono jako {name}",
+    "TG_LINKED_NO_NAME": "Połączono",
+    "TG_DISCONNECT": "Rozłącz",
+    "TG_DISCONNECTED": "Telegram rozłączony.",
+    "TG_DONE": "Telegram połączony.",
+    "TG_UNAVAILABLE": "Łączenie z Telegramem jest teraz niedostępne.",
+    "SENT": "Wysłano {time}",
+    "GONE": "Tego alertu nie ma już w publicznym rejestrze.",
+    "INBOX_COUNT": "{count, plural, one {# alert wysłany do ciebie} few {# alerty wysłane do ciebie} many {# alertów wysłanych do ciebie} other {# alertu wysłanego do ciebie}}, od najnowszych.",
+    "INBOX_EMPTY": "Nie wysłaliśmy ci jeszcze żadnych alertów",
+    "INBOX_EMPTY_ON": "Alerty są włączone. Następny value bet zgodny z twoimi ustawieniami pojawi się też tutaj.",
+    "INBOX_EMPTY_OFF": "Włącz alerty w ustawieniach, a każdy wysłany do ciebie value bet pojawi się tutaj.",
+    "INBOX_SETTINGS": "Ustawienia alertów"
   }
 }

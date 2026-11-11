@@ -228,6 +228,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/internal/alert-deliveries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["record_delivery"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/internal/alert-subscribers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["subscribers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/internal/telegram/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["claim_link"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/ledger": {
         parameters: {
             query?: never;
@@ -260,6 +308,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/me/alerts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["get_alerts"];
+        put: operations["put_alerts"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/alerts/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["history_v1_me_alerts_history"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/me/settings": {
         parameters: {
             query?: never;
@@ -276,6 +356,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/me/telegram": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["unlink"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/telegram/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["start_link"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/stats": {
         parameters: {
             query?: never;
@@ -283,7 +395,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["stats"];
+        get: operations["stats_v1_stats"];
         put?: never;
         post?: never;
         delete?: never;
@@ -359,6 +471,45 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        AlertChannels: {
+            discord_dm: boolean;
+            telegram: boolean;
+        };
+        /** @description What a user wants pushed to them: value bets from the public ledger and, optionally, arbs. */
+        AlertPrefs: {
+            arbs: boolean;
+            /** @description Book ids to alert for; empty means every book. */
+            books: string[];
+            channels?: components["schemas"]["AlertChannels"];
+            enabled: boolean;
+            /**
+             * Format: double
+             * @description Minimum arb profit, e.g. 0.01 for 1%.
+             */
+            min_arb_profit: number;
+            min_confidence: components["schemas"]["MinConfidence"];
+            /**
+             * Format: double
+             * @description Minimum EV, e.g. 0.02 for +2%.
+             */
+            min_ev: number;
+        };
+        AlertSubscriber: {
+            /** @description From the user's settings, defaults until first saved. */
+            bankroll: string;
+            currency: string;
+            discord_id: string;
+            display_name: string;
+            kelly_fraction: string;
+            prefs: components["schemas"]["AlertPrefs"];
+            /**
+             * Format: int64
+             * @description None when no Telegram chat is linked.
+             */
+            telegram_chat_id?: number | null;
+            /** Format: uuid */
+            user_id: string;
+        };
         Arb: {
             away: string;
             away_image?: string | null;
@@ -434,6 +585,8 @@ export interface components {
             line_closed: boolean;
             /** @description three_way, two_way, total or asian_handicap. */
             market: string;
+            /** @description Still open seven days after kickoff without a final score: settle it by hand. */
+            needs_manual_settle: boolean;
             notes: string;
             odds: string;
             /** @description Total returned including stake; set once settled. */
@@ -446,11 +599,15 @@ export interface components {
             profit?: string | null;
             /** Format: date-time */
             settled_at?: string | null;
+            /** @description manual or auto (settled from the final score); None while open. */
+            settled_by?: string | null;
             sharp_key?: string | null;
             /** @description Largest stake the sharp book took on this market when the bet was placed: the liquidity signal. */
             sharp_max_stake?: string | null;
             /** @description home, draw, away, over or under. */
             side: string;
+            /** @description football, basketball, ice_hockey, american_football, ...; None when unknown. */
+            sport?: string | null;
             stake: string;
             /** Format: date-time */
             starts_at: string;
@@ -472,7 +629,8 @@ export interface components {
         BetField: "odds" | "fair_odds" | "ev" | "ev_conservative" | "confidence" | "sharp_odds" | "sharp_max_stake" | "exchange_probability";
         /**
          * @description Every field is optional; only given fields change. Settling: set `status`; `payout` defaults to
-         *     stake times odds for won, 0 for lost, the stake for push and void (pass it for half wins).
+         *     stake times net odds for won, 0 for lost, the stake for push and void, half of each for half_won
+         *     and half_lost. A bet settled here is never changed by automatic settlement.
          */
         BetPatch: {
             away?: string | null;
@@ -494,6 +652,8 @@ export interface components {
             starts_at?: string | null;
             status?: components["schemas"]["BetStatus"] | null;
         };
+        /** @enum {string} */
+        BetResult: "won" | "lost" | "push" | "half_won" | "half_lost";
         BetStats: {
             /** @description Most bets first. */
             by_book: components["schemas"]["BookTotals"][];
@@ -504,7 +664,7 @@ export interface components {
             totals: components["schemas"]["BetTotals"];
         };
         /** @enum {string} */
-        BetStatus: "open" | "won" | "lost" | "push" | "void";
+        BetStatus: "open" | "won" | "lost" | "push" | "void" | "half_won" | "half_lost";
         BetTotals: {
             /** Format: double */
             avg_clv?: number | null;
@@ -520,6 +680,8 @@ export interface components {
             closed: number;
             /** @description Sum of stake times EV at bet over every non void bet with a fair price: what the bets were worth. */
             expected_profit: string;
+            half_lost: number;
+            half_won: number;
             lost: number;
             open: number;
             profit: string;
@@ -529,7 +691,7 @@ export interface components {
              * @description profit / staked.
              */
             roi?: number | null;
-            /** @description Stakes of settled bets (won, lost, push); void stakes came back and do not count. */
+            /** @description Stakes of settled bets (won, lost, push and half results); void stakes came back and do not count. */
             staked: string;
             void: number;
             won: number;
@@ -647,6 +809,19 @@ export interface components {
             date: string;
             profit: string;
             settled: number;
+        };
+        DeliveredAlert: {
+            channel: components["schemas"]["DeliveryChannel"];
+            /** Format: date-time */
+            delivered_at: string;
+            entry?: components["schemas"]["LedgerEntry"] | null;
+            ledger_id: string;
+        };
+        /** @enum {string} */
+        DeliveryChannel: "dm" | "telegram";
+        DeliveryRecorded: {
+            /** @description False when this user, ledger entry and channel was already recorded: do not send again. */
+            created: boolean;
         };
         /** @description Fair probability of one outcome under each devig method. */
         Devig: {
@@ -823,6 +998,8 @@ export interface components {
             alerted_at: string;
             away: string;
             away_image?: string | null;
+            /** Format: int32 */
+            away_score?: number | null;
             book: string;
             closing_fair_odds?: string | null;
             /**
@@ -835,6 +1012,11 @@ export interface components {
             home: string;
             /** @description Filled from the current participant map when served. */
             home_image?: string | null;
+            /**
+             * Format: int32
+             * @description The score the market settled on (full time, regulation or first half).
+             */
+            home_score?: number | null;
             id: string;
             /** Format: date-time */
             last_fair_at?: string | null;
@@ -844,8 +1026,20 @@ export interface components {
             line?: string | null;
             market: string;
             period: string;
+            /**
+             * Format: double
+             * @description Profit of a one unit stake at the alert odds, net of exchange commission and fees.
+             */
+            profit_units?: number | null;
+            result?: components["schemas"]["BetResult"] | null;
+            /** @description No final score was found within seven days of kickoff; the entry stays unsettled. */
+            result_missing?: boolean;
+            /** Format: date-time */
+            settled_at?: string | null;
             sharp_key: string;
             side: string;
+            /** @description None on entries recorded before sports were stored. */
+            sport?: string | null;
             /** Format: date-time */
             starts_at: string;
             status: components["schemas"]["LedgerStatus"];
@@ -858,7 +1052,24 @@ export interface components {
             avg_clv?: number | null;
             beat_close: number;
             closed: number;
+            half_lost: number;
+            half_won: number;
+            lost: number;
             open: number;
+            push: number;
+            /**
+             * Format: double
+             * @description units / settled.
+             */
+            roi?: number | null;
+            /** @description Entries with a result. */
+            settled: number;
+            /**
+             * Format: double
+             * @description Profit at one unit flat stakes over every settled entry.
+             */
+            units: number;
+            won: number;
         };
         /** @enum {string} */
         LedgerStatus: "open" | "closed" | "no_close";
@@ -892,6 +1103,8 @@ export interface components {
             /** Format: double */
             sharp_overround?: number | null;
         };
+        /** @enum {string} */
+        MinConfidence: "low" | "medium" | "high";
         MonthTotals: {
             /** @description YYYY-MM of placed_at, UTC. */
             month: string;
@@ -926,9 +1139,18 @@ export interface components {
             /** @description Sharp outcome key for a manual bet; enables the closing line. */
             sharp_key?: string | null;
             side?: string | null;
+            /** @description Sport of a manual bet; lets it settle automatically. Value bets take it from the game. */
+            sport?: string | null;
             stake: string;
             /** Format: date-time */
             starts_at?: string | null;
+        };
+        NewDelivery: {
+            channel: components["schemas"]["DeliveryChannel"];
+            /** @description Ledger entry id (`GET /v1/ledger`). */
+            ledger_id: string;
+            /** Format: uuid */
+            user_id: string;
         };
         Outcome: {
             fair?: components["schemas"]["Devig"] | null;
@@ -985,6 +1207,24 @@ export interface components {
             updated_at?: string | null;
             value_bets: number;
         };
+        TelegramLink: {
+            /** Format: date-time */
+            expires_at: string;
+            /** @description Opens the bot with the one time token as its start parameter. */
+            url: string;
+        };
+        TelegramLinkClaim: {
+            /** Format: int64 */
+            chat_id: number;
+            /** @description The start parameter the bot received. */
+            token: string;
+            username?: string | null;
+        };
+        TelegramLinked: {
+            display_name: string;
+            /** Format: uuid */
+            user_id: string;
+        };
         /** @description A book event no sharp event matched, with the sharp fixtures kicking off within ten minutes. */
         Unmatched: {
             book: string;
@@ -1002,6 +1242,9 @@ export interface components {
             display_name: string;
             /** Format: uuid */
             id: string;
+            /** @description A Telegram chat is linked for alerts. */
+            telegram_linked: boolean;
+            telegram_username?: string | null;
             username: string;
         };
         ValueBet: {
@@ -1634,6 +1877,137 @@ export interface operations {
             };
         };
     };
+    record_delivery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NewDelivery"];
+            };
+        };
+        responses: {
+            /** @description Recorded */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryRecorded"];
+                };
+            };
+            /** @description Wrong X-Internal-Token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Unknown user or ledger entry, or INTERNAL_TOKEN is not set */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Already recorded earlier; created is false */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveryRecorded"];
+                };
+            };
+        };
+    };
+    subscribers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Users with alerts enabled, their settings and staking */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AlertSubscriber"][];
+                };
+            };
+            /** @description Wrong X-Internal-Token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description INTERNAL_TOKEN is not set on the API */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    claim_link: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TelegramLinkClaim"];
+            };
+        };
+        responses: {
+            /** @description Chat linked to the account that asked for the token; a chat linked elsewhere moves here */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TelegramLinked"];
+                };
+            };
+            /** @description Wrong X-Internal-Token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Token unknown, used or expired (code invalid_token), or INTERNAL_TOKEN is not set */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
     ledger: {
         parameters: {
             query?: {
@@ -1672,6 +2046,109 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["User"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    get_alerts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Alert settings, defaults until first saved */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AlertPrefs"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    put_alerts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AlertPrefs"];
+            };
+        };
+        responses: {
+            /** @description Saved alert settings */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AlertPrefs"];
+                };
+            };
+            /** @description Invalid value */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    history_v1_me_alerts_history: {
+        parameters: {
+            query?: {
+                /** @description Newest first; defaults to 200. */
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Alerts delivered to the user with their ledger entry, newest first */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeliveredAlert"][];
                 };
             };
             /** @description Not signed in */
@@ -1756,7 +2233,72 @@ export interface operations {
             };
         };
     };
-    stats: {
+    unlink: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Telegram unlinked (also when none was linked) */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    start_link: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Telegram deep link with a one time token, valid 15 minutes */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TelegramLink"];
+                };
+            };
+            /** @description Not signed in */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+            /** @description TELEGRAM_BOT_USERNAME is not set (code telegram_unavailable) */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBody"];
+                };
+            };
+        };
+    };
+    stats_v1_stats: {
         parameters: {
             query?: never;
             header?: never;

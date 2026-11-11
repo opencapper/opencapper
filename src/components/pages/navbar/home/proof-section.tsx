@@ -1,3 +1,4 @@
+import { LedgerResult, unitsTone } from "@/components/elements/odds/ledger-result";
 import { SectionTitle } from "@/components/elements/page/page-heading";
 import { Matchup } from "@/components/elements/participant/matchup";
 import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
@@ -5,7 +6,7 @@ import { Icon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
 import type { IconName } from "@/lib/config/icon-map";
 import { msg } from "@/lib/config/constants";
-import { count, kickoff, odds, percent, sideName } from "@/lib/format";
+import { count, kickoff, odds, percent, sideName, units } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { getLocale, getTranslations } from "next-intl/server";
 import type { LandingLive } from "./landing-data";
@@ -19,6 +20,36 @@ const STEPS = [
 
 const TH = "label-mono text-foreground/40 px-4 py-2 text-left text-[9px] font-normal";
 
+type Point = { icon: IconName; label: string; value: string; hint: string; tone?: string };
+
+function PointGrid(props: { points: Point[] }) {
+  return (
+    <ul className="border-input/80 bg-card mb-6 grid grid-cols-2 overflow-hidden rounded-lg border md:grid-cols-4">
+      {props.points.map((point, i) => (
+        <li
+          key={point.label}
+          className={cn(
+            "border-input/80 flex min-w-0 flex-col gap-1.5 p-4",
+            i % 2 === 0 && "border-r",
+            i < 2 && "border-b md:border-b-0",
+            i === 1 && "md:border-r",
+            i === 3 && "md:border-r-0",
+          )}
+        >
+          <span className="label-mono text-foreground/50 flex items-center gap-1.5 text-[10px]">
+            <Icon name={point.icon} className="size-3.5" />
+            {point.label}
+          </span>
+          <span className={cn("tabular text-2xl font-medium tracking-tight", point.tone ?? "text-foreground/90")}>
+            {point.value}
+          </span>
+          <span className="text-foreground/50 text-[12px] leading-relaxed">{point.hint}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export async function ProofSection(props: { live: LandingLive }) {
   const t = await getTranslations();
   const locale = await getLocale();
@@ -26,7 +57,7 @@ export async function ProofSection(props: { live: LandingLive }) {
   const beat = s.closed > 0 ? s.beat_close / s.closed : undefined;
   const clv = s.avg_clv ?? undefined;
 
-  const points: { icon: IconName; label: string; value: string; hint: string; tone?: string }[] = [
+  const points: Point[] = [
     {
       icon: "shield-check",
       label: t("PROOF.STAT_ALERTS"),
@@ -55,33 +86,45 @@ export async function ProofSection(props: { live: LandingLive }) {
     },
   ];
 
+  const results: Point[] = [
+    {
+      icon: "circle-check",
+      label: t("PROOF.STAT_SETTLED"),
+      value: count(s.settled, locale),
+      hint: t("PROOF.SETTLED_HINT", { closed: count(s.closed, locale) }),
+    },
+    {
+      icon: "trophy",
+      label: t("PROOF.STAT_RECORD"),
+      value: t("PROOF.RECORD_VALUE", { won: count(s.won, locale), lost: count(s.lost, locale), push: count(s.push, locale) }),
+      hint: t("PROOF.RECORD_HINT", { half_won: count(s.half_won, locale), half_lost: count(s.half_lost, locale) }),
+    },
+    {
+      icon: "coins",
+      label: t("PROOF.STAT_UNITS"),
+      value: s.settled > 0 ? t("PROOF.UNITS_VALUE", { units: units(s.units) }) : t("FORMAT.NA"),
+      hint: t("PROOF.UNITS_HINT"),
+      tone: s.settled > 0 ? unitsTone(s.units) : undefined,
+    },
+    {
+      icon: "percent",
+      label: t("PROOF.STAT_ROI"),
+      value: s.roi === null || s.roi === undefined ? t("FORMAT.NA") : percent(s.roi),
+      hint: t("PROOF.ROI_HINT"),
+      tone: s.roi ? unitsTone(s.roi) : undefined,
+    },
+  ];
+
   return (
     <section className="mb-12">
       <SectionTitle>{t("LANDING.PROOF.TITLE")}</SectionTitle>
       <p className="text-foreground/65 mt-3 mb-6 text-sm leading-relaxed sm:text-[15px]">{t("LANDING.PROOF.BODY")}</p>
-      <ul className="border-input/80 bg-card mb-4 grid grid-cols-2 overflow-hidden rounded-lg border md:grid-cols-4">
-        {points.map((point, i) => (
-          <li
-            key={point.label}
-            className={cn(
-              "border-input/80 flex min-w-0 flex-col gap-1.5 p-4",
-              i % 2 === 0 && "border-r",
-              i < 2 && "border-b md:border-b-0",
-              i === 1 && "md:border-r",
-              i === 3 && "md:border-r-0",
-            )}
-          >
-            <span className="label-mono text-foreground/50 flex items-center gap-1.5 text-[10px]">
-              <Icon name={point.icon} className="size-3.5" />
-              {point.label}
-            </span>
-            <span className={cn("tabular text-2xl font-medium tracking-tight", point.tone ?? "text-foreground/90")}>
-              {point.value}
-            </span>
-            <span className="text-foreground/50 text-[12px] leading-relaxed">{point.hint}</span>
-          </li>
-        ))}
-      </ul>
+      <PointGrid points={points} />
+      <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+        <span className="label-mono text-foreground/50 text-[10px]">{t("LANDING.PROOF.RESULTS_TITLE")}</span>
+        <span className="text-foreground/40 text-[11px]">{t("LANDING.PROOF.RESULTS_META")}</span>
+      </div>
+      <PointGrid points={results} />
 
       {props.live.closed.length > 0 && (
         <div className="border-input/80 bg-card mb-4 min-w-0 overflow-hidden rounded-lg border">
@@ -101,8 +144,9 @@ export async function ProofSection(props: { live: LandingLive }) {
                   <th className={TH}>{t("PROOF.COL_BET")}</th>
                   <th className={cn(TH, "hidden sm:table-cell")}>{t("PROOF.COL_BOOK")}</th>
                   <th className={cn(TH, "text-right")}>{t("PROOF.COL_ODDS")}</th>
-                  <th className={cn(TH, "text-right")}>{t("PROOF.COL_FAIR_CLOSE")}</th>
+                  <th className={cn(TH, "hidden text-right sm:table-cell")}>{t("PROOF.COL_FAIR_CLOSE")}</th>
                   <th className={cn(TH, "text-right")}>{t("PROOF.COL_CLV")}</th>
+                  <th className={cn(TH, "text-right")}>{t("PROOF.COL_RESULT")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -117,7 +161,7 @@ export async function ProofSection(props: { live: LandingLive }) {
                       <VendorLabel vendorKey={e.book} size={14} />
                     </td>
                     <td className="tabular text-foreground/85 px-4 py-2.5 text-right align-middle">{odds(e.alert_odds)}</td>
-                    <td className="tabular text-foreground/60 px-4 py-2.5 text-right align-middle">
+                    <td className="tabular text-foreground/60 hidden px-4 py-2.5 text-right align-middle sm:table-cell">
                       {e.closing_fair_odds ? odds(e.closing_fair_odds) : t("FORMAT.NA")}
                     </td>
                     <td
@@ -131,6 +175,9 @@ export async function ProofSection(props: { live: LandingLive }) {
                       )}
                     >
                       {e.clv === null || e.clv === undefined ? t("FORMAT.NA") : percent(e.clv)}
+                    </td>
+                    <td className="px-4 py-2.5 text-right align-middle">
+                      <LedgerResult entry={e} />
                     </td>
                   </tr>
                 ))}

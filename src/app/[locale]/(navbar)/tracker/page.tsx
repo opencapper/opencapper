@@ -1,5 +1,5 @@
 import { SignInPrompt } from "@/components/elements/account/sign-in-prompt";
-import { isBetStatus } from "@/components/pages/navbar/tracker/bet-status";
+import { isBetStatus } from "@/components/elements/odds/bet-status";
 import { Tracker, TrackerShell } from "@/components/pages/navbar/tracker/tracker";
 import { api, load } from "@/lib/api/client";
 import { authHeaders, getAccount } from "@/lib/auth/session";

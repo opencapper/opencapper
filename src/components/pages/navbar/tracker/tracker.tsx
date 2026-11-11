@@ -1,6 +1,7 @@
 import { Chip, FilterRow } from "@/components/elements/odds/filter-chips";
 import { Empty, Panel, Unreachable } from "@/components/elements/odds/panel";
 import { StatCard, StatGrid } from "@/components/elements/odds/stat-card";
+import { Icon } from "@/components/ui/icon";
 import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import { PageHeading } from "@/components/elements/page/page-heading";
 import { PageShell } from "@/components/elements/page/page-shell";
@@ -10,10 +11,10 @@ import { cn } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { AddBet } from "./add-bet";
-import { BET_STATUSES, statusLabel } from "./bet-status";
+import { BET_STATUSES, statusLabel } from "@/components/elements/odds/bet-status";
 import { BetsTable } from "./bets-table";
 import { ProfitChart } from "./profit-chart";
-import { TrackerTabs } from "./tracker-tabs";
+import { TrackerTabs, type TrackerTab } from "./tracker-tabs";
 
 const HEAD = "label-mono text-foreground/45 px-4 py-2 text-[10px] font-normal";
 
@@ -23,7 +24,7 @@ function tone(value: number): string | undefined {
   return undefined;
 }
 
-export function TrackerShell(props: { active: "/tracker" | "/tracker/health"; children: ReactNode }) {
+export function TrackerShell(props: { active: TrackerTab; children: ReactNode }) {
   const t = useTranslations("TRACKER");
   return (
     <PageShell>
@@ -110,6 +111,7 @@ export function Tracker(props: {
   const s = props.stats.totals;
   const profit = Number(s.profit);
   const money = (x: string) => currency(Number(x), locale, props.currency);
+  const manual = props.bets.filter((b) => b.status === "open" && b.needs_manual_settle).length;
 
   return (
     <TrackerShell active="/tracker">
@@ -118,7 +120,11 @@ export function Tracker(props: {
           icon="hash"
           label={tt("KPI_BETS")}
           value={count(s.bets, locale)}
-          hint={tt("KPI_BETS_HINT", { open: String(s.open), won: String(s.won), lost: String(s.lost) })}
+          hint={tt("KPI_BETS_HINT", {
+            open: String(s.open),
+            won: String(s.won + s.half_won),
+            lost: String(s.lost + s.half_lost),
+          })}
         />
         <StatCard icon="coins" label={tt("KPI_STAKED")} value={money(s.staked)} />
         <StatCard
@@ -191,6 +197,12 @@ export function Tracker(props: {
           </FilterRow>
           <AddBet books={props.books} />
         </div>
+        {manual > 0 && (
+          <p className="border-warning/30 bg-warning/10 text-warning flex items-center gap-2 rounded-md border px-3 py-2 text-sm">
+            <Icon name="triangle-alert" className="size-4 shrink-0" />
+            {tt("NEEDS_SETTLE_NOTICE", { count: manual })}
+          </p>
+        )}
         <BetsTable bets={props.bets} currency={props.currency} />
       </section>
     </TrackerShell>

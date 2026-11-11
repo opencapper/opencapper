@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "api:types": "openapi-typescript ${OPENEV_API_URL:-http://127.0.0.1:8085}/v1/openapi.json -o src/lib/api/schema.d.ts",
+    "api:types": "bun scripts/api-types.ts",
     "typecheck": "next typegen && tsc --noEmit",
     "prettier": "prettier --write ."
   },
