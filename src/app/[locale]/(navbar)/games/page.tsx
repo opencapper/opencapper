@@ -2,6 +2,7 @@ import { Games } from "@/components/pages/navbar/games/games";
 import { api, load } from "@/lib/api/client";
 import { param } from "@/lib/format";
 import { serverLocale } from "@/lib/utils/server";
+import { ogMetadata } from "@/lib/og/metadata";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { connection } from "next/server";
@@ -12,8 +13,9 @@ type Props = {
 };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  const t = await getTranslations({ locale: await serverLocale(props), namespace: "NAV" });
-  return { title: t("ODDS") };
+  const locale = await serverLocale(props);
+  const t = await getTranslations({ locale, namespace: "NAV" });
+  return { title: t("ODDS"), ...ogMetadata("GAMES", locale) };
 }
 
 export default async function GamesPage(props: Props) {

@@ -3,6 +3,7 @@ import { api, load } from "@/lib/api/client";
 import { getAccount } from "@/lib/auth/session";
 import { planOf } from "@/lib/format";
 import { serverLocale } from "@/lib/utils/server";
+import { ogMetadata } from "@/lib/og/metadata";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { connection } from "next/server";
@@ -10,8 +11,10 @@ import { connection } from "next/server";
 type Props = { params: Promise<{ locale: string; id: string }> };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  const t = await getTranslations({ locale: await serverLocale(props), namespace: "BET" });
-  return { title: t("META_TITLE") };
+  const locale = await serverLocale(props);
+  const t = await getTranslations({ locale, namespace: "BET" });
+  const id = decodeURIComponent((await props.params).id);
+  return { title: t("META_TITLE"), ...ogMetadata("bet", locale, id) };
 }
 
 export default async function BetDetailPage(props: Props) {

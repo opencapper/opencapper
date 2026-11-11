@@ -7,14 +7,16 @@ import {
   OddsConverter,
 } from "@/components/pages/navbar/tools/calculators";
 import { serverLocale } from "@/lib/utils/server";
+import { ogMetadata } from "@/lib/og/metadata";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  const t = await getTranslations({ locale: await serverLocale(props), namespace: "NAV" });
-  return { title: t("TOOLS") };
+  const locale = await serverLocale(props);
+  const t = await getTranslations({ locale, namespace: "NAV" });
+  return { title: t("TOOLS"), ...ogMetadata("TOOLS", locale) };
 }
 
 export default async function ToolsPage(props: Props) {

@@ -7,6 +7,7 @@ import { allFontVariablesClass } from "@/lib/theme/fonts";
 import { migrateTheme } from "@/lib/theme/migrate";
 import { INITIAL_USER_THEME, USER_THEME_KEY } from "@/lib/theme/theme-types";
 import { getCookieValue, serverLocale } from "@/lib/utils/server";
+import { ogMetadata } from "@/lib/og/metadata";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -36,6 +37,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     },
     description: t("METADATA.DESCRIPTION"),
     robots: { index: false, follow: false },
+    ...ogMetadata("home", locale),
   };
 }
 

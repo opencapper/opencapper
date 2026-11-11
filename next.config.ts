@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
   deploymentId: process.env.NEXT_DEPLOYMENT_ID,
   // Type errors gate `bun run typecheck`, not the deploy build.
   typescript: { ignoreBuildErrors: true },
+  // OG fonts are read from disk at runtime, which the file tracer cannot see.
+  outputFileTracingIncludes: {
+    "/api/og/**": [
+      "./node_modules/@fontsource/geist/files/geist-latin*-normal.woff",
+      "./node_modules/@fontsource/geist-mono/files/geist-mono-latin*-normal.woff",
+      "./node_modules/@fontsource/noto-sans-jp/files/noto-sans-jp-*-400-normal.woff",
+    ],
+  },
+  // Bundling satori rewrites harfbuzz's locateFile base to "/ROOT" and every OG image 500s.
+  serverExternalPackages: ["satori", "sharp"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "r2.thesportsdb.com" },
