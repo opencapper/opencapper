@@ -1,10 +1,11 @@
 import { Chip, FilterRow } from "@/components/elements/odds/filter-chips";
 import { Empty, Panel, Unreachable } from "@/components/elements/odds/panel";
 import { StatCard, StatGrid } from "@/components/elements/odds/stat-card";
+import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import { PageHeading } from "@/components/elements/page/page-heading";
 import { PageShell } from "@/components/elements/page/page-shell";
 import type { Bet, BetStats, BetStatus, BetTotals } from "@/lib/api/client";
-import { bookName, count, currency, percent, query } from "@/lib/format";
+import { count, currency, percent, query } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
@@ -36,7 +37,7 @@ export function TrackerShell(props: { active: "/tracker" | "/tracker/health"; ch
 function TotalsTable(props: {
   title: string;
   first: string;
-  rows: { key: string; label: string; totals: BetTotals }[];
+  rows: { key: string; label: ReactNode; totals: BetTotals }[];
   currency: string;
 }) {
   const t = useTranslations("TRACKER");
@@ -166,7 +167,7 @@ export function Tracker(props: {
           title={tt("BY_BOOK")}
           first={tt("COL_BOOK")}
           currency={props.currency}
-          rows={props.stats.by_book.map((b) => ({ key: b.book, label: bookName(b.book), totals: b.totals }))}
+          rows={props.stats.by_book.map((b) => ({ key: b.book, label: <VendorLabel vendorKey={b.book} />, totals: b.totals }))}
         />
         <TotalsTable
           title={tt("BY_MONTH")}

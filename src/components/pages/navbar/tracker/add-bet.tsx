@@ -2,6 +2,7 @@
 
 import { actionErrorText } from "@/components/elements/account/action-error";
 import { Choice } from "@/components/elements/account/choice";
+import { VendorLogo } from "@/components/elements/vendor/vendor-logo";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
@@ -9,7 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useRouter } from "@/i18n/navigation";
 import { trackBet, type ActionResult } from "@/lib/auth/actions";
-import { bookName, type Translate } from "@/lib/format";
+import { bookName } from "@/lib/config/vendor-registry";
+import { type Translate } from "@/lib/format";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -178,7 +180,7 @@ function AddBetForm(props: { books: string[]; onDone: () => void }) {
         id="add-book"
         label={t("TRACKER.COL_BOOK")}
         value={book[0]}
-        options={props.books.map((b) => ({ value: b, label: bookName(b) }))}
+        options={props.books.map((b) => ({ value: b, label: bookName(b), icon: <VendorLogo vendorKey={b} size={16} /> }))}
         onChange={book[1]}
       />
       <div className="grid grid-cols-2 gap-3">

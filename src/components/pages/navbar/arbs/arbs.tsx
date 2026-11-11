@@ -1,12 +1,15 @@
 import { AutoRefresh } from "@/components/elements/odds/auto-refresh";
+import { LeagueLabel } from "@/components/elements/flag/league-label";
 import { Chip, FilterRow } from "@/components/elements/odds/filter-chips";
+import { Matchup } from "@/components/elements/participant/matchup";
+import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import { Empty, Panel, Unreachable } from "@/components/elements/odds/panel";
 import { PageHeading } from "@/components/elements/page/page-heading";
 import { PageShell } from "@/components/elements/page/page-shell";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
 import type { Arb } from "@/lib/api/client";
-import { ago, bookName, kickoff, marketName, money, odds, percent, query, sideName, until } from "@/lib/format";
+import { ago, kickoff, marketName, money, odds, percent, query, sideName, until } from "@/lib/format";
 import { useLocale, useTranslations } from "next-intl";
 
 const TOTAL = 100;
@@ -59,10 +62,13 @@ export function Arbs(props: { data?: Arb[]; all: boolean; now: number }) {
             >
               <div className="px-4 pt-3">
                 <Link href={`/games/${encodeURIComponent(a.game_id)}`} className="underline-offset-4 hover:underline">
-                  {a.home} <span className="text-muted-foreground">{t("FORMAT.VS")}</span> {a.away}
+                  <Matchup event={a} />
                 </Link>
-                <div className="text-muted-foreground text-[11px]">
-                  {a.league}, {kickoff(a.starts_at, locale)}, {until(a.starts_at, now, locale, t)}
+                <div className="text-muted-foreground mt-1 flex flex-wrap items-center gap-x-1 text-[11px]">
+                  <LeagueLabel event={a} />
+                  <span>
+                    {kickoff(a.starts_at, locale)}, {until(a.starts_at, now, locale, t)}
+                  </span>
                 </div>
                 <div className="text-muted-foreground mt-1 text-xs">{marketName(a, t)}</div>
               </div>
@@ -74,7 +80,9 @@ export function Arbs(props: { data?: Arb[]; all: boolean; now: number }) {
                         <td className="px-4 py-2">
                           {sideName({ market: a.market, side: l.side, line: a.line, home: a.home, away: a.away }, t)}
                         </td>
-                        <td className="text-muted-foreground px-4 py-2 whitespace-nowrap">{bookName(l.book)}</td>
+                        <td className="text-muted-foreground px-4 py-2 whitespace-nowrap">
+                          <VendorLabel vendorKey={l.book} />
+                        </td>
                         <td className="tabular px-4 py-2 text-right">{odds(l.odds)}</td>
                         <td className="tabular px-4 py-2 text-right" title={ta("STAKE_HINT")}>
                           {(l.stake_share * TOTAL).toFixed(2)}

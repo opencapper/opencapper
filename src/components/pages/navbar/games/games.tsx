@@ -1,4 +1,7 @@
+import { LeagueLabel } from "@/components/elements/flag/league-label";
 import { Ev } from "@/components/elements/odds/ev";
+import { Matchup } from "@/components/elements/participant/matchup";
+import { VendorStack } from "@/components/elements/vendor/vendor-logo";
 import { Empty, Panel, Unreachable } from "@/components/elements/odds/panel";
 import { PageHeading } from "@/components/elements/page/page-heading";
 import { PageShell } from "@/components/elements/page/page-shell";
@@ -49,13 +52,12 @@ export function Games(props: { data?: GameSummary[]; q?: string; now: number }) 
                     <span className="tabular text-muted-foreground text-xs" title={until(g.starts_at, props.now, locale, t)}>
                       {time(g.starts_at, locale)}
                     </span>
-                    <span className="min-w-0">
-                      <span className="block truncate">
-                        {g.home} <span className="text-muted-foreground">{t("FORMAT.VS")}</span> {g.away}
-                      </span>
-                      <span className="text-muted-foreground block truncate text-[11px]">{g.league}</span>
+                    <span className="flex min-w-0 flex-col gap-1">
+                      <Matchup event={g} />
+                      <LeagueLabel event={g} className="text-muted-foreground text-[11px]" />
                     </span>
-                    <span className="text-muted-foreground hidden text-xs sm:block">
+                    <span className="text-muted-foreground hidden flex-col gap-1 text-xs sm:flex">
+                      <VendorStack vendorKeys={g.books} />
                       {tg("COVERAGE", { books: g.books.length, markets: g.markets })}
                     </span>
                     <span className="hidden text-right text-xs sm:block">

@@ -1,9 +1,10 @@
+import { VendorLabel, VendorLogo } from "@/components/elements/vendor/vendor-logo";
 import { Link } from "@/i18n/navigation";
 import type { BookPrice, Market } from "@/lib/api/client";
+import { bookName } from "@/lib/config/vendor-registry";
 import {
   ago,
   count,
-  bookName,
   marketName,
   odds,
   percent,
@@ -48,10 +49,15 @@ export function MarketTable(props: {
                 {marketName({ market: m.kind, period: m.period, line: m.line }, t)}
               </th>
               <th className={HEAD}>{t("ODDS.FAIR")}</th>
-              <th className={cn(HEAD, "text-warning")}>{t("ODDS.PINNACLE")}</th>
+              <th className={cn(HEAD, "text-warning")}>
+                <span className="inline-flex items-center gap-1.5">
+                  <VendorLogo vendorKey="pinnacle" size={14} />
+                  {t("ODDS.PINNACLE")}
+                </span>
+              </th>
               {books.map((b) => (
                 <th key={b} className={cn(HEAD, "normal-case tracking-normal")}>
-                  {bookName(b)}
+                  <VendorLabel vendorKey={b} size={14} className="justify-end" />
                 </th>
               ))}
             </tr>

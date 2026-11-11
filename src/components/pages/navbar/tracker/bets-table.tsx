@@ -2,7 +2,9 @@
 
 import { actionErrorText } from "@/components/elements/account/action-error";
 import { Ev } from "@/components/elements/odds/ev";
+import { Matchup } from "@/components/elements/participant/matchup";
 import { DataTable } from "@/components/elements/table/data-table";
+import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,7 +23,8 @@ import { useRouter } from "@/i18n/navigation";
 import type { Bet, BetPatch, BetStatus } from "@/lib/api/client";
 import { deleteBet, updateBet, type ActionResult } from "@/lib/auth/actions";
 import type { TableFeats } from "@/lib/config/table-features";
-import { bookName, currency, kickoff, marketName, odds, sideName, type Translate } from "@/lib/format";
+import { bookName } from "@/lib/config/vendor-registry";
+import { currency, kickoff, marketName, odds, sideName, type Translate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -72,9 +75,8 @@ function columns(c: Ctx): ColumnDef<TableFeats, Bet>[] {
         return (
           <div className="min-w-44">
             <div>{sideName(b, t)}</div>
-            <div className="text-muted-foreground text-[11px]">
-              {marketName(b, t)}, {b.home} {t("FORMAT.VS")} {b.away}
-            </div>
+            <div className="text-muted-foreground text-[11px]">{marketName(b, t)}</div>
+            <Matchup event={b} size="xs" className="text-muted-foreground mt-1 text-[11px]" />
           </div>
         );
       },
@@ -84,7 +86,7 @@ function columns(c: Ctx): ColumnDef<TableFeats, Bet>[] {
       accessorFn: (b) => bookName(b.book),
       header: (ctx) => <DataTableColumnHeader column={ctx.column} title="TRACKER.COL_BOOK" />,
       size: 120,
-      cell: (ctx) => <span className="whitespace-nowrap">{bookName(ctx.row.original.book)}</span>,
+      cell: (ctx) => <VendorLabel vendorKey={ctx.row.original.book} className="whitespace-nowrap" />,
     },
     {
       id: "odds",

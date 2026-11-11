@@ -3,11 +3,13 @@ import { ConfidenceBadge } from "@/components/elements/odds/confidence-badge";
 import { Ev } from "@/components/elements/odds/ev";
 import { Panel, PanelLink, Unreachable } from "@/components/elements/odds/panel";
 import { StatCard, StatGrid } from "@/components/elements/odds/stat-card";
+import { VendorLabel, VendorLogo } from "@/components/elements/vendor/vendor-logo";
 import { PageHeading } from "@/components/elements/page/page-heading";
 import { PageShell } from "@/components/elements/page/page-shell";
 import { Link } from "@/i18n/navigation";
 import type { Arb, BookStatus, LedgerView, ValueBetList } from "@/lib/api/client";
-import { ago, bookName, count, marketName, odds, percent, sideName, until } from "@/lib/format";
+import { bookName } from "@/lib/config/vendor-registry";
+import { ago, count, marketName, odds, percent, sideName, until } from "@/lib/format";
 import { groupBets } from "@/lib/group";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -76,17 +78,20 @@ export function Overview(props: {
                   className="hover:bg-muted/50 grid grid-cols-[64px_1fr_auto] items-center gap-3 px-4 py-2.5 text-sm transition-colors"
                 >
                   <Ev value={g.best.ev} className="font-medium" />
-                  <span className="min-w-0">
-                    <span className="block truncate">
-                      {t("OVERVIEW.BET_AT", { bet: sideName(g.best, t), book: bookName(g.best.book) })}
-                    </span>
-                    <span className="text-muted-foreground block truncate text-[11px]">
-                      {t("OVERVIEW.BET_CONTEXT", {
-                        market: marketName(g.best, t),
-                        home: g.best.home,
-                        away: g.best.away,
-                        when: until(g.best.starts_at, now, locale, t),
-                      })}
+                  <span className="flex min-w-0 items-center gap-2.5">
+                    <VendorLogo vendorKey={g.best.book} size={24} />
+                    <span className="min-w-0">
+                      <span className="block truncate">
+                        {t("OVERVIEW.BET_AT", { bet: sideName(g.best, t), book: bookName(g.best.book) })}
+                      </span>
+                      <span className="text-muted-foreground block truncate text-[11px]">
+                        {t("OVERVIEW.BET_CONTEXT", {
+                          market: marketName(g.best, t),
+                          home: g.best.home,
+                          away: g.best.away,
+                          when: until(g.best.starts_at, now, locale, t),
+                        })}
+                      </span>
                     </span>
                   </span>
                   <span className="flex items-center gap-3">
@@ -121,8 +126,8 @@ export function Overview(props: {
           <Panel title={t("OVERVIEW.SOURCES_TITLE")} action={<PanelLink href="/books">{t("OVERVIEW.ALL")}</PanelLink>}>
             <ul className="divide-y text-sm">
               {books.map((b) => (
-                <li key={b.book} className="flex justify-between px-4 py-1.5">
-                  <span>{bookName(b.book)}</span>
+                <li key={b.book} className="flex items-center justify-between gap-2 px-4 py-1.5">
+                  <VendorLabel vendorKey={b.book} />
                   <span className="tabular text-muted-foreground text-xs">
                     {t("OVERVIEW.GAMES_COUNT", { count: b.events })}
                   </span>

@@ -4,8 +4,9 @@ import { Unreachable } from "@/components/elements/odds/panel";
 import { StatCard, StatGrid } from "@/components/elements/odds/stat-card";
 import { PageHeading } from "@/components/elements/page/page-heading";
 import { PageShell } from "@/components/elements/page/page-shell";
+import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import type { ValueBetList } from "@/lib/api/client";
-import { ago, bookName, count, fractionLabel, money, query, type BookFee, type StakePlan } from "@/lib/format";
+import { ago, count, fractionLabel, money, query, type BookFee, type StakePlan } from "@/lib/format";
 import { groupBets } from "@/lib/group";
 import { useLocale, useTranslations } from "next-intl";
 import { ValueBetsTable } from "./value-bets-table";
@@ -105,7 +106,7 @@ export function ValueBets(props: {
           )}
           {books.map((b) => (
             <Chip key={b} active={f.book === b} href={link({ book: b, mine: undefined })}>
-              {bookName(b)}
+              <VendorLabel vendorKey={b} size={14} />
             </Chip>
           ))}
         </FilterRow>

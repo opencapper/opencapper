@@ -1,4 +1,6 @@
+import { LeagueLabel } from "@/components/elements/flag/league-label";
 import { AutoRefresh } from "@/components/elements/odds/auto-refresh";
+import { Matchup } from "@/components/elements/participant/matchup";
 import { MarketTable } from "@/components/elements/odds/market-table";
 import { Panel } from "@/components/elements/odds/panel";
 import { StatCard, StatGrid } from "@/components/elements/odds/stat-card";
@@ -8,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
 import type { Game } from "@/lib/api/client";
-import { bookName, count, kickoff, percent, until } from "@/lib/format";
+import { bookName } from "@/lib/config/vendor-registry";
+import { count, kickoff, percent, until } from "@/lib/format";
 import { useLocale, useTranslations } from "next-intl";
 
 export function GameView(props: { data?: Game; now: number }) {
@@ -40,12 +43,12 @@ export function GameView(props: { data?: Game; now: number }) {
           {t("NAV.ODDS")}
         </Link>
         <span>/</span>
-        <span>{g.league}</span>
+        <LeagueLabel event={g} />
       </nav>
       <PageHeading
         className="mb-0"
         label={`${g.league}, ${kickoff(g.starts_at, locale)}, ${until(g.starts_at, now, locale, t)}`}
-        title={`${g.home} ${t("FORMAT.VS")} ${g.away}`}
+        title={<Matchup event={g} size="default" className="gap-x-3" />}
         description={tg("SUBHEADING")}
       />
       <StatGrid className="sm:grid-cols-4">

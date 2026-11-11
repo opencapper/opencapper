@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
   deploymentId: process.env.NEXT_DEPLOYMENT_ID,
   // Type errors gate `bun run typecheck`, not the deploy build.
   typescript: { ignoreBuildErrors: true },
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "r2.thesportsdb.com" },
+      { protocol: "https", hostname: "www.thesportsdb.com" },
+    ],
+  },
   experimental: {
     turbopackFileSystemCacheForBuild: true,
   },

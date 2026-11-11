@@ -2,12 +2,16 @@
 
 import { ConfidenceBadge } from "@/components/elements/odds/confidence-badge";
 import { Ev } from "@/components/elements/odds/ev";
+import { LeagueLabel } from "@/components/elements/flag/league-label";
+import { Matchup } from "@/components/elements/participant/matchup";
+import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import { DataTable } from "@/components/elements/table/data-table";
 import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import { Link } from "@/i18n/navigation";
 import type { TableFeats } from "@/lib/config/table-features";
 import { TrackBet } from "@/components/elements/account/track-bet";
-import { ago, bookName, DEFAULT_PLAN, feeOf, fractionLabel, kelly, kickoff, marketName, money, netOdds, odds, sideName, until, type BookFee, type StakePlan, type Translate } from "@/lib/format";
+import { bookName } from "@/lib/config/vendor-registry";
+import { ago, DEFAULT_PLAN, feeOf, fractionLabel, kelly, kickoff, marketName, money, netOdds, odds, sideName, until, type BookFee, type StakePlan, type Translate } from "@/lib/format";
 import type { GroupedBet } from "@/lib/group";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
@@ -57,10 +61,13 @@ function columns(c: Ctx): ColumnDef<TableFeats, GroupedBet>[] {
         return (
           <div className="min-w-48">
             <Link href={`/games/${encodeURIComponent(b.game_id)}`} className="underline-offset-4 hover:underline">
-              {b.home} <span className="text-muted-foreground">{t("FORMAT.VS")}</span> {b.away}
+              <Matchup event={b} size="xs" />
             </Link>
-            <div className="text-muted-foreground text-[11px]">
-              {b.league}, {kickoff(b.starts_at, locale)}, {until(b.starts_at, now, locale, t)}
+            <div className="text-muted-foreground mt-1 flex flex-wrap items-center gap-x-1 text-[11px]">
+              <LeagueLabel event={b} />
+              <span>
+                {kickoff(b.starts_at, locale)}, {until(b.starts_at, now, locale, t)}
+              </span>
             </div>
           </div>
         );
@@ -94,10 +101,10 @@ function columns(c: Ctx): ColumnDef<TableFeats, GroupedBet>[] {
         const g = ctx.row.original;
         return (
           <div className="whitespace-nowrap">
-            <div>{bookName(g.best.book)}</div>
+            <VendorLabel vendorKey={g.best.book} />
             {g.offers.length > 1 && (
               <div
-                className="text-muted-foreground text-[11px]"
+                className="text-muted-foreground pl-[22px] text-[11px]"
                 title={g.offers
                   .slice(1)
                   .map((o) => `${bookName(o.book)} ${odds(o.odds)}`)

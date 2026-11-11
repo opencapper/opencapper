@@ -3,6 +3,7 @@
 import { actionErrorText } from "@/components/elements/account/action-error";
 import { Choice } from "@/components/elements/account/choice";
 import { CARD_LABEL } from "@/components/elements/page/page-heading";
+import { VendorLogo } from "@/components/elements/vendor/vendor-logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
@@ -11,7 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { Settings } from "@/lib/api/client";
 import { saveSettings, type ActionResult } from "@/lib/auth/actions";
-import { bookName, fractionLabel } from "@/lib/format";
+import { bookName } from "@/lib/config/vendor-registry";
+import { fractionLabel } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
@@ -139,8 +141,9 @@ export function SettingsForm(props: { settings: Settings; books: string[] }) {
                       : "text-foreground/55 hover:text-foreground hover:bg-foreground/5",
                   )}
                 >
-                  {on && <Icon name="check" className="size-3" />}
+                  <VendorLogo vendorKey={b} size={16} />
                   {bookName(b)}
+                  {on && <Icon name="check" className="size-3" />}
                 </button>
               );
             })}

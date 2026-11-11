@@ -2,11 +2,14 @@
 
 import { ConfidenceBadge } from "@/components/elements/odds/confidence-badge";
 import { Ev } from "@/components/elements/odds/ev";
+import { Matchup } from "@/components/elements/participant/matchup";
 import { DataTable } from "@/components/elements/table/data-table";
+import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import type { LedgerEntry } from "@/lib/api/client";
 import type { TableFeats } from "@/lib/config/table-features";
-import { bookName, kickoff, marketName, odds, sideName, type Translate } from "@/lib/format";
+import { bookName } from "@/lib/config/vendor-registry";
+import { kickoff, marketName, odds, sideName, type Translate } from "@/lib/format";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -43,9 +46,8 @@ function columns(t: Translate, locale: string): ColumnDef<TableFeats, LedgerEntr
         return (
           <div className="min-w-48">
             <div>{sideName(e, t)}</div>
-            <div className="text-muted-foreground text-[11px]">
-              {marketName(e, t)}, {e.home} {t("FORMAT.VS")} {e.away}
-            </div>
+            <div className="text-muted-foreground text-[11px]">{marketName(e, t)}</div>
+            <Matchup event={e} size="xs" className="text-muted-foreground mt-1 text-[11px]" />
           </div>
         );
       },
@@ -57,7 +59,7 @@ function columns(t: Translate, locale: string): ColumnDef<TableFeats, LedgerEntr
       size: 150,
       cell: (ctx) => (
         <div className="flex flex-col items-start gap-1 whitespace-nowrap">
-          <span>{bookName(ctx.row.original.book)}</span>
+          <VendorLabel vendorKey={ctx.row.original.book} />
           <ConfidenceBadge value={ctx.row.original.confidence} />
         </div>
       ),
@@ -137,7 +139,7 @@ export function LedgerTable(props: { entries: LedgerEntry[] }) {
       columns={columns(t, locale)}
       localSorting
       windowVirtual
-      estimateRowHeight={64}
+      estimateRowHeight={76}
       emptyState={<span className="text-muted-foreground text-sm">{t("PROOF.EMPTY")}</span>}
     />
   );

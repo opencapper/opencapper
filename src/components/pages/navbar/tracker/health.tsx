@@ -3,8 +3,9 @@ import { CARD_LABEL } from "@/components/elements/page/page-heading";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
+import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import type { BookHealth, HealthRisk, HealthWarningCode } from "@/lib/api/client";
-import { bookName, count, currency, type Translate } from "@/lib/format";
+import { count, currency, type Translate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import { TrackerShell } from "./tracker";
@@ -52,7 +53,9 @@ function BookCard(props: { health: BookHealth; currency: string }) {
   return (
     <Card size="sm">
       <CardHeader>
-        <CardTitle className="text-base font-medium">{bookName(h.book)}</CardTitle>
+        <CardTitle className="text-base font-medium">
+          <VendorLabel vendorKey={h.book} size={24} className="gap-2.5" />
+        </CardTitle>
         <CardAction>
           <Badge variant="outline" className={cn("rounded-sm font-normal", RISK_STYLE[h.risk])}>
             {riskLabel(h.risk, t)}

@@ -8,8 +8,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { ReactNode } from "react";
 
-export type Option = { value: string; label: string };
+export type Option = { value: string; label: string; icon?: ReactNode };
+
+function OptionLabel(props: { option: Option }) {
+  if (!props.option.icon) return props.option.label;
+  return (
+    <span className="inline-flex items-center gap-2">
+      {props.option.icon}
+      {props.option.label}
+    </span>
+  );
+}
 
 // A labelled select whose closed state shows the option label, not the raw value.
 export function Choice(props: {
@@ -31,12 +42,17 @@ export function Choice(props: {
         }}
       >
         <SelectTrigger id={props.id} className="w-full">
-          <SelectValue />
+          <SelectValue>
+            {(value: string) => {
+              const picked = props.options.find((o) => o.value === value);
+              return picked ? <OptionLabel option={picked} /> : value;
+            }}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {props.options.map((o) => (
             <SelectItem key={o.value} value={o.value}>
-              {o.label}
+              <OptionLabel option={o} />
             </SelectItem>
           ))}
         </SelectContent>

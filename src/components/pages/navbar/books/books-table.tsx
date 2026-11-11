@@ -2,9 +2,11 @@
 
 import { DataTable } from "@/components/elements/table/data-table";
 import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
+import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
 import type { BookStatus } from "@/lib/api/client";
 import type { TableFeats } from "@/lib/config/table-features";
-import { ago, bookName, count, type Translate } from "@/lib/format";
+import { bookName } from "@/lib/config/vendor-registry";
+import { ago, count, type Translate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useLocale, useTranslations } from "next-intl";
@@ -31,7 +33,7 @@ function columns(t: Translate, locale: string, now: number): ColumnDef<TableFeat
         return (
           <span className="flex items-center gap-2 whitespace-nowrap">
             <span className={cn("inline-block size-2 rounded-full", age < STALE_SECS ? "bg-success" : "bg-warning")} />
-            {bookName(b.book)}
+            <VendorLabel vendorKey={b.book} size={20} />
           </span>
         );
       },

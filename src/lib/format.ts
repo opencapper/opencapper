@@ -4,58 +4,6 @@ import type { useTranslations } from "next-intl";
 // Server pages pass getTranslations(), client components useTranslations(); both fit this shape.
 export type Translate = ReturnType<typeof useTranslations<never>>;
 
-const BOOKS: Record<string, string> = {
-  ubuk: "Unibet UK",
-  gruk: "Grosvenor",
-  betuk: "BetUK",
-  betmgmuk: "BetMGM UK",
-  quinnbetuk: "QuinnBet",
-  virginbetuk: "Virgin Bet",
-  ladbrokes: "Ladbrokes",
-  coral: "Coral",
-  paddypower: "Paddy Power",
-  betfairsb: "Betfair Sportsbook",
-  betfair_ex: "Betfair Exchange",
-  smarkets: "Smarkets",
-  williamhill: "William Hill",
-  skybet: "Sky Bet",
-  betway: "Betway",
-  betvictor: "BetVictor",
-  "888sport": "888sport",
-  draftkings: "DraftKings",
-  fanduel: "FanDuel",
-  kalshi: "Kalshi",
-  polymarket: "Polymarket",
-  matchbook: "Matchbook",
-  betdaq: "Betdaq",
-  cloudbet: "Cloudbet",
-  betsson: "Betsson",
-  betsafe: "Betsafe",
-  nordicbet: "NordicBet",
-  ub: "Unibet",
-  ubnl: "Unibet NL",
-  ubse: "Unibet SE",
-  ubdk: "Unibet DK",
-  ubca: "Unibet CA",
-  paf: "Paf",
-  pafes: "Paf ES",
-  leose: "LeoVegas SE",
-  leoes: "LeoVegas ES",
-  expektse: "Expekt",
-  betmgmse: "BetMGM SE",
-  betmgmnl: "BetMGM NL",
-  svenskaspel: "Svenska Spel",
-  rsiusil: "BetRivers IL",
-  rsiuspa: "BetRivers PA",
-  parxuspa: "Parx",
-  betssonco: "Betsson CO",
-  pinnacle: "Pinnacle",
-};
-
-export function bookName(code: string): string {
-  return BOOKS[code] ?? code;
-}
-
 // Times follow the UK books the board is built from, not the server clock.
 const ZONE = "Europe/London";
 

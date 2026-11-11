@@ -1,6 +1,9 @@
 import { AutoRefresh } from "@/components/elements/odds/auto-refresh";
 import { ConfidenceBadge } from "@/components/elements/odds/confidence-badge";
 import { Ev } from "@/components/elements/odds/ev";
+import { LeagueLabel } from "@/components/elements/flag/league-label";
+import { Matchup } from "@/components/elements/participant/matchup";
+import { VendorLabel, VendorLogo } from "@/components/elements/vendor/vendor-logo";
 import { MarketTable } from "@/components/elements/odds/market-table";
 import { Panel } from "@/components/elements/odds/panel";
 import { PriceChart } from "@/components/elements/odds/price-chart";
@@ -13,7 +16,8 @@ import { Icon } from "@/components/ui/icon";
 import { Link } from "@/i18n/navigation";
 import type { BetDetail } from "@/lib/api/client";
 import { TrackBet } from "@/components/elements/account/track-bet";
-import { ago, bookName, count, DEFAULT_PLAN, feeOf, kickoff, marketName, netOdds, odds, percent, prob, sideName, until, type BookFee, type StakePlan } from "@/lib/format";
+import { bookName } from "@/lib/config/vendor-registry";
+import { ago, count, DEFAULT_PLAN, feeOf, kickoff, marketName, netOdds, odds, percent, prob, sideName, until, type BookFee, type StakePlan } from "@/lib/format";
 import { useLocale, useTranslations } from "next-intl";
 
 const BOOK_COLOR = "#3b82f6";
@@ -72,7 +76,12 @@ export function BetDetailView(props: { data?: BetDetail; fees: BookFee[]; plan?:
       <PageHeading
         className="mb-0"
         label={`${b.league}, ${kickoff(b.starts_at, locale)}, ${until(b.starts_at, now, locale, t)}`}
-        title={title}
+        title={
+          <span className="inline-flex items-center gap-3">
+            <VendorLogo vendorKey={b.book} size={32} />
+            <span>{title}</span>
+          </span>
+        }
         description={tb("SUMMARY", {
           market: marketName(b, t),
           home: b.home,
@@ -83,6 +92,12 @@ export function BetDetailView(props: { data?: BetDetail; fees: BookFee[]; plan?:
           chance: prob(b.fair_probability),
         })}
       >
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+          <Link href={`/games/${encodeURIComponent(b.game_id)}`} className="underline-offset-4 hover:underline">
+            <Matchup event={data.game} />
+          </Link>
+          <LeagueLabel event={data.game} className="text-muted-foreground text-xs" />
+        </div>
         <div className="mt-4">
           <TrackBet
             valueBetId={b.id}
@@ -196,8 +211,8 @@ export function BetDetailView(props: { data?: BetDetail; fees: BookFee[]; plan?:
             ) : (
               <ul className="divide-y text-sm">
                 {others.map((p) => (
-                  <li key={p.key} className="flex items-center justify-between px-4 py-2">
-                    <span>{bookName(p.book)}</span>
+                  <li key={p.key} className="flex items-center justify-between gap-2 px-4 py-2">
+                    <VendorLabel vendorKey={p.book} />
                     <span className="flex items-center gap-3">
                       <Ev value={p.ev} className="text-xs" />
                       <span className="tabular w-12 text-right">{odds(p.odds)}</span>
