@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenEV Matchday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2EDE3;--paper2:#E8E1D3;--ink:#141210;--ink2:#3B3631;--mute:#7A7166;
+  --red:#FF4B1F;--red2:#D93A12;--green:#0E5A36;--green2:#0A4529;--chalk:#F7F3EA;--gold:#F2C14E;--blue:#1F4FD8;
+  --display:'Anton',Impact,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'DM Mono',ui-monospace,monospace;--ui:'Manrope',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:var(--ui);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block}
+.wrap{max-width:1360px;margin:0 auto;padding:0 40px}
+.band{position:relative;overflow:hidden}
+
+/* nav */
+nav{border-bottom:2px solid var(--ink)}
+nav .wrap{display:flex;align-items:center;height:76px;gap:36px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{width:40px;height:40px}
+.wm{font:400 30px/1 var(--display);letter-spacing:.01em;text-transform:uppercase}
+.wm i{font:italic 400 34px/1 var(--serif);text-transform:none;color:var(--red);margin-left:2px;letter-spacing:0}
+nav ul{display:flex;gap:30px;list-style:none;margin-left:auto;font:700 14px var(--ui);text-transform:uppercase;letter-spacing:.06em}
+.btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 26px;border-radius:999px;font:800 15px var(--ui);text-transform:uppercase;letter-spacing:.05em;border:2px solid var(--ink);white-space:nowrap}
+.btn.red{background:var(--red);border-color:var(--red);color:#fff}
+.btn.ink{background:var(--ink);color:var(--paper)}
+.btn svg{width:16px;height:16px}
+.issue{border-bottom:1px solid var(--ink);font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.issue .wrap{display:flex;justify-content:space-between;height:34px;align-items:center;gap:20px}
+
+/* hero */
+.hero{padding:56px 0 80px}
+.hero .grid{display:grid;grid-template-columns:1fr 1.02fr;gap:48px;align-items:start}
+.kicker{display:inline-flex;gap:10px;align-items:center;font:500 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:999px;margin-bottom:28px}
+.kicker b{width:8px;height:8px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+h1{font:400 clamp(72px,10.4vw,168px)/.84 var(--display);text-transform:uppercase;letter-spacing:-.005em}
+h1 .s{font:italic 400 .62em/1 var(--serif);text-transform:none;color:var(--red);letter-spacing:-.01em;display:block;margin:10px 0 4px}
+.sub{font:400 30px/1.15 var(--serif);max-width:520px;margin:26px 0 34px;color:var(--ink2)}
+.sub em{color:var(--ink)}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+
+/* scoreboard */
+.board-wrap{position:relative;padding-top:20px}
+.pitch-bg{position:absolute;right:-180px;top:-60px;width:760px;transform:rotate(-8deg);opacity:1;z-index:0}
+.board{position:relative;z-index:1;background:#0F0E0C;border-radius:14px;padding:18px;color:var(--chalk);box-shadow:0 30px 60px -30px rgba(20,18,16,.6),0 0 0 6px var(--ink)}
+.board .bh{display:flex;justify-content:space-between;align-items:center;font:500 12px var(--mono);letter-spacing:.12em;color:#9A9186;padding:2px 4px 14px;border-bottom:1px dashed #3A352F;margin-bottom:8px;text-transform:uppercase}
+.board .bh .live{display:flex;gap:8px;align-items:center;color:var(--red)}
+.board .bh .live:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite}
+.br{display:grid;grid-template-columns:10px minmax(0,1fr) 30px 92px 92px 74px;gap:10px;align-items:center;padding:10px 4px;border-bottom:1px solid #24211D}
+.br:last-child{border-bottom:0}
+.br.h{font:500 10px var(--mono);letter-spacing:.14em;color:#6F675D;padding:4px;text-transform:uppercase;border:0}
+.kit{width:10px;height:38px;border-radius:2px}
+.fx{min-width:0}
+.fx b{display:block;font:400 21px/1.05 var(--display);text-transform:uppercase;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx span{font:500 12px var(--mono);color:#9A9186;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.br img{width:30px;height:30px;border-radius:7px}
+.flaps{display:flex;gap:3px;perspective:300px}
+.fl{width:20px;height:36px;border-radius:4px;background:linear-gradient(#24211D 0 49%,#0F0E0C 49% 51%,#1C1A17 51%);display:grid;place-items:center;font:400 25px/1 var(--display);color:var(--chalk);position:relative}
+.fl.dot{width:10px;background:none}
+.fl.flip{animation:flip .38s ease-in}
+@keyframes flip{0%{transform:rotateX(85deg);filter:brightness(.5)}100%{transform:none}}
+.flaps.fair .fl{color:#9EC9AE}
+.flaps.book .fl{color:var(--gold)}
+.edge{font:400 26px/1 var(--display);color:var(--red);text-align:right}
+.edge small{display:block;height:5px;background:#2A2622;border-radius:3px;margin-top:6px;overflow:hidden}
+.edge small i{display:block;height:100%;background:var(--red);border-radius:3px;transition:width .5s}
+.board .bf{display:flex;justify-content:space-between;font:500 11px var(--mono);color:#6F675D;padding:12px 4px 0;border-top:1px dashed #3A352F;margin-top:6px;letter-spacing:.08em}
+
+.sticker{position:absolute;z-index:2;right:-30px;bottom:-140px;width:178px;height:178px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;text-align:center;transform:rotate(-12deg);box-shadow:0 10px 30px -10px rgba(0,0,0,.4);animation:spin 18s linear infinite}
+.sticker div{font:400 52px/0.9 var(--display)}
+.sticker span{display:block;font:italic 400 19px/1.1 var(--serif);margin-top:6px}
+@keyframes spin{0%{transform:rotate(-12deg)}50%{transform:rotate(-4deg)}100%{transform:rotate(-12deg)}}
+
+/* books */
+.books{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:var(--paper)}
+.books .wrap{display:grid;grid-template-columns:220px 1fr;align-items:center;gap:32px;padding-top:26px;padding-bottom:26px}
+.books h3{font:400 30px/0.95 var(--display);text-transform:uppercase}
+.books h3 i{font:italic 400 28px var(--serif);text-transform:none;color:var(--red)}
+.lg{display:flex;flex-wrap:wrap;gap:10px 10px}
+.lg span{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border:1.5px solid var(--ink);border-radius:999px;font:700 13px var(--ui);background:#fff}
+.lg img{width:26px;height:26px;border-radius:50%}
+
+/* section heads */
+.sec{padding:120px 0}
+.hd{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:end;margin-bottom:56px}
+.hd .n{font:400 160px/.8 var(--display);-webkit-text-stroke:2px var(--ink);color:transparent}
+.hd h2{font:400 clamp(52px,7vw,108px)/.88 var(--display);text-transform:uppercase}
+.hd p{font:italic 400 28px/1.15 var(--serif);margin-top:12px;max-width:640px}
+
+/* margin, green */
+.green{background:var(--green);color:var(--chalk)}
+.green .hd .n{-webkit-text-stroke-color:#5FA77F}
+.lines{position:absolute;inset:0;pointer-events:none;opacity:.2}
+.mg{display:grid;grid-template-columns:1fr 440px 1fr;gap:40px;align-items:center}
+.odds-col h4{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-bottom:18px}
+.oc{display:grid;grid-template-columns:1fr auto;align-items:baseline;border-top:1.5px solid rgba(247,243,234,.35);padding:14px 0}
+.oc span{font:600 18px var(--ui)}
+.oc b{font:400 54px/1 var(--display)}
+.oc.hi b{color:var(--gold)}
+.donut{position:relative}
+.donut svg{width:100%;height:auto;display:block;overflow:visible}
+.donut .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
+.donut .c b{font:400 80px/0.9 var(--display);display:block}
+.donut .c span{font:italic 400 22px var(--serif);opacity:.85}
+.slice{animation:pop 5s cubic-bezier(.5,0,.2,1) infinite}
+@keyframes pop{0%,25%{transform:translate(0,0)}50%,85%{transform:translate(-4px,-40px)}100%{transform:translate(0,0)}}
+.tag-m{animation:fadeT 5s infinite}
+@keyframes fadeT{0%,35%{opacity:0}50%,85%{opacity:1}100%{opacity:0}}
+.verdict{margin-top:56px;background:var(--chalk);color:var(--ink);border-radius:20px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;padding:24px 32px}
+.verdict img{width:64px;height:64px;border-radius:14px}
+.verdict .t{font:italic 400 30px/1.1 var(--serif)}
+.verdict .t b{font:400 34px var(--display);font-style:normal;color:var(--green)}
+.verdict .e{font:400 84px/0.9 var(--display);color:var(--red)}
+
+/* arbs */
+.arb{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:center}
+.court{position:relative;background:#2F6FD0;border-radius:18px;padding:22px;box-shadow:0 0 0 2px var(--ink)}
+.court svg{width:100%;height:auto;display:block}
+.court .pl{position:absolute;top:50%;transform:translateY(-50%);width:42%;background:var(--paper);border:2px solid var(--ink);border-radius:14px;padding:14px 16px}
+.court .pl.a{left:4%}.court .pl.b{right:4%}
+.pl .who{display:flex;align-items:center;gap:8px;font:700 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.pl .who img{width:26px;height:26px;border-radius:6px}
+.pl .nm{font:400 34px/1 var(--display);text-transform:uppercase;margin:8px 0 6px}
+.pl .pr{font:400 46px/1 var(--display);color:var(--red)}
+.pl .st{font:500 13px var(--mono);margin-top:6px}
+.net{position:absolute;left:50%;top:10%;bottom:10%;width:6px;margin-left:-3px;background:repeating-linear-gradient(#fff 0 4px,transparent 4px 8px)}
+.stacks{display:flex;gap:28px;align-items:flex-end;height:360px;border-bottom:3px solid var(--ink);position:relative;padding:0 10px}
+.col{flex:1;display:flex;flex-direction:column-reverse;height:100%;position:relative}
+.col .stake{height:48%;background:var(--ink);color:var(--paper);display:flex;align-items:flex-end;justify-content:center;padding-bottom:12px;font:500 14px var(--mono);border-radius:0 0 4px 4px}
+.col .prof{height:52%;background:var(--red);color:#fff;display:flex;align-items:flex-start;justify-content:center;padding-top:12px;font:500 14px var(--mono);border-radius:6px 6px 0 0;transform-origin:bottom;animation:rise 4.5s cubic-bezier(.3,.8,.2,1) infinite}
+.col.b .stake{height:49.5%}.col.b .prof{height:50.5%}
+@keyframes rise{0%,10%{transform:scaleY(.2)}45%,100%{transform:scaleY(1)}}
+.col .lbl{position:absolute;bottom:-38px;left:0;right:0;text-align:center;font:400 22px var(--display);text-transform:uppercase}
+.level{position:absolute;left:-10px;right:-10px;top:-2px;border-top:2px dashed var(--ink)}
+.level span{position:absolute;right:0;top:-34px;font:italic 400 24px var(--serif);background:var(--paper);padding:0 6px}
+.lockup{margin-top:64px;display:flex;align-items:baseline;gap:14px}
+.lockup b{font:400 96px/0.85 var(--display);color:var(--red)}
+.lockup span{font:italic 400 26px var(--serif)}
+
+/* clv, black */
+.black{background:var(--ink);color:var(--chalk)}
+.black .hd .n{-webkit-text-stroke-color:#6A6158}
+.chart{position:relative}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 3.5s ease-out forwards .2s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.later{opacity:0;animation:fin .6s forwards 3.4s}
+@keyframes fin{to{opacity:1}}
+.clvrow{display:grid;grid-template-columns:repeat(3,1fr);margin-top:48px;border-top:1px solid #3B3631}
+.clvrow div{padding:24px 0 0;font:italic 400 24px var(--serif);color:#B9B0A4}
+.clvrow b{display:block;font:400 72px/0.9 var(--display);color:var(--chalk);font-style:normal;margin-bottom:6px}
+.clvrow b.r{color:var(--red)}
+
+/* table */
+.table{border:2px solid var(--ink);border-radius:18px;overflow:hidden;background:#fff}
+.tr{display:grid;grid-template-columns:56px minmax(0,1.5fr) 110px 170px 92px minmax(0,1.3fr);gap:16px;align-items:center;padding:14px 24px;border-bottom:1.5px solid var(--paper2)}
+.tr:last-child{border-bottom:0}
+.tr.h{background:var(--ink);color:var(--paper);font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:12px 24px}
+.tr .pos{font:400 36px var(--display);color:var(--mute)}
+.tr .bk{display:flex;align-items:center;gap:12px;font:400 26px var(--display);text-transform:uppercase;min-width:0}
+.tr .bk img{width:40px;height:40px;border-radius:9px}
+.tr .num{font:500 15px var(--mono)}
+.form{display:flex;gap:5px}
+.form i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:700 10px var(--mono);color:#fff;font-style:normal}
+.form .g{background:#2E9D5B}.form .a{background:#E0A21B}.form .r{background:var(--red)}
+.gauge{position:relative;width:64px;height:64px}
+.gauge svg{width:64px;height:64px;transform:rotate(-90deg)}
+.gauge b{position:absolute;inset:0;display:grid;place-items:center;font:400 22px var(--display)}
+.ring{animation:ring 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes ring{from{stroke-dasharray:0 100}}
+.note{font:italic 400 21px/1.15 var(--serif)}
+.tr.danger{background:#FFF1EC}
+
+/* alerts, red */
+.redb{background:var(--red);color:#fff}
+.redb .hd .n{-webkit-text-stroke-color:#FFB49C}
+.al{display:grid;grid-template-columns:1fr 360px;gap:56px;align-items:center}
+.dc{max-width:720px;background:#313338;border-radius:16px;padding:20px;font-family:var(--ui);color:#DBDEE1;box-shadow:0 30px 60px -20px rgba(80,10,0,.5);transform:rotate(-1.5deg)}
+.dc .mh{display:flex;align-items:center;gap:10px;font-size:15px;color:#fff;font-weight:700}
+.dc .mh .av{width:42px;height:42px;border-radius:50%;background:var(--paper);display:grid;place-items:center}
+.dc .mh .av svg{width:30px;height:30px}
+.dc .mh .app{background:#5865F2;font-size:10px;padding:2px 5px;border-radius:3px}
+.dc .mh time{font-weight:500;color:#949BA4;font-size:12px}
+.emb{margin:10px 0 0 52px;background:#2B2D31;border-left:4px solid var(--red);border-radius:6px;padding:14px 16px}
+.emb .et{font-weight:800;color:#fff;font-size:16px;margin-bottom:10px}
+.emb .f{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.emb .f div{font-size:12px;font-weight:800;color:#B5BAC1}
+.emb .f span{display:block;font-weight:500;color:#DBDEE1;font-size:15px;margin-top:2px}
+.phone{width:330px;height:640px;border-radius:52px;background:#0E0E0E;padding:12px;box-shadow:0 40px 80px -30px rgba(60,5,0,.7);justify-self:center;transform:rotate(3deg)}
+.screen{width:100%;height:100%;border-radius:42px;overflow:hidden;background:#DCE7D3;display:flex;flex-direction:column;position:relative}
+.screen .tb{background:#fff;padding:44px 16px 12px;display:flex;align-items:center;gap:10px;color:#111;border-bottom:1px solid #ddd}
+.screen .tb .av{width:38px;height:38px;border-radius:50%;background:var(--ink);display:grid;place-items:center}
+.screen .tb .av svg{width:26px;height:26px}
+.screen .tb b{font:800 15px var(--ui);display:block}
+.screen .tb span{font:500 12px var(--ui);color:#3E8ED0}
+.chat{flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:10px;justify-content:flex-end;background:radial-gradient(circle at 20% 20%,#E6EFD9 0,transparent 40%),#D3E2C6}
+.bub{background:#fff;color:#111;border-radius:16px 16px 16px 4px;padding:10px 12px;max-width:92%;font:500 13px/1.35 var(--ui);box-shadow:0 1px 1px rgba(0,0,0,.08);opacity:0;transform:translateY(12px);animation:bin .5s forwards}
+.bub:nth-child(1){animation-delay:.3s}.bub:nth-child(2){animation-delay:1.3s}.bub:nth-child(3){animation-delay:2.3s}
+@keyframes bin{to{opacity:1;transform:none}}
+.bub b{display:block;font-weight:800;font-size:14px}
+.bub .e{color:var(--red2);font-weight:800}
+.bub time{display:block;text-align:right;font-size:10px;color:#8A9A88;margin-top:2px}
+.bub .k{display:flex;gap:6px;margin-top:8px}
+.bub .k span{flex:1;text-align:center;background:#EEF4FA;color:#2A7BC0;font-weight:700;border-radius:8px;padding:6px 0;font-size:12px}
+
+/* proof */
+.results{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start}
+.res{border-top:3px solid var(--ink)}
+.rr{display:grid;grid-template-columns:70px minmax(0,1fr) 120px 82px 82px;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid #CFC6B6}
+.rr .d{font:500 12px var(--mono);color:var(--mute);text-transform:uppercase}
+.rr .m b{font:400 24px/1 var(--display);text-transform:uppercase;display:block}
+.rr .m span{font:italic 400 19px var(--serif);color:var(--ink2)}
+.rr .bk{display:flex;align-items:center;gap:8px;font:600 13px var(--ui)}
+.rr .bk img{width:26px;height:26px;border-radius:6px}
+.rr .c{font:500 15px var(--mono);text-align:right}
+.ft{font:400 18px var(--display);text-align:center;padding:6px 0;border-radius:6px;letter-spacing:.04em}
+.ft.w{background:var(--green);color:#fff}.ft.l{background:var(--red);color:#fff}.ft.p{background:var(--paper2)}
+.big{background:var(--ink);color:var(--chalk);border-radius:22px;padding:30px;position:sticky;top:20px}
+.big .k{font:500 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#9A9186}
+.big .v{font:400 110px/0.9 var(--display);color:var(--gold);margin:6px 0 4px}
+.big .s{font:italic 400 24px var(--serif);color:#B9B0A4}
+.big svg{width:100%;margin-top:22px}
+.big .row2{display:flex;justify-content:space-between;margin-top:20px;border-top:1px solid #3B3631;padding-top:18px}
+.big .row2 b{display:block;font:400 40px var(--display);color:var(--chalk)}
+.big .row2 span{font:500 11px var(--mono);color:#9A9186;letter-spacing:.1em;text-transform:uppercase}
+
+/* cta */
+.cta{background:var(--ink);color:var(--chalk);padding:120px 0 0;text-align:center}
+.cta h2{font:400 clamp(64px,12vw,200px)/.84 var(--display);text-transform:uppercase}
+.cta h2 i{font:italic 400 .7em var(--serif);text-transform:none;color:var(--red)}
+.cta .ctas{justify-content:center;margin-top:40px}
+.cta .btn{border-color:var(--chalk)}
+.cta .btn.ghost{color:var(--chalk)}
+.cta .crest{width:120px;height:120px;margin:0 auto 32px}
+footer{margin-top:100px;border-top:1px solid #3B3631;padding:24px 0 36px;font:500 12px var(--mono);color:#8D857A;letter-spacing:.06em;text-transform:uppercase}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:1100px){
+  .hero .grid{grid-template-columns:1fr}
+  .pitch-bg{right:-120px;top:-40px}
+  .mg{grid-template-columns:1fr 1fr}.donut{grid-column:span 2;max-width:440px;margin:0 auto;order:-1}
+  .arb,.al,.results{grid-template-columns:1fr}
+  .big{position:relative;top:0}
+}
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  nav ul,.issue .hide{display:none}
+  nav .wrap{height:64px;gap:12px}
+  nav .btn{margin-left:auto;height:40px;padding:0 16px;font-size:12px}
+  .brand svg{width:34px;height:34px}.wm{font-size:26px}.wm i{font-size:29px}
+  .hero{padding:32px 0 70px}
+  h1{font-size:76px}
+  .sub{font-size:24px;margin:18px 0 26px}
+  .btn{height:48px;padding:0 20px;font-size:13px}
+  .pitch-bg{width:520px;right:-200px;top:0}
+  .board{padding:12px}
+  .br{grid-template-columns:8px minmax(0,1fr) 92px 50px;gap:8px;padding:9px 2px}
+  .br>img,.br .flaps.fair,.br.h>:nth-child(3),.br.h>:nth-child(5){display:none}
+  .fl{width:19px;height:34px;font-size:22px}
+  .fl.dot{width:7px}
+  .fx b{font-size:18px}
+  .fx span{font-size:11px}
+  .edge{font-size:20px}
+  .sticker{width:120px;height:120px;left:auto;right:-6px;bottom:-104px}
+  .hero{padding-bottom:110px}
+  .sticker div{font-size:34px}.sticker span{font-size:14px}
+  .books .wrap{grid-template-columns:1fr;gap:16px}
+  .lg span{font-size:12px}
+  .sec{padding:80px 0}
+  .hd{grid-template-columns:1fr;gap:4px;margin-bottom:36px}
+  .hd .n{font-size:90px}
+  .hd h2{font-size:56px}
+  .hd p{font-size:23px}
+  .mg{grid-template-columns:1fr;gap:28px}.donut{grid-column:auto;max-width:330px}
+  .oc b{font-size:44px}
+  .verdict{grid-template-columns:auto 1fr;padding:20px;gap:16px}
+  .verdict .e{grid-column:span 2;font-size:72px}
+  .verdict .t{font-size:24px}.verdict .t b{font-size:28px}
+  .court{padding:12px}
+  .court .pl{position:relative;top:auto;transform:none;width:100%;margin-top:10px}
+  .court .pl.a,.court .pl.b{left:auto;right:auto}
+  .net{display:none}
+  .stacks{height:280px;gap:16px}
+  .lockup b{font-size:72px}
+  .clvrow{grid-template-columns:1fr}
+  .clvrow b{font-size:60px}
+  .chart .ax text{font-size:36px}
+  .chart .ax path{stroke-width:2}
+  .chart .ann{font-size:58px}
+  .chart .big8{font-size:96px}
+  .donut .c b{font-size:54px}
+  .donut .c span{font-size:17px}
+  .issue .wrap{height:auto;padding-top:8px;padding-bottom:8px;font-size:11px}
+  .table{border-radius:14px}
+  .tr{grid-template-columns:minmax(0,1fr) 64px;gap:10px;padding:14px 14px}
+  .tr>.pos,.tr>.num,.tr>.form{display:none}
+  .tr .note{grid-column:span 2;font-size:19px}
+  .tr.h{display:none}
+  .tr .bk{font-size:22px}
+  .phone{transform:none;width:310px;height:600px}
+  .dc{transform:none;padding:14px}
+  .emb{margin-left:0}
+  .emb .f{grid-template-columns:1fr 1fr}
+  .rr{grid-template-columns:minmax(0,1fr) 70px;gap:10px}
+  .rr>.d,.rr>.bk,.rr>.c{display:none}
+  .big .v{font-size:84px}
+  .cta{padding-top:80px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+  .bub,.later{opacity:1;transform:none}
+  .draw{stroke-dashoffset:0}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="crest" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="3.5"/>
+      <path d="M3 24H45" stroke="currentColor" stroke-width="2.5"/>
+      <circle cx="24" cy="24" r="8.5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M24 24 L24 3 A21 21 0 0 1 38.8 9.2 Z" fill="#FF4B1F"/>
+      <circle cx="24" cy="24" r="2.6" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="issue"><div class="wrap"><span>Matchday edition / Thu 12 Nov 2026</span><span class="hide">35 bookmakers / Pinnacle fair line / Updated every few seconds</span><span>Sample data</span></div></div>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><svg><use href="#crest"/></svg><span class="wm">Open<i>ev</i></span></a>
+    <ul><li><a href="#margin">The price</a></li><li><a href="#arbs">Arbs</a></li><li><a href="#clv">Your edge</a></li><li><a href="#table">Accounts</a></li><li><a href="#results">Results</a></li></ul>
+    <a class="btn ink" href="#">Get the board</a>
+  </div>
+</nav>
+
+<header class="hero band">
+  <div class="wrap grid">
+    <div>
+      <div class="kicker"><b></b>Live / 112 value bets right now</div>
+      <h1>Spot the<span class="s">wrong</span>price.</h1>
+      <p class="sub">Every bookmaker, checked against <em>the sharpest line in betting.</em></p>
+      <div class="ctas"><a class="btn red" href="#">See today's prices <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 8h11M9 4l4 4-4 4"/></svg></a><a class="btn" href="#results">The results</a></div>
+    </div>
+    <div class="board-wrap">
+      <svg class="pitch-bg" viewBox="0 0 760 500" aria-hidden="true">
+        <rect width="760" height="500" rx="20" fill="#0E5A36"/>
+        <g fill="#0B4D2E"><rect x="0" width="76" height="500"/><rect x="152" width="76" height="500"/><rect x="304" width="76" height="500"/><rect x="456" width="76" height="500"/><rect x="608" width="76" height="500"/></g>
+        <g fill="none" stroke="#F7F3EA" stroke-opacity=".55" stroke-width="3"><rect x="20" y="20" width="720" height="460"/><path d="M380 20V480"/><circle cx="380" cy="250" r="70"/><rect x="20" y="130" width="110" height="240"/><rect x="630" y="130" width="110" height="240"/></g>
+      </svg>
+      <div class="board" role="img" aria-label="Split flap board of live value bets, sample data">
+        <div class="bh"><span>The board / value bets</span><span class="live">Live</span></div>
+        <div class="br h"><span></span><span>Fixture</span><span></span><span>Book</span><span>Fair</span><span style="text-align:right">Edge</span></div>
+        <div id="board"></div>
+        <div class="bf"><span>Fair = Pinnacle, margin removed</span><span id="upd">Updated 2s ago</span></div>
+      </div>
+      <div class="sticker"><div>+5.8%</div><span>on Arsenal<br>at Paddy Power</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="books">
+  <div class="wrap">
+    <h3>35 books.<br><i>one fair line.</i></h3>
+    <div class="lg" id="logos"></div>
+  </div>
+</section>
+
+<section class="sec band green" id="margin">
+  <svg class="lines" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="#F7F3EA" stroke-width="2"><path d="M720 0V900"/><circle cx="720" cy="450" r="160"/><rect x="-2" y="250" width="180" height="400"/><rect x="1262" y="250" width="180" height="400"/></g></svg>
+  <div class="wrap" style="position:relative">
+    <div class="hd"><div class="n">01</div><div><h2>The margin, removed.</h2><p>Pinnacle builds 2.9% into Arsenal v Liverpool. We take it out.</p></div></div>
+    <div class="mg">
+      <div class="odds-col"><h4>Pinnacle prices</h4>
+        <div class="oc"><span>Arsenal</span><b>2.25</b></div><div class="oc"><span>Draw</span><b>3.55</b></div><div class="oc"><span>Liverpool</span><b>3.30</b></div>
+      </div>
+      <div class="donut">
+        <svg viewBox="-150 -150 300 300" aria-label="Implied probabilities sum to 102.9 percent, the 2.9 percent margin slice is lifted out">
+          <g transform="rotate(-90)" fill="none" stroke-width="44">
+            <circle r="110" pathLength="102.9" stroke="#F7F3EA" stroke-dasharray="43.0 59.9"/>
+            <circle r="110" pathLength="102.9" stroke="#F2C14E" stroke-dasharray="27.2 75.7" stroke-dashoffset="-43.2"/>
+            <circle r="110" pathLength="102.9" stroke="#7FB894" stroke-dasharray="29.2 73.7" stroke-dashoffset="-70.6"/>
+          </g>
+          <g class="slice"><g transform="rotate(-90)"><circle r="110" pathLength="102.9" fill="none" stroke="#FF4B1F" stroke-width="44" stroke-dasharray="2.7 100.2" stroke-dashoffset="-100.1"/></g></g>
+          <g class="tag-m" font-family="DM Mono" font-size="12" fill="#F7F3EA"><text x="-20" y="-196" text-anchor="middle">MARGIN 2.9%</text></g>
+          <g font-family="Anton" font-size="16" fill="#141210"><text x="106" y="-21" text-anchor="middle">ARS</text></g>
+          <g font-family="Anton" font-size="16" fill="#141210"><text x="-35" y="110" text-anchor="middle">DRAW</text></g>
+          <g font-family="Anton" font-size="16" fill="#141210"><text x="-97" y="-45" text-anchor="middle">LIV</text></g>
+        </svg>
+        <div class="c"><div><b>100%</b><span>after the cut</span></div></div>
+      </div>
+      <div class="odds-col"><h4>Fair prices</h4>
+        <div class="oc hi"><span>Arsenal</span><b>2.32</b></div><div class="oc"><span>Draw</span><b>3.65</b></div><div class="oc"><span>Liverpool</span><b>3.40</b></div>
+      </div>
+    </div>
+    <div class="verdict"><img src="logos/paddypower.png" alt="Paddy Power"><div class="t">Paddy Power offers <b>2.45</b> on a <b>2.32</b> shot.</div><div class="e">+5.8%</div></div>
+  </div>
+</section>
+
+<section class="sec band" id="arbs">
+  <div class="wrap">
+    <div class="hd"><div class="n">02</div><div><h2>Both sides. One result.</h2><p>When two books disagree on Sinner v Alcaraz, you win either way.</p></div></div>
+    <div class="arb">
+      <div class="court">
+        <svg viewBox="0 0 600 300" aria-hidden="true"><rect width="600" height="300" rx="10" fill="#2F6FD0"/><g fill="none" stroke="#fff" stroke-width="3"><rect x="20" y="20" width="560" height="260"/><path d="M20 52H580M20 248H580M150 52V248M450 52V248M150 150H450"/></g></svg>
+        <div class="net"></div>
+        <div class="pl a"><div class="who"><img src="logos/unibet.png" alt="">Unibet</div><div class="nm">Sinner</div><div class="pr">2.08</div><div class="st">Stake £49.27</div></div>
+        <div class="pl b"><div class="who"><img src="logos/smarkets.png" alt="">Smarkets</div><div class="nm">Alcaraz</div><div class="pr">2.02</div><div class="st">Stake £50.73</div></div>
+      </div>
+      <div>
+        <div class="stacks">
+          <div class="level"><span>£102.48 either way</span></div>
+          <div class="col a"><div class="stake">£49.27</div><div class="prof">+£53.21</div><div class="lbl">If Sinner wins</div></div>
+          <div class="col b"><div class="stake">£50.73</div><div class="prof">+£51.74</div><div class="lbl">If Alcaraz wins</div></div>
+        </div>
+        <div class="lockup"><b>+2.48%</b><span>locked, whoever wins in Turin.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec band black" id="clv">
+  <div class="wrap">
+    <div class="hd"><div class="n">03</div><div><h2>Beat the close.</h2><p>The number sharps use to know they are good, tracked on every bet.</p></div></div>
+    <div class="chart">
+      <svg viewBox="0 0 1280 440" aria-label="Arsenal price drifts from 2.34 to 2.26 by kick off, bet placed at 2.45">
+        <g class="ax" font-family="DM Mono" font-size="14" fill="#7A7166">
+          <path d="M80 60H1280M80 160H1280M80 260H1280M80 360H1280" stroke="#2A2622"/>
+          <text x="0" y="65">2.50</text><text x="0" y="165">2.40</text><text x="0" y="265">2.30</text><text x="0" y="365">2.20</text>
+          <text x="80" y="420">MON</text><text x="420" y="420">WED</text><text x="760" y="420">FRI</text><text x="1280" y="420" text-anchor="end">SAT 15:00</text>
+        </g>
+        <rect x="170" y="110" width="1110" height="200" fill="#FF4B1F" fill-opacity=".14" class="later"/>
+        <path d="M170 110H1280" stroke="#F2C14E" stroke-width="3" stroke-dasharray="10 8"/>
+        <path class="draw" pathLength="1" d="M80 220 L170 230 L260 215 L350 245 L440 232 L530 248 L620 262 L710 250 L800 275 L890 280 L980 290 L1070 296 L1170 312 L1280 310" fill="none" stroke="#F7F3EA" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="170" cy="110" r="12" fill="#F2C14E"/>
+        <text class="ann" x="196" y="92" font-family="Instrument Serif" font-style="italic" font-size="30" fill="#F2C14E">You took 2.45 on Monday.</text>
+        <g class="later"><circle cx="1280" cy="310" r="12" fill="#FF4B1F"/>
+        <text class="ann" x="1250" y="356" text-anchor="end" font-family="Instrument Serif" font-style="italic" font-size="30" fill="#F7F3EA">It closed at 2.26.</text>
+        <path d="M1220 120V300" stroke="#FF4B1F" stroke-width="3"/><path d="M1210 130L1220 116L1230 130M1210 290L1220 304L1230 290" fill="none" stroke="#FF4B1F" stroke-width="3"/>
+        <text x="1196" y="222" text-anchor="end" font-family="Anton" font-size="64" fill="#FF4B1F" class="big8">+8.4% CLV</text></g>
+      </svg>
+    </div>
+    <div class="clvrow"><div><b class="r">+3.9%</b>your average CLV</div><div><b>71%</b>of bets beat the close</div><div><b>412</b>bets tracked</div></div>
+  </div>
+</section>
+
+<section class="sec band" id="table">
+  <div class="wrap">
+    <div class="hd"><div class="n">04</div><div><h2>The bookmaker table.</h2><p>Health per account. Know who is about to limit you.</p></div></div>
+    <div class="table" id="ltable"></div>
+  </div>
+</section>
+
+<section class="sec band redb" id="alerts">
+  <div class="wrap">
+    <div class="hd"><div class="n">05</div><div><h2>On your phone before the price goes.</h2><p>Alerts in Discord and Telegram, seconds after the line moves.</p></div></div>
+    <div class="al">
+      <div class="dc">
+        <div class="mh"><span class="av"><svg style="color:#141210"><use href="#crest"/></svg></span>OpenEV <span class="app">APP</span><time>Today at 14:52</time></div>
+        <div class="emb"><div class="et">+5.8% / Arsenal v Liverpool</div>
+          <div class="f"><div>Bet<span>Arsenal to win</span></div><div>Book<span>Paddy Power</span></div><div>Price<span>2.45</span></div><div>Fair<span>2.32</span></div><div>Stake<span>1.9% Kelly</span></div><div>Kick off<span>Sat 15:00</span></div></div>
+        </div>
+        <div class="mh" style="margin-top:20px"><span class="av"><svg style="color:#141210"><use href="#crest"/></svg></span>OpenEV <span class="app">APP</span><time>Today at 14:53</time></div>
+        <div class="emb" style="border-left-color:#2E9D5B"><div class="et">Arb +2.48% / Sinner v Alcaraz</div>
+          <div class="f"><div>Leg A<span>Unibet 2.08</span></div><div>Leg B<span>Smarkets 2.02</span></div><div>Open for<span>41s</span></div></div>
+        </div>
+      </div>
+      <div class="phone"><div class="screen">
+        <div class="tb"><span class="av"><svg style="color:#F2EDE3"><use href="#crest"/></svg></span><div><b>OpenEV Alerts</b><span>bot</span></div></div>
+        <div class="chat">
+          <div class="bub"><b>Value bet <span class="e">+5.8%</span></b>Arsenal 2.45 at Paddy Power<br>Fair 2.32 / Sat 15:00<time>14:52</time><div class="k"><span>Open</span><span>Log bet</span></div></div>
+          <div class="bub"><b>Arb <span class="e">+2.48%</span></b>Sinner 2.08 Unibet<br>Alcaraz 2.02 Smarkets<time>14:53</time></div>
+          <div class="bub"><b>Account health</b>Ladbrokes dropped to 31. Give it a rest this weekend.<time>14:55</time></div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec band" id="results">
+  <div class="wrap">
+    <div class="hd"><div class="n">06</div><div><h2>Results. Losses too.</h2><p>Every alert, public, checked against the close.</p></div></div>
+    <div class="results">
+      <div class="res">
+        <div class="rr"><span class="d">11 Nov</span><span class="m"><b>Inter v Napoli</b><span>Napoli +0.25 at 2.06</span></span><span class="bk"><img src="logos/betfair.png" alt="">Betfair</span><span class="c">+5.6%</span><span class="ft l">LOST</span></div>
+        <div class="rr"><span class="d">11 Nov</span><span class="m"><b>Celtics v Knicks</b><span>Knicks +5.5 at 2.00</span></span><span class="bk"><img src="logos/fanduel.png" alt="">FanDuel</span><span class="c">+3.6%</span><span class="ft w">WON</span></div>
+        <div class="rr"><span class="d">10 Nov</span><span class="m"><b>Chiefs v Bills</b><span>Bills at 2.30</span></span><span class="bk"><img src="logos/draftkings.png" alt="">DraftKings</span><span class="c">-1.7%</span><span class="ft l">LOST</span></div>
+        <div class="rr"><span class="d">09 Nov</span><span class="m"><b>Newcastle v Villa</b><span>Over 2.5 at 1.90</span></span><span class="bk"><img src="logos/coral.png" alt="">Coral</span><span class="c">+6.7%</span><span class="ft w">WON</span></div>
+        <div class="rr"><span class="d">09 Nov</span><span class="m"><b>Man City v Spurs</b><span>The draw at 4.60</span></span><span class="bk"><img src="logos/ladbrokes_uk.png" alt="">Ladbrokes</span><span class="c">+6.2%</span><span class="ft l">LOST</span></div>
+        <div class="rr"><span class="d">08 Nov</span><span class="m"><b>Brighton v Chelsea</b><span>Both teams to score at 1.80</span></span><span class="bk"><img src="logos/virginbet.png" alt="">Virgin Bet</span><span class="c">+5.3%</span><span class="ft w">WON</span></div>
+        <div class="rr"><span class="d">08 Nov</span><span class="m"><b>Real Madrid v Barcelona</b><span>Barcelona at 3.10</span></span><span class="bk"><img src="logos/polymarket.png" alt="">Polymarket</span><span class="c">0.0%</span><span class="ft p">PUSH</span></div>
+      </div>
+      <div class="big">
+        <div class="k">Average CLV / every alert</div>
+        <div class="v">+3.1%</div>
+        <div class="s">3,184 alerts, nothing deleted.</div>
+        <svg viewBox="0 0 300 110" aria-hidden="true"><path d="M0 100 L25 94 L50 97 L75 84 L100 80 L125 86 L150 70 L175 64 L200 66 L225 50 L250 40 L275 34 L300 14" fill="none" stroke="#F2C14E" stroke-width="3.5" stroke-linejoin="round"/><path d="M0 100 L25 94 L50 97 L75 84 L100 80 L125 86 L150 70 L175 64 L200 66 L225 50 L250 40 L275 34 L300 14 V110 H0Z" fill="#F2C14E" fill-opacity=".12"/></svg>
+        <div class="row2"><div><b>1,402</b><span>won</span></div><div><b>1,671</b><span>lost</span></div><div><b>111</b><span>void</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <svg class="crest" style="color:#F2EDE3"><use href="#crest"/></svg>
+    <h2>Your edge,<br><i>every matchday.</i></h2>
+    <div class="ctas"><a class="btn red" href="#">Get the board</a><a class="btn ghost" href="#">Join the Discord</a></div>
+  </div>
+  <footer><div class="wrap"><span>OpenEV / Concept B / Sample data</span><span>18+ / Gamble responsibly / No edge is guaranteed</span></div></footer>
+</section>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var L = [['paddypower','Paddy Power'],['betfair','Betfair'],['smarkets','Smarkets'],['ladbrokes_uk','Ladbrokes'],['coral','Coral'],['skybet','Sky Bet'],['williamhill','William Hill'],['unibet','Unibet'],['virginbet','Virgin Bet'],['888sport','888sport'],['betvictor','BetVictor'],['matchbook','Matchbook'],['leovegas','LeoVegas'],['betmgm','BetMGM'],['pinnacle','Pinnacle'],['fanduel','FanDuel'],['draftkings','DraftKings'],['kalshi','Kalshi'],['polymarket','Polymarket']];
+  document.getElementById('logos').innerHTML = L.map(function(l){return '<span><img src="logos/'+l[0]+'.png" alt="">'+l[1]+'</span>'}).join('') + '<span style="padding-left:12px;background:var(--ink);color:var(--paper)">+16 more</span>';
+
+  var rows = [
+    {k:'linear-gradient(90deg,#EF0107 0 60%,#fff 60%)',fx:'Arsenal v Liverpool',s:'Arsenal to win / Sat 15:00',b:'paddypower',p:2.45,f:2.32},
+    {k:'#1F4FD8',fx:'Sinner v Alcaraz',s:'Sinner / ATP Finals',b:'unibet',p:2.08,f:1.99},
+    {k:'repeating-linear-gradient(90deg,#111 0 3px,#fff 3px 6px)',fx:'Newcastle v Villa',s:'Over 2.5 goals',b:'coral',p:1.90,f:1.82},
+    {k:'#6CABDD',fx:'Man City v Spurs',s:'The draw',b:'ladbrokes_uk',p:4.60,f:4.33},
+    {k:'#0057B8',fx:'Brighton v Chelsea',s:'Both teams to score',b:'virginbet',p:1.80,f:1.73},
+    {k:'#007A33',fx:'Celtics v Knicks',s:'Knicks +5.5 / NBA',b:'fanduel',p:2.00,f:1.92}
+  ];
+  function flaps(v,cls){var s=v.toFixed(2);return '<div class="flaps '+cls+'">'+s.split('').map(function(c){return '<span class="fl'+(c==='.'?' dot':'')+'">'+c+'</span>'}).join('')+'</div>'}
+  function edge(r){return (r.p/r.f-1)*100}
+  var el = document.getElementById('board');
+  el.innerHTML = rows.map(function(r){var e=edge(r);return '<div class="br"><span class="kit" style="background:'+r.k+'"></span><div class="fx"><b>'+r.fx+'</b><span>'+r.s+'</span></div><img src="logos/'+r.b+'.png" alt="">'+flaps(r.p,'book')+flaps(r.f,'fair')+'<div class="edge">+'+e.toFixed(1)+'%<small><i style="width:'+Math.min(100,e/8*100)+'%"></i></small></div></div>'}).join('');
+
+  var T = [
+    ['paddypower','Paddy Power',214,'gggag',86,'Healthy. Mix in the odd acca.'],
+    ['skybet','Sky Bet',96,'ggggg',91,'Clean. Max stakes untouched.'],
+    ['virginbet','Virgin Bet',77,'ggagg',74,'Fine. Keep using the boosts.'],
+    ['coral','Coral',132,'gaaga',63,'Max stake trimmed to £40.'],
+    ['ladbrokes_uk','Ladbrokes',158,'aarrr',31,'Nine edge bets in a row. Rest it.']
+  ];
+  document.getElementById('ltable').innerHTML = '<div class="tr h"><span>Pos</span><span>Bookmaker</span><span>Bets</span><span>Form</span><span>Health</span><span>Verdict</span></div>' + T.map(function(t,i){
+    var c = t[4]>70?'#2E9D5B':t[4]>45?'#E0A21B':'#FF4B1F';
+    return '<div class="tr'+(t[4]<45?' danger':'')+'"><span class="pos">'+(i+1)+'</span><span class="bk"><img src="logos/'+t[0]+'.png" alt="">'+t[1]+'</span><span class="num">'+t[2]+' bets</span><span class="form">'+t[3].split('').map(function(f){return '<i class="'+f+'">'+(f==='g'?'OK':f==='a'?'!':'X')+'</i>'}).join('')+'</span><span class="gauge"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#E8E1D3" stroke-width="6"/><circle class="ring" cx="20" cy="20" r="16" fill="none" stroke="'+c+'" stroke-width="6" stroke-linecap="round" pathLength="100" stroke-dasharray="'+t[4]+' 100"/></svg><b style="color:'+c+'">'+t[4]+'</b></span><span class="note">'+t[5]+'</span></div>';
+  }).join('');
+
+  if (reduce) return;
+  var upd = document.getElementById('upd'), sec = 2;
+  setInterval(function(){
+    var i = Math.floor(Math.random()*rows.length), r = rows[i];
+    var step = (Math.random()<.5?-1:1)*(r.p>3?.05:.01*(1+Math.floor(Math.random()*3)));
+    var np = Math.round(Math.min(r.f*1.075, Math.max(r.f*1.015, Math.round((r.p+step)*100)/100))*100)/100;
+    if (np===r.p) return;
+    var old = r.p.toFixed(2), nw = np.toFixed(2); r.p = np;
+    var row = el.children[i], fl = row.querySelectorAll('.flaps.book .fl');
+    for (var j=0;j<nw.length;j++){ if (old[j]!==nw[j]) { (function(n,c){ n.textContent=c; n.classList.remove('flip'); void n.offsetWidth; n.classList.add('flip'); })(fl[j],nw[j]); } }
+    var e = edge(r);
+    row.querySelector('.edge').firstChild.nodeValue = '+'+e.toFixed(1)+'%';
+    row.querySelector('.edge i').style.width = Math.min(100,e/8*100)+'%';
+    sec = 0;
+  },900);
+  setInterval(function(){ sec++; upd.textContent = 'Updated '+sec+'s ago'; },1000);
+})();
+</script>
+</body>
+</html>

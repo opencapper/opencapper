@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenEV Concepts</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEEDE9;--ink:#151515;--mute:#6B6A66}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Bricolage Grotesque',system-ui,sans-serif;padding:48px 32px 64px;overflow-x:hidden}
+header{max-width:1400px;margin:0 auto 36px}
+h1{font-size:44px;letter-spacing:-.04em;font-weight:800}
+header p{color:var(--mute);font-size:18px;margin-top:6px}
+.grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+a.c{display:flex;flex-direction:column;background:#fff;border-radius:22px;overflow:hidden;color:inherit;text-decoration:none;box-shadow:0 20px 50px -30px rgba(0,0,0,.35);transition:transform .2s}
+a.c:hover{transform:translateY(-4px)}
+.shot{height:620px;overflow:hidden;background:#ddd;position:relative}
+.shot img{width:100%;display:block}
+.meta{padding:20px 22px 24px}
+.meta .k{font:500 12px 'IBM Plex Mono',monospace;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.meta h2{font-size:26px;letter-spacing:-.03em;margin:4px 0 6px}
+.meta p{color:#3A3935;font-size:16px;line-height:1.35}
+.links{display:flex;gap:14px;margin-top:12px;font:500 13px 'IBM Plex Mono',monospace}
+.links span{color:var(--mute)}
+@media (max-width:1000px){.grid{grid-template-columns:1fr}.shot{height:440px}}
+@media (max-width:600px){body{padding:28px 16px 40px}h1{font-size:34px}}
+</style>
+</head>
+<body>
+<header><h1>OpenEV, three directions</h1><p>Static concepts with sample data. Click a card to open the page.</p></header>
+<div class="grid">
+  <a class="c" href="concept-a.html">
+    <div class="shot"><img src="concept-a-1440.png" alt="Concept A preview"></div>
+    <div class="meta"><div class="k">Concept A / Terminal</div><h2>Bet the gap.</h2><p>A dark trading terminal: live ticker, flashing prices, depth bars and a best price ladder against the fair line.</p><div class="links"><span>Archivo Expanded + JetBrains Mono / amber on ink</span></div></div>
+  </a>
+  <a class="c" href="concept-b.html">
+    <div class="shot"><img src="concept-b-1440.png" alt="Concept B preview"></div>
+    <div class="meta"><div class="k">Concept B / Matchday</div><h2>Spot the wrong price.</h2><p>A bold UK sports paper: split flap scoreboard, pitch and court graphics, a bookmaker league table, colour block sections.</p><div class="links"><span>Anton + Instrument Serif / vermilion, pitch green, paper</span></div></div>
+  </a>
+  <a class="c" href="concept-c.html">
+    <div class="shot"><img src="concept-c-1440.png" alt="Concept C preview"></div>
+    <div class="meta"><div class="k">Concept C / Edge engine</div><h2>Odds in. Edge out.</h2><p>A friendly product site: prices flow into the app, animated diagrams for each feature, every alert drawn as a dot.</p><div class="links"><span>Bricolage Grotesque + Plex Mono / violet and mint</span></div></div>
+  </a>
+</div>
+</body>
+</html>

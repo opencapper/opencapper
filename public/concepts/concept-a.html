@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenEV Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06080B;--panel:#0C1015;--panel2:#10161D;--line:#1A222C;--line2:#26313D;
+  --text:#E7EDF3;--mute:#7C8896;--dim:#4A5562;
+  --amber:#FFB020;--amber2:#FFCF6B;--teal:#2BE4A7;--red:#FF5D5D;--blue:#5AA9FF;
+  --mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Archivo',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.45;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block}
+.wrap{max-width:1320px;margin:0 auto;padding:0 32px}
+.mono{font-family:var(--mono)}
+.up{color:var(--teal)}.down{color:var(--red)}.amb{color:var(--amber)}
+
+/* ticker */
+.ticker{border-bottom:1px solid var(--line);background:#040507;overflow:hidden;white-space:nowrap;font:500 12px/32px var(--mono);color:var(--mute)}
+.ticker .track{display:inline-flex;gap:40px;padding-left:40px;animation:tick 60s linear infinite}
+.ticker b{color:var(--text);font-weight:500}
+.ticker span{display:inline-flex;gap:10px}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:rgba(6,8,11,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;height:64px;gap:32px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .wm{font-weight:850;font-stretch:125%;letter-spacing:.02em;font-size:19px}
+.brand .wm i{font-style:normal;color:var(--amber)}
+.brand .sub{font:500 11px var(--mono);color:var(--mute);border-left:1px solid var(--line2);padding-left:12px;letter-spacing:.12em}
+nav ul{display:flex;gap:28px;list-style:none;font:500 12px var(--mono);letter-spacing:.1em;color:var(--mute);margin-left:auto}
+nav ul a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;font:700 13px var(--mono);letter-spacing:.06em;border:1px solid var(--line2);border-radius:4px;white-space:nowrap}
+.btn.pri{background:var(--amber);color:#120C00;border-color:var(--amber)}
+.btn.pri:hover{background:var(--amber2)}
+.btn svg{width:14px;height:14px}
+
+/* hero */
+.hero{padding:72px 0 40px;position:relative}
+.hero:before{content:"";position:absolute;inset:0;background:
+  radial-gradient(600px 300px at 80% 0%,rgba(255,176,32,.10),transparent 70%),
+  linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 48px;opacity:.55;pointer-events:none;mask-image:linear-gradient(#000,transparent 85%)}
+.hero .top{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:end;position:relative}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.14em;color:var(--mute);display:flex;gap:12px;align-items:center;margin-bottom:22px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(43,228,167,.15);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(43,228,167,0)}}
+h1{font-weight:850;font-stretch:125%;font-size:clamp(52px,8.6vw,132px);line-height:.88;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--amber);position:relative}
+.lead{font-size:19px;color:var(--mute);max-width:440px;margin-bottom:28px}
+.lead b{color:var(--text);font-weight:600}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.counters{display:flex;gap:28px;margin-top:28px;font:500 11px var(--mono);color:var(--mute);letter-spacing:.1em}
+.counters b{display:block;font:700 22px var(--mono);color:var(--text);letter-spacing:0;margin-top:4px}
+
+/* terminal */
+.term{margin-top:48px;border:1px solid var(--line2);border-radius:8px;background:var(--panel);overflow:hidden;box-shadow:0 40px 120px -40px rgba(255,176,32,.18),0 0 0 1px rgba(255,255,255,.02) inset;position:relative}
+.term-bar{display:flex;align-items:center;gap:16px;height:40px;padding:0 16px;border-bottom:1px solid var(--line);font:500 11px var(--mono);color:var(--mute);letter-spacing:.08em}
+.term-bar .tabs{display:flex;gap:2px}
+.term-bar .tabs span{padding:6px 10px;border-radius:3px}
+.term-bar .tabs span.on{background:var(--panel2);color:var(--amber)}
+.term-bar .r{margin-left:auto;display:flex;gap:14px;align-items:center}
+.term-body{display:grid;grid-template-columns:1fr 340px}
+.board{border-right:1px solid var(--line);min-width:0}
+.row{display:grid;grid-template-columns:56px minmax(0,1.6fr) minmax(0,1.1fr) 150px 70px 62px minmax(0,1fr);gap:14px;align-items:center;padding:0 16px;height:52px;border-bottom:1px solid var(--line);font:500 13px var(--mono)}
+.row.h{height:34px;font-size:10px;letter-spacing:.12em;color:var(--dim)}
+.row .t{color:var(--mute)}
+.row .ev{font-family:var(--sans);font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .ev small .mo{display:none}
+.row .ev small{display:block;font:400 11px var(--mono);color:var(--mute)}
+.row .mk{color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+.bk{display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:12px}
+.bk img{width:20px;height:20px;border-radius:4px}
+.px{font-weight:700;font-size:15px;padding:3px 6px;border-radius:3px;transition:background .5s,color .5s;justify-self:start}
+.px.fl-up{background:rgba(43,228,167,.22);color:var(--teal);transition:none}
+.px.fl-dn{background:rgba(255,93,93,.22);color:var(--red);transition:none}
+.fair{color:var(--mute)}
+.depth{position:relative;height:24px;display:flex;align-items:center}
+.depth .bar{position:absolute;left:0;top:3px;bottom:3px;background:linear-gradient(90deg,rgba(255,176,32,.08),rgba(255,176,32,.42));border-right:2px solid var(--amber);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.depth .v{position:relative;padding-left:8px;font-weight:700;color:var(--amber2)}
+.row.new{animation:rowin 1.2s}
+@keyframes rowin{0%{background:rgba(255,176,32,.16)}100%{background:transparent}}
+
+.ladder{padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ladder .lh{font:500 10px var(--mono);letter-spacing:.12em;color:var(--dim);display:flex;justify-content:space-between;margin-bottom:4px}
+.ladder .tt{font-weight:700;font-size:15px;margin-bottom:2px}
+.ladder .ts{font:400 11px var(--mono);color:var(--mute);margin-bottom:26px}
+.lrow{display:grid;grid-template-columns:20px 1fr 46px;gap:8px;align-items:center;font:500 12px var(--mono);position:relative;height:26px}
+.lrow img{width:20px;height:20px;border-radius:4px}
+.lrow .lb{position:relative;height:18px;background:var(--panel2);border-radius:2px;overflow:hidden}
+.lrow .lb i{position:absolute;inset:0 auto 0 0;background:#2A3542}
+.lrow.val .lb i{background:linear-gradient(90deg,#2A3542 0,#2A3542 var(--f),var(--amber) var(--f))}
+.lrow b{text-align:right}
+.lrow.val b{color:var(--amber)}
+.fairline{position:relative;height:0}
+.ladder-wrap{position:relative}
+.ladder-wrap .fl{position:absolute;top:-6px;bottom:-6px;width:0;border-left:1.5px dashed var(--teal);left:var(--x)}
+.ladder-wrap .fl span{position:absolute;top:-18px;left:-28px;font:700 10px var(--mono);color:var(--teal);white-space:nowrap;letter-spacing:.06em}
+.ladder .foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:end;font:500 11px var(--mono);color:var(--mute)}
+.ladder .foot b{font-size:28px;color:var(--amber);letter-spacing:-.02em}
+.mocktag{position:absolute;right:16px;top:12px;display:none;font:500 10px var(--mono);color:var(--dim);letter-spacing:.1em}
+
+/* logo strip */
+.strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:72px;overflow:hidden;position:relative}
+.strip .lbl{position:absolute;left:0;top:0;bottom:0;z-index:2;display:flex;align-items:center;padding:0 24px;background:linear-gradient(90deg,var(--bg) 70%,transparent);font:500 11px var(--mono);letter-spacing:.12em;color:var(--mute);padding-right:60px}
+.strip .lbl b{color:var(--amber);font-size:20px;margin-right:10px}
+.strip .track{display:flex;gap:36px;padding:22px 0;width:max-content;animation:tick 50s linear infinite}
+.strip .it{display:flex;align-items:center;gap:10px;font:600 14px var(--sans);color:#B6C0CB;white-space:nowrap}
+.strip .it img{width:28px;height:28px;border-radius:6px}
+
+/* sections */
+section.s{padding:120px 0 0}
+.sh{display:grid;grid-template-columns:200px 1fr auto;gap:32px;align-items:end;margin-bottom:44px}
+.sh .no{font:500 12px var(--mono);color:var(--mute);letter-spacing:.14em;line-height:1.8}
+.sh .no b{display:block;color:var(--amber);font-size:12px}
+.sh h2{font-weight:800;font-stretch:118%;font-size:clamp(34px,4.6vw,64px);line-height:.95;letter-spacing:-.02em}
+.sh p{font-size:17px;color:var(--mute);max-width:360px;text-align:right}
+.panel{border:1px solid var(--line2);border-radius:8px;background:var(--panel);position:relative;overflow:hidden}
+
+/* margin diagram */
+.mg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.mg .st{padding:28px 24px 30px;border-right:1px solid var(--line);position:relative;min-width:0}
+.mg .st:last-child{border-right:0;background:linear-gradient(180deg,rgba(255,176,32,.07),transparent)}
+.mg .k{font:500 11px var(--mono);letter-spacing:.12em;color:var(--mute);display:flex;gap:10px;align-items:center;margin-bottom:22px}
+.mg .k i{font-style:normal;width:22px;height:22px;border:1px solid var(--line2);border-radius:50%;display:grid;place-items:center;color:var(--text);font-size:10px}
+.odds3{display:flex;flex-direction:column;gap:10px}
+.o{display:grid;grid-template-columns:76px 1fr;align-items:center;font:500 13px var(--mono);color:var(--mute)}
+.o b{font-size:24px;color:var(--text);font-weight:700;text-align:right;padding-right:6px}
+.stack{height:150px;display:flex;flex-direction:column;border-radius:4px;overflow:hidden;position:relative;margin-bottom:12px}
+.stack div{display:flex;align-items:center;justify-content:space-between;padding:0 12px;font:600 12px var(--mono);color:#0B0F14}
+.stack .a{background:#E7EDF3}.stack .d{background:#9FAAB6}.stack .l{background:#5C6876;color:#E7EDF3}
+.stack .m{background:repeating-linear-gradient(135deg,var(--red) 0 5px,#5a1d1d 5px 10px);color:#fff;animation:peel 5s infinite}
+@keyframes peel{0%,30%{transform:translateX(0);opacity:1}55%,100%{transform:translateX(120%);opacity:0}}
+.cap{font:500 12px var(--mono);color:var(--mute)}
+.cap b{color:var(--red)}
+.cmp{display:flex;flex-direction:column;gap:16px}
+.cmp .ln{display:flex;align-items:center;gap:10px;font:500 12px var(--mono);color:var(--mute)}
+.cmp .ln img{width:24px;height:24px;border-radius:5px}
+.cmp .big{font:700 44px/1 var(--mono);letter-spacing:-.03em}
+.gapviz{position:relative;height:56px;margin-top:4px}
+.gapviz .axis{position:absolute;left:0;right:0;top:27px;height:2px;background:var(--line2)}
+.gapviz .fill{position:absolute;top:20px;height:16px;background:linear-gradient(90deg,rgba(255,176,32,.2),var(--amber));left:30%;right:22%;border-radius:2px;transform-origin:left;animation:grow 5s infinite}
+@keyframes grow{0%,35%{transform:scaleX(0)}60%,100%{transform:scaleX(1)}}
+.gapviz .pin{position:absolute;top:8px;width:2px;height:40px}
+.gapviz .pin span{position:absolute;top:44px;transform:translateX(-50%);font:700 11px var(--mono);white-space:nowrap}
+.edgeout{display:flex;align-items:baseline;gap:12px;margin-top:22px}
+.edgeout b{font:800 56px/1 var(--sans);font-stretch:118%;color:var(--amber);letter-spacing:-.03em}
+.edgeout span{font:500 12px var(--mono);color:var(--mute)}
+
+/* arb */
+.arb{padding:48px 40px 40px;display:grid;grid-template-columns:1fr;gap:12px}
+.scale{position:relative;height:330px;--drop:24px}
+.pivot{position:absolute;left:50%;top:40px;width:0;height:0}
+.pivot:after{content:"";position:absolute;left:-26px;top:6px;border-left:26px solid transparent;border-right:26px solid transparent;border-bottom:44px solid var(--line2)}
+.beam{position:absolute;left:12%;right:12%;top:40px;height:6px;margin-top:-3px;background:linear-gradient(90deg,var(--blue),var(--text),var(--amber));border-radius:3px;animation:tilt 6s cubic-bezier(.4,0,.2,1) infinite}
+.beam:before,.beam:after{content:"";position:absolute;top:-5px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--text)}
+.beam:before{left:-8px;border-color:var(--blue)}.beam:after{right:-8px;border-color:var(--amber)}
+@keyframes tilt{0%,8%{transform:rotate(-4deg)}40%,92%{transform:rotate(0)}100%{transform:rotate(-4deg)}}
+.leg{position:absolute;top:56px;width:min(340px,40%);animation:legL 6s cubic-bezier(.4,0,.2,1) infinite}
+.leg.L{left:12%;transform:translateX(-50%)}
+.leg.R{right:12%;transform:translateX(50%);animation-name:legR}
+@keyframes legL{0%,8%{translate:0 var(--drop)}40%,92%{translate:0 0}100%{translate:0 var(--drop)}}
+@keyframes legR{0%,8%{translate:0 calc(var(--drop) * -1)}40%,92%{translate:0 0}100%{translate:0 calc(var(--drop) * -1)}}
+.leg .wire{width:2px;height:28px;margin:0 auto;background:var(--line2)}
+.card{border:1px solid var(--line2);border-radius:6px;background:var(--panel2);padding:16px 18px}
+.leg.L .card{border-top:3px solid var(--blue)}.leg.R .card{border-top:3px solid var(--amber)}
+.card .hd{display:flex;align-items:center;gap:10px;font:500 12px var(--mono);color:var(--mute);margin-bottom:10px}
+.card .hd img{width:26px;height:26px;border-radius:6px}
+.card .sel{font-weight:700;font-size:20px;margin-bottom:12px}
+.card .kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font:500 10px var(--mono);letter-spacing:.1em;color:var(--dim)}
+.card .kv b{display:block;font-size:17px;color:var(--text);letter-spacing:0;margin-top:3px}
+.lock{position:absolute;left:50%;bottom:0;transform:translateX(-50%);text-align:center}
+.lock b{display:block;font:800 52px/1 var(--sans);font-stretch:118%;color:var(--teal)}
+.lock span{font:500 12px var(--mono);color:var(--mute);letter-spacing:.08em}
+
+/* clv */
+.clv{display:grid;grid-template-columns:1fr 300px}
+.clv .chart{padding:28px 24px 16px;border-right:1px solid var(--line);min-width:0}
+.clv svg{width:100%;height:auto;display:block;overflow:visible}
+.clv .side{padding:28px 24px;display:flex;flex-direction:column;gap:22px}
+.stat{font:500 11px var(--mono);letter-spacing:.12em;color:var(--mute)}
+.stat b{display:block;font:700 30px var(--mono);color:var(--text);letter-spacing:-.02em;margin-top:6px}
+.path-anim{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 4s ease-out forwards .3s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.fade-in{opacity:0;animation:fi .6s forwards 3.6s}
+@keyframes fi{to{opacity:1}}
+
+/* health */
+.hl{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.g{padding:28px 20px 24px;border-right:1px solid var(--line);text-align:center;min-width:0}
+.g:last-child{border-right:0}
+.g .who{display:flex;align-items:center;justify-content:center;gap:8px;font:600 14px var(--sans);margin-bottom:14px}
+.g .who img{width:24px;height:24px;border-radius:5px}
+.g svg{width:100%;max-width:170px;margin:0 auto;display:block}
+.g .arc{stroke-dasharray:var(--v) 100;animation:gauge 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes gauge{from{stroke-dasharray:0 100}}
+.g .val{font:700 30px var(--mono);margin-top:-46px;position:relative}
+.g .st{font:600 10px var(--mono);letter-spacing:.14em;margin-top:6px}
+.g .nt{font:400 11px var(--mono);color:var(--mute);margin-top:12px;min-height:30px}
+
+/* alerts */
+.al{display:grid;grid-template-columns:1.3fr 1fr;gap:24px}
+.dc{background:#313338;border-radius:8px;overflow:hidden;font-family:'Archivo',system-ui,sans-serif;border:1px solid #1e1f22}
+.dc .top{height:48px;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid #26272b;color:#F2F3F5;font-weight:600;font-size:15px}
+.dc .top svg{width:20px;height:20px;color:#80848E}
+.dc .msgs{padding:16px 16px 22px;display:flex;flex-direction:column;gap:18px}
+.msg{display:grid;grid-template-columns:40px 1fr;gap:14px;opacity:0;transform:translateY(10px);animation:msgin .5s forwards}
+.msg:nth-child(1){animation-delay:.4s}.msg:nth-child(2){animation-delay:1.6s}
+@keyframes msgin{to{opacity:1;transform:none}}
+.av{width:40px;height:40px;border-radius:50%;background:#0C1015;display:grid;place-items:center}
+.av svg{width:24px;height:24px}
+.mh{font-size:15px;color:#F2F3F5;font-weight:600;display:flex;gap:6px;align-items:center}
+.mh .app{background:#5865F2;color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;font-weight:700}
+.mh time{color:#949BA4;font-size:12px;font-weight:400}
+.emb{margin-top:6px;background:#2B2D31;border-left:4px solid var(--amber);border-radius:4px;padding:12px 16px;max-width:460px;color:#DBDEE1;font-size:14px}
+.emb.arb{border-left-color:var(--teal)}
+.emb .et{font-weight:700;color:#fff;margin-bottom:8px;font-size:15px}
+.emb .fl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px;margin-top:8px}
+.emb .fl div{font-size:12px;color:#B5BAC1;font-weight:700}
+.emb .fl div span{display:block;color:#DBDEE1;font-weight:400;font-size:14px;margin-top:2px}
+.emb .bt{display:flex;gap:8px;margin-top:12px}
+.emb .bt span{background:#4E5058;color:#fff;font-size:13px;padding:6px 12px;border-radius:3px;font-weight:600}
+.phone{justify-self:center;width:300px;height:540px;border-radius:44px;background:#0A0D11;border:10px solid #1B2229;box-shadow:0 0 0 1px #2c3640,0 40px 80px -30px rgba(0,0,0,.8);position:relative;overflow:hidden}
+.phone .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:90px;height:24px;border-radius:14px;background:#000;z-index:2}
+.phone .scr{position:absolute;inset:0;background:linear-gradient(160deg,#1F3A55,#0E1B2A 60%);padding:56px 14px 14px}
+.phone .clock{text-align:center;color:#fff;font:300 64px/1 var(--sans);font-stretch:100%;letter-spacing:-.02em}
+.phone .date{text-align:center;color:#C8D6E5;font:500 14px var(--sans);margin:6px 0 28px}
+.note{background:rgba(255,255,255,.14);backdrop-filter:blur(12px);border-radius:18px;padding:12px 14px;color:#fff;margin-bottom:10px;opacity:0;animation:msgin .6s forwards}
+.note:nth-of-type(1){animation-delay:1s}.note:nth-of-type(2){animation-delay:2.4s}.note:nth-of-type(3){animation-delay:3.4s}
+.note.warn .nt{color:#FFCF6B}
+.note .nh{display:flex;align-items:center;gap:8px;font:600 12px var(--sans);color:#E3EAF2;margin-bottom:4px}
+.note .nh img{width:20px;height:20px;border-radius:5px}
+.note .nh time{margin-left:auto;font-weight:400;color:#B9C6D4}
+.note .nt{font:600 14px var(--sans)}
+.note .nb{font:400 13px var(--sans);color:#E3EAF2}
+
+/* proof */
+.pf{display:grid;grid-template-columns:1fr 360px}
+.ledger{border-right:1px solid var(--line);min-width:0}
+.lr{display:grid;grid-template-columns:88px minmax(0,1.7fr) 130px 60px 60px 72px 64px;gap:12px;align-items:center;height:48px;padding:0 20px;border-bottom:1px solid var(--line);font:500 12px var(--mono)}
+.lr.h{height:34px;font-size:10px;letter-spacing:.12em;color:var(--dim)}
+.lr .pk{font:600 13px var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lr .pk small{color:var(--mute);font:400 11px var(--mono);margin-left:6px}
+.res{font-size:10px;font-weight:700;letter-spacing:.1em;padding:3px 7px;border-radius:3px;justify-self:start}
+.res.w{background:rgba(43,228,167,.14);color:var(--teal)}.res.l{background:rgba(255,93,93,.14);color:var(--red)}.res.p{background:var(--panel2);color:var(--mute)}
+.pf .side{padding:24px;display:flex;flex-direction:column;gap:18px}
+.pf .side svg{width:100%;height:auto}
+.hash{font:400 10px var(--mono);color:var(--dim);word-break:break-all}
+
+/* cta */
+.cta{margin:140px 0 0;border-top:1px solid var(--line);padding:100px 0 60px;position:relative;overflow:hidden}
+.cta h2{font-weight:850;font-stretch:125%;font-size:clamp(48px,8vw,120px);line-height:.88;letter-spacing:-.02em;max-width:1000px}
+.cta h2 em{font-style:normal;color:var(--amber)}
+.cta .ctas{margin-top:36px}
+.cta .bigmark{position:absolute;right:-40px;bottom:-60px;width:460px;opacity:.07}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;font:500 11px var(--mono);color:var(--dim);letter-spacing:.08em}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:1100px){
+  .term-body{grid-template-columns:1fr}.ladder{display:none}
+  .mg{grid-template-columns:1fr 1fr}.mg .st:nth-child(2){border-right:0}.mg .st:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .hl{grid-template-columns:repeat(3,1fr)}.g:nth-child(3){border-right:0}.g:nth-child(-n+3){border-bottom:1px solid var(--line)}
+  .clv,.pf{grid-template-columns:1fr}.clv .chart,.ledger{border-right:0;border-bottom:1px solid var(--line)}
+  .clv .side{flex-direction:row;flex-wrap:wrap}
+}
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  nav ul,.brand .sub{display:none}
+  nav .wrap{gap:12px}
+  nav .btn{margin-left:auto;height:36px;padding:0 12px;font-size:11px}
+  .hero{padding:44px 0 24px}
+  h1{font-size:84px}
+  .depth .bar{top:auto;bottom:0;height:3px;border-right:0;background:var(--amber)}
+  .depth .v{padding-left:0}
+  .clv svg text{font-size:24px}
+  .clv svg .tk{font-size:22px}
+  .clv .cbox{transform:scale(1.7);transform-origin:664px 148px;transform-box:view-box}
+  .clv .chart{padding:20px 12px 10px}
+  .hero .top{grid-template-columns:1fr;gap:24px}
+  .lead{font-size:17px}
+  .counters{gap:18px;flex-wrap:wrap}
+  .counters b{font-size:18px}
+  .term{margin-top:32px;margin-left:-6px;margin-right:-6px}
+  .term-bar .tabs span:not(.on){display:none}
+  .row{grid-template-columns:minmax(0,1fr) 58px 72px;gap:10px;padding:0 12px;height:62px}
+  .row>.t,.row>.mk,.row>.fair,.row>.bkc{display:none}
+  .row .ev small .mo{display:inline}
+  .row .ev small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .row.h{height:30px}
+  .strip{margin-top:48px}
+  .strip .lbl{display:none}
+  section.s{padding-top:80px}
+  .sh{grid-template-columns:1fr;gap:12px;margin-bottom:28px}
+  .sh p{text-align:left;font-size:16px}
+  .sh .no b{display:inline;margin-right:10px}
+  .mg{grid-template-columns:1fr}.mg .st{border-right:0;border-bottom:1px solid var(--line)}
+  .arb{padding:32px 12px 28px}
+  .scale{height:auto;--drop:10px;display:flex;flex-direction:column;gap:14px;padding-top:70px}
+  .beam{left:18%;right:18%}
+  .leg,.leg.R,.leg.L{position:relative;left:auto;right:auto;top:auto;width:100%;transform:none;animation:none}
+  .leg .wire{display:none}
+  .lock{position:relative;left:auto;transform:none;margin-top:10px}
+  .hl{grid-template-columns:1fr 1fr}.g{border-bottom:1px solid var(--line)}.g:nth-child(2n){border-right:0}.g:nth-child(3){border-right:1px solid var(--line)}.g:last-child{grid-column:span 2}
+  .al{grid-template-columns:1fr}
+  .emb .fl{grid-template-columns:1fr 1fr}
+  .lr{grid-template-columns:minmax(0,1fr) 56px 58px;padding:0 12px;height:54px}
+  .lr>:nth-child(1),.lr>:nth-child(3),.lr>:nth-child(4),.lr>:nth-child(5){display:none}
+  .lr .pk small{display:block;margin:0}
+  .cta{margin-top:90px;padding:64px 0 40px}
+  .cta .bigmark{width:260px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+  .msg,.note,.fade-in{opacity:1;transform:none}
+  .path-anim{stroke-dashoffset:0}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 32 32">
+      <rect x="2" y="19" width="5.5" height="11" rx="1" fill="#3A4552"/>
+      <rect x="9.5" y="14" width="5.5" height="16" rx="1" fill="#6B7888"/>
+      <rect x="17" y="11" width="5.5" height="19" rx="1" fill="#E7EDF3"/>
+      <rect x="24.5" y="2" width="5.5" height="28" rx="1" fill="#FFB020"/>
+      <path d="M0 8.5H32" stroke="#2BE4A7" stroke-width="1.6" stroke-dasharray="2.4 1.8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="ticker" aria-hidden="true"><div class="track" id="ticker"></div></div>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><svg width="30" height="30"><use href="#mark"/></svg><span class="wm">OPEN<i>EV</i></span><span class="sub">TERMINAL</span></a>
+    <ul><li><a href="#fair">FAIR PRICE</a></li><li><a href="#arbs">ARBS</a></li><li><a href="#clv">CLV</a></li><li><a href="#health">HEALTH</a></li><li><a href="#proof">PROOF</a></li></ul>
+    <a class="btn pri" href="#">OPEN THE BOARD</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="eyebrow"><span class="dot"></span>LIVE / 35 BOOKS / PINNACLE FAIR LINE</div>
+        <h1>Bet the<br><em>gap.</em></h1>
+      </div>
+      <div>
+        <p class="lead"><b>Fair price from Pinnacle, best price from 35 books.</b> The difference is your edge.</p>
+        <div class="ctas"><a class="btn pri" href="#">OPEN THE BOARD <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a><a class="btn" href="#proof">SEE THE RECORD</a></div>
+        <div class="counters"><div>PRICES READ<b id="cnt">94,342</b></div><div>VALUE BETS<b class="amb" id="vb">112</b></div><div>ARBS<b class="up">7</b></div></div>
+      </div>
+    </div>
+
+    <div class="term" role="img" aria-label="Animated mock of the OpenEV value bet board">
+      <div class="term-bar">
+        <div class="tabs"><span class="on">VALUE BETS</span><span>ARBS</span><span>ODDS SCREEN</span><span>TRACKER</span></div>
+        <div class="r"><span style="color:var(--dim)">SAMPLE DATA</span><span class="dot"></span><span id="clock">14:52:07</span></div>
+      </div>
+      <div class="term-body">
+        <div class="board">
+          <div class="row h"><span class="t">KO</span><span>EVENT</span><span class="mk">MARKET</span><span class="bkc">BOOK</span><span>PRICE</span><span class="fair">FAIR</span><span>EDGE</span></div>
+          <div id="rows"></div>
+        </div>
+        <aside class="ladder">
+          <div class="lh"><span>BEST PRICE LADDER</span><span>1X2</span></div>
+          <div class="tt">Arsenal to beat Liverpool</div>
+          <div class="ts">Premier League / Sat 15:00</div>
+          <div class="ladder-wrap" id="ladder"></div>
+          <div class="foot"><div>EDGE AT PADDY POWER</div><b id="ledge">+5.8%</b></div>
+        </aside>
+      </div>
+      <span class="mocktag">SAMPLE DATA</span>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="lbl"><b>35</b>BOOKS AND EXCHANGES</div>
+  <div class="track" id="strip"></div>
+</div>
+
+<main class="wrap">
+
+  <section class="s" id="fair">
+    <div class="sh"><div class="no"><b>01</b>PRECISION</div><h2>We strip the margin.</h2><p>Pinnacle's overround comes off. What is left is the true price.</p></div>
+    <div class="panel mg">
+      <div class="st">
+        <div class="k"><i>1</i>PINNACLE QUOTES</div>
+        <div class="odds3">
+          <div class="o">ARSENAL<b>2.25</b></div>
+          <div class="o">DRAW<b>3.55</b></div>
+          <div class="o">LIVERPOOL<b>3.30</b></div>
+        </div>
+      </div>
+      <div class="st">
+        <div class="k"><i>2</i>IMPLIED 102.9%</div>
+        <div class="stack">
+          <div class="a" style="flex:44.4">ARS<span>44.4</span></div>
+          <div class="d" style="flex:28.2">DRAW<span>28.2</span></div>
+          <div class="l" style="flex:30.3">LIV<span>30.3</span></div>
+          <div class="m" style="flex:4.5">MARGIN<span>2.9</span></div>
+        </div>
+        <div class="cap"><b>2.9%</b> book margin peeled off</div>
+      </div>
+      <div class="st">
+        <div class="k"><i>3</i>FAIR PRICE</div>
+        <div class="odds3">
+          <div class="o">ARSENAL<b class="up">2.32</b></div>
+          <div class="o">DRAW<b>3.65</b></div>
+          <div class="o">LIVERPOOL<b>3.40</b></div>
+        </div>
+      </div>
+      <div class="st">
+        <div class="k"><i>4</i>BOOK VS FAIR</div>
+        <div class="cmp">
+          <div class="ln"><img src="logos/paddypower.png" alt="">Paddy Power pays <b class="big amb">2.45</b></div>
+        </div>
+        <div class="gapviz">
+          <div class="axis"></div><div class="fill"></div>
+          <div class="pin" style="left:30%;background:var(--teal)"><span class="up">2.32 FAIR</span></div>
+          <div class="pin" style="left:78%;background:var(--amber)"><span class="amb">2.45 BOOK</span></div>
+        </div>
+        <div class="edgeout"><b>+5.8%</b><span>EDGE</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s" id="arbs">
+    <div class="sh"><div class="no"><b>02</b>PRECISION</div><h2>Two legs.<br>One locked result.</h2><p>When two books cross, back both sides and keep the difference.</p></div>
+    <div class="panel arb">
+      <div class="scale">
+        <div class="beam"></div><div class="pivot"></div>
+        <div class="leg L"><div class="wire"></div><div class="card">
+          <div class="hd"><img src="logos/unibet.png" alt="">UNIBET / LEG A</div>
+          <div class="sel">Sinner to win</div>
+          <div class="kv"><div>PRICE<b>2.08</b></div><div>STAKE<b>£49.27</b></div><div>RETURN<b class="up">£102.48</b></div></div>
+        </div></div>
+        <div class="leg R"><div class="wire"></div><div class="card">
+          <div class="hd"><img src="logos/smarkets.png" alt="">SMARKETS / LEG B</div>
+          <div class="sel">Alcaraz to win</div>
+          <div class="kv"><div>PRICE<b>2.02</b></div><div>STAKE<b>£50.73</b></div><div>RETURN<b class="up">£102.47</b></div></div>
+        </div></div>
+        <div class="lock"><b>+2.48%</b><span>ATP FINALS / EITHER RESULT</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s" id="clv">
+    <div class="sh"><div class="no"><b>03</b>LONGEVITY</div><h2>Beat the close.</h2><p>Every bet you log is scored against the closing fair price.</p></div>
+    <div class="panel clv">
+      <div class="chart">
+        <svg viewBox="0 0 720 320" aria-label="Fair price moving from 2.34 to 2.26 at kick off, bet taken at 2.45">
+          <defs><linearGradient id="clvg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFB020" stop-opacity=".28"/><stop offset="1" stop-color="#FFB020" stop-opacity="0"/></linearGradient></defs>
+          <g font-family="JetBrains Mono" font-size="11" fill="#4A5562">
+            <line x1="40" x2="700" y1="40" y2="40" stroke="#1A222C"/><text x="0" y="44">2.50</text>
+            <line x1="40" x2="700" y1="113" y2="113" stroke="#1A222C"/><text x="0" y="117">2.40</text>
+            <line x1="40" x2="700" y1="186" y2="186" stroke="#1A222C"/><text x="0" y="190">2.30</text>
+            <line x1="40" x2="700" y1="259" y2="259" stroke="#1A222C"/><text x="0" y="263">2.20</text>
+            <text x="40" y="300">MON 09:00</text><text x="370" y="300" text-anchor="middle">THU</text><text x="700" y="300" text-anchor="end">SAT 15:00</text>
+          </g>
+          <line x1="96" x2="700" y1="76" y2="76" stroke="#FFB020" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <path d="M96 76 L700 76 L700 230 L645 230 L590 215 L535 208 L480 201 L425 186 L370 194 L315 179 L260 172 L205 179 L150 157 L96 164 Z" fill="url(#clvg)" class="fade-in"/>
+          <path class="path-anim" pathLength="1" d="M40 157 L96 164 L150 157 L205 179 L260 172 L315 179 L370 194 L425 186 L480 201 L535 208 L590 215 L645 230 L700 230" fill="none" stroke="#E7EDF3" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="96" cy="76" r="7" fill="#FFB020"/><circle cx="96" cy="76" r="14" fill="none" stroke="#FFB020" stroke-opacity=".35"/>
+          <text x="112" y="64" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#FFB020" class="tk">YOU TOOK 2.45 / PADDY POWER</text>
+          <g class="fade-in"><circle cx="700" cy="230" r="6" fill="#2BE4A7"/>
+          <text x="694" y="252" text-anchor="end" font-family="JetBrains Mono" font-size="12" font-weight="700" fill="#2BE4A7">CLOSE 2.26</text>
+          <line x1="672" x2="672" y1="82" y2="224" stroke="#FFB020" stroke-width="1.5"/>
+          <g class="cbox"><rect x="560" y="132" width="104" height="32" rx="4" fill="#06080B" stroke="#FFB020"/>
+          <text x="612" y="153" text-anchor="middle" font-family="JetBrains Mono" font-size="15" font-weight="700" fill="#FFB020">CLV +8.4%</text></g></g>
+        </svg>
+      </div>
+      <div class="side">
+        <div class="stat">YOUR AVG CLV<b class="amb">+3.9%</b></div>
+        <div class="stat">BETS LOGGED<b>412</b></div>
+        <div class="stat">BEAT THE CLOSE<b class="up">71%</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s" id="health">
+    <div class="sh"><div class="no"><b>04</b>LONGEVITY</div><h2>Stay welcome.</h2><p>A health score per book, so a limit never comes as a surprise.</p></div>
+    <div class="panel hl" id="gauges"></div>
+  </section>
+
+  <section class="s" id="alerts">
+    <div class="sh"><div class="no"><b>05</b>PRECISION</div><h2>The bet finds you.</h2><p>Discord and Telegram, seconds after the price moves.</p></div>
+    <div class="al">
+      <div class="dc">
+        <div class="top"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.5 3 9.8 7H6.6l-.3 2h3.2l-.7 4H5.6l-.3 2h3.2L7.8 19h2l.7-4h4l-.7 4h2l.7-4h3.2l.3-2h-3.2l.7-4h3.2l.3-2h-3.2l.7-4h-2l-.7 4h-4l.7-4h-2Zm.7 6h4l-.7 4h-4l.7-4Z"/></svg>value-bets</div>
+        <div class="msgs">
+          <div class="msg"><div class="av"><svg><use href="#mark"/></svg></div><div>
+            <div class="mh">OpenEV <span class="app">APP</span><time>Today at 14:52</time></div>
+            <div class="emb"><div class="et">Value bet +5.8% / Arsenal v Liverpool</div>
+              <div class="fl"><div>Bet<span>Arsenal 1X2</span></div><div>Book<span>Paddy Power</span></div><div>Price<span>2.45</span></div><div>Fair<span>2.32</span></div><div>Kelly<span>1.9%</span></div><div>Kick off<span>Sat 15:00</span></div></div>
+              <div class="bt"><span>Open bet</span><span>Log to tracker</span></div></div>
+          </div></div>
+          <div class="msg"><div class="av"><svg><use href="#mark"/></svg></div><div>
+            <div class="mh">OpenEV <span class="app">APP</span><time>Today at 14:53</time></div>
+            <div class="emb arb"><div class="et">Arb +2.48% / Sinner v Alcaraz</div>
+              <div class="fl"><div>Leg A<span>Sinner 2.08 Unibet</span></div><div>Leg B<span>Alcaraz 2.02 Smarkets</span></div><div>Window<span>open 41s</span></div></div></div>
+          </div></div>
+        </div>
+      </div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="scr">
+          <div class="clock">14:52</div><div class="date">Thursday 12 November</div>
+          <div class="note"><div class="nh"><img src="logos/telegram.svg" alt="">OpenEV Alerts<time>now</time></div><div class="nt">+5.8% Arsenal 2.45 at Paddy Power</div><div class="nb">Fair 2.32 / Arsenal v Liverpool / Sat 15:00</div></div>
+          <div class="note"><div class="nh"><img src="logos/telegram.svg" alt="">OpenEV Alerts<time>now</time></div><div class="nt">Arb +2.48% Sinner v Alcaraz</div><div class="nb">Unibet 2.08 / Smarkets 2.02</div></div>
+          <div class="note warn"><div class="nh"><img src="logos/telegram.svg" alt="">OpenEV Alerts<time>2m</time></div><div class="nt">Ladbrokes health 31, limit risk</div><div class="nb">Skip the next edge bet there</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="s" id="proof">
+    <div class="sh"><div class="no"><b>06</b>PROOF</div><h2>Every alert<br>on the record.</h2><p>Public, timestamped, checked against the close. Losses included.</p></div>
+    <div class="panel pf">
+      <div class="ledger">
+        <div class="lr h"><span>SENT</span><span>ALERT</span><span>BOOK</span><span>TOOK</span><span>CLOSE</span><span>CLV</span><span>RESULT</span></div>
+        <div class="lr"><span>11 NOV 19:02</span><span class="pk">Inter v Napoli<small>Napoli +0.25</small></span><span class="bk"><img src="logos/betfair.png" alt="">Betfair</span><span>2.06</span><span>1.95</span><span class="up">+5.6%</span><span class="res l">LOST</span></div>
+        <div class="lr"><span>11 NOV 16:40</span><span class="pk">Celtics v Knicks<small>Knicks +5.5</small></span><span class="bk"><img src="logos/fanduel.png" alt="">FanDuel</span><span>2.00</span><span>1.93</span><span class="up">+3.6%</span><span class="res w">WON</span></div>
+        <div class="lr"><span>10 NOV 21:15</span><span class="pk">Chiefs v Bills<small>Bills ML</small></span><span class="bk"><img src="logos/draftkings.png" alt="">DraftKings</span><span>2.30</span><span>2.34</span><span class="down">-1.7%</span><span class="res l">LOST</span></div>
+        <div class="lr"><span>09 NOV 12:31</span><span class="pk">Newcastle v Aston Villa<small>Over 2.5</small></span><span class="bk"><img src="logos/coral.png" alt="">Coral</span><span>1.90</span><span>1.78</span><span class="up">+6.7%</span><span class="res w">WON</span></div>
+        <div class="lr"><span>09 NOV 09:58</span><span class="pk">Man City v Tottenham<small>Draw</small></span><span class="bk"><img src="logos/ladbrokes_uk.png" alt="">Ladbrokes</span><span>4.60</span><span>4.33</span><span class="up">+6.2%</span><span class="res l">LOST</span></div>
+        <div class="lr"><span>08 NOV 17:20</span><span class="pk">Brighton v Chelsea<small>Both teams score</small></span><span class="bk"><img src="logos/virginbet.png" alt="">Virgin Bet</span><span>1.80</span><span>1.71</span><span class="up">+5.3%</span><span class="res w">WON</span></div>
+        <div class="lr"><span>08 NOV 14:03</span><span class="pk">Real Madrid v Barcelona<small>Barcelona</small></span><span class="bk"><img src="logos/polymarket.png" alt="">Polymarket</span><span>3.10</span><span>3.10</span><span>0.0%</span><span class="res p">PUSH</span></div>
+      </div>
+      <div class="side">
+        <div class="stat">ALERTS ON RECORD<b>3,184</b></div>
+        <div class="stat">AVG CLV, ALL ALERTS<b class="amb">+3.1%</b></div>
+        <svg viewBox="0 0 300 120" aria-label="Cumulative closing line value rising over 90 days">
+          <path d="M0 110 L20 104 L40 106 L60 96 L80 92 L100 95 L120 82 L140 78 L160 80 L180 66 L200 60 L220 63 L240 48 L260 40 L280 36 L300 22" fill="none" stroke="#FFB020" stroke-width="2.5"/>
+          <path d="M0 110 L20 104 L40 106 L60 96 L80 92 L100 95 L120 82 L140 78 L160 80 L180 66 L200 60 L220 63 L240 48 L260 40 L280 36 L300 22 L300 120 L0 120Z" fill="#FFB020" fill-opacity=".08"/>
+          <text x="0" y="12" font-family="JetBrains Mono" font-size="10" fill="#4A5562">CUMULATIVE CLV / 90 DAYS</text>
+        </svg>
+        <div class="hash">LEDGER HEAD 9f3c 21ab 7e40 c18d / APPEND ONLY</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Start with the<br>free <em>board.</em></h2>
+    <div class="ctas"><a class="btn pri" href="#">OPEN THE BOARD</a><a class="btn" href="#">JOIN THE DISCORD</a></div>
+  </div>
+  <svg class="bigmark" viewBox="0 0 32 32" aria-hidden="true"><use href="#mark"/></svg>
+</section>
+
+<footer><div class="wrap"><span>OPENEV TERMINAL / CONCEPT A / SAMPLE DATA</span><span>18+ / BETTING CARRIES RISK / NO EDGE IS GUARANTEED</span></div></footer>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var books = [['pinnacle','Pinnacle'],['betfair','Betfair'],['smarkets','Smarkets'],['ladbrokes_uk','Ladbrokes'],['coral','Coral'],['paddypower','Paddy Power'],['unibet','Unibet'],['virginbet','Virgin Bet'],['skybet','Sky Bet'],['williamhill','William Hill'],['matchbook','Matchbook'],['888sport','888sport'],['betvictor','BetVictor'],['leovegas','LeoVegas'],['betmgm','BetMGM'],['fanduel','FanDuel'],['draftkings','DraftKings'],['kalshi','Kalshi'],['polymarket','Polymarket']];
+  var strip = books.concat(books).map(function(b){return '<span class="it"><img src="logos/'+b[0]+'.png" alt="">'+b[1]+'</span>'}).join('');
+  document.getElementById('strip').innerHTML = strip;
+
+  var rows = [
+    {t:'15:00',ev:'Arsenal v Liverpool',lg:'Premier League',mk:'Arsenal 1X2',b:'paddypower',bn:'Paddy Power',p:2.45,f:2.32},
+    {t:'19:30',ev:'Sinner v Alcaraz',lg:'ATP Finals',mk:'Sinner to win',b:'unibet',bn:'Unibet',p:2.08,f:1.99},
+    {t:'00:30',ev:'Celtics v Knicks',lg:'NBA',mk:'Knicks +5.5',b:'fanduel',bn:'FanDuel',p:2.00,f:1.92},
+    {t:'12:30',ev:'Newcastle v Aston Villa',lg:'Premier League',mk:'Over 2.5 goals',b:'coral',bn:'Coral',p:1.90,f:1.82},
+    {t:'17:30',ev:'Man City v Tottenham',lg:'Premier League',mk:'Draw',b:'ladbrokes_uk',bn:'Ladbrokes',p:4.60,f:4.33},
+    {t:'21:25',ev:'Chiefs v Bills',lg:'NFL',mk:'Bills moneyline',b:'draftkings',bn:'DraftKings',p:2.30,f:2.21},
+    {t:'19:45',ev:'Inter v Napoli',lg:'Serie A',mk:'Napoli +0.25',b:'betfair',bn:'Betfair Ex',p:2.06,f:1.98},
+    {t:'20:00',ev:'Brighton v Chelsea',lg:'Premier League',mk:'Both teams score',b:'virginbet',bn:'Virgin Bet',p:1.80,f:1.73}
+  ];
+  var el = document.getElementById('rows');
+  function edge(r){return (r.p/r.f-1)*100}
+  function render(){
+    el.innerHTML = rows.map(function(r,i){
+      var e = edge(r);
+      return '<div class="row" data-i="'+i+'"><span class="t">'+r.t+'</span><span class="ev">'+r.ev+'<small>'+r.lg+'<span class="mo"> / '+r.mk+' / '+r.bn+'</span></small></span><span class="mk">'+r.mk+'</span><span class="bk bkc"><img src="logos/'+r.b+'.png" alt="">'+r.bn+'</span><span class="px">'+r.p.toFixed(2)+'</span><span class="fair">'+r.f.toFixed(2)+'</span><span class="depth"><span class="bar" style="width:'+Math.min(100,e/8*100)+'%"></span><span class="v">+'+e.toFixed(1)+'%</span></span></div>';
+    }).join('');
+  }
+  render();
+
+  var ladder = [['paddypower',2.45],['betfair',2.40],['coral',2.38],['ladbrokes_uk',2.38],['unibet',2.36],['virginbet',2.34],['skybet',2.30],['williamhill',2.28],['betvictor',2.25]];
+  var lo=2.10, hi=2.50, fair=2.32, fx=(fair-lo)/(hi-lo)*100;
+  document.getElementById('ladder').innerHTML = ladder.map(function(l,i){
+    var w=(l[1]-lo)/(hi-lo)*100, val=l[1]>fair, f=(fx/w*100).toFixed(1)+'%';
+    return '<div class="lrow'+(val?' val':'')+'"><img src="logos/'+l[0]+'.png" alt=""><div class="lb"><i style="width:'+w+'%;--f:'+f+'"></i></div><b>'+l[1].toFixed(2)+'</b></div>';
+  }).join('') + '<div class="fl" style="--x:calc(28px + (100% - 82px) * '+(fx/100).toFixed(3)+')"><span>FAIR 2.32</span></div>';
+
+  var gauges = [
+    ['paddypower','Paddy Power',86,'HEALTHY','12% of bets on mug markets'],
+    ['skybet','Sky Bet',91,'HEALTHY','No stake cuts in 60 days'],
+    ['coral','Coral',63,'WATCH','Max stake down to £40'],
+    ['ladbrokes_uk','Ladbrokes',31,'LIMIT RISK','9 edge bets in a row, mix it up'],
+    ['virginbet','Virgin Bet',74,'HEALTHY','Price boost use is normal']
+  ];
+  document.getElementById('gauges').innerHTML = gauges.map(function(g){
+    var c = g[2]>70?'#2BE4A7':g[2]>45?'#FFB020':'#FF5D5D';
+    return '<div class="g"><div class="who"><img src="logos/'+g[0]+'.png" alt="">'+g[1]+'</div><svg viewBox="0 0 120 70"><path d="M10 62 A50 50 0 0 1 110 62" fill="none" stroke="#1A222C" stroke-width="10" stroke-linecap="round" pathLength="100"/><path class="arc" style="--v:'+g[2]+'" d="M10 62 A50 50 0 0 1 110 62" fill="none" stroke="'+c+'" stroke-width="10" stroke-linecap="round" pathLength="100"/></svg><div class="val" style="color:'+c+'">'+g[2]+'</div><div class="st" style="color:'+c+'">'+g[3]+'</div><div class="nt">'+g[4]+'</div></div>';
+  }).join('');
+
+  var tk = rows.concat(rows).map(function(r){return '<span><b>'+r.ev.toUpperCase()+'</b>'+r.mk+' <b>'+r.p.toFixed(2)+'</b> fair '+r.f.toFixed(2)+' <span class="amb">+'+edge(r).toFixed(1)+'%</span></span>'}).join('');
+  document.getElementById('ticker').innerHTML = tk;
+
+  if (reduce) return;
+  var n = 94342, vb = 112;
+  var cnt = document.getElementById('cnt'), vbe = document.getElementById('vb'), clock = document.getElementById('clock');
+  var t0 = new Date(); t0.setHours(14,52,7);
+  setInterval(function(){
+    t0 = new Date(t0.getTime()+1000);
+    clock.textContent = t0.toTimeString().slice(0,8);
+  },1000);
+  setInterval(function(){
+    var i = Math.floor(Math.random()*rows.length), r = rows[i];
+    var step = (Math.random()<.5?-1:1)*(Math.random()<.7?.01:.03)*(r.p>3?3:1);
+    var np = Math.round(Math.min(r.f*1.075, Math.max(r.f*1.012, Math.round((r.p+step)*100)/100))*100)/100;
+    if (np===r.p) np = Math.round((r.p+0.02)*100)/100;
+    var dir = np>r.p?'fl-up':'fl-dn'; r.p = np;
+    var row = el.children[i], px = row.querySelector('.px');
+    px.textContent = r.p.toFixed(2);
+    px.classList.remove('fl-up','fl-dn'); void px.offsetWidth; px.classList.add(dir);
+    setTimeout(function(){px.classList.remove(dir)},350);
+    var e = edge(r);
+    row.querySelector('.bar').style.width = Math.min(100,e/8*100)+'%';
+    row.querySelector('.v').textContent = '+'+e.toFixed(1)+'%';
+    n += 37 + Math.floor(Math.random()*90); cnt.textContent = n.toLocaleString('en-GB');
+    if (Math.random()<.2){vb += Math.random()<.5?-1:1; vbe.textContent = vb}
+  },650);
+  setInterval(function(){
+    var r = rows.pop(); rows.unshift(r); render(); el.children[0].classList.add('new');
+  },5200);
+})();
+</script>
+</body>
+</html>
