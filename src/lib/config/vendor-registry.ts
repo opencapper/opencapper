@@ -146,7 +146,8 @@ const VENDORS = {
     domain: "pinnacle.com",
     primary: "#ff5c00",
     kind: "sportsbook",
-    monogram: "PIN",
+    logo: "/images/vendors/pinnacle.png",
+    shape: "tile",
   },
   cloudbet: {
     name: "Cloudbet",

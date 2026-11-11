@@ -77,6 +77,7 @@ Every SVG was parsed and sanitized (scripts, foreignObject, images, event handle
 | winamax.png | https://operator-front-static-cdn.winamax.fr/img/style/v2/202410-apple-touch-icon.png | Vendor site icon (apple touch or manifest icon), converted to PNG |
 | winible.svg | https://www.winible.com/favicon.svg | Vendor site favicon SVG, sanitized, square viewBox |
 | x.svg | simple-icons 16.34.0 `siX` (upstream source: https://x.com) | simple-icons data (CC0), brand color #000000 |
+| pinnacle.png | https://www.pinnacle.com/img/icons/pwa-512x512.png | Vendor site PWA manifest icon (www.pinnacle.com/manifest.json), fetched through a US exit because German IPs get a Cloudflare block, downscaled to 256px |
 | youtube.svg | simple-icons 16.34.0 `siYoutube` (upstream source: https://www.youtube.com/howyoutubeworks/resources/brand-resources/) | simple-icons data (CC0), brand color #FF0000 |
 | zapier.svg | simple-icons 16.34.0 `siZapier` (upstream source: Zapier brand guidelines) | simple-icons data (CC0), brand color #FF4F00 |
 
@@ -86,6 +87,5 @@ No acceptable logo was found for these registry entries (vendor sites refuse aut
 
 - betonlineag (BetOnline)
 - lowvig (LowVig)
-- pinnacle (Pinnacle): every Pinnacle domain answers with a Cloudflare block page and there is no official App Store app
 - cloudbet (Cloudbet): the site is geoblocked, there is no App Store app, and the only reachable icon is a 32px favicon, too small to render crisp
 - betmma (betmma.tips)
