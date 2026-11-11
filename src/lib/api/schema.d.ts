@@ -107,7 +107,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["stats"];
+        get: operations["bet_stats"];
         put?: never;
         post?: never;
         delete?: never;
@@ -219,7 +219,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["history"];
+        get: operations["price_history"];
         put?: never;
         post?: never;
         delete?: never;
@@ -331,7 +331,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["history_v1_me_alerts_history"];
+        get: operations["alert_history"];
         put?: never;
         post?: never;
         delete?: never;
@@ -395,7 +395,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["stats_v1_stats"];
+        get: operations["stats"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1571,7 +1571,7 @@ export interface operations {
             };
         };
     };
-    stats: {
+    bet_stats: {
         parameters: {
             query?: {
                 status?: components["schemas"]["BetStatus"];
@@ -1854,7 +1854,7 @@ export interface operations {
             };
         };
     };
-    history: {
+    price_history: {
         parameters: {
             query: {
                 /** @description Outcome key from a price (`key` field). */
@@ -2130,7 +2130,7 @@ export interface operations {
             };
         };
     };
-    history_v1_me_alerts_history: {
+    alert_history: {
         parameters: {
             query?: {
                 /** @description Newest first; defaults to 200. */
@@ -2298,7 +2298,7 @@ export interface operations {
             };
         };
     };
-    stats_v1_stats: {
+    stats: {
         parameters: {
             query?: never;
             header?: never;
