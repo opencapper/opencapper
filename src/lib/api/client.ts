@@ -3,6 +3,9 @@ import type { components, paths } from "@/lib/api/schema";
 
 type Schemas = components["schemas"];
 export type ValueBet = Schemas["ValueBet"];
+export type ValueBetList = Schemas["ValueBetList"];
+export type BetDetail = Schemas["BetDetail"];
+export type LedgerView = Schemas["LedgerView"];
 export type Stats = Schemas["Stats"];
 export type Game = Schemas["Game"];
 export type GameSummary = Schemas["GameSummary"];

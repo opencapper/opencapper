@@ -1,0 +1,53 @@
+import { Unreachable } from "@/components/elements/odds/panel";
+import { StatCard, StatGrid } from "@/components/elements/odds/stat-card";
+import { PageHeading } from "@/components/elements/page/page-heading";
+import { PageShell } from "@/components/elements/page/page-shell";
+import type { LedgerView } from "@/lib/api/client";
+import { count, percent } from "@/lib/format";
+import { useLocale, useTranslations } from "next-intl";
+import { LedgerTable } from "./ledger-table";
+
+export function Proof(props: { data?: LedgerView }) {
+  const t = useTranslations();
+  const tp = useTranslations("PROOF");
+  const locale = useLocale();
+  const heading = (
+    <PageHeading className="mb-0" label={tp("LABEL")} title={tp("HEADING")} description={tp("SUBHEADING")} />
+  );
+  if (!props.data) {
+    return (
+      <PageShell>
+        {heading}
+        <Unreachable />
+      </PageShell>
+    );
+  }
+  const s = props.data.stats;
+  const beat = s.closed > 0 ? s.beat_close / s.closed : undefined;
+  const clv = s.avg_clv ?? undefined;
+
+  return (
+    <PageShell>
+      {heading}
+      <StatGrid className="sm:grid-cols-5">
+        <StatCard icon="shield-check" label={tp("STAT_ALERTS")} value={count(s.alerts, locale)} />
+        <StatCard icon="clock" label={tp("STAT_OPEN")} value={count(s.open, locale)} />
+        <StatCard icon="circle-check" label={tp("STAT_CLOSED")} value={count(s.closed, locale)} />
+        <StatCard
+          icon="target"
+          label={tp("STAT_BEAT")}
+          value={beat === undefined ? t("FORMAT.NA") : `${(beat * 100).toFixed(0)}%`}
+          tone={beat === undefined ? undefined : beat >= 0.5 ? "win" : "bad"}
+        />
+        <StatCard
+          icon="trending-up"
+          label={tp("STAT_CLV")}
+          value={clv === undefined ? t("FORMAT.NA") : percent(clv)}
+          tone={clv ? (clv > 0 ? "win" : "bad") : undefined}
+          hint={tp("CLV_HINT")}
+        />
+      </StatGrid>
+      <LedgerTable entries={props.data.entries} />
+    </PageShell>
+  );
+}

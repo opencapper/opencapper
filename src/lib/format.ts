@@ -1,4 +1,8 @@
 import type { Confidence } from "@/lib/api/client";
+import type { useTranslations } from "next-intl";
+
+// Server pages pass getTranslations(), client components useTranslations(); both fit this shape.
+export type Translate = ReturnType<typeof useTranslations<never>>;
 
 const BOOKS: Record<string, string> = {
   ubuk: "Unibet UK",
@@ -52,6 +56,14 @@ export function bookName(code: string): string {
   return BOOKS[code] ?? code;
 }
 
+// Times follow the UK books the board is built from, not the server clock.
+const ZONE = "Europe/London";
+
+// Plain "en" formats US style (12 hour clock, month first); the board is British.
+function intl(locale: string): string {
+  return locale === "en" ? "en-GB" : locale;
+}
+
 type Selectable = {
   market: string;
   side: string;
@@ -64,21 +76,39 @@ function signed(line: number): string {
   return line > 0 ? `+${line}` : String(line);
 }
 
-export function sideName(sel: Selectable): string {
+export function sideName(sel: Selectable, t: Translate): string {
   const line = Number(sel.line);
-  if (sel.market === "total") return `${sel.side === "over" ? "Over" : "Under"} ${line}`;
-  if (sel.side === "draw") return "Draw";
+  if (sel.market === "total")
+    return sel.side === "over"
+      ? t("FORMAT.SIDE.OVER", { line: String(line) })
+      : t("FORMAT.SIDE.UNDER", { line: String(line) });
+  if (sel.side === "draw") return t("FORMAT.SIDE.DRAW");
   const team = sel.side === "home" ? sel.home : sel.away;
-  if (sel.market === "asian_handicap") return `${team} ${signed(sel.side === "home" ? line : -line)}`;
+  if (sel.market === "asian_handicap")
+    return `${team} ${signed(sel.side === "home" ? line : -line)}`;
   return team;
 }
 
-export function marketName(sel: { market: string; period: string; line?: string | null }): string {
-  const period = sel.period === "first_half" ? ", 1st half" : "";
-  if (sel.market === "three_way") return `Match result${period}`;
-  if (sel.market === "total") return `Total ${Number(sel.line)}${period}`;
-  if (sel.market === "asian_handicap") return `Asian handicap ${signed(Number(sel.line))}${period}`;
-  return `Moneyline${period}`;
+export function marketName(
+  sel: { market: string; period: string; line?: string | null },
+  t: Translate,
+): string {
+  const line = signed(Number(sel.line));
+  const name =
+    sel.market === "three_way"
+      ? t("FORMAT.MARKET.THREE_WAY")
+      : sel.market === "total"
+        ? t("FORMAT.MARKET.TOTAL", { line: String(Number(sel.line)) })
+        : sel.market === "asian_handicap"
+          ? t("FORMAT.MARKET.ASIAN_HANDICAP", { line })
+          : t("FORMAT.MARKET.TWO_WAY");
+  return sel.period === "first_half"
+    ? t("FORMAT.MARKET.FIRST_HALF", { market: name })
+    : name;
+}
+
+export function matchup(home: string, away: string, t: Translate): string {
+  return t("FORMAT.MATCHUP", { home, away });
 }
 
 export function percent(x: number, digits = 1): string {
@@ -93,61 +123,78 @@ export function odds(x: string | number): string {
   return Number(x).toFixed(2);
 }
 
-export function money(x: number): string {
-  return x.toLocaleString("en-GB", { maximumFractionDigits: 0 });
+export function money(x: number, locale: string): string {
+  return x.toLocaleString(intl(locale), { maximumFractionDigits: 0 });
 }
 
-export function until(iso: string, now: number): string {
+export function count(x: number, locale: string): string {
+  return x.toLocaleString(intl(locale));
+}
+
+function relative(locale: string, value: number, unit: Intl.RelativeTimeFormatUnit): string {
+  return new Intl.RelativeTimeFormat(intl(locale), { style: "narrow", numeric: "always" }).format(value, unit);
+}
+
+export function until(iso: string, now: number, locale: string, t: Translate): string {
   const mins = Math.round((new Date(iso).getTime() - now) / 60000);
-  if (mins < 0) return "started";
-  if (mins < 60) return `in ${mins}m`;
+  if (mins < 0) return t("FORMAT.STARTED");
+  if (mins < 60) return relative(locale, mins, "minute");
   const hours = Math.round(mins / 60);
-  if (hours < 48) return `in ${hours}h`;
-  return `in ${Math.round(hours / 24)}d`;
+  if (hours < 48) return relative(locale, hours, "hour");
+  return relative(locale, Math.round(hours / 24), "day");
 }
 
-export function ago(iso: string, now: number): string {
+export function ago(iso: string, now: number, locale: string): string {
   const secs = Math.max(0, Math.round((now - new Date(iso).getTime()) / 1000));
-  if (secs < 90) return `${secs}s ago`;
+  if (secs < 90) return relative(locale, -secs, "second");
   const mins = Math.round(secs / 60);
-  if (mins < 90) return `${mins}m ago`;
-  return `${Math.round(mins / 60)}h ago`;
+  if (mins < 90) return relative(locale, -mins, "minute");
+  return relative(locale, -Math.round(mins / 60), "hour");
 }
 
-export function kickoff(iso: string): string {
-  return new Intl.DateTimeFormat("en-GB", {
+export function kickoff(iso: string, locale: string): string {
+  return new Intl.DateTimeFormat(intl(locale), {
     weekday: "short",
     day: "numeric",
     month: "short",
     hour: "2-digit",
     minute: "2-digit",
-    timeZone: "Europe/London",
+    timeZone: ZONE,
   }).format(new Date(iso));
 }
 
-export function day(iso: string): string {
-  return new Intl.DateTimeFormat("en-GB", {
+export function day(iso: string, locale: string): string {
+  return new Intl.DateTimeFormat(intl(locale), {
     weekday: "long",
     day: "numeric",
     month: "long",
-    timeZone: "Europe/London",
+    timeZone: ZONE,
   }).format(new Date(iso));
 }
 
-export function time(iso: string): string {
-  return new Intl.DateTimeFormat("en-GB", {
+export function time(iso: string, locale: string): string {
+  return new Intl.DateTimeFormat(intl(locale), {
     hour: "2-digit",
     minute: "2-digit",
-    timeZone: "Europe/London",
+    timeZone: ZONE,
   }).format(new Date(iso));
 }
 
-export const CONFIDENCE_HINT: Record<Confidence, string> = {
-  high: "Pinnacle takes 1,000+ on this market",
-  medium: "Pinnacle takes 500 to 1,000",
-  low: "Thin sharp market, fair price less certain",
-  check: "EV too high to trust, likely a stale price",
-};
+export const CONFIDENCE_LEVELS = ["high", "medium", "low", "check"] as const satisfies Confidence[];
+
+export function confidenceLabel(c: Confidence, t: Translate): string {
+  if (c === "high") return t("CONFIDENCE.HIGH");
+  if (c === "medium") return t("CONFIDENCE.MEDIUM");
+  if (c === "low") return t("CONFIDENCE.LOW");
+  return t("CONFIDENCE.CHECK");
+}
+
+export function confidenceHint(c: Confidence, t: Translate): string {
+  if (c === "high") return t("CONFIDENCE.HINT_HIGH");
+  if (c === "medium") return t("CONFIDENCE.HINT_MEDIUM");
+  if (c === "low") return t("CONFIDENCE.HINT_LOW");
+  return t("CONFIDENCE.HINT_CHECK");
+}
 
 // Kelly stake as a share of bankroll; negative edges stake nothing.
 export function kelly(decimalOdds: number, probability: number, fraction: number): number {
@@ -158,7 +205,7 @@ export function kelly(decimalOdds: number, probability: number, fraction: number
 
 export function query(base: string, params: Record<string, string | undefined>): string {
   const q = new URLSearchParams();
-  for (const [k, v] of Object.entries(params)) if (v) q.set(k, v);
+  for (const entry of Object.entries(params)) if (entry[1]) q.set(entry[0], entry[1]);
   const s = q.toString();
   return s ? `${base}?${s}` : base;
 }
@@ -166,3 +213,7 @@ export function query(base: string, params: Record<string, string | undefined>):
 export function param(value: string | string[] | undefined): string | undefined {
   return typeof value === "string" && value !== "" ? value : undefined;
 }
+
+// The board's stake column: quarter Kelly on a round bankroll.
+export const BANKROLL = 1000;
+export const KELLY_FRACTION = 0.25;

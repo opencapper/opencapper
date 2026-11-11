@@ -40,3 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 AGENTS.md
+
+# next-intl message declaration and the next-bun-compile binary
+*d.json.ts
+/server
+/dist
+.claude
