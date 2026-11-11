@@ -330,12 +330,15 @@ export interface components {
     schemas: {
         Arb: {
             away: string;
+            away_image?: string | null;
             /** @description Profit so high one leg is probably stale. */
             check: boolean;
             game_id: string;
             home: string;
+            home_image?: string | null;
             id: string;
             league: string;
+            league_country?: string | null;
             legs: components["schemas"]["ArbLeg"][];
             line?: string | null;
             market: string;
@@ -370,6 +373,7 @@ export interface components {
         };
         Bet: {
             away: string;
+            away_image?: string | null;
             book: string;
             closing_fair_odds?: string | null;
             /**
@@ -387,9 +391,13 @@ export interface components {
             /** @description Sharp fair odds when the bet was placed. */
             fair_odds_at_bet?: string | null;
             home: string;
+            /** @description TheSportsDB badge or photo, 100 px. */
+            home_image?: string | null;
             /** Format: uuid */
             id: string;
             league: string;
+            /** @description ISO 3166 alpha 2 of the league, EU or WORLD for international competitions. */
+            league_country?: string | null;
             line?: string | null;
             /** @description True once kickoff passed and the closing line was looked up. */
             line_closed: boolean;
@@ -598,12 +606,17 @@ export interface components {
         GameSummary: {
             arbs: number;
             away: string;
+            away_image?: string | null;
             /** Format: double */
             best_ev?: number | null;
             books: string[];
             home: string;
+            /** @description TheSportsDB badge or photo, 100 px. */
+            home_image?: string | null;
             id: string;
             league: string;
+            /** @description ISO 3166 alpha 2 of the league, EU or WORLD for international competitions. */
+            league_country?: string | null;
             markets: number;
             sport: string;
             /** Format: date-time */
@@ -631,6 +644,7 @@ export interface components {
             /** Format: date-time */
             alerted_at: string;
             away: string;
+            away_image?: string | null;
             book: string;
             closing_fair_odds?: string | null;
             /**
@@ -641,11 +655,14 @@ export interface components {
             confidence: components["schemas"]["Confidence"];
             game_id: string;
             home: string;
+            /** @description Filled from the current participant map when served. */
+            home_image?: string | null;
             id: string;
             /** Format: date-time */
             last_fair_at?: string | null;
             last_fair_odds?: string | null;
             league: string;
+            league_country?: string | null;
             line?: string | null;
             market: string;
             period: string;
@@ -775,6 +792,7 @@ export interface components {
         };
         ValueBet: {
             away: string;
+            away_image?: string | null;
             book: string;
             /** Format: date-time */
             book_changed_at?: string | null;
@@ -802,8 +820,10 @@ export interface components {
             fair_probability: number;
             game_id: string;
             home: string;
+            home_image?: string | null;
             id: string;
             league: string;
+            league_country?: string | null;
             line?: string | null;
             market: string;
             odds: string;
