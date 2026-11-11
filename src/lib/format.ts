@@ -76,7 +76,7 @@ export function sideName(sel: Selectable): string {
 export function marketName(sel: { market: string; period: string; line?: string | null }): string {
   const period = sel.period === "first_half" ? ", 1st half" : "";
   if (sel.market === "three_way") return `Match result${period}`;
-  if (sel.market === "total") return `Total goals ${Number(sel.line)}${period}`;
+  if (sel.market === "total") return `Total ${Number(sel.line)}${period}`;
   if (sel.market === "asian_handicap") return `Asian handicap ${signed(Number(sel.line))}${period}`;
   return `Moneyline${period}`;
 }
