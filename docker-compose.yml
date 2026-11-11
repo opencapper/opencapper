@@ -1,82 +1,17 @@
 services:
-  openev-db:
-    container_name: openev-db
-    image: postgres:18-alpine
-    restart: always
-    volumes:
-      - db-data:/var/lib/postgresql
-    networks:
-      proxy:
-        # old hostname kept so anything still pointing at opencapper-db keeps working
-        aliases:
-          - opencapper-db
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB}",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
-  openev-pgbackup:
-    container_name: openev-pgbackup
-    image: prodrigestivill/postgres-backup-local:18-alpine
-    restart: always
-    networks:
-      - proxy
-    volumes:
-      - ~/duplicati-volume/source/opencapper-db-pgbackup:/backups
-    depends_on:
-      openev-db:
-        condition: service_healthy
-    environment:
-      - POSTGRES_HOST=openev-db
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_EXTRA_OPTS=-Fc
-      - SCHEDULE=@every 6h
-      - BACKUP_KEEP_DAYS=7
-      - HEALTHCHECK_PORT=8080
-
-  openev:
-    container_name: openev
+  openev-web:
+    container_name: openev-web
     build:
       context: .
       dockerfile: Dockerfile
-      target: prod
-      args:
-        GIT_SHA: ${GIT_SHA:-dev}
-        NEXT_PUBLIC_LEGAL_NAME: ${LEGAL_NAME:-}
-        NEXT_PUBLIC_LEGAL_ADDRESS: ${LEGAL_ADDRESS:-}
-        NEXT_PUBLIC_LEGAL_VAT_ID: ${LEGAL_VAT_ID:-}
-        NEXT_PUBLIC_LEGAL_EMAIL: ${LEGAL_EMAIL:-}
     restart: always
-    env_file: .env
     networks:
       - proxy
-    depends_on:
-      openev-db:
-        condition: service_healthy
     environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@openev-db:5432/${POSTGRES_DB}
+      # The odds API is internal; it is never exposed through Traefik.
+      - OPENEV_API_URL=http://openev-api:8080
     healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "-q",
-          "-O",
-          "/dev/null",
-          "http://127.0.0.1:3000/api/ops/health",
-        ]
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:3000/"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -84,14 +19,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.openev.rule=Host(`opencapper.coding-global.com`)"
-      - "traefik.http.routers.openev.entrypoints=websecure"
-      - "traefik.http.services.openev.loadbalancer.server.port=3000"
-
-volumes:
-  db-data:
-    # existing production volume, kept so no data is lost
-    name: opencapper_opencapper-db-data
+      - "traefik.http.routers.openev-web.rule=Host(`openev.coding-global.com`)"
+      - "traefik.http.routers.openev-web.entrypoints=websecure"
+      - "traefik.http.services.openev-web.loadbalancer.server.port=3000"
 
 networks:
   proxy:

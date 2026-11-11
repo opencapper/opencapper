@@ -1,7 +1,4 @@
 node_modules
 .next
 .git
-.env
-.env.*
-server
-*.log
+.env*

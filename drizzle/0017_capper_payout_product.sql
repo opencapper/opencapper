@@ -1,1 +1,0 @@
-ALTER TABLE "capper_payout_accounts" ADD COLUMN "external_product_id" text;
