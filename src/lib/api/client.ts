@@ -1,10 +1,28 @@
 import createClient from "openapi-fetch";
 import type { components, paths } from "@/lib/api/schema";
 
-export type ValueBet = components["schemas"]["ValueBet"];
-export type Stats = components["schemas"]["Stats"];
+type Schemas = components["schemas"];
+export type ValueBet = Schemas["ValueBet"];
+export type Stats = Schemas["Stats"];
+export type Game = Schemas["Game"];
+export type GameSummary = Schemas["GameSummary"];
+export type Market = Schemas["Market"];
+export type Outcome = Schemas["Outcome"];
+export type BookPrice = Schemas["BookPrice"];
+export type Arb = Schemas["Arb"];
+export type LedgerEntry = Schemas["LedgerEntry"];
+export type LedgerStats = Schemas["LedgerStats"];
+export type BookStatus = Schemas["BookStatus"];
+export type PricePoint = Schemas["PricePoint"];
+export type Confidence = ValueBet["confidence"];
 
 // Server side only: the API sits on the internal network next to this app.
 export const api = createClient<paths>({
   baseUrl: process.env.OPENEV_API_URL ?? "http://127.0.0.1:8085",
 });
+
+// A network failure throws instead of returning an error; callers render one fallback for both.
+export async function load<T>(request: Promise<{ data?: T }>): Promise<T | undefined> {
+  const res = await request.catch(() => undefined);
+  return res?.data;
+}

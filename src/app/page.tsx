@@ -1,230 +1,118 @@
 import Link from "next/link";
 import { connection } from "next/server";
-import { api, type ValueBet } from "@/lib/api/client";
-import {
-  ago,
-  bookName,
-  groupBets,
-  kickoff,
-  marketName,
-  odds,
-  percent,
-  selection,
-  until,
-} from "@/lib/format";
-import { AutoRefresh } from "./refresh";
+import { AutoRefresh } from "@/components/refresh";
+import { ConfidenceBadge, Ev, PageHeader, Panel, Stat, Unreachable } from "@/components/ui";
+import { api, load } from "@/lib/api/client";
+import { groupBets } from "@/lib/group";
+import { ago, bookName, marketName, odds, percent, sideName, until } from "@/lib/format";
 
-const MIN_EV_OPTIONS = [
-  { label: "All", value: undefined },
-  { label: "+2%", value: 0.02 },
-  { label: "+5%", value: 0.05 },
-];
-
-const CONFIDENCE_STYLE: Record<ValueBet["confidence"], string> = {
-  high: "text-win border-win/30 bg-win/10",
-  medium: "text-warn border-warn/30 bg-warn/10",
-  low: "text-muted border-line bg-panel",
-  check: "text-bad border-bad/30 bg-bad/10",
-};
-
-const CONFIDENCE_HINT: Record<ValueBet["confidence"], string> = {
-  high: "Pinnacle takes 1,000+ on this market",
-  medium: "Pinnacle takes 500 to 1,000",
-  low: "Thin sharp market, fair price less certain",
-  check: "EV too high to trust, likely a stale price",
-};
-
-function href(params: Record<string, string | undefined>) {
-  const q = new URLSearchParams();
-  for (const [k, v] of Object.entries(params)) if (v) q.set(k, v);
-  const s = q.toString();
-  return s ? `/?${s}` : "/";
-}
-
-function Chip({ active, to, children }: { active: boolean; to: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={to}
-      className={`rounded-full border px-3 py-1 text-xs transition-colors ${
-        active ? "border-foreground/40 bg-foreground/10 text-foreground" : "border-line text-muted hover:text-foreground"
-      }`}
-    >
-      {children}
-    </Link>
-  );
-}
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-line bg-panel px-4 py-3">
-      <div className="text-[11px] uppercase tracking-wider text-muted">{label}</div>
-      <div className="tabular mt-1 font-mono text-lg">{value}</div>
-    </div>
-  );
-}
-
-export default async function Home({ searchParams }: PageProps<"/">) {
+export default async function Overview() {
   await connection();
-  const sp = await searchParams;
-  const book = typeof sp.book === "string" ? sp.book : undefined;
-  const minEv = typeof sp.min === "string" ? Number(sp.min) : undefined;
-
-  // A network failure throws instead of returning an error; both render the fallback below.
-  const { data, error } = await api
-    .GET("/v1/value-bets", {
-      params: { query: { book, min_ev: minEv, limit: 300 } },
-      cache: "no-store",
-    })
-    .catch((e: unknown) => ({ data: undefined, error: e }));
+  const [bets, arbs, ledger, books] = await Promise.all([
+    load(api.GET("/v1/value-bets", { params: { query: { limit: 1000 } }, cache: "no-store" })),
+    load(api.GET("/v1/arbs", { params: { query: {} }, cache: "no-store" })),
+    load(api.GET("/v1/ledger", { params: { query: { limit: 0 } }, cache: "no-store" })),
+    load(api.GET("/v1/books", { cache: "no-store" })),
+  ]);
   const now = Date.now();
+  if (!bets || !arbs || !ledger || !books) return <Unreachable />;
 
-  if (error || !data) {
-    return (
-      <main className="mx-auto w-full max-w-6xl px-4 py-16 text-muted">
-        The odds engine is not reachable right now. Try again in a minute.
-      </main>
-    );
-  }
-
-  const { bets, stats } = data;
-  const groups = groupBets(bets);
-  const books = Object.keys(stats.books).filter((b) => b !== "pinnacle").sort();
+  const top = groupBets(bets.bets.filter((b) => b.confidence !== "low")).slice(0, 8);
+  const soft = books.filter((b) => b.book !== "pinnacle");
+  const l = ledger.stats;
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:py-12">
+    <>
       <AutoRefresh seconds={20} />
-      <header className="flex flex-col gap-2">
-        <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted">OpenEV preview</div>
-        <h1 className="text-2xl font-semibold sm:text-3xl">Value bets, priced against the sharp line</h1>
-        <p className="max-w-2xl text-sm text-muted">
-          Prices from six UK bookmakers on the Kambi platform, compared with Pinnacle after removing its margin.
-          A bet shows up when the bookmaker pays more than the fair odds. Every price carries the time it was
-          last confirmed, and the confidence says how much money stands behind the fair line.
-        </p>
-      </header>
+      <PageHeader eyebrow="OpenEV preview" title="Where the bookmakers are wrong right now">
+        Prices from {soft.length} bookmakers compared live with Pinnacle, the sharpest market, after removing its margin.
+        Every alert goes into a public record with the closing line next to it, losers included.
+      </PageHeader>
 
-      <section className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
-        <StatCard label="Value bets" value={String(groups.length)} />
-        <StatCard label="Games matched" value={`${stats.matched_events} / ${stats.book_events}`} />
-        <StatCard label="Prices compared" value={stats.compared_prices.toLocaleString("en-GB")} />
-        <StatCard label="Sharp games" value={String(stats.sharp_events)} />
-        <StatCard label="Updated" value={stats.updated_at ? ago(stats.updated_at, now) : "never"} />
-      </section>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <Stat label="Value bets" value={String(groupBets(bets.bets).length)} tone="win" />
+        <Stat label="Arbs" value={String(arbs.length)} />
+        <Stat label="Games matched" value={String(bets.stats.matched_events)} />
+        <Stat label="Live prices" value={bets.stats.quotes.toLocaleString("en-GB")} />
+        <Stat label="Alerts recorded" value={String(l.alerts)} />
+        <Stat label="Updated" value={bets.stats.updated_at ? ago(bets.stats.updated_at, now) : "never"} />
+      </div>
 
-      <section className="mt-6 flex flex-wrap items-center gap-2">
-        <span className="mr-1 text-xs text-muted">Book</span>
-        <Chip active={!book} to={href({ min: sp.min as string | undefined })}>
-          All
-        </Chip>
-        {books.map((b) => (
-          <Chip key={b} active={book === b} to={href({ book: b, min: sp.min as string | undefined })}>
-            {bookName(b)}
-          </Chip>
-        ))}
-        <span className="ml-4 mr-1 text-xs text-muted">Min EV</span>
-        {MIN_EV_OPTIONS.map((o) => (
-          <Chip
-            key={o.label}
-            active={minEv === o.value}
-            to={href({ book, min: o.value === undefined ? undefined : String(o.value) })}
-          >
-            {o.label}
-          </Chip>
-        ))}
-      </section>
-
-      <section className="mt-4 overflow-x-auto rounded-lg border border-line">
-        <table className="w-full min-w-[860px] text-left text-sm">
-          <thead className="border-b border-line bg-panel text-[11px] uppercase tracking-wider text-muted">
-            <tr>
-              <th className="px-3 py-2">EV</th>
-              <th className="px-3 py-2">Match</th>
-              <th className="px-3 py-2">Bet</th>
-              <th className="px-3 py-2">Book</th>
-              <th className="px-3 py-2 text-right">Odds</th>
-              <th className="px-3 py-2 text-right">Fair</th>
-              <th className="px-3 py-2 text-right">Pinnacle</th>
-              <th className="px-3 py-2">Confidence</th>
-              <th className="px-3 py-2">Seen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {groups.length === 0 && (
-              <tr>
-                <td colSpan={9} className="px-3 py-10 text-center text-muted">
-                  No value right now with these filters. Prices update every few seconds.
-                </td>
-              </tr>
-            )}
-            {groups.map(({ key, best: b, offers }) => (
-              <tr key={key} className="border-b border-line/60 last:border-0 hover:bg-panel/60">
-                <td className="px-3 py-2.5 align-top">
-                  <div className="tabular font-mono font-medium text-win">{percent(b.ev)}</div>
-                  <div className="tabular font-mono text-[11px] text-muted" title="Against the worst case devig">
-                    {percent(b.ev_conservative)} safe
-                  </div>
-                </td>
-                <td className="px-3 py-2.5 align-top">
-                  <div>
-                    {b.home} <span className="text-muted">v</span> {b.away}
-                  </div>
-                  <div className="text-[11px] text-muted">
-                    {b.league} · {kickoff(b.starts_at)} · {until(b.starts_at, now)}
-                  </div>
-                </td>
-                <td className="px-3 py-2.5 align-top">
-                  <div>{selection(b)}</div>
-                  <div className="text-[11px] text-muted">{marketName(b)}</div>
-                </td>
-                <td className="px-3 py-2.5 align-top">
-                  <div>{bookName(b.book)}</div>
-                  {offers.length > 1 && (
-                    <div
-                      className="text-[11px] text-muted"
-                      title={offers
-                        .slice(1)
-                        .map((o) => `${bookName(o.book)} ${odds(o.odds)}`)
-                        .join(", ")}
-                    >
-                      +{offers.length - 1} more {offers.length - 1 === 1 ? "book" : "books"}
-                    </div>
-                  )}
-                </td>
-                <td className="tabular px-3 py-2.5 text-right align-top font-mono">{odds(b.odds)}</td>
-                <td className="tabular px-3 py-2.5 text-right align-top font-mono text-muted">{odds(b.fair_odds)}</td>
-                <td className="tabular px-3 py-2.5 text-right align-top font-mono text-muted">
-                  <div>{odds(b.sharp_odds)}</div>
-                  <div className="text-[11px]">max {b.sharp_max_stake ? Number(b.sharp_max_stake).toLocaleString("en-GB") : "n/a"}</div>
-                </td>
-                <td className="px-3 py-2.5 align-top">
-                  <span
-                    title={CONFIDENCE_HINT[b.confidence]}
-                    className={`rounded border px-2 py-0.5 text-[11px] capitalize ${CONFIDENCE_STYLE[b.confidence]}`}
-                  >
-                    {b.confidence}
+      <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
+        <Panel
+          title="Best value with solid liquidity"
+          action={
+            <Link href="/value-bets" className="text-xs text-muted hover:text-foreground">
+              All value bets
+            </Link>
+          }
+        >
+          <ul className="divide-y divide-line/60">
+            {top.length === 0 && <li className="px-4 py-8 text-center text-sm text-muted">Nothing above low confidence right now.</li>}
+            {top.map((g) => (
+              <li key={g.key}>
+                <Link
+                  href={`/value-bets/${encodeURIComponent(g.best.id)}`}
+                  className="grid grid-cols-[64px_1fr_auto] items-center gap-3 px-4 py-2.5 text-sm hover:bg-foreground/5"
+                >
+                  <Ev value={g.best.ev} className="font-medium" />
+                  <span className="min-w-0">
+                    <span className="block truncate">
+                      {sideName(g.best)} <span className="text-muted">at {bookName(g.best.book)}</span>
+                    </span>
+                    <span className="block truncate text-[11px] text-muted">
+                      {marketName(g.best)}, {g.best.home} v {g.best.away}, {until(g.best.starts_at, now)}
+                    </span>
                   </span>
-                </td>
-                <td className="tabular px-3 py-2.5 align-top font-mono text-[11px] text-muted">{ago(b.book_seen_at, now)}</td>
-              </tr>
+                  <span className="flex items-center gap-3">
+                    <span className="tabular font-mono">{odds(g.best.odds)}</span>
+                    <ConfidenceBadge value={g.best.confidence} />
+                  </span>
+                </Link>
+              </li>
             ))}
-          </tbody>
-        </table>
-      </section>
+          </ul>
+        </Panel>
 
-      <footer className="mt-8 grid gap-3 text-xs text-muted sm:grid-cols-3">
-        <p>
-          <span className="text-foreground">Fair odds</span> come from Pinnacle with its margin removed (power method).
-          The safe EV uses the least favourable method, so it is the cautious number.
-        </p>
-        <p>
-          <span className="text-foreground">Confidence</span> follows Pinnacle&apos;s maximum stake on the market:
-          the more money it accepts, the more the fair price can be trusted.
-        </p>
-        <p>
-          <span className="text-foreground">Freshness</span>: a price that is not reconfirmed within five minutes
-          drops off the board. Always check the price at the bookmaker before betting.
-        </p>
-      </footer>
-    </main>
+        <div className="flex flex-col gap-6">
+          <Panel
+            title="Proof so far"
+            action={
+              <Link href="/proof" className="text-xs text-muted hover:text-foreground">
+                Ledger
+              </Link>
+            }
+          >
+            <dl className="tabular grid grid-cols-2 gap-y-1.5 px-4 py-3 font-mono text-sm">
+              <dt className="font-sans text-muted">Alerts</dt>
+              <dd className="text-right">{l.alerts}</dd>
+              <dt className="font-sans text-muted">Closed</dt>
+              <dd className="text-right">{l.closed}</dd>
+              <dt className="font-sans text-muted">Beat the close</dt>
+              <dd className="text-right">{l.closed > 0 ? `${Math.round((l.beat_close / l.closed) * 100)}%` : "n/a"}</dd>
+              <dt className="font-sans text-muted">Average CLV</dt>
+              <dd className="text-right">{l.avg_clv === null || l.avg_clv === undefined ? "n/a" : percent(l.avg_clv)}</dd>
+            </dl>
+          </Panel>
+          <Panel
+            title="Sources"
+            action={
+              <Link href="/books" className="text-xs text-muted hover:text-foreground">
+                All
+              </Link>
+            }
+          >
+            <ul className="divide-y divide-line/60 text-sm">
+              {books.map((b) => (
+                <li key={b.book} className="flex justify-between px-4 py-1.5">
+                  <span>{bookName(b.book)}</span>
+                  <span className="tabular font-mono text-xs text-muted">{b.events} games</span>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        </div>
+      </div>
+    </>
   );
 }

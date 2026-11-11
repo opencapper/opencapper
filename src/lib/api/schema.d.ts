@@ -4,6 +4,38 @@
  */
 
 export interface paths {
+    "/v1/arbs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["arbs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/books": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["books"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/debug/unmatched": {
         parameters: {
             query?: never;
@@ -20,6 +52,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/games": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["games"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/games/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["game"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/health": {
         parameters: {
             query?: never;
@@ -28,6 +92,38 @@ export interface paths {
             cookie?: never;
         };
         get: operations["health"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["history"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/ledger": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ledger"];
         put?: never;
         post?: never;
         delete?: never;
@@ -68,16 +164,197 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/value-bets/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["value_bet"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        Arb: {
+            away: string;
+            /** @description Profit so high one leg is probably stale. */
+            check: boolean;
+            game_id: string;
+            home: string;
+            id: string;
+            league: string;
+            legs: components["schemas"]["ArbLeg"][];
+            line?: string | null;
+            market: string;
+            period: string;
+            /**
+             * Format: double
+             * @description Guaranteed return per unit staked, e.g. 0.012 for 1.2%.
+             */
+            profit: number;
+            /** Format: date-time */
+            starts_at: string;
+        };
+        ArbLeg: {
+            book: string;
+            key: string;
+            odds: string;
+            /** Format: date-time */
+            seen_at: string;
+            side: string;
+            /**
+             * Format: double
+             * @description Share of the total stake on this leg so every outcome returns the same.
+             */
+            stake_share: number;
+        };
+        BetDetail: {
+            bet: components["schemas"]["ValueBet"];
+            book_history: components["schemas"]["PricePoint"][];
+            game: components["schemas"]["GameSummary"];
+            market: components["schemas"]["Market"];
+            sharp_history: components["schemas"]["PricePoint"][];
+        };
+        BookPrice: {
+            book: string;
+            /** Format: date-time */
+            changed_at?: string | null;
+            /**
+             * Format: double
+             * @description Expected value against the power devigged sharp price, when the market has one.
+             */
+            ev?: number | null;
+            /** @description Stable key of this outcome at this book, also the price history key. */
+            key: string;
+            max_stake?: string | null;
+            odds: string;
+            /** Format: date-time */
+            seen_at: string;
+        };
+        BookStatus: {
+            book: string;
+            events: number;
+            /** Format: date-time */
+            newest_seen_at?: string | null;
+            quotes: number;
+        };
         /** @enum {string} */
         Confidence: "high" | "medium" | "low" | "check";
+        /** @description Fair probability of one outcome under each devig method. */
+        Devig: {
+            /** Format: double */
+            additive: number;
+            /** Format: double */
+            multiplicative: number;
+            /** Format: double */
+            power: number;
+            /** Format: double */
+            worst_case: number;
+        };
+        Game: {
+            markets: components["schemas"]["Market"][];
+            summary: components["schemas"]["GameSummary"];
+        };
+        GameSummary: {
+            arbs: number;
+            away: string;
+            /** Format: double */
+            best_ev?: number | null;
+            books: string[];
+            home: string;
+            id: string;
+            league: string;
+            markets: number;
+            sport: string;
+            /** Format: date-time */
+            starts_at: string;
+            value_bets: number;
+        };
         Health: {
             ok: boolean;
         };
+        LedgerEntry: {
+            /** Format: double */
+            alert_ev: number;
+            alert_fair_odds: string;
+            alert_odds: string;
+            /** Format: date-time */
+            alerted_at: string;
+            away: string;
+            book: string;
+            closing_fair_odds?: string | null;
+            /**
+             * Format: double
+             * @description Alert price against the closing fair price: the value the alert really had.
+             */
+            clv?: number | null;
+            confidence: components["schemas"]["Confidence"];
+            game_id: string;
+            home: string;
+            id: string;
+            /** Format: date-time */
+            last_fair_at?: string | null;
+            last_fair_odds?: string | null;
+            league: string;
+            line?: string | null;
+            market: string;
+            period: string;
+            sharp_key: string;
+            side: string;
+            /** Format: date-time */
+            starts_at: string;
+            status: components["schemas"]["LedgerStatus"];
+        };
+        LedgerStats: {
+            alerts: number;
+            /** Format: double */
+            avg_alert_ev?: number | null;
+            /** Format: double */
+            avg_clv?: number | null;
+            beat_close: number;
+            closed: number;
+            open: number;
+        };
+        /** @enum {string} */
+        LedgerStatus: "open" | "closed" | "no_close";
+        LedgerView: {
+            entries: components["schemas"]["LedgerEntry"][];
+            stats: components["schemas"]["LedgerStats"];
+        };
+        Market: {
+            kind: string;
+            line?: string | null;
+            outcomes: components["schemas"]["Outcome"][];
+            period: string;
+            sharp_max_stake?: string | null;
+            /** Format: double */
+            sharp_overround?: number | null;
+        };
+        Outcome: {
+            fair?: components["schemas"]["Devig"] | null;
+            fair_odds?: string | null;
+            /** @description Soft book prices, best first. */
+            prices: components["schemas"]["BookPrice"][];
+            sharp?: components["schemas"]["BookPrice"] | null;
+            side: string;
+        };
+        PricePoint: {
+            /** Format: date-time */
+            at: string;
+            odds: string;
+            open: boolean;
+        };
         Stats: {
+            arbs: number;
             book_events: number;
             books: {
                 [key: string]: number;
@@ -92,6 +369,7 @@ export interface components {
         };
         /** @description A book event no sharp event matched, with the sharp fixtures kicking off within ten minutes. */
         Unmatched: {
+            book: string;
             book_event: string;
             sharp_candidates: string[];
             /** Format: date-time */
@@ -107,7 +385,7 @@ export interface components {
             confidence: components["schemas"]["Confidence"];
             /**
              * Format: double
-             * @description Expected value per unit staked against the power devigged Pinnacle price.
+             * @description Expected value per unit staked against the power devigged sharp price.
              */
             ev: number;
             /**
@@ -115,9 +393,11 @@ export interface components {
              * @description Expected value against the least favourable devig method; the cautious number.
              */
             ev_conservative: number;
+            fair: components["schemas"]["Devig"];
             fair_odds: string;
             /** Format: double */
             fair_probability: number;
+            game_id: string;
             home: string;
             id: string;
             league: string;
@@ -125,7 +405,8 @@ export interface components {
             market: string;
             odds: string;
             period: string;
-            /** @description Largest stake Pinnacle accepts on this market: the liquidity behind the fair price. */
+            sharp_key: string;
+            /** @description Largest stake the sharp book accepts on this market: the liquidity behind the fair price. */
             sharp_max_stake?: string | null;
             sharp_odds: string;
             /** Format: double */
@@ -149,6 +430,49 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    arbs: {
+        parameters: {
+            query?: {
+                min_profit?: number;
+                /** @description Include arbs flagged as probably stale. */
+                include_check?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Current arbitrage, best profit first */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Arb"][];
+                };
+            };
+        };
+    };
+    books: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookStatus"][];
+                };
+            };
+        };
+    };
     unmatched: {
         parameters: {
             query?: never;
@@ -169,6 +493,61 @@ export interface operations {
             };
         };
     };
+    games: {
+        parameters: {
+            query?: {
+                /** @description Matches team or league names, case insensitive. */
+                q?: string;
+                league?: string;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Upcoming games with a sharp price, by kickoff */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GameSummary"][];
+                };
+            };
+        };
+    };
+    game: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Game id */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Every market with every book's price and the fair line */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Game"];
+                };
+            };
+            /** @description Unknown or started game */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     health: {
         parameters: {
             query?: never;
@@ -184,6 +563,51 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Health"];
+                };
+            };
+        };
+    };
+    history: {
+        parameters: {
+            query: {
+                /** @description Outcome key from a price (`key` field). */
+                key: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Price changes of one outcome at one book, oldest first */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PricePoint"][];
+                };
+            };
+        };
+    };
+    ledger: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Every alert ever sent with its closing line, newest first */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LedgerView"];
                 };
             };
         };
@@ -232,6 +656,36 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ValueBetList"];
                 };
+            };
+        };
+    };
+    value_bet: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Value bet id */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The bet with its full market and price history */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BetDetail"];
+                };
+            };
+            /** @description No longer a value bet */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
