@@ -27,8 +27,8 @@ import { fetchBet } from "@/lib/live/actions";
 import { queryKeys } from "@/lib/react-query/keys";
 import { useLocale, useTranslations } from "next-intl";
 
-const BOOK_COLOR = "#3b82f6";
-const SHARP_COLOR = "#d97706";
+const BOOK_COLOR = "#ff4b1f";
+const SHARP_COLOR = "#2e9d5b";
 
 const METHODS = [
   { key: "power", label: "METHOD_POWER", note: "METHOD_POWER_NOTE" },

@@ -54,7 +54,7 @@ export function useLiveQuery<T>(opts: {
   const query = useQuery({
     queryKey: opts.queryKey,
     queryFn: opts.fetch,
-    initialData: opts.initialData,
+    initialData: opts.initialData ?? undefined,
     staleTime: Infinity,
     refetchInterval: status === "live" ? false : FALLBACK_MS,
   });

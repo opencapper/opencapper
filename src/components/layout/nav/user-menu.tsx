@@ -61,7 +61,12 @@ function SignedInMenu(props: { user: User }) {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="ghost" size="icon-sm" className="rounded-full" aria-label={t("MENU")} />
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="rounded-full"
+            aria-label={t("MENU")}
+          />
         }
       >
         <UserAvatar user={props.user} />
@@ -71,8 +76,12 @@ function SignedInMenu(props: { user: User }) {
           <DropdownMenuLabel className="flex items-center gap-2.5">
             <UserAvatar user={props.user} className="size-8" />
             <span className="flex min-w-0 flex-col">
-              <span className="text-foreground truncate text-sm font-medium">{props.user.display_name}</span>
-              <span className="text-muted-foreground truncate text-xs font-normal">{props.user.username}</span>
+              <span className="text-foreground truncate text-sm font-medium">
+                {props.user.display_name}
+              </span>
+              <span className="text-muted-foreground truncate text-xs font-normal">
+                {props.user.username}
+              </span>
             </span>
           </DropdownMenuLabel>
         </DropdownMenuGroup>
@@ -98,7 +107,10 @@ function SignedInMenu(props: { user: User }) {
           {t("APPEARANCE")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem disabled={pending} onClick={() => transition[1](() => signOut())}>
+        <DropdownMenuItem
+          disabled={pending}
+          onClick={() => transition[1](() => signOut())}
+        >
           <Icon name="log-out" />
           {t("SIGN_OUT")}
         </DropdownMenuItem>

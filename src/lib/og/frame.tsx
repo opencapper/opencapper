@@ -1,25 +1,36 @@
+import { CREST_SLICE } from "@/components/elements/brand/brand";
 import { env } from "@/lib/config/env";
 import type { CSSProperties, ReactNode } from "react";
-import { FONT_MONO, FONT_SANS } from "./assets";
+import {
+  FONT_DISPLAY,
+  FONT_MONO,
+  FONT_NUM,
+  FONT_SANS,
+  FONT_SERIF,
+} from "./assets";
 
 export const OG_WIDTH = 1200;
 export const OG_HEIGHT = 630;
 
-// The dark palette of the site; green is reserved for a price that beats the fair line.
+// The Matchday paper: ink type, pitch green for a price that beats the fair line, vermilion for the edge.
 export const C = {
-  bg: "#000000",
-  text: "#fafafa",
-  soft: "rgba(255,255,255,0.72)",
-  muted: "rgba(255,255,255,0.5)",
-  faint: "rgba(255,255,255,0.3)",
-  hairline: "rgba(255,255,255,0.1)",
-  fill: "rgba(255,255,255,0.04)",
-  win: "#34d399",
+  bg: "#f2ede3",
+  text: "#141210",
+  soft: "#3b3631",
+  muted: "#7a7166",
+  faint: "#b4aa9b",
+  hairline: "#141210",
+  fill: "#e8e1d3",
+  win: "#0e5a36",
+  edge: "#ff4b1f",
+  board: "#0f0e0c",
+  chalk: "#f7f3ea",
+  gold: "#f2c14e",
 } as const;
 
-const GUTTER = 56;
-const HEADER = 104;
-const FOOTER = 92;
+const GUTTER = 64;
+const HEADER = 96;
+const FOOTER = 84;
 const HOST = new URL(env.appUrl).host;
 
 export function Row(props: { style?: CSSProperties; children?: ReactNode }) {
@@ -36,33 +47,60 @@ export function Col(props: { style?: CSSProperties; children?: ReactNode }) {
   );
 }
 
-function Mark(props: { size: number }) {
+export function Crest(props: { size: number; color?: string }) {
+  const color = props.color ?? C.text;
   return (
-    <svg width={props.size} height={props.size} viewBox="0 0 24 24">
-      <path
-        fill={C.text}
-        fillRule="evenodd"
-        d="M0 0h24v24H0zM12 5a7 7 0 1 0 0 14a7 7 0 0 0 0-14m0 3.5a3.5 3.5 0 1 1 0 7a3.5 3.5 0 0 1 0-7"
+    <svg width={props.size} height={props.size} viewBox="0 0 48 48">
+      <circle
+        cx="24"
+        cy="24"
+        r="21"
+        fill="none"
+        stroke={color}
+        strokeWidth="3.5"
       />
+      <path d="M3 24H45" stroke={color} strokeWidth="2.5" />
+      <circle
+        cx="24"
+        cy="24"
+        r="8.5"
+        fill="none"
+        stroke={color}
+        strokeWidth="2.5"
+      />
+      <path d={CREST_SLICE} fill={C.edge} />
+      <circle cx="24" cy="24" r="2.6" fill={color} />
     </svg>
   );
 }
 
 export function Wordmark(props: { size: number }) {
   return (
-    <Row style={{ alignItems: "center", gap: props.size * 0.6 }}>
-      <Mark size={props.size * 1.1} />
-      <Row
-        style={{
-          fontFamily: FONT_SANS,
-          fontWeight: 500,
-          fontSize: props.size,
-          letterSpacing: -0.01 * props.size,
-          color: C.text,
-        }}
-      >
-        {env.appName.toUpperCase()}
-        <span style={{ color: C.muted }}>.</span>
+    <Row style={{ alignItems: "center", gap: props.size * 0.45 }}>
+      <Crest size={props.size * 1.25} />
+      <Row style={{ alignItems: "baseline" }}>
+        <span
+          style={{
+            fontFamily: FONT_DISPLAY,
+            fontSize: props.size,
+            lineHeight: 1,
+            color: C.text,
+          }}
+        >
+          OPEN
+        </span>
+        <span
+          style={{
+            fontFamily: FONT_SERIF,
+            fontStyle: "italic",
+            fontSize: props.size * 1.14,
+            lineHeight: 1,
+            color: C.edge,
+            marginLeft: 2,
+          }}
+        >
+          ev
+        </span>
       </Row>
     </Row>
   );
@@ -73,11 +111,11 @@ export function Eyebrow(props: { children: ReactNode; color?: string }) {
     <span
       style={{
         fontFamily: FONT_MONO,
-        fontSize: 15,
+        fontSize: 16,
         letterSpacing: 2,
         whiteSpace: "nowrap",
         textTransform: "uppercase",
-        color: props.color ?? C.muted,
+        color: props.color ?? C.soft,
       }}
     >
       {props.children}
@@ -85,41 +123,37 @@ export function Eyebrow(props: { children: ReactNode; color?: string }) {
   );
 }
 
-function Line(props: { style: CSSProperties }) {
+function Pitch() {
   return (
-    <div
+    <svg
+      width="560"
+      height="370"
+      viewBox="0 0 760 500"
       style={{
         position: "absolute",
-        backgroundColor: C.hairline,
-        ...props.style,
+        right: -150,
+        bottom: -120,
+        transform: "rotate(-8deg)",
       }}
-    />
-  );
-}
-
-function Tick(props: { left: number; top: number }) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: props.left - 4,
-        top: props.top - 4,
-        width: 9,
-        height: 9,
-        backgroundColor: C.bg,
-        border: `1px solid ${C.faint}`,
-      }}
-    />
+    >
+      <rect width="760" height="500" rx="20" fill="#0e5a36" />
+      <rect x="152" width="76" height="500" fill="#0a4529" />
+      <rect x="456" width="76" height="500" fill="#0a4529" />
+      <g fill="none" stroke="#f7f3ea" strokeOpacity="0.55" strokeWidth="3">
+        <rect x="20" y="20" width="720" height="460" />
+        <path d="M380 20V480" />
+        <circle cx="380" cy="250" r="70" />
+      </g>
+    </svg>
   );
 }
 
 export function Frame(props: {
   label: ReactNode;
   footer?: ReactNode;
+  pitch?: boolean;
   children: ReactNode;
 }) {
-  const right = OG_WIDTH - GUTTER;
-  const bottom = OG_HEIGHT - FOOTER;
   return (
     <div
       style={{
@@ -129,35 +163,28 @@ export function Frame(props: {
         width: OG_WIDTH,
         height: OG_HEIGHT,
         backgroundColor: C.bg,
-        backgroundImage:
-          "radial-gradient(circle at 12% 0%, rgba(255,255,255,0.09), rgba(0,0,0,0) 55%)",
         fontFamily: FONT_SANS,
         color: C.text,
+        overflow: "hidden",
       }}
     >
-      <Line style={{ left: GUTTER, top: 0, width: 1, height: OG_HEIGHT }} />
-      <Line style={{ left: right, top: 0, width: 1, height: OG_HEIGHT }} />
-      <Line style={{ left: 0, top: HEADER, width: OG_WIDTH, height: 1 }} />
-      <Line style={{ left: 0, top: bottom, width: OG_WIDTH, height: 1 }} />
-      <Tick left={GUTTER} top={HEADER} />
-      <Tick left={right} top={HEADER} />
-      <Tick left={GUTTER} top={bottom} />
-      <Tick left={right} top={bottom} />
+      {props.pitch && <Pitch />}
       <Row
         style={{
           height: HEADER,
-          padding: `0 ${GUTTER + 32}px`,
+          padding: `0 ${GUTTER}px`,
           alignItems: "center",
           justifyContent: "space-between",
+          borderBottom: `3px solid ${C.hairline}`,
         }}
       >
-        <Wordmark size={24} />
+        <Wordmark size={34} />
         <Eyebrow>{props.label}</Eyebrow>
       </Row>
       <Col
         style={{
           flexGrow: 1,
-          padding: `36px ${GUTTER + 32}px`,
+          padding: `36px ${GUTTER}px`,
           overflow: "hidden",
         }}
       >
@@ -166,12 +193,14 @@ export function Frame(props: {
       <Row
         style={{
           height: FOOTER,
-          padding: `0 ${GUTTER + 32}px`,
+          padding: `0 ${GUTTER}px`,
           alignItems: "center",
           justifyContent: "space-between",
+          borderTop: `3px solid ${C.hairline}`,
+          backgroundColor: C.bg,
         }}
       >
-        <span style={{ fontFamily: FONT_MONO, fontSize: 16, color: C.muted }}>
+        <span style={{ fontFamily: FONT_MONO, fontSize: 18, color: C.soft }}>
           {HOST}
         </span>
         {props.footer}
@@ -187,14 +216,14 @@ export function Stat(props: {
   size?: number;
 }) {
   return (
-    <Col style={{ gap: 10, flexShrink: 0 }}>
-      <Eyebrow>{props.label}</Eyebrow>
+    <Col style={{ gap: 6, flexShrink: 0 }}>
+      <Eyebrow color={C.muted}>{props.label}</Eyebrow>
       <span
         style={{
-          fontFamily: FONT_MONO,
-          fontWeight: 500,
-          fontSize: props.size ?? 40,
-          letterSpacing: -1,
+          fontFamily: FONT_NUM,
+          fontWeight: 700,
+          fontSize: props.size ?? 56,
+          lineHeight: 1,
           whiteSpace: "nowrap",
           color: props.color ?? C.text,
         }}
@@ -222,14 +251,13 @@ export function TeamImage(props: {
           width: props.size,
           height: props.size,
           borderRadius: props.size / 2,
-          border: `1px solid ${C.hairline}`,
+          border: `2px solid ${C.text}`,
           backgroundColor: C.fill,
           alignItems: "center",
           justifyContent: "center",
-          fontFamily: FONT_MONO,
-          fontWeight: 500,
-          fontSize: Math.round(props.size * 0.36),
-          color: C.soft,
+          fontFamily: FONT_DISPLAY,
+          fontSize: Math.round(props.size * 0.38),
+          color: C.text,
         }}
       >
         {letters.toUpperCase()}

@@ -7,66 +7,66 @@ import { Link, usePathname } from "@/i18n/navigation";
 import type { User } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
 import { MobileNav } from "./mobile-nav";
 import { isActiveLink, navigation } from "./navigation";
 import { PrefetchLink } from "./prefetch-link";
 import { UserMenu } from "./user-menu";
 
 const TAB =
-  "group/tab relative flex h-full flex-1 items-center justify-center gap-1.5 border-r border-foreground/6 px-2 transition-colors 2xl:px-4";
+  "group/tab relative flex h-full items-center justify-center px-2.5 transition-colors 2xl:px-4";
 
-export function Navbar(props: { user?: User }) {
+export function Navbar(props: { user?: User; live?: ReactNode }) {
   const t = useTranslations();
   const pathname = usePathname();
 
   return (
-    <nav className="fixed top-0 right-0 left-0 z-50 flex h-12 items-stretch">
+    <nav className="bg-background border-foreground fixed top-0 right-0 left-0 z-50 flex h-14 items-stretch border-b-2">
       <Link
         href="/"
         prefetch={false}
-        className="group bg-background border-foreground/6 flex flex-1 shrink-0 items-center gap-2 border-b px-4 xl:flex-none xl:border-r xl:px-7"
+        aria-label="OpenEV"
+        className="group flex shrink-0 items-center gap-2.5 px-4 xl:px-7"
       >
-        <LogoImage />
-        <CompanyName className="text-foreground group-hover:text-foreground/70 text-[15px] transition-colors" />
+        <LogoImage className="transition-transform duration-500 group-hover:rotate-45 motion-reduce:transition-none" />
+        <CompanyName />
       </Link>
 
-      <div className="bg-background border-foreground/6 hidden min-w-0 flex-1 items-stretch border-b xl:flex">
+      <div className="hidden min-w-0 flex-1 items-stretch justify-end xl:flex">
         {navigation.map((link) => {
           const active = isActiveLink(pathname, link.href, link.exact);
           return (
-            <PrefetchLink
-              key={link.name}
-              href={link.href}
-              className={cn(
-                TAB,
-                active
-                  ? "border-b-foreground/60 border-b-2"
-                  : "hover:bg-foreground/3",
-              )}
-            >
+            <PrefetchLink key={link.name} href={link.href} className={TAB}>
               <span
                 className={cn(
-                  "label-mono text-xs whitespace-nowrap transition-colors",
+                  "label-mono text-[12px] font-medium whitespace-nowrap transition-colors",
                   active
                     ? "text-foreground"
-                    : "text-foreground/50 group-hover/tab:text-foreground/80",
+                    : "text-foreground/55 group-hover/tab:text-foreground",
                 )}
               >
                 {t(link.name)}
               </span>
+              <span
+                aria-hidden
+                className={cn(
+                  "bg-vermilion absolute inset-x-2.5 -bottom-0.5 h-[3px] origin-left transition-transform duration-300 2xl:inset-x-4",
+                  active
+                    ? "scale-x-100"
+                    : "scale-x-0 group-hover/tab:scale-x-50",
+                )}
+              />
             </PrefetchLink>
           );
         })}
-        <div className="border-foreground/6 flex items-center gap-1 border-r px-2">
+      </div>
+
+      <div className="ml-auto flex items-center gap-1.5 pr-2 xl:ml-0 xl:pr-4 xl:pl-3">
+        {props.live}
+        <div className="hidden items-center gap-0.5 xl:flex">
           <LanguageToggle />
           <ThemeToggle />
         </div>
-        <div className="flex items-stretch [&>a]:h-full [&>a]:rounded-none [&>a]:px-5 [&>a]:font-mono [&>a]:text-xs [&>a]:tracking-wider [&>a]:uppercase [&>button]:mx-2 [&>button]:my-auto">
-          <UserMenu user={props.user} />
-        </div>
-      </div>
-
-      <div className="bg-background border-foreground/6 flex items-center gap-1 border-b pr-2 xl:hidden">
         <UserMenu user={props.user} />
         <MobileNav />
       </div>

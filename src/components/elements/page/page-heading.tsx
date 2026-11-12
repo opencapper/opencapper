@@ -21,7 +21,7 @@ export function SectionLabel(props: {
         </span>
       )}
       <span className="min-w-0">{props.children}</span>
-      <span aria-hidden className="bg-foreground/10 h-px flex-1" />
+      <span aria-hidden className="bg-foreground/15 h-px flex-1" />
     </Tag>
   );
 }
@@ -29,7 +29,7 @@ export function SectionLabel(props: {
 export function SectionTitle(props: { children: ReactNode }) {
   return (
     <h2 className="flex items-center gap-4">
-      <span className="text-foreground/90 shrink-0 text-lg font-medium tracking-tight">
+      <span className="headline text-foreground shrink-0 text-2xl">
         {props.children}
       </span>
       <span aria-hidden className="border-foreground/10 flex-1 border-t" />
@@ -57,11 +57,11 @@ export function PageHeading(props: {
       ) : (
         <SectionLabel as="p">{props.label}</SectionLabel>
       )}
-      <h1 className="text-foreground/95 mt-6 text-2xl font-medium tracking-tight text-balance sm:text-3xl">
+      <h1 className="headline text-foreground mt-5 text-4xl text-balance sm:text-5xl">
         {props.title}
       </h1>
       {props.description && (
-        <p className="text-foreground/60 mt-3 max-w-2xl text-sm leading-relaxed sm:text-[15px]">
+        <p className="font-serif text-foreground/70 mt-3 italic max-w-2xl text-lg leading-snug sm:text-xl">
           {props.description}
         </p>
       )}

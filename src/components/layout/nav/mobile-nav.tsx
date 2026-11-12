@@ -41,7 +41,7 @@ export function MobileNav() {
         side="right"
         className="bg-background flex w-full flex-col gap-0 p-0 sm:max-w-sm"
       >
-        <SheetHeader className="border-foreground/6 h-12 justify-center border-b px-5 py-0">
+        <SheetHeader className="border-foreground h-14 justify-center border-b-2 px-5 py-0">
           <SheetTitle>
             <Link
               href="/"
@@ -50,7 +50,7 @@ export function MobileNav() {
               className="flex items-center gap-2"
             >
               <LogoImage />
-              <CompanyName className="text-[15px]" />
+              <CompanyName />
             </Link>
           </SheetTitle>
         </SheetHeader>

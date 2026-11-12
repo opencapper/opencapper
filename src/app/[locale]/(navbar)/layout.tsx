@@ -11,7 +11,7 @@ export default async function NavbarLayout(props: Props) {
   return (
     <>
       <Navbar user={account?.user} />
-      <main className="bg-background flex-1 pt-12">{props.children}</main>
+      <main className="bg-background flex-1 pt-14">{props.children}</main>
       <div className="bg-background">
         <Footer />
       </div>

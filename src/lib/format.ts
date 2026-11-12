@@ -111,6 +111,22 @@ export function kickoff(iso: string, locale: string): string {
   }).format(new Date(iso));
 }
 
+// Scoreboard countdown to kickoff: a running clock inside a day, the weekday and time beyond it.
+export function countdown(iso: string, now: number, locale: string, t: Translate): string {
+  const ms = new Date(iso).getTime() - now;
+  if (ms <= 0) return t("FORMAT.STARTED");
+  if (ms >= 86_400_000)
+    return new Intl.DateTimeFormat(intl(locale), {
+      weekday: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: ZONE,
+    }).format(new Date(iso));
+  const secs = Math.floor(ms / 1000);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(Math.floor(secs / 3600))}:${pad(Math.floor(secs / 60) % 60)}:${pad(secs % 60)}`;
+}
+
 export function day(iso: string, locale: string): string {
   return new Intl.DateTimeFormat(intl(locale), {
     weekday: "long",

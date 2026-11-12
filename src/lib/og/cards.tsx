@@ -1,6 +1,5 @@
 import { api, load } from "@/lib/api/client";
 import { bookName } from "@/lib/config/vendor-registry";
-import { groupBets } from "@/lib/group";
 import {
   count,
   kickoff,
@@ -12,7 +11,7 @@ import {
 import type { Locale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
-import { remoteImage } from "./assets";
+import { FONT_DISPLAY, FONT_SERIF, remoteImage } from "./assets";
 import {
   C,
   Col,
@@ -40,11 +39,11 @@ function Headline(props: { children: ReactNode; size?: number }) {
   return (
     <span
       style={{
-        fontSize: props.size ?? 64,
-        fontWeight: 500,
-        lineHeight: 1.08,
-        letterSpacing: -2,
-        maxWidth: 980,
+        fontFamily: FONT_DISPLAY,
+        fontSize: props.size ?? 72,
+        lineHeight: 0.95,
+        textTransform: "uppercase",
+        maxWidth: 1000,
       }}
     >
       {props.children}
@@ -55,7 +54,14 @@ function Headline(props: { children: ReactNode; size?: number }) {
 function Body(props: { children: ReactNode }) {
   return (
     <span
-      style={{ fontSize: 25, lineHeight: 1.4, color: C.muted, maxWidth: 940 }}
+      style={{
+        fontFamily: FONT_SERIF,
+        fontStyle: "italic",
+        fontSize: 34,
+        lineHeight: 1.2,
+        color: C.soft,
+        maxWidth: 940,
+      }}
     >
       {props.children}
     </span>
@@ -93,44 +99,61 @@ export async function homeCard(locale: Locale): Promise<ReactNode> {
       }),
     ),
     load(api.GET("/v1/books", { cache: "no-store" })),
+    load(
+      api.GET("/v1/ledger", {
+        params: { query: { limit: 1 } },
+        cache: "no-store",
+      }),
+    ),
   ]);
   const list = results[0];
   const soft = results[1]?.filter((b) => b.book !== "pinnacle").length;
+  const stats = results[2]?.stats;
   return (
     <Frame
-      label={t("LANDING.README")}
-      footer={<Eyebrow>{t("LANDING.HERO_FOOTNOTE")}</Eyebrow>}
+      pitch
+      label={t("LANDING.BOARD.TITLE")}
+      footer={<Eyebrow>{t("LANDING.ISSUE_FREE")}</Eyebrow>}
     >
       <Col style={{ flexGrow: 1, justifyContent: "space-between" }}>
-        <Headline size={58}>
-          {soft
-            ? t("LANDING.HEADLINE", { books: String(soft) })
-            : t("LANDING.HEADLINE_OFFLINE")}
-        </Headline>
-        {list && (
-          <Row style={{ gap: 64 }}>
-            {/* Counted per selection like the landing page, not once per book. */}
-            <Stat
-              label={t("LANDING.COUNTERS.VALUE")}
-              value={count(groupBets(list.bets).length, locale)}
-              color={C.win}
-            />
-            <Stat
-              label={t("LANDING.COUNTERS.PRICES")}
-              value={count(list.stats.quotes, locale)}
-            />
-            <Stat
-              label={t("LANDING.COUNTERS.MATCHED")}
-              value={count(list.stats.matched_events, locale)}
-            />
-            {soft !== undefined && (
-              <Stat
-                label={t("LANDING.COUNTERS.BOOKS")}
-                value={count(soft, locale)}
-              />
-            )}
+        <Col>
+          <Headline size={104}>{t("LANDING.HERO.TITLE_A")}</Headline>
+          <Row style={{ alignItems: "baseline", gap: 18 }}>
+            <span
+              style={{
+                fontFamily: FONT_SERIF,
+                fontStyle: "italic",
+                fontSize: 84,
+                lineHeight: 1,
+                color: C.edge,
+              }}
+            >
+              {t("LANDING.HERO.TITLE_B")}
+            </span>
+            <Headline size={104}>{t("LANDING.HERO.TITLE_C")}</Headline>
           </Row>
-        )}
+        </Col>
+        <Row style={{ gap: 56 }}>
+          {list && (
+            <Stat
+              label={t("LANDING.NAV_LIVE")}
+              value={count(
+                list.bets.filter((b) => b.confidence !== "check").length,
+                locale,
+              )}
+              color={C.edge}
+            />
+          )}
+          {soft !== undefined && (
+            <Stat label={t("NAV.BOOKS")} value={count(soft, locale)} />
+          )}
+          {stats && (
+            <Stat
+              label={t("LANDING.PROOF.ALERTS")}
+              value={count(stats.alerts, locale)}
+            />
+          )}
+        </Row>
       </Col>
     </Frame>
   );
@@ -164,20 +187,20 @@ function Matchup(props: {
       <Col style={{ gap: 6, maxWidth: 820 }}>
         <span
           style={{
-            fontSize: 46,
-            fontWeight: 500,
-            letterSpacing: -1.5,
-            lineHeight: 1.1,
+            fontFamily: FONT_DISPLAY,
+            fontSize: 56,
+            lineHeight: 1,
+            textTransform: "uppercase",
           }}
         >
           {props.home}
         </span>
         <span
           style={{
-            fontSize: 46,
-            fontWeight: 500,
-            letterSpacing: -1.5,
-            lineHeight: 1.1,
+            fontFamily: FONT_DISPLAY,
+            fontSize: 56,
+            lineHeight: 1,
+            textTransform: "uppercase",
             color: C.soft,
           }}
         >
@@ -266,19 +289,19 @@ export async function betCard(
           <Stat
             label={t("BET.STAT_EV")}
             value={percent(b.ev)}
-            color={C.win}
-            size={52}
+            color={C.edge}
+            size={64}
           />
           <Stat
             label={t("BET.STAT_SAFE_EV")}
             value={percent(b.ev_conservative)}
-            size={52}
+            size={64}
           />
-          <Stat label={t("BET.STAT_ODDS")} value={odds(b.odds)} size={52} />
+          <Stat label={t("BET.STAT_ODDS")} value={odds(b.odds)} size={64} />
           <Stat
             label={t("BET.STAT_FAIR")}
             value={odds(b.fair_odds)}
-            size={52}
+            size={64}
           />
         </Row>
       </Col>

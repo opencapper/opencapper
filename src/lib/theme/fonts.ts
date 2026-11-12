@@ -2,11 +2,13 @@ import {
   Anton,
   Barlow_Condensed,
   Bebas_Neue,
+  DM_Mono,
   Geist,
   Geist_Mono,
   Geist_Pixel,
   IBM_Plex_Mono,
   IBM_Plex_Sans,
+  Instrument_Serif,
   Inter,
   Inter_Tight,
   JetBrains_Mono,
@@ -17,16 +19,17 @@ import {
   Space_Grotesk,
 } from "next/font/google";
 
-// The two defaults paint first load; preload only them.
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
-  display: "optional",
+  display: "fallback",
+  preload: false,
 });
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
-  display: "optional",
+  display: "fallback",
+  preload: false,
 });
 // Weight 400 at the default ELSH axis is the Square cut.
 const geistPixel = Geist_Pixel({
@@ -56,11 +59,24 @@ const jetbrainsMono = JetBrains_Mono({
   display: "fallback",
   preload: false,
 });
+// The Matchday brand faces paint first load; preload only them.
 const manrope = Manrope({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   variable: "--font-manrope",
-  display: "fallback",
-  preload: false,
+  display: "swap",
+});
+const dmMono = DM_Mono({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500"],
+  variable: "--font-dm-mono",
+  display: "swap",
+});
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin", "latin-ext"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
+  display: "swap",
 });
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -80,12 +96,12 @@ const spaceGrotesk = Space_Grotesk({
   display: "fallback",
   preload: false,
 });
+// Anton has no tabular figures and a percent sign twice a digit wide; numbers use this.
 const barlowCondensed = Barlow_Condensed({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-barlow-condensed",
-  display: "fallback",
-  preload: false,
+  display: "swap",
 });
 const oswald = Oswald({
   subsets: ["latin"],
@@ -101,11 +117,10 @@ const bebasNeue = Bebas_Neue({
   preload: false,
 });
 const anton = Anton({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   weight: "400",
   variable: "--font-anton",
-  display: "fallback",
-  preload: false,
+  display: "swap",
 });
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
@@ -224,6 +239,13 @@ export const FONT_OPTIONS: FontOption[] = [
     kinds: ["display"],
   },
   {
+    id: "dm-mono",
+    label: "DM Mono",
+    cssVar: dmMono.variable,
+    varName: "--font-dm-mono",
+    kinds: ["mono"],
+  },
+  {
     id: "jetbrains-mono",
     label: "JetBrains Mono",
     cssVar: jetbrainsMono.variable,
@@ -249,24 +271,25 @@ export const FONT_OPTIONS: FontOption[] = [
 // Picker sections, in order; a font may sit in more than one.
 export const FONT_GROUPS: Record<FontKind, readonly string[]> = {
   sans: [
+    "manrope",
     "geist",
     "inter",
-    "manrope",
     "plus-jakarta",
     "ibm-plex-sans",
     "space-grotesk",
   ],
   display: [
+    "anton",
     "geist",
     "inter-tight",
     "geist-pixel-square",
     "barlow-condensed",
     "oswald",
     "bebas-neue",
-    "anton",
     "manrope",
   ],
   mono: [
+    "dm-mono",
     "geist-mono",
     "jetbrains-mono",
     "ibm-plex-mono",
@@ -277,11 +300,13 @@ export const FONT_GROUPS: Record<FontKind, readonly string[]> = {
 
 // What globals.css paints when the theme leaves a font token unset.
 export const DEFAULT_FONTS: Record<FontKind, string> = {
-  sans: "geist",
-  display: "geist",
-  mono: "geist-mono",
+  sans: "manrope",
+  display: "anton",
+  mono: "dm-mono",
 };
 
-export const allFontVariablesClass = FONT_OPTIONS.map((f) => f.cssVar).join(
-  " ",
-);
+// The serif accent is part of the brand, not a theme choice, so it sits outside FONT_OPTIONS.
+export const allFontVariablesClass = [
+  ...FONT_OPTIONS.map((f) => f.cssVar),
+  instrumentSerif.variable,
+].join(" ");

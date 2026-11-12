@@ -16,6 +16,52 @@ export type PalettePreset = {
 
 export const PALETTES: readonly PalettePreset[] = [
   {
+    id: "matchday",
+    label: "Matchday",
+    base: { light: "#f2ede3", dark: "#141210" },
+    accent: { light: "#ff4b1f", dark: "#ff5a2e" },
+    overrides: {
+      light: {
+        foreground: "#141210",
+        "card-foreground": "#141210",
+        "popover-foreground": "#141210",
+        "muted-foreground": "#6b6359",
+        card: "#f7f3ea",
+        popover: "#f7f3ea",
+        muted: "#1412100d",
+        secondary: "#1412100d",
+        accent: "#14121012",
+        border: "#1412101f",
+        input: "#1412102e",
+        sidebar: "#f7f3ea",
+        "sidebar-accent": "#1412100d",
+        "sidebar-border": "#1412101f",
+        success: "#11703f",
+        destructive: "#d93a12",
+        warning: "#a8701a",
+      },
+      dark: {
+        foreground: "#f7f3ea",
+        "card-foreground": "#f7f3ea",
+        "popover-foreground": "#f7f3ea",
+        "muted-foreground": "#a39a8e",
+        card: "#1b1916",
+        popover: "#1f1c19",
+        muted: "#f7f3ea0d",
+        secondary: "#f7f3ea0d",
+        accent: "#f7f3ea12",
+        border: "#f7f3ea1a",
+        input: "#f7f3ea29",
+        sidebar: "#1b1916",
+        "sidebar-accent": "#f7f3ea0d",
+        "sidebar-border": "#f7f3ea1a",
+        success: "#3fae74",
+        destructive: "#ff5a2e",
+        warning: "#f2c14e",
+      },
+    },
+  },
+  {
     id: "cinematic",
     label: "Cinematic",
     base: { light: "#ffffff", dark: "#000000" },
@@ -68,6 +114,12 @@ export const PALETTES: readonly PalettePreset[] = [
 export type AccentPreset = { id: string; label: string; hex: ModeHex };
 
 export const ACCENTS: readonly AccentPreset[] = [
+  {
+    id: "vermilion",
+    label: "Vermilion",
+    hex: { light: "#ff4b1f", dark: "#ff5a2e" },
+  },
+  { id: "pitch", label: "Pitch", hex: { light: "#0e5a36", dark: "#3fae74" } },
   { id: "amber", label: "Amber", hex: { light: "#d97706", dark: "#f59e0b" } },
   { id: "blue", label: "Blue", hex: { light: "#2563eb", dark: "#3b82f6" } },
   { id: "cyan", label: "Cyan", hex: { light: "#0891b2", dark: "#06b6d4" } },
@@ -110,6 +162,14 @@ export type StylePreset = {
 };
 
 export const STYLES: readonly StylePreset[] = [
+  {
+    id: "matchday",
+    label: "Matchday",
+    radius: 0.5,
+    spacing: 0.25,
+    shadow: "none",
+    tracking: 0,
+  },
   {
     id: "cinematic",
     label: "Cinematic",

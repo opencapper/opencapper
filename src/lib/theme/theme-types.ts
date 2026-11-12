@@ -26,10 +26,10 @@ export const USER_THEME_KEY = USER_THEME_COOKIE;
 export const INITIAL_USER_THEME: UserTheme = {
   v: 2,
   presets: {
-    palette: "cinematic",
+    palette: "matchday",
     accent: "default",
-    chart: "default",
-    style: "cinematic",
+    chart: "pitch",
+    style: "matchday",
   },
   global: {},
 };

@@ -4,8 +4,11 @@ import type { Locale } from "next-intl";
 import type { SatoriOptions } from "satori";
 import sharp from "sharp";
 
-export const FONT_SANS = "Geist";
-export const FONT_MONO = "Geist Mono";
+export const FONT_SANS = "Manrope";
+export const FONT_MONO = "DM Mono";
+export const FONT_DISPLAY = "Anton";
+export const FONT_SERIF = "Instrument Serif";
+export const FONT_NUM = "Barlow Condensed";
 
 // Satori reads woff but not woff2; both subsets so accented names keep the brand face.
 const SUBSETS = ["latin", "latin-ext"];
@@ -17,10 +20,13 @@ const fontsourceRoots = [
 const fontsourceDir =
   fontsourceRoots.find((dir) => existsSync(dir)) ?? fontsourceRoots[0];
 
+type Weight = 400 | 500 | 700 | 800;
+
 function fonts(
   name: string,
-  pkg: "geist" | "geist-mono",
-  weight: 400 | 500,
+  pkg: string,
+  weight: Weight,
+  style: "normal" | "italic" = "normal",
 ): SatoriOptions["fonts"] {
   return SUBSETS.map((subset) => ({
     name,
@@ -29,24 +35,27 @@ function fonts(
         fontsourceDir,
         pkg,
         "files",
-        `${pkg}-${subset}-${weight}-normal.woff`,
+        `${pkg}-${subset}-${weight}-${style}.woff`,
       ),
     ),
     weight,
-    style: "normal",
+    style,
   }));
 }
 
 let baseFonts: SatoriOptions["fonts"] | null = null;
 let japaneseFonts: SatoriOptions["fonts"] | null = null;
 
-// Satori has no system fallback and Geist has no kana or kanji; the fontsource subsets load only for ja.
+// Satori has no system fallback and the brand faces have no kana or kanji; the fontsource subsets load only for ja.
 export function fontsFor(locale: Locale): SatoriOptions["fonts"] {
   baseFonts ??= [
-    ...fonts(FONT_SANS, "geist", 400),
-    ...fonts(FONT_SANS, "geist", 500),
-    ...fonts(FONT_MONO, "geist-mono", 400),
-    ...fonts(FONT_MONO, "geist-mono", 500),
+    ...fonts(FONT_SANS, "manrope", 500),
+    ...fonts(FONT_SANS, "manrope", 800),
+    ...fonts(FONT_MONO, "dm-mono", 400),
+    ...fonts(FONT_MONO, "dm-mono", 500),
+    ...fonts(FONT_DISPLAY, "anton", 400),
+    ...fonts(FONT_SERIF, "instrument-serif", 400, "italic"),
+    ...fonts(FONT_NUM, "barlow-condensed", 700),
   ];
   if (locale !== "ja") return baseFonts;
   const dir = join(fontsourceDir, "noto-sans-jp", "files");
