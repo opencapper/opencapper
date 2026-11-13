@@ -219,7 +219,7 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
                   : { width, minWidth: width, maxWidth: width }
               }
               className={cn(
-                "label-mono text-foreground/45 text-[11px] font-normal",
+                "eyebrow",
                 meta?.headerClassName,
                 sizer && "h-0 py-0",
               )}
@@ -351,10 +351,10 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
       )}
 
       {props.stickyHeaderTop ? (
-        <div ref={tableContainerRef} className="border-border border">
+        <div ref={tableContainerRef} className="bg-card rounded-lg border">
           <div
             ref={headScrollRef}
-            className="scroll-surface border-border sticky z-10 overflow-hidden border-b"
+            className="bg-card sticky z-10 overflow-hidden border-b"
             style={{ top: props.stickyHeaderTop }}
           >
             <table
@@ -385,7 +385,7 @@ export function DataTable<TData extends RowData>(props: DataTableProps<TData>) {
       ) : (
         <div
           ref={tableContainerRef}
-          className="border-border overflow-hidden border"
+          className="bg-card overflow-hidden rounded-lg border"
         >
           <Table>
             <DataTableColgroup table={table} />

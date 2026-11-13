@@ -1,4 +1,4 @@
-import { LogoImage } from "@/components/elements/brand/brand";
+import { MARK_PLUS } from "@/components/elements/brand/brand";
 import type { LedgerEntry } from "@/lib/api/client";
 import { bookName } from "@/lib/config/vendor-registry";
 import { kelly } from "@/lib/format";
@@ -121,12 +121,14 @@ function clock(iso: string): string {
   });
 }
 
-function Avatar(props: { className: string; dark?: boolean }) {
+// The bot's avatar is the mark itself: white plus on near black.
+function Avatar(props: { className: string }) {
   return (
     <span className={props.className}>
-      <LogoImage
-        className={props.dark ? "text-chalk size-[70%]" : "text-ink size-[70%]"}
-      />
+      <svg aria-hidden viewBox="0 0 24 24" className="size-full">
+        <rect width="24" height="24" fill="#0b0b0c" />
+        <path d={MARK_PLUS} stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" fill="none" />
+      </svg>
     </span>
   );
 }
@@ -163,10 +165,10 @@ export function DiscordAlert(props: {
     borderLeftColor: CONFIDENCE_COLOR[e.confidence],
   };
   return (
-    <figure className="max-w-[640px] rotate-[-1.5deg] rounded-2xl bg-[#313338] p-4 font-sans text-[#dbdee1] shadow-[0_30px_60px_-20px_rgba(80,10,0,0.5)] motion-reduce:rotate-0 sm:p-5">
+    <figure className="w-full max-w-[600px] rounded-lg bg-[#313338] p-4 font-sans text-[#dbdee1] sm:p-5">
       <figcaption className="sr-only">{props.label}</figcaption>
       <div className="flex gap-3">
-        <Avatar className="bg-paper grid size-10 shrink-0 place-items-center rounded-full" />
+        <Avatar className="block size-10 shrink-0 overflow-hidden rounded-full" />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 text-[15px] font-bold text-white">
             OpenEV
@@ -239,14 +241,11 @@ export function TelegramAlert(props: {
   const e = props.entry;
   const at = new Date(e.alerted_at).getTime();
   return (
-    <figure className="w-[300px] justify-self-center rounded-[48px] bg-[#0e0e0e] p-3 shadow-[0_40px_80px_-30px_rgba(60,5,0,0.7)] motion-reduce:rotate-0 sm:w-[330px] lg:rotate-3">
+    <figure className="w-[300px] justify-self-center rounded-[44px] border border-black/10 bg-[#1a1a1a] p-2.5 sm:w-[320px]">
       <figcaption className="sr-only">{props.label}</figcaption>
-      <div className="flex h-[540px] flex-col overflow-hidden rounded-[38px] bg-[#d3e2c6]">
+      <div className="flex h-[520px] flex-col overflow-hidden rounded-[36px] bg-[#d3e2c6]">
         <div className="flex items-center gap-2.5 border-b border-[#ddd] bg-white px-4 pt-10 pb-3 text-[#111]">
-          <Avatar
-            dark
-            className="bg-ink grid size-9 shrink-0 place-items-center rounded-full"
-          />
+          <Avatar className="block size-9 shrink-0 overflow-hidden rounded-full" />
           <div className="leading-tight">
             <b className="block text-[15px] font-extrabold">OpenEV</b>
             <span className="text-[12px] font-medium text-[#3e8ed0]">
@@ -255,7 +254,7 @@ export function TelegramAlert(props: {
           </div>
         </div>
         <div className="flex flex-1 flex-col justify-end gap-2 px-3 py-3">
-          <div className="bubble-in max-w-[94%] rounded-[16px_16px_16px_4px] bg-white px-3 py-2.5 text-[13px] leading-[1.38] text-[#111] shadow-[0_1px_1px_rgba(0,0,0,0.08)] [--bubble-delay:0.3s]">
+          <div className="max-w-[94%] rounded-[16px_16px_16px_4px] bg-white px-3 py-2.5 text-[13px] leading-[1.38] text-[#111] shadow-[0_1px_1px_rgba(0,0,0,0.08)]">
             <p>
               <b>{sideName(e)}</b> at <b>{bookName(e.book)}</b>
             </p>
@@ -280,7 +279,7 @@ export function TelegramAlert(props: {
               {clock(e.alerted_at)}
             </time>
           </div>
-          <div className="bubble-in grid grid-cols-2 gap-1.5 [--bubble-delay:0.9s]">
+          <div className="grid grid-cols-2 gap-1.5">
             {["Bet details", "Game"].map((l) => (
               <span
                 key={l}

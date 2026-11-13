@@ -30,7 +30,7 @@ export function DataTableColumnHeader<TData extends RowData, TValue>(
   const sorted = props.column.getIsSorted();
 
   if (!props.column.getCanSort()) {
-    return <div className={cn(props.className)}>{t(props.title)}</div>;
+    return <div className={cn("eyebrow", props.className)}>{t(props.title)}</div>;
   }
 
   return (
@@ -41,7 +41,7 @@ export function DataTableColumnHeader<TData extends RowData, TValue>(
             <Button
               variant="ghost"
               size="sm"
-              className="data-popup-open:bg-accent label-mono text-foreground/45 hover:text-foreground -ml-2 h-8 text-[11px] font-normal"
+              className="data-popup-open:bg-accent text-muted-foreground hover:text-foreground -ml-2 h-7 border-0 px-2 text-[11px] font-medium tracking-[0.04em] uppercase"
             />
           }
         >

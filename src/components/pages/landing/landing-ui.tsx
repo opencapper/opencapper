@@ -5,29 +5,11 @@ import type { ReactNode } from "react";
 
 export const BOARD_ROWS = 6;
 
-export const WRAP = "mx-auto w-full max-w-[1360px] px-4 sm:px-8 lg:px-10";
-
-export type Band = "paper" | "paper2" | "pitch" | "ink" | "vermilion";
-
-const BAND: Record<Band, string> = {
-  paper: "bg-background text-foreground",
-  paper2: "bg-paper-2 text-ink dark:text-chalk",
-  pitch: "bg-pitch text-chalk",
-  ink: "bg-band text-chalk",
-  vermilion: "bg-vermilion text-ink",
-};
-
-const NUMBER: Record<Band, string> = {
-  paper: "[-webkit-text-stroke:2px_var(--color-foreground)]",
-  paper2: "[-webkit-text-stroke:2px_var(--color-foreground)]",
-  pitch: "[-webkit-text-stroke:2px_#5fa77f]",
-  ink: "[-webkit-text-stroke:2px_#6a6158]",
-  vermilion: "[-webkit-text-stroke:2px_var(--color-ink)]",
-};
+export const WRAP = "mx-auto w-full max-w-7xl px-4 sm:px-6";
 
 export function Section(props: {
   id?: string;
-  band?: Band;
+  muted?: boolean;
   className?: string;
   children: ReactNode;
 }) {
@@ -35,92 +17,51 @@ export function Section(props: {
     <section
       id={props.id}
       className={cn(
-        "relative overflow-hidden py-20 sm:py-28",
-        BAND[props.band ?? "paper"],
+        "border-t py-16 sm:py-24",
+        props.muted && "bg-subtle",
         props.className,
       )}
     >
-      {props.children}
+      <div className={WRAP}>{props.children}</div>
     </section>
   );
 }
 
-// Outlined section number, Anton headline, one serif line: the paper's section head.
+// One headline, one line: every landing section opens the same way.
 export function SectionHead(props: {
-  index: number;
   title: ReactNode;
   line: ReactNode;
-  band?: Band;
   aside?: ReactNode;
-  stacked?: boolean;
 }) {
   return (
-    <div
-      className={cn(
-        "mb-10 grid grid-cols-1 items-end gap-x-7 gap-y-1 sm:mb-14",
-        !props.stacked && "lg:grid-cols-[auto_1fr_auto]",
-      )}
-    >
-      <div
-        aria-hidden
-        className={cn(
-          "num text-[84px] leading-[0.8] text-transparent sm:text-[150px]",
-          NUMBER[props.band ?? "paper"],
-        )}
-      >
-        {String(props.index).padStart(2, "0")}
-      </div>
-      <div className="min-w-0">
-        <h2 className="headline text-[48px] text-balance sm:text-[clamp(56px,6.6vw,104px)]">
-          {props.title}
-        </h2>
-        <p className="mt-3 max-w-2xl font-serif text-[22px] leading-tight italic opacity-90 sm:text-[28px]">
+    <div className="mb-10 flex flex-col justify-between gap-4 sm:mb-12 md:flex-row md:items-end">
+      <div className="max-w-2xl">
+        <h2 className="text-2xl font-semibold sm:text-3xl">{props.title}</h2>
+        <p className="text-muted-foreground mt-2 text-base sm:text-lg">
           {props.line}
         </p>
       </div>
-      {props.aside && <div className="lg:pb-3">{props.aside}</div>}
+      {props.aside}
     </div>
   );
 }
 
-export function Arrow(props: { className?: string }) {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.4"
-      className={cn("size-4", props.className)}
-    >
-      <path d="M2 8h11M9 4l4 4-4 4" />
-    </svg>
-  );
-}
+const CTA =
+  "inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 text-sm font-medium whitespace-nowrap transition-colors";
 
-const PILL =
-  "inline-flex h-12 items-center gap-2.5 rounded-full border-2 px-6 text-[14px] font-extrabold tracking-[0.05em] whitespace-nowrap uppercase transition-[transform,background-color,color] duration-200 active:translate-y-px sm:h-[52px] sm:px-7";
-
-const PILL_TONE = {
-  vermilion:
-    "bg-vermilion border-vermilion text-ink hover:bg-vermilion-2 hover:border-vermilion-2",
-  ink: "bg-foreground border-foreground text-background hover:opacity-85",
-  outline: "border-current hover:bg-foreground/5",
-  chalk: "bg-chalk border-chalk text-ink hover:bg-paper",
+const CTA_TONE = {
+  primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+  outline: "bg-background hover:bg-muted border",
 } as const;
 
-export function Pill(props: {
+export function Cta(props: {
   href: LinkHref;
-  tone?: keyof typeof PILL_TONE;
+  tone?: keyof typeof CTA_TONE;
+  external?: boolean;
   children: ReactNode;
   className?: string;
-  external?: boolean;
 }) {
-  const className = cn(
-    PILL,
-    PILL_TONE[props.tone ?? "outline"],
-    props.className,
-  );
+  const className = cn(CTA, CTA_TONE[props.tone ?? "outline"], props.className);
   if (props.external && typeof props.href === "string") {
     return (
       <a
@@ -140,27 +81,10 @@ export function Pill(props: {
   );
 }
 
-export function SampleTag(props: { children: ReactNode; className?: string }) {
+export function SampleTag(props: { children: ReactNode }) {
   return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full border border-dashed border-current/40 px-2 py-0.5 font-mono text-[10px] tracking-[0.12em] uppercase opacity-70",
-        props.className,
-      )}
-    >
+    <span className="text-muted-foreground inline-flex items-center rounded border border-dashed px-1.5 py-0.5 text-[11px]">
       {props.children}
     </span>
-  );
-}
-
-export function LiveDot(props: { className?: string }) {
-  return (
-    <span
-      aria-hidden
-      className={cn(
-        "live-dot bg-vermilion inline-block size-2 shrink-0 rounded-full",
-        props.className,
-      )}
-    />
   );
 }

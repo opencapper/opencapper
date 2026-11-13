@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link, useRouter } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import type { Settings } from "@/lib/api/client";
 import { saveSettings, type ActionResult } from "@/lib/auth/actions";
 import { fractionLabel } from "@/lib/format";
@@ -135,18 +135,11 @@ export function SettingsForm(props: { settings: Settings; books: string[] }) {
           {actionErrorText(result.error, t)}
         </p>
       )}
-      <div className="flex flex-wrap items-center gap-3">
+      <div>
         <Button type="submit" disabled={mutation.isPending}>
           <Icon name="check" />
           {t("SETTINGS.SAVE")}
         </Button>
-        <Link
-          href="/settings/appearance"
-          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm"
-        >
-          <Icon name="paintbrush" className="size-3.5" />
-          {t("AUTH.APPEARANCE")}
-        </Link>
       </div>
     </form>
   );

@@ -2,34 +2,28 @@ import {
   api,
   load,
   type BetDetail,
-  type BookHealth,
   type BookStatus,
   type LedgerEntry,
   type LedgerStats,
   type ValueBetList,
 } from "@/lib/api/client";
-import { authHeaders } from "@/lib/auth/session";
-import { featuredGroups } from "@/lib/group";
+import { edgeCount, featuredGroups } from "@/lib/group";
 import { BOARD_ROWS } from "./landing-ui";
 
 const RESULT_ROWS = 6;
-const FORM = 5;
-const CLV_SERIES = 40;
 
 export type LandingData = {
   now: number;
+  // Only the bets the board can show: the socket snapshot replaces it with the full list.
   list?: ValueBetList;
+  edges: number;
   books: BookStatus[];
   stats?: LedgerStats;
   results: LedgerEntry[];
   boardKeys: string[];
   featured?: BetDetail;
   alert?: LedgerEntry;
-  health?: BookHealth[];
-  // Closing line value of each book's latest closed alerts, newest first.
-  form: Record<string, number[]>;
   alertsByBook: Record<string, number>;
-  clv: number[];
 };
 
 // Several alerts fire on one game (each book, each side); one row per game keeps the results varied.
@@ -63,8 +57,7 @@ function pickAlert(entries: LedgerEntry[]): LedgerEntry | undefined {
   );
 }
 
-export async function loadLanding(signedIn: boolean): Promise<LandingData> {
-  const headers = signedIn ? await authHeaders() : undefined;
+export async function loadLanding(): Promise<LandingData> {
   const results = await Promise.all([
     load(
       api.GET("/v1/value-bets", {
@@ -79,9 +72,6 @@ export async function loadLanding(signedIn: boolean): Promise<LandingData> {
         cache: "no-store",
       }),
     ),
-    headers
-      ? load(api.GET("/v1/bets/books-health", { headers, cache: "no-store" }))
-      : Promise.resolve(undefined),
   ]);
   const list = results[0];
   const ledger = results[2];
@@ -102,29 +92,31 @@ export async function loadLanding(signedIn: boolean): Promise<LandingData> {
       )
     : undefined;
 
-  const form: Record<string, number[]> = {};
+  const seed = list
+    ? new Set(
+        featuredGroups(list.bets, BOARD_ROWS * 3).flatMap((g) =>
+          g.offers.map((b) => b.id),
+        ),
+      )
+    : undefined;
+
   const alertsByBook: Record<string, number> = {};
-  const clv: number[] = [];
-  for (const e of entries) {
+  for (const e of entries)
     alertsByBook[e.book] = (alertsByBook[e.book] ?? 0) + 1;
-    if (e.clv === null || e.clv === undefined) continue;
-    const row = (form[e.book] ??= []);
-    if (row.length < FORM) row.push(e.clv);
-    if (clv.length < CLV_SERIES) clv.push(e.clv);
-  }
 
   return {
     now: Date.now(),
-    list,
+    list:
+      list && seed
+        ? { stats: list.stats, bets: list.bets.filter((b) => seed.has(b.id)) }
+        : undefined,
+    edges: edgeCount(list ?? null),
     books: results[1] ?? [],
     stats: ledger?.stats,
     results: resultRows(entries),
     boardKeys,
     featured,
     alert: pickAlert(entries),
-    health: results[3]?.filter((h) => h.risk !== "unknown"),
-    form,
     alertsByBook,
-    clv: clv.reverse(),
   };
 }

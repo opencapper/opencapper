@@ -245,3 +245,19 @@ export function score(e: { home_score?: number | null; away_score?: number | nul
     return undefined;
   return `${e.home_score}:${e.away_score}`;
 }
+
+// Compact kickoff for tight columns: weekday inside the coming week, the date beyond it.
+export function kickoffShort(iso: string, now: number, locale: string): string {
+  const soon = new Date(iso).getTime() - now < 6 * 86_400_000;
+  return new Intl.DateTimeFormat(intl(locale), {
+    ...(soon ? { weekday: "short" } : { day: "numeric", month: "short" }),
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: ZONE,
+  }).format(new Date(iso));
+}
+
+// Fair odds implied by a probability, as the exchange cross check is sent.
+export function oddsOf(probability: number): string {
+  return (1 / probability).toFixed(2);
+}

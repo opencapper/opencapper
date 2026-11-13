@@ -2,7 +2,6 @@
 
 import { useLiveQuery } from "@/hooks/live/use-live-query-hook";
 import type {
-  BetDetail,
   LedgerStats,
   ServerMessage,
   ValueBetList,
@@ -11,8 +10,12 @@ import { applyValueBets } from "@/lib/live/apply";
 import { fetchLedger, fetchValueBets } from "@/lib/live/actions";
 import { queryKeys } from "@/lib/react-query/keys";
 import { useQuery } from "@tanstack/react-query";
-import { featuredGroups, groupBets, type GroupedBet } from "@/lib/group";
-import { useEffect, useState } from "react";
+import {
+  edgeCount,
+  featuredGroups,
+  groupBets,
+  type GroupedBet,
+} from "@/lib/group";
 import { BOARD_ROWS } from "./landing-ui";
 
 // Rows the server picked stay put while their prices move; a row is replaced only once its bet is gone.
@@ -30,20 +33,9 @@ export function boardGroups(
   return [...kept, ...fill].slice(0, BOARD_ROWS);
 }
 
-// The ladder shows the server's featured bet while it lasts, then whatever leads the board.
-export function ladderBetId(
-  list: ValueBetList | null,
-  featured: BetDetail | null,
-  rows: GroupedBet[],
-): string | undefined {
-  const id = featured?.bet.id;
-  if (id && list?.bets.some((b) => b.id === id)) return id;
-  return rows[0]?.best.id ?? id;
-}
-
 export function useBoardBets(list: ValueBetList | null) {
   return useLiveQuery({
-    queryKey: queryKeys.valueBets(),
+    queryKey: queryKeys.boardBets(),
     initialData: list,
     fetch: () => fetchValueBets(),
     topic: "value_bets",
@@ -56,7 +48,7 @@ export function useBoardSnapshot(
   list: ValueBetList | null,
 ): ValueBetList | null {
   const query = useQuery({
-    queryKey: queryKeys.valueBets(),
+    queryKey: queryKeys.boardBets(),
     queryFn: () => fetchValueBets(),
     initialData: list,
     staleTime: Infinity,
@@ -92,18 +84,12 @@ export function useLedgerStats(stats: LedgerStats | null) {
   });
 }
 
-// Second hand for kickoff countdowns; starts from the server clock so the first render matches.
-export function useClock(initial: number): number {
-  const state = useState(initial);
-  const setNow = state[1];
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, [setNow]);
-  return state[0];
+// Until the socket snapshot lands the cache holds the trimmed seed, so the server count stands in.
+export function liveEdges(
+  list: ValueBetList | null,
+  seed: ValueBetList | null,
+  edges: number,
+): number {
+  return list === seed ? edges : edgeCount(list);
 }
 
-// Check confidence prices are likely stale, so they never count as an edge.
-export function edgeCount(list: ValueBetList | null): number {
-  return list ? list.bets.filter((b) => b.confidence !== "check").length : 0;
-}

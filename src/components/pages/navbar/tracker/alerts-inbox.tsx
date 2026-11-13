@@ -65,7 +65,7 @@ function ChannelTag(props: { channel: Channel }) {
 function Figure(props: { label: string; children: ReactNode }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="label-mono text-foreground/45 text-[9px]">{props.label}</span>
+      <span className="eyebrow text-foreground/45 text-[9px]">{props.label}</span>
       <span className="text-sm">{props.children}</span>
     </div>
   );

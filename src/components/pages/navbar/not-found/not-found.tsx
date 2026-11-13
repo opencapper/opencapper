@@ -10,7 +10,7 @@ export function NotFound() {
     <div className="mx-auto max-w-2xl px-4 py-24">
       <Card>
         <CardContent className="flex flex-col items-start gap-4">
-          <p className="label-mono text-foreground/45 text-[10px]">
+          <p className="eyebrow text-foreground/45 text-[10px]">
             {t("CODE")}
           </p>
           <h1 className="text-xl font-medium tracking-tight">{t("HEADING")}</h1>

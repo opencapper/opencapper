@@ -14,11 +14,8 @@ const nextConfig: NextConfig = {
   // OG fonts are read from disk at runtime, which the file tracer cannot see.
   outputFileTracingIncludes: {
     "/api/og/**": [
-      "./node_modules/@fontsource/manrope/files/manrope-latin*-normal.woff",
-      "./node_modules/@fontsource/dm-mono/files/dm-mono-latin*-normal.woff",
-      "./node_modules/@fontsource/anton/files/anton-latin*-normal.woff",
-      "./node_modules/@fontsource/instrument-serif/files/instrument-serif-latin*-italic.woff",
-      "./node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin*-700-normal.woff",
+      "./node_modules/@fontsource/geist/files/geist-latin*-normal.woff",
+      "./node_modules/@fontsource/geist-mono/files/geist-mono-latin*-500-normal.woff",
       "./node_modules/@fontsource/noto-sans-jp/files/noto-sans-jp-*-400-normal.woff",
     ],
   },

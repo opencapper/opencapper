@@ -18,9 +18,6 @@ import { useState } from "react";
 import { isActiveLink, navigation } from "./navigation";
 import { PrefetchLink } from "./prefetch-link";
 
-const ROW =
-  "border-foreground/6 flex items-center gap-3 border-b px-5 py-3 transition-colors";
-
 export function MobileNav() {
   const t = useTranslations();
   const pathname = usePathname();
@@ -31,7 +28,7 @@ export function MobileNav() {
     <Sheet open={sheet[0]} onOpenChange={setOpen}>
       <SheetTrigger
         render={
-          <button className="text-foreground/60 hover:text-foreground flex size-9 items-center justify-center transition-colors xl:hidden" />
+          <button className="text-muted-foreground hover:text-foreground flex size-9 items-center justify-center rounded-md transition-colors lg:hidden" />
         }
       >
         <Icon name="menu" className="size-5" />
@@ -39,9 +36,9 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="bg-background flex w-full flex-col gap-0 p-0 sm:max-w-sm"
+        className="bg-background flex w-full flex-col gap-0 p-0 sm:max-w-xs"
       >
-        <SheetHeader className="border-foreground h-14 justify-center border-b-2 px-5 py-0">
+        <SheetHeader className="h-14 justify-center border-b px-4 py-0">
           <SheetTitle>
             <Link
               href="/"
@@ -55,8 +52,8 @@ export function MobileNav() {
           </SheetTitle>
         </SheetHeader>
 
-        <nav className="flex flex-col">
-          {navigation.map((item, index) => {
+        <nav className="flex flex-col p-2">
+          {navigation.map((item) => {
             const active = isActiveLink(pathname, item.href, item.exact);
             return (
               <PrefetchLink
@@ -64,22 +61,20 @@ export function MobileNav() {
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  ROW,
+                  "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
                   active
-                    ? "text-foreground"
-                    : "text-foreground/50 hover:text-foreground/80",
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
-                <span className="text-foreground/30 font-mono text-[10px] tabular-nums">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="label-mono">{t(item.name)}</span>
+                <Icon name={item.iconName} className="size-4" />
+                {t(item.name)}
               </PrefetchLink>
             );
           })}
         </nav>
 
-        <div className="border-foreground/6 mt-auto flex items-center gap-2 border-t px-4 py-3">
+        <div className="mt-auto flex items-center gap-1 border-t px-3 py-3">
           <LanguageToggle />
           <ThemeToggle />
         </div>

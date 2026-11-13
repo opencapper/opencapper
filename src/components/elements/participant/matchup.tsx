@@ -12,8 +12,16 @@ export type MatchupEvent = {
   away_image?: string | null;
 };
 
+// Table rows get one plain line: badges there cost a request each and add nothing to the price.
 export function Matchup(props: { event: MatchupEvent; size?: ParticipantSize; className?: string }) {
   const t = useTranslations("FORMAT");
+  if (!props.size || props.size === "xs") {
+    return (
+      <span className={cn("block truncate", props.className)}>
+        {t("MATCHUP", { home: props.event.home, away: props.event.away })}
+      </span>
+    );
+  }
   return (
     <span className={cn("inline-flex flex-wrap items-center gap-x-2 gap-y-1", props.className)}>
       <Side name={props.event.home} imageUrl={props.event.home_image} size={props.size} />

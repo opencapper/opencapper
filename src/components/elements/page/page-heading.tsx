@@ -3,36 +3,17 @@ import type { ReactNode } from "react";
 
 export function SectionLabel(props: {
   children: ReactNode;
-  index?: number;
   className?: string;
   as?: "h1" | "h2" | "h3" | "p";
 }) {
   const Tag = props.as ?? "h2";
-  return (
-    <Tag
-      className={cn(
-        "label-mono text-foreground/80 flex items-center gap-3 font-normal",
-        props.className,
-      )}
-    >
-      {props.index !== undefined && (
-        <span className="text-foreground/35 tabular-nums">
-          {String(props.index).padStart(2, "0")}
-        </span>
-      )}
-      <span className="min-w-0">{props.children}</span>
-      <span aria-hidden className="bg-foreground/15 h-px flex-1" />
-    </Tag>
-  );
+  return <Tag className={cn("eyebrow", props.className)}>{props.children}</Tag>;
 }
 
 export function SectionTitle(props: { children: ReactNode }) {
   return (
-    <h2 className="flex items-center gap-4">
-      <span className="headline text-foreground shrink-0 text-2xl">
-        {props.children}
-      </span>
-      <span aria-hidden className="border-foreground/10 flex-1 border-t" />
+    <h2 className="text-foreground text-base font-semibold">
+      {props.children}
     </h2>
   );
 }
@@ -46,22 +27,16 @@ export function PageHeading(props: {
   status?: ReactNode;
 }) {
   return (
-    <header className={cn("mb-10", props.className)}>
-      {props.status ? (
-        <div className="flex items-center gap-3">
-          <SectionLabel as="p" className="min-w-0 flex-1">
-            {props.label}
-          </SectionLabel>
-          {props.status}
-        </div>
-      ) : (
+    <header className={cn("mb-8", props.className)}>
+      <div className="flex items-center justify-between gap-3">
         <SectionLabel as="p">{props.label}</SectionLabel>
-      )}
-      <h1 className="headline text-foreground mt-5 text-4xl text-balance sm:text-5xl">
+        {props.status}
+      </div>
+      <h1 className="text-foreground mt-1.5 text-2xl font-semibold sm:text-[28px]">
         {props.title}
       </h1>
       {props.description && (
-        <p className="font-serif text-foreground/70 mt-3 italic max-w-2xl text-lg leading-snug sm:text-xl">
+        <p className="text-muted-foreground mt-1.5 max-w-2xl text-sm leading-relaxed">
           {props.description}
         </p>
       )}
@@ -70,5 +45,4 @@ export function PageHeading(props: {
   );
 }
 
-export const CARD_LABEL =
-  "label-mono text-foreground/80 text-[11px] leading-4 font-normal";
+export const CARD_LABEL = "text-foreground text-sm font-semibold";

@@ -178,7 +178,8 @@
     "ALL": "All",
     "UPDATED": "Updated",
     "UNREACHABLE_TITLE": "The odds engine is not reachable",
-    "UNREACHABLE_BODY": "No prices can be loaded right now. Try again in a minute."
+    "UNREACHABLE_BODY": "No prices can be loaded right now. Try again in a minute.",
+    "SEEN_AT": "Seen at {time}"
   },
   "LIVE": {
     "CONNECTING": "Connecting",
@@ -254,7 +255,17 @@
       "SECONDARY": "See the record",
       "COUNT_BOOKS": "Bookmakers",
       "COUNT_PRICES": "Prices read",
-      "COUNT_GAMES": "Games matched"
+      "COUNT_GAMES": "Games matched",
+      "HEADLINE": "Spot the wrong price.",
+      "SUB": "{count} bookmakers checked against Pinnacle's fair line, every few seconds.",
+      "FREE_LINE": "Free during the preview. No card, no email.",
+      "FREE_TITLE": "Preview plan",
+      "FREE_PRICE": "Free",
+      "FREE_NOTE": "No card, no email. Discord sign in only to track bets and get alerts.",
+      "FREE_BOARD": "Live value bets, arbs and odds screen",
+      "FREE_RECORD": "The full public record",
+      "FREE_ALERTS": "Discord and Telegram alerts",
+      "FREE_TRACKER": "Tracker with CLV and account health"
     },
     "BOARD": {
       "TITLE": "The board / value bets",
@@ -271,13 +282,26 @@
       "LADDER_FAIR": "Fair {odds}",
       "LADDER_EDGE": "Edge at {book}",
       "LADDER_GONE": "That price is gone. The board has moved on.",
-      "STICKER": "on {bet} at {book}"
+      "STICKER": "on {bet} at {book}",
+      "HEADING": "Live value bets",
+      "FAIR_SHORT": "fair {odds}",
+      "REF_PINNACLE": "Pinnacle {odds}",
+      "REF_EXCHANGE": "Exchange {odds}",
+      "REF_NO_EXCHANGE": "No exchange check",
+      "ALL": "All {count}",
+      "SELECTION": "Selection",
+      "REFERENCE": "Reference",
+      "AGE": "Price age",
+      "METHOD": "Fair odds are Pinnacle's prices with the margin removed. The exchange check uses Betfair or Matchbook when either has a tight market. A price not seen again within five minutes leaves the board."
     },
     "BOOKS": {
       "TITLE_A": "{count} books.",
       "TITLE_B": "one fair line.",
       "LINE": "Read live from public prices",
-      "SHARP": "Fair line"
+      "SHARP": "Fair line",
+      "WALL": "Read live from {count} bookmakers and exchanges, every price compared with Pinnacle.",
+      "FRESH": "Prices read in the last ten minutes",
+      "STALE": "No fresh price in the last ten minutes"
     },
     "PROOF": {
       "TITLE": "Results. Losses too.",
@@ -296,7 +320,11 @@
       "RECORD_VALUE": "{won}W {lost}L {push}P",
       "RECORD_NOTE": "{count} with a final score",
       "UNITS": "Units",
-      "UNITS_NOTE": "1 unit flat on every alert"
+      "UNITS_NOTE": "1 unit flat on every alert",
+      "HEADING": "The record, losses included.",
+      "SUB": "Every alert is logged before kickoff and checked against the closing line.",
+      "COL_TIME": "Alerted",
+      "LEDGER_NOTE": "Latest settled alerts. Nothing is removed."
     },
     "HOW": {
       "TITLE": "The margin, removed.",
@@ -310,7 +338,19 @@
       "FAIR": "Fair prices",
       "CENTER": "after the cut",
       "MARGIN": "Margin {margin}",
-      "VERDICT": "{book} pays <b>{price}</b> on a <b>{fair}</b> shot."
+      "VERDICT": "{book} pays <b>{price}</b> on a <b>{fair}</b> shot.",
+      "HEADING": "How a value bet is found.",
+      "SUB": "{fixture}, in three steps.",
+      "STEP_1_NOTE": "Pinnacle's prices, margin included.",
+      "STEP_2_NAME": "Margin removed",
+      "STEP_2_NOTE": "Rescaled so the chances add up to 100%.",
+      "STEP_3_NOTE": "A bookmaker pays more than the fair price.",
+      "TOTAL": "Adds up to {total}, margin {margin}",
+      "TOTAL_FAIR": "Adds up to 100%",
+      "PRICE": "Price",
+      "FAIR_ODDS": "Fair",
+      "EV": "EV",
+      "FORMULA": "EV is the price divided by the fair odds, minus 1."
     },
     "TOOLS": {
       "TITLE": "Every tool, live.",
@@ -341,7 +381,10 @@
       "CALC": "Calculators",
       "CALC_NOTE": "Kelly, arbs, devig, odds",
       "CALC_FOR": "{bet} at {odds}",
-      "CALC_UNIT": "stake on {bankroll} at quarter Kelly"
+      "CALC_UNIT": "stake on {bankroll} at quarter Kelly",
+      "HEADING": "Six tools, one fair line.",
+      "SUB": "Every tool reads the same Pinnacle fair price.",
+      "TRACKER_LINE": "Log your bets, see your CLV and profit"
     },
     "LONGEVITY": {
       "TITLE": "Keep the account open.",
@@ -359,7 +402,10 @@
       "HABIT_MIX": "Mix in a normal acca.",
       "HABIT_SPREAD": "Spread over several books.",
       "HABIT_THIN": "Skip obscure markets.",
-      "HABIT_WITHDRAW": "Withdraw like a punter."
+      "HABIT_WITHDRAW": "Withdraw like a punter.",
+      "HEADING": "Keep your accounts open longer.",
+      "HEALTH_LINK": "Rate your accounts from your own bets",
+      "GAP_NOTE": "Gap to sharp: how far a book's prices sit from Pinnacle. A wider gap means more value and more attention from the book."
     },
     "ALERTS": {
       "TITLE": "On your phone before the price goes.",
@@ -367,7 +413,8 @@
       "REAL": "A real alert from the record, {fixture}, exactly as the bots sent it",
       "DISCORD": "Discord alert",
       "TELEGRAM": "Telegram alert",
-      "BOT": "bot"
+      "BOT": "bot",
+      "HEADING": "Alerts on your phone."
     },
     "PRICING": {
       "TITLE": "Free during the preview.",
@@ -395,14 +442,19 @@
       "Q_FAIR": "How are fair odds computed?",
       "A_FAIR": "Pinnacle's margin is removed with the power method. Where Betfair or Matchbook has a tight market, it has to agree before an alert goes out.",
       "Q_LOSSES": "Why show the bad numbers?",
-      "A_LOSSES": "A record without losses is an advert. Every alert stays in it, checked against the closing line."
+      "A_LOSSES": "A record without losses is an advert. Every alert stays in it, checked against the closing line.",
+      "Q_FREE": "Is it free?",
+      "A_FREE": "Yes, during the preview. No card and no email to look; Discord sign in only to track bets and get alerts. If a paid plan comes, its price is on this page first.",
+      "Q_AI": "Is this AI?",
+      "A_AI": "No. It is arithmetic: Pinnacle's price with the margin removed, compared with every book. Each row shows the numbers it used."
     },
     "FINAL": {
       "TITLE_A": "Your edge,",
       "TITLE_B": "every matchday.",
       "LINE": "The board is open. No card, no sign up.",
       "CTA": "See today's edges",
-      "SECONDARY": "Join the Discord"
+      "SECONDARY": "Join the Discord",
+      "HEADING": "See today's value bets."
     }
   },
   "OVERVIEW": {
@@ -424,25 +476,36 @@
     "MARKET_TWO_WAY": "Moneyline",
     "HIDE_LOW": "Hide low confidence",
     "COL_EV": "EV",
-    "COL_EVENT": "Event",
     "COL_BET": "Bet",
     "COL_BOOK": "Book",
     "COL_ODDS": "Odds",
     "COL_FAIR": "Fair",
     "COL_STAKE": "Stake",
     "COL_CONFIDENCE": "Confidence",
-    "COL_SEEN": "Seen",
     "SAFE_EV": "{ev} safe",
     "SAFE_HINT": "Against the worst case devig",
     "MORE_BOOKS": "+{count} more",
-    "PINNACLE_ODDS": "Pin {odds}",
     "STAKE_HINT": "{fraction} Kelly on a bankroll of {bankroll}",
     "EMPTY": "No value right now with these filters. Prices update every few seconds.",
     "NOTE_FAIR": "Fair odds use the power devig of Pinnacle. The safe EV uses the least favourable of four methods, so it is the cautious number.",
     "NOTE_CONFIDENCE": "Confidence follows Pinnacle's maximum stake on the market: the more money it accepts, the more the fair price can be trusted.",
     "NOTE_STAKE": "Stake is quarter Kelly on a bankroll of 1000. Sign in to use your own bankroll and Kelly fraction. A price not reconfirmed within five minutes drops off the board.",
-    "MY_BOOKS": "My books",
-    "NOTE_STAKE_USER": "Stake is {fraction} Kelly on your bankroll of {bankroll}, from your settings, after exchange commission. A price not reconfirmed within five minutes drops off the board."
+    "NOTE_STAKE_USER": "Stake is {fraction} Kelly on your bankroll of {bankroll}, from your settings, after exchange commission. A price not reconfirmed within five minutes drops off the board.",
+    "LEAD": "Bets where a bookmaker pays more than Pinnacle's fair price. Every row shows its reference and how old the price is.",
+    "COL_REFERENCE": "Reference",
+    "COL_AGE": "Price age",
+    "COL_KICKOFF": "Kickoff",
+    "ALL_BOOKS": "All books",
+    "MY_BOOKS_COUNT": "My books ({count})",
+    "MY_BOOKS_TITLE": "Which books can you bet at?",
+    "MY_BOOKS_LINE_IN": "Pick them once and the board shows only bets you can place. Saved to your account.",
+    "MY_BOOKS_LINE_OUT": "Pick them once and the board shows only bets you can place. Saved in this browser, no sign in needed.",
+    "MY_BOOKS_SAVE": "Show my books",
+    "MY_BOOKS_SKIP": "Show every book",
+    "MY_BOOKS_CANCEL": "Cancel",
+    "MY_BOOKS_NONE": "Pick at least one book.",
+    "MY_BOOKS_EDIT": "Edit my books",
+    "MY_BOOKS_SET": "Set my books"
   },
   "BET": {
     "META_TITLE": "Bet detail",

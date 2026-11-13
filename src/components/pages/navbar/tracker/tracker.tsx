@@ -16,7 +16,7 @@ import { BetsTable } from "./bets-table";
 import { ProfitChart } from "./profit-chart";
 import { TrackerTabs, type TrackerTab } from "./tracker-tabs";
 
-const HEAD = "label-mono text-foreground/45 px-4 py-2 text-[10px] font-normal";
+const HEAD = "eyebrow text-foreground/45 px-4 py-2 text-[10px] font-normal";
 
 function tone(value: number): string | undefined {
   if (value > 0) return "text-success";

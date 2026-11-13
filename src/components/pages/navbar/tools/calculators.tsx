@@ -98,7 +98,7 @@ export function DevigCalculator() {
   const nums = values[0].filter((v) => v.trim() !== "").map(Number);
   const r = devig(nums);
   const margin = nums.reduce((a, o) => a + 1 / o, 0) - 1;
-  const head = "label-mono text-foreground/45 py-1 text-[10px] font-normal";
+  const head = "eyebrow text-foreground/45 py-1 text-[10px] font-normal";
   return (
     <Calculator title={t("DEVIG_TITLE")} note={t("DEVIG_NOTE")}>
       <OutcomeFields values={values[0]} onChange={values[1]} />

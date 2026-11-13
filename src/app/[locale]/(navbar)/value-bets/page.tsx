@@ -1,8 +1,9 @@
 import { ValueBets } from "@/components/pages/navbar/value-bets/value-bets";
 import { api, load } from "@/lib/api/client";
 import { getAccount } from "@/lib/auth/session";
+import { MY_BOOKS_COOKIE } from "@/lib/config/constants";
 import { param, planOf } from "@/lib/format";
-import { serverLocale } from "@/lib/utils/server";
+import { getCookieValue, serverLocale } from "@/lib/utils/server";
 import { ogMetadata } from "@/lib/og/metadata";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -19,6 +20,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   return { title: t("VALUE_BETS"), ...ogMetadata("VALUE_BETS", locale) };
 }
 
+function bookList(value: unknown): string[] | undefined {
+  return Array.isArray(value) ? value.filter((b) => typeof b === "string") : undefined;
+}
+
 export default async function ValueBetsPage(props: Props) {
   setRequestLocale(await serverLocale(props));
   await connection();
@@ -28,28 +33,34 @@ export default async function ValueBetsPage(props: Props) {
     min: param(sp.min),
     market: param(sp.market),
     solid: param(sp.solid),
-    mine: param(sp.mine),
+    all: param(sp.all),
   };
   const results = await Promise.all([
     load(
-    api.GET("/v1/value-bets", {
-      params: {
-        query: { book: filters.book, min_ev: filters.min ? Number(filters.min) : undefined, limit: 1000 },
-      },
-      cache: "no-store",
-    }),
+      api.GET("/v1/value-bets", {
+        params: {
+          query: { book: filters.book, min_ev: filters.min ? Number(filters.min) : undefined, limit: 1000 },
+        },
+        cache: "no-store",
+      }),
     ),
     load(api.GET("/v1/books", { cache: "no-store" })),
     getAccount(),
+    getCookieValue<unknown>(MY_BOOKS_COOKIE),
   ]);
   const account = results[2];
+  const cookieBooks = bookList(results[3]);
+  const accountBooks = account?.settings.preferred_books ?? [];
+  const preferred = accountBooks.length > 0 ? accountBooks : (cookieBooks ?? []);
   return (
     <ValueBets
       data={results[0]}
       filters={filters}
       now={Date.now()}
       plan={account ? planOf(account.settings) : undefined}
-      preferred={account?.settings.preferred_books ?? []}
+      settings={account?.settings}
+      preferred={preferred}
+      askBooks={preferred.length === 0 && cookieBooks === undefined}
       fees={results[1] ?? []}
     />
   );

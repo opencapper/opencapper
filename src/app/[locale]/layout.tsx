@@ -2,11 +2,8 @@ import { Providers } from "@/components/provider/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_VALUES } from "@/lib/config/constants";
 import { env } from "@/lib/config/env";
-import { buildThemeCss, googleFontHref } from "@/lib/theme/build-css";
-import { allFontVariablesClass } from "@/lib/theme/fonts";
-import { migrateTheme } from "@/lib/theme/migrate";
-import { INITIAL_USER_THEME, USER_THEME_KEY } from "@/lib/theme/theme-types";
-import { getCookieValue, serverLocale } from "@/lib/utils/server";
+import { fontVariables } from "@/lib/config/fonts";
+import { serverLocale } from "@/lib/utils/server";
 import { ogMetadata } from "@/lib/og/metadata";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
@@ -15,6 +12,10 @@ import { ReactNode } from "react";
 import "../globals.css";
 
 export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0b0c" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -37,43 +38,24 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     },
     description: t("METADATA.DESCRIPTION"),
     robots: { index: false, follow: false },
+    // The site ships its own dark theme; this tells Dark Reader not to invert it.
+    other: { "darkreader-lock": "true" },
     ...ogMetadata("home", locale),
   };
 }
 
-const DEFAULT_THEME_CSS = buildThemeCss(INITIAL_USER_THEME);
-
 export default async function LocaleLayout(props: Props) {
   const locale = await serverLocale(props);
   setRequestLocale(locale);
-  const rawTheme = await getCookieValue<unknown>(USER_THEME_KEY);
-  const userTheme = rawTheme === undefined ? undefined : migrateTheme(rawTheme);
-  const themeCss = userTheme ? buildThemeCss(userTheme) : DEFAULT_THEME_CSS;
-  const fontHref = userTheme ? googleFontHref(userTheme) : null;
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head>
-        {/* A second head-level next-themes provider emits this script twice:
-            next-themes does not dedupe across React trees. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("theme");var d=t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches);var c=document.documentElement.classList;c.toggle("dark",d);c.toggle("light",!d)}catch(e){}`,
-          }}
-        />
-        {/* Plain style, no href/precedence: React's float cache discards the
-            textContent UserThemeProvider mutates for live edits. */}
-        <style id="user-theme" dangerouslySetInnerHTML={{ __html: themeCss }} />
-        {fontHref && (
-          <link id="user-theme-font" rel="stylesheet" href={fontHref} />
-        )}
-      </head>
       <body
-        className={`${allFontVariablesClass} flex min-h-dvh flex-col font-sans antialiased`}
+        className={`${fontVariables} flex min-h-dvh flex-col font-sans antialiased`}
       >
         <NextIntlClientProvider>
-          <Providers userTheme={userTheme}>
-            <Toaster richColors />
+          <Providers>
+            <Toaster />
             {props.children}
           </Providers>
         </NextIntlClientProvider>

@@ -58,8 +58,10 @@ export const APP_VALUES = {
   appName: env.appName,
 };
 
-export const USER_THEME_COOKIE = "user-theme" as const;
 export const DATA_TABLES_COOKIE = "data-tables" as const;
 export const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const;
+
+// Books a signed out visitor picked on the value board; signed in, the account settings hold them.
+export const MY_BOOKS_COOKIE = "my-books" as const;

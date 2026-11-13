@@ -102,10 +102,6 @@ function SignedInMenu(props: { user: User }) {
           <Icon name="settings-2" />
           {t("SETTINGS")}
         </DropdownMenuItem>
-        <DropdownMenuItem render={<Link href="/settings/appearance" />}>
-          <Icon name="paintbrush" />
-          {t("APPEARANCE")}
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           disabled={pending}

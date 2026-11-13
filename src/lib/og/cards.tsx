@@ -1,5 +1,6 @@
 import { api, load } from "@/lib/api/client";
 import { bookName } from "@/lib/config/vendor-registry";
+import { edgeCount } from "@/lib/group";
 import {
   count,
   kickoff,
@@ -11,7 +12,7 @@ import {
 import type { Locale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
-import { FONT_DISPLAY, FONT_SERIF, remoteImage } from "./assets";
+import { remoteImage } from "./assets";
 import {
   C,
   Col,
@@ -39,10 +40,10 @@ function Headline(props: { children: ReactNode; size?: number }) {
   return (
     <span
       style={{
-        fontFamily: FONT_DISPLAY,
-        fontSize: props.size ?? 72,
-        lineHeight: 0.95,
-        textTransform: "uppercase",
+        fontSize: props.size ?? 64,
+        fontWeight: 600,
+        lineHeight: 1.08,
+        letterSpacing: -1.5,
         maxWidth: 1000,
       }}
     >
@@ -55,10 +56,8 @@ function Body(props: { children: ReactNode }) {
   return (
     <span
       style={{
-        fontFamily: FONT_SERIF,
-        fontStyle: "italic",
-        fontSize: 34,
-        lineHeight: 1.2,
+        fontSize: 30,
+        lineHeight: 1.35,
         color: C.soft,
         maxWidth: 940,
       }}
@@ -111,37 +110,22 @@ export async function homeCard(locale: Locale): Promise<ReactNode> {
   const stats = results[2]?.stats;
   return (
     <Frame
-      pitch
-      label={t("LANDING.BOARD.TITLE")}
-      footer={<Eyebrow>{t("LANDING.ISSUE_FREE")}</Eyebrow>}
+      label={t("LANDING.BOARD.HEADING")}
+      footer={<Eyebrow>{t("LANDING.HERO.FREE_LINE")}</Eyebrow>}
     >
       <Col style={{ flexGrow: 1, justifyContent: "space-between" }}>
-        <Col>
-          <Headline size={104}>{t("LANDING.HERO.TITLE_A")}</Headline>
-          <Row style={{ alignItems: "baseline", gap: 18 }}>
-            <span
-              style={{
-                fontFamily: FONT_SERIF,
-                fontStyle: "italic",
-                fontSize: 84,
-                lineHeight: 1,
-                color: C.edge,
-              }}
-            >
-              {t("LANDING.HERO.TITLE_B")}
-            </span>
-            <Headline size={104}>{t("LANDING.HERO.TITLE_C")}</Headline>
-          </Row>
+        <Col style={{ gap: 18 }}>
+          <Headline size={88}>{t("LANDING.HERO.HEADLINE")}</Headline>
+          <Body>
+            {t("LANDING.HERO.SUB", { count: String(soft ?? 0) })}
+          </Body>
         </Col>
-        <Row style={{ gap: 56 }}>
+        <Row style={{ gap: 64 }}>
           {list && (
             <Stat
               label={t("LANDING.NAV_LIVE")}
-              value={count(
-                list.bets.filter((b) => b.confidence !== "check").length,
-                locale,
-              )}
-              color={C.edge}
+              value={count(edgeCount(list), locale)}
+              color={C.win}
             />
           )}
           {soft !== undefined && (
@@ -187,20 +171,18 @@ function Matchup(props: {
       <Col style={{ gap: 6, maxWidth: 820 }}>
         <span
           style={{
-            fontFamily: FONT_DISPLAY,
-            fontSize: 56,
-            lineHeight: 1,
-            textTransform: "uppercase",
+            fontSize: 52,
+            fontWeight: 600,
+            lineHeight: 1.05,
           }}
         >
           {props.home}
         </span>
         <span
           style={{
-            fontFamily: FONT_DISPLAY,
-            fontSize: 56,
-            lineHeight: 1,
-            textTransform: "uppercase",
+            fontSize: 52,
+            fontWeight: 600,
+            lineHeight: 1.05,
             color: C.soft,
           }}
         >
@@ -289,7 +271,7 @@ export async function betCard(
           <Stat
             label={t("BET.STAT_EV")}
             value={percent(b.ev)}
-            color={C.edge}
+            color={C.win}
             size={64}
           />
           <Stat

@@ -40,7 +40,7 @@ function share(x: number | null | undefined, t: Translate): string {
 function Metric(props: { label: string; value: string; hint?: string }) {
   return (
     <div className="flex flex-col gap-0.5" title={props.hint}>
-      <dt className="label-mono text-foreground/45 text-[10px]">{props.label}</dt>
+      <dt className="eyebrow text-foreground/45 text-[10px]">{props.label}</dt>
       <dd className="tabular text-sm">{props.value}</dd>
     </div>
   );

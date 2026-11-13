@@ -37,7 +37,7 @@ const METHODS = [
   { key: "worst_case", label: "METHOD_WORST", note: "METHOD_WORST_NOTE" },
 ] as const;
 
-const HEAD = "label-mono text-foreground/45 px-4 py-2 text-[10px] font-normal";
+const HEAD = "eyebrow text-foreground/45 px-4 py-2 text-[10px] font-normal";
 
 export function BetDetailView(props: { id: string; data?: BetDetail; fees: BookFee[]; plan?: StakePlan; now: number }) {
   const t = useTranslations();
@@ -117,7 +117,7 @@ export function BetDetailView(props: { id: string; data?: BetDetail; fees: BookF
       >
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
           <Link href={`/games/${encodeURIComponent(b.game_id)}`} className="underline-offset-4 hover:underline">
-            <Matchup event={data.game} />
+            <Matchup event={data.game} size="default" />
           </Link>
           <LeagueLabel event={data.game} className="text-muted-foreground text-xs" />
         </div>

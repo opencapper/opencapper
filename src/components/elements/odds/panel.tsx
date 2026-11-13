@@ -38,7 +38,7 @@ export function PanelLink(props: { href: string; children: ReactNode }) {
   return (
     <Link
       href={props.href}
-      className="text-foreground/50 hover:text-foreground label-mono inline-flex items-center gap-1 text-[10px] transition-colors"
+      className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs font-medium transition-colors"
     >
       {props.children}
       <Icon name="arrow-right" className="size-3" />

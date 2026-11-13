@@ -1,34 +1,23 @@
 import { cn } from "@/lib/utils";
 
-// Centre circle of a pitch; the vermilion slice is the edge a wrong price leaves.
-export const CREST_SLICE = "M24 24 L24 3 A21 21 0 0 1 38.85 9.15 Z";
+// A plus in a rounded square: positive expected value, nothing more.
+export const MARK_PLUS = "M12 7.5v9M7.5 12h9";
 
 export function LogoImage(props: { className?: string }) {
   return (
     <svg
       aria-hidden
-      viewBox="0 0 48 48"
-      className={cn("text-foreground size-7 shrink-0", props.className)}
+      viewBox="0 0 24 24"
+      className={cn("size-6 shrink-0", props.className)}
     >
-      <circle
-        cx="24"
-        cy="24"
-        r="21"
+      <rect width="24" height="24" rx="6" className="fill-foreground" />
+      <path
+        d={MARK_PLUS}
+        className="stroke-background"
+        strokeWidth="2.4"
+        strokeLinecap="round"
         fill="none"
-        stroke="currentColor"
-        strokeWidth="3.5"
       />
-      <path d="M3 24H45" stroke="currentColor" strokeWidth="2.5" />
-      <circle
-        cx="24"
-        cy="24"
-        r="8.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-      />
-      <path d={CREST_SLICE} className="fill-vermilion" />
-      <circle cx="24" cy="24" r="2.6" fill="currentColor" />
     </svg>
   );
 }
@@ -37,14 +26,11 @@ export function CompanyName(props: { className?: string }) {
   return (
     <span
       className={cn(
-        "font-display inline-flex items-baseline text-[22px] leading-none tracking-normal uppercase",
+        "text-[17px] leading-none font-semibold tracking-[-0.02em]",
         props.className,
       )}
     >
-      Open
-      <span className="serif-accent text-vermilion ml-px text-[1.14em] leading-none">
-        ev
-      </span>
+      Open<span className="text-muted-foreground">EV</span>
     </span>
   );
 }

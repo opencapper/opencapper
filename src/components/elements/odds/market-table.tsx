@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 
 const HEAD =
-  "label-mono text-foreground/45 px-3 py-2 text-right text-[10px] font-normal whitespace-nowrap";
+  "eyebrow px-3 py-2 text-right whitespace-nowrap";
 
 function cellTone(p: BookPrice, best: boolean): string {
   if (p.ev !== null && p.ev !== undefined && p.ev > 0)

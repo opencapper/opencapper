@@ -13,62 +13,53 @@ import { isActiveLink, navigation } from "./navigation";
 import { PrefetchLink } from "./prefetch-link";
 import { UserMenu } from "./user-menu";
 
-const TAB =
-  "group/tab relative flex h-full items-center justify-center px-2.5 transition-colors 2xl:px-4";
-
 export function Navbar(props: { user?: User; live?: ReactNode }) {
   const t = useTranslations();
   const pathname = usePathname();
 
   return (
-    <nav className="bg-background border-foreground fixed top-0 right-0 left-0 z-50 flex h-14 items-stretch border-b-2">
-      <Link
-        href="/"
-        prefetch={false}
-        aria-label="OpenEV"
-        className="group flex shrink-0 items-center gap-2.5 px-4 xl:px-7"
-      >
-        <LogoImage className="transition-transform duration-500 group-hover:rotate-45 motion-reduce:transition-none" />
-        <CompanyName />
-      </Link>
+    <nav className="bg-background/95 supports-[backdrop-filter]:bg-background/80 fixed inset-x-0 top-0 z-50 h-14 border-b backdrop-blur">
+      <div className="mx-auto flex h-full max-w-7xl items-center gap-6 px-4 sm:px-6">
+        <Link
+          href="/"
+          prefetch={false}
+          aria-label="OpenEV"
+          className="flex shrink-0 items-center gap-2"
+        >
+          <LogoImage />
+          <CompanyName />
+        </Link>
 
-      <div className="hidden min-w-0 flex-1 items-stretch justify-end xl:flex">
-        {navigation.map((link) => {
-          const active = isActiveLink(pathname, link.href, link.exact);
-          return (
-            <PrefetchLink key={link.name} href={link.href} className={TAB}>
-              <span
+        <div className="hidden min-w-0 items-center gap-0.5 lg:flex">
+          {navigation.map((link) => {
+            const active = isActiveLink(pathname, link.href, link.exact);
+            return (
+              <PrefetchLink
+                key={link.name}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "label-mono text-[12px] font-medium whitespace-nowrap transition-colors",
+                  "rounded-md px-2.5 py-1.5 text-[13px] font-medium whitespace-nowrap transition-colors",
                   active
-                    ? "text-foreground"
-                    : "text-foreground/55 group-hover/tab:text-foreground",
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {t(link.name)}
-              </span>
-              <span
-                aria-hidden
-                className={cn(
-                  "bg-vermilion absolute inset-x-2.5 -bottom-0.5 h-[3px] origin-left transition-transform duration-300 2xl:inset-x-4",
-                  active
-                    ? "scale-x-100"
-                    : "scale-x-0 group-hover/tab:scale-x-50",
-                )}
-              />
-            </PrefetchLink>
-          );
-        })}
-      </div>
-
-      <div className="ml-auto flex items-center gap-1.5 pr-2 xl:ml-0 xl:pr-4 xl:pl-3">
-        {props.live}
-        <div className="hidden items-center gap-0.5 xl:flex">
-          <LanguageToggle />
-          <ThemeToggle />
+              </PrefetchLink>
+            );
+          })}
         </div>
-        <UserMenu user={props.user} />
-        <MobileNav />
+
+        <div className="ml-auto flex items-center gap-1">
+          {props.live}
+          <div className="hidden items-center lg:flex">
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
+          <UserMenu user={props.user} />
+          <MobileNav />
+        </div>
       </div>
     </nav>
   );

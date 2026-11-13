@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 
 const DOT: Record<LiveStatus, string> = {
   connecting: "bg-muted-foreground/60",
-  live: "bg-success animate-pulse motion-reduce:animate-none",
+  live: "bg-success",
   reconnecting: "bg-warning",
   offline: "bg-muted-foreground/60",
 };
@@ -30,7 +30,7 @@ export function LiveStatusBadge(props: {
         props.status === "live" ? t("LIVE.HINT_LIVE") : t("LIVE.HINT_FALLBACK")
       }
       className={cn(
-        "label-mono text-foreground/55 inline-flex shrink-0 items-center gap-1.5 text-[10px]",
+        "text-muted-foreground inline-flex shrink-0 items-center gap-1.5 text-xs font-medium",
         props.className,
       )}
     >

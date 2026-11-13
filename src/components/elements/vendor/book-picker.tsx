@@ -11,8 +11,8 @@ export const CHIP =
 
 export function chipState(on: boolean): string {
   return on
-    ? "border-foreground/40 bg-foreground/10 text-foreground"
-    : "text-foreground/55 hover:text-foreground hover:bg-foreground/5";
+    ? "border-primary/40 bg-primary/10 text-foreground"
+    : "text-muted-foreground hover:text-foreground hover:bg-muted";
 }
 
 export function BookPicker(props: {

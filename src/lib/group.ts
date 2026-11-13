@@ -1,4 +1,4 @@
-import type { ValueBet } from "@/lib/api/client";
+import type { ValueBet, ValueBetList } from "@/lib/api/client";
 
 // One selection across every book that has value on it, best price first.
 export type GroupedBet = {
@@ -26,4 +26,9 @@ export function groupBets(bets: ValueBet[]): GroupedBet[] {
 export function featuredGroups(bets: ValueBet[], count: number): GroupedBet[] {
   const solid = groupBets(bets.filter((b) => b.confidence === "high" || b.confidence === "medium"));
   return (solid.length > 0 ? solid : groupBets(bets)).slice(0, count);
+}
+
+// Check confidence prices are likely stale, so they never count as an edge.
+export function edgeCount(list: ValueBetList | null): number {
+  return list ? list.bets.filter((b) => b.confidence !== "check").length : 0;
 }

@@ -7,29 +7,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --font-display: var(--font-display);
-  --font-serif: var(--font-instrument-serif), Georgia, serif;
-  --color-paper: var(--brand-paper);
-  --color-paper-2: var(--brand-paper-2);
-  --color-ink: var(--brand-ink);
-  --color-chalk: var(--brand-chalk);
-  --color-pitch: var(--brand-pitch);
-  --color-pitch-2: var(--brand-pitch-2);
-  --color-vermilion: var(--brand-vermilion);
-  --color-vermilion-2: var(--brand-vermilion-2);
-  --color-gold: var(--brand-gold);
-  --color-band: var(--brand-band);
-  --color-board: var(--brand-board);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, "Hiragino Sans",
+    "Noto Sans JP", "Yu Gothic UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo,
+    monospace;
+  --color-subtle: var(--subtle);
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
@@ -54,8 +36,6 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --color-header: var(--header);
-  --color-footer: var(--footer);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -63,112 +43,68 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
-  /* Inline theme values are pasted into every utility, so a var() here is what
-     lets the theme swap shadows. */
-  --shadow-xs: var(--theme-shadow-xs, 0 1px 2px 0 rgb(0 0 0 / 0.05));
-  --shadow-sm: var(--theme-shadow-sm, 0 1px 3px 0 rgb(0 0 0 / 0.1));
-  --shadow-md: var(--theme-shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1));
-  --shadow-lg: var(--theme-shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1));
 }
 
-/* Matchday brand colours: fixed across user themes, only the ink band and the
-   board darken further in the dark variant. */
+/* Neutral surfaces, one blue for actions, green and red only for value and results. */
 :root {
-  --brand-paper: #f2ede3;
-  --brand-paper-2: #e8e1d3;
-  --brand-ink: #141210;
-  --brand-chalk: #f7f3ea;
-  --brand-pitch: #0e5a36;
-  --brand-pitch-2: #0a4529;
-  --brand-vermilion: #ff4b1f;
-  --brand-vermilion-2: #d93a12;
-  --brand-gold: #f2c14e;
-  --brand-band: #141210;
-  --brand-board: #0f0e0c;
-}
-
-.dark {
-  --brand-band: #0b0a09;
-  --brand-board: #0b0a09;
-  --brand-paper-2: #24211d;
-}
-
-:root {
-  --expo-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --radius: 0;
-  --header: var(--background);
-  --footer: color-mix(in srgb, var(--muted) 30%, transparent);
+  --radius: 0.5rem;
   --background: #ffffff;
-  --foreground: #09090b;
+  --foreground: #0b0b0c;
+  --subtle: #f7f7f8;
   --card: #ffffff;
-  --card-foreground: #09090b;
+  --card-foreground: #0b0b0c;
   --popover: #ffffff;
-  --popover-foreground: #09090b;
-  --primary: #18181b;
-  --primary-foreground: #fafafa;
-  --secondary: #f4f4f5;
-  --secondary-foreground: #18181b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --accent: #f4f4f5;
-  --accent-foreground: #18181b;
-  --destructive: #ef4444;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --info: #3b82f6;
+  --popover-foreground: #0b0b0c;
+  --primary: #2556d6;
+  --primary-foreground: #ffffff;
+  --secondary: #f2f2f4;
+  --secondary-foreground: #0b0b0c;
+  --muted: #f2f2f4;
+  --muted-foreground: #63636b;
+  --accent: #f2f2f4;
+  --accent-foreground: #0b0b0c;
+  --destructive: #c8323a;
+  --success: #0b7f45;
+  --warning: #a35f00;
+  --info: #2556d6;
   --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #a1a1aa;
-  --chart-1: oklch(0.55 0.2 250);
-  --chart-2: oklch(0.55 0.18 160);
-  --chart-3: oklch(0.52 0.18 300);
-  --chart-4: oklch(0.6 0.16 85);
-  --chart-5: oklch(0.55 0.15 30);
-  --sidebar: #fafafa;
-  --sidebar-foreground: #09090b;
-  --sidebar-primary: #18181b;
-  --sidebar-primary-foreground: #fafafa;
-  --sidebar-accent: #f4f4f5;
-  --sidebar-accent-foreground: #18181b;
-  --sidebar-border: #e4e4e7;
-  --sidebar-ring: #a1a1aa;
+  --input: #dcdce0;
+  --ring: #2556d6;
+  --chart-1: #2556d6;
+  --chart-2: #0b7f45;
+  --chart-3: #63636b;
+  --chart-4: #a35f00;
+  --chart-5: #c8323a;
 }
 
 .dark {
-  --background: #050505;
-  --foreground: #f8fafc;
-  --card: #0a0a0a;
-  --card-foreground: #f8fafc;
-  --popover: #0a0a0a;
-  --popover-foreground: #f8fafc;
-  --primary: #ffffff;
-  --primary-foreground: #000000;
-  --secondary: rgba(255, 255, 255, 0.05);
-  --secondary-foreground: #f8fafc;
-  --muted: rgba(255, 255, 255, 0.05);
-  --muted-foreground: #9ca3af;
-  --accent: rgba(255, 255, 255, 0.05);
-  --accent-foreground: #f8fafc;
-  --destructive: #ef4444;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --info: #3b82f6;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.1);
-  --ring: rgba(255, 255, 255, 0.2);
-  --chart-1: oklch(0.75 0.15 250);
-  --chart-2: oklch(0.72 0.18 160);
-  --chart-3: oklch(0.7 0.15 300);
-  --chart-4: oklch(0.78 0.16 85);
-  --chart-5: oklch(0.68 0.14 30);
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #ffffff;
-  --sidebar-primary-foreground: #000000;
-  --sidebar-accent: rgba(255, 255, 255, 0.05);
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: rgba(255, 255, 255, 0.2);
+  --background: #0b0b0c;
+  --foreground: #ececee;
+  --subtle: #111113;
+  --card: #111113;
+  --card-foreground: #ececee;
+  --popover: #141416;
+  --popover-foreground: #ececee;
+  --primary: #3d6ff0;
+  --primary-foreground: #ffffff;
+  --secondary: #1b1b1e;
+  --secondary-foreground: #ececee;
+  --muted: #1b1b1e;
+  --muted-foreground: #92929b;
+  --accent: #1d1d21;
+  --accent-foreground: #ececee;
+  --destructive: #f06a70;
+  --success: #3fcb83;
+  --warning: #e3a644;
+  --info: #7c9cff;
+  --border: #242428;
+  --input: #2c2c31;
+  --ring: #5b85f5;
+  --chart-1: #6f93ff;
+  --chart-2: #3fcb83;
+  --chart-3: #92929b;
+  --chart-4: #e3a644;
+  --chart-5: #f06a70;
 }
 
 @layer base {
@@ -176,31 +112,24 @@
     @apply border-border outline-ring/50;
   }
 
-  /* Theme tokens land as variables; these rules are their only readers. An
-     unset var() on an inherited property resolves to inherit. */
   html {
-    font-size: calc(100% * var(--font-scale, 1));
-    overscroll-behavior: none;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
-    --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-    --font-display: var(--font-anton), Impact, ui-sans-serif, sans-serif;
-    --font-mono: var(--font-dm-mono), ui-monospace, monospace;
-    @apply bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden font-sans;
-    font-weight: var(--font-weight, 400);
-    letter-spacing: var(--tracking, normal);
+    @apply bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-sans;
     touch-action: manipulation;
-    overscroll-behavior: none;
   }
 
   h1,
   h2,
   h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-display;
+  h4 {
+    @apply tracking-tight text-balance;
   }
 
   button {
@@ -208,201 +137,21 @@
   }
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Odds, units, ROI and every stat: aligned digits in the number font. */
+/* Every number: mono with tabular figures so columns line up and live updates never change width. */
 @utility tabular {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-}
-
-/* Big scoreboard numbers: a condensed face with tabular figures next to Anton headlines. */
-@utility num {
-  font-family: var(--font-barlow-condensed), var(--font-anton), sans-serif;
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  letter-spacing: 0;
-}
-
-/* Anton headline with the serif italic accent inside it. */
-@utility headline {
-  font-family: var(--font-display);
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 0.88;
-  letter-spacing: 0;
-}
-
-@utility serif-accent {
-  font-family: var(--font-instrument-serif), Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  text-transform: none;
   letter-spacing: -0.01em;
 }
 
-/* Uppercase letterspaced mono: nav tabs, section labels, table heads. */
-@utility label-mono {
-  font-family: var(--font-mono);
+/* Small caps style label for table heads and section labels. */
+@utility eyebrow {
   font-size: 11px;
   line-height: 1rem;
-  letter-spacing: 0.1em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-@utility font-pixel {
-  font-family: var(--font-geist-pixel), var(--font-mono);
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@utility animate-marquee {
-  animation: marquee 40s linear infinite;
-}
-
-@keyframes tab-progress {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@utility animate-tab-progress {
-  animation: tab-progress 6s linear forwards;
-}
-
-@keyframes mark-snap-left {
-  from {
-    opacity: 0;
-    transform: translateX(-36px) rotate(-10deg);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) rotate(0);
-  }
-}
-
-@keyframes mark-snap-right {
-  from {
-    opacity: 0;
-    transform: translateX(36px) rotate(10deg);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) rotate(0);
-  }
-}
-
-@keyframes mark-reveal {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@utility animate-mark-left {
-  animation: mark-snap-left 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
-}
-
-@utility animate-mark-right {
-  animation: mark-snap-right 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
-}
-
-@utility animate-mark-reveal {
-  animation: mark-reveal 0.5s ease-out 0.2s both;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-@utility animate-blink {
-  animation: blink 1s step-end infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
-  .animate-mark-left,
-  .animate-mark-right,
-  .animate-mark-reveal,
-  .animate-blink,
-  .animate-fade-in,
-  .animate-slide-up {
-    animation: none;
-    opacity: 1;
-  }
-}
-
-@utility animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-@utility animate-slide-up {
-  animation: slideUp 0.6s ease-out forwards;
-}
-
-@keyframes navbar-scroll-bg {
-  0% {
-    background-color: transparent;
-    border-color: transparent;
-    backdrop-filter: blur(0);
-  }
-  100% {
-    background-color: color-mix(in srgb, var(--header) 90%, transparent);
-    border-color: var(--border);
-    backdrop-filter: blur(12px);
-  }
-}
-
-@supports (animation-timeline: scroll()) {
-  .navbar-scroll {
-    animation: navbar-scroll-bg linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0px 11px;
-  }
-}
-
-/* Safari has no scroll-timeline: without this the fixed navbar stays
-   transparent and scrolled content bleeds through it. */
-@supports not (animation-timeline: scroll()) {
-  .navbar-scroll {
-    background-color: color-mix(in srgb, var(--header) 90%, transparent);
-    border-color: var(--border);
-    backdrop-filter: blur(12px);
-  }
+  color: var(--muted-foreground);
 }
 
 @utility thin-scrollbar {
@@ -426,81 +175,81 @@
   }
 }
 
-/* Live updates tint and fade, never resize. Two names per kind restart the animation on the next change. */
+/* Live updates tint the background and fade; nothing moves or resizes. Two names per kind restart the animation. */
 @keyframes live-in {
   from {
-    background-color: color-mix(in oklab, var(--success) 16%, transparent);
+    background-color: color-mix(in oklab, var(--primary) 10%, transparent);
   }
 }
 
 @keyframes live-up-a {
   from {
-    background-color: color-mix(in oklab, var(--primary) 12%, transparent);
+    background-color: color-mix(in oklab, var(--primary) 8%, transparent);
   }
 }
 
 @keyframes live-up-b {
   from {
-    background-color: color-mix(in oklab, var(--primary) 12%, transparent);
+    background-color: color-mix(in oklab, var(--primary) 8%, transparent);
   }
 }
 
 @keyframes tick-up-a {
   from {
-    background-color: color-mix(in oklab, var(--success) 28%, transparent);
+    background-color: color-mix(in oklab, var(--success) 22%, transparent);
   }
 }
 
 @keyframes tick-up-b {
   from {
-    background-color: color-mix(in oklab, var(--success) 28%, transparent);
+    background-color: color-mix(in oklab, var(--success) 22%, transparent);
   }
 }
 
 @keyframes tick-down-a {
   from {
-    background-color: color-mix(in oklab, var(--destructive) 24%, transparent);
+    background-color: color-mix(in oklab, var(--destructive) 20%, transparent);
   }
 }
 
 @keyframes tick-down-b {
   from {
-    background-color: color-mix(in oklab, var(--destructive) 24%, transparent);
+    background-color: color-mix(in oklab, var(--destructive) 20%, transparent);
   }
 }
 
 .live-in {
-  animation: live-in 1.6s ease-out;
+  animation: live-in 1.2s ease-out;
 }
 
 .live-up-0 {
-  animation: live-up-a 1.2s ease-out;
+  animation: live-up-a 1s ease-out;
 }
 
 .live-up-1 {
-  animation: live-up-b 1.2s ease-out;
+  animation: live-up-b 1s ease-out;
 }
 
 .live-out {
-  opacity: 0.35;
-  transition: opacity 0.4s ease-out;
+  opacity: 0.4;
+  transition: opacity 0.3s ease-out;
   pointer-events: none;
 }
 
 .tick-up-0 {
-  animation: tick-up-a 0.9s ease-out;
+  animation: tick-up-a 0.8s ease-out;
 }
 
 .tick-up-1 {
-  animation: tick-up-b 0.9s ease-out;
+  animation: tick-up-b 0.8s ease-out;
 }
 
 .tick-down-0 {
-  animation: tick-down-a 0.9s ease-out;
+  animation: tick-down-a 0.8s ease-out;
 }
 
 .tick-down-1 {
-  animation: tick-down-b 0.9s ease-out;
+  animation: tick-down-b 0.8s ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -512,132 +261,5 @@
   .tick-down-0,
   .tick-down-1 {
     animation: none;
-  }
-}
-
-/* Landing: scoreboard flaps, live dots and the margin diagram. Transform and opacity only, so live updates never move the layout. */
-@keyframes flap-flip {
-  0% {
-    transform: rotateX(88deg);
-    filter: brightness(0.45);
-  }
-  100% {
-    transform: none;
-    filter: none;
-  }
-}
-
-.flap-flip {
-  animation: flap-flip 0.38s ease-in;
-}
-
-@keyframes live-blink {
-  50% {
-    opacity: 0.25;
-  }
-}
-
-.live-dot {
-  animation: live-blink 1.2s ease-in-out infinite;
-}
-
-@keyframes sticker-sway {
-  0%,
-  100% {
-    transform: rotate(-12deg);
-  }
-  50% {
-    transform: rotate(-4deg);
-  }
-}
-
-.sticker-sway {
-  animation: sticker-sway 9s ease-in-out infinite;
-}
-
-@keyframes margin-lift {
-  0%,
-  22% {
-    transform: translate(0, 0);
-  }
-  42%,
-  88% {
-    transform: translate(var(--lift-x, 0), var(--lift-y, -36px));
-  }
-  100% {
-    transform: translate(0, 0);
-  }
-}
-
-.margin-lift {
-  animation: margin-lift 6s cubic-bezier(0.5, 0, 0.2, 1) infinite;
-}
-
-@keyframes step-glow {
-  0%,
-  100% {
-    opacity: 0.55;
-  }
-  12%,
-  30% {
-    opacity: 1;
-  }
-}
-
-.step-glow {
-  opacity: 0.55;
-  animation: step-glow 6s ease-in-out infinite;
-  animation-delay: var(--step-delay, 0s);
-}
-
-@keyframes ring-fill {
-  from {
-    stroke-dasharray: 0 100;
-  }
-}
-
-.ring-fill {
-  animation: ring-fill 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-@keyframes bubble-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-}
-
-.bubble-in {
-  animation: bubble-in 0.5s ease-out both;
-  animation-delay: var(--bubble-delay, 0s);
-}
-
-@keyframes draw-line {
-  from {
-    stroke-dashoffset: 1;
-  }
-}
-
-.draw-line {
-  stroke-dasharray: 1;
-  animation: draw-line 2.4s ease-out both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .flap-flip,
-  .live-dot,
-  .sticker-sway,
-  .ring-fill,
-  .bubble-in,
-  .draw-line {
-    animation: none;
-  }
-  .margin-lift {
-    animation: none;
-    transform: translate(var(--lift-x, 0), var(--lift-y, -36px));
-  }
-  .step-glow {
-    animation: none;
-    opacity: 1;
   }
 }

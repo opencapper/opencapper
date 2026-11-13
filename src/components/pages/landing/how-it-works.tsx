@@ -1,11 +1,12 @@
 import { VendorLogo } from "@/components/elements/vendor/vendor-logo";
+import { Icon } from "@/components/ui/icon";
 import type { BetDetail } from "@/lib/api/client";
 import { bookName } from "@/lib/config/vendor-registry";
 import { matchup, odds, percent, prob, sideName } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
-import type { CSSProperties } from "react";
-import { SampleTag, Section, SectionHead, WRAP } from "./landing-ui";
+import type { ReactNode } from "react";
+import { SampleTag, Section, SectionHead } from "./landing-ui";
 
 type Leg = { name: string; sharp: number; fair: number; picked: boolean };
 
@@ -19,28 +20,15 @@ type Diagram = {
   sample: boolean;
 };
 
-const RADIUS = 110;
-const SHADES = ["#f7f3ea", "#f2c14e", "#7fb894", "#c9d8c0"];
-
-type Vars = CSSProperties & Record<`--${string}`, string>;
-
 async function diagramOf(detail: BetDetail | undefined): Promise<Diagram> {
   const t = await getTranslations();
-  const outcomes = detail?.market.outcomes.filter(
-    (o) => o.sharp && o.fair_odds,
-  );
+  const outcomes = detail?.market.outcomes.filter((o) => o.sharp && o.fair_odds);
   if (detail && outcomes && outcomes.length >= 2) {
     const b = detail.bet;
     return {
       legs: outcomes.map((o) => ({
         name: sideName(
-          {
-            market: b.market,
-            side: o.side,
-            line: b.line,
-            home: b.home,
-            away: b.away,
-          },
+          { market: b.market, side: o.side, line: b.line, home: b.home, away: b.away },
           t,
         ),
         sharp: Number(o.sharp?.odds),
@@ -71,123 +59,55 @@ async function diagramOf(detail: BetDetail | undefined): Promise<Diagram> {
   };
 }
 
-function Donut(props: { legs: Leg[]; marginLabel: string; center: string }) {
-  const implied = props.legs.map((l) => 100 / l.sharp);
-  const total = implied.reduce((a, b) => a + b, 0);
-  const margin = Math.max(0, total - 100);
-  // The ring is the whole overround: fair shares fill 100, the margin is the slice left over.
-  const ring = 100 + margin;
-  let offset = 0;
-  const slices = implied.map((p, i) => {
-    const length = (p / total) * 100;
-    const start = offset;
-    offset += length;
-    return {
-      start,
-      length,
-      leg: props.legs[i],
-      shade: SHADES[i % SHADES.length],
-    };
-  });
-  const angle = ((100 + margin / 2) / ring) * Math.PI * 2;
-  const lift: Vars = {
-    "--lift-x": `${(Math.sin(angle) * 38).toFixed(1)}px`,
-    "--lift-y": `${(-Math.cos(angle) * 38).toFixed(1)}px`,
-  };
-
+function Step(props: { n: number; title: string; note: string; children: ReactNode }) {
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[400px]">
-      <svg
-        viewBox="-160 -160 320 320"
-        className="block size-full overflow-visible"
-      >
-        <g transform="rotate(-90)" fill="none" strokeWidth="44">
-          {slices.map((s) => (
-            <circle
-              key={s.leg.name}
-              r={RADIUS}
-              pathLength={ring}
-              stroke={s.shade}
-              strokeDasharray={`${Math.max(0, s.length - 0.6)} ${ring}`}
-              strokeDashoffset={-s.start}
-            />
-          ))}
-        </g>
-        <g className="margin-lift" style={lift}>
-          <g transform="rotate(-90)">
-            <circle
-              r={RADIUS}
-              fill="none"
-              pathLength={ring}
-              stroke="var(--color-vermilion)"
-              strokeWidth="44"
-              strokeDasharray={`${margin} ${ring}`}
-              strokeDashoffset={-100}
-            />
-          </g>
-        </g>
-        {slices.map((s) => {
-          const a = ((s.start + s.length / 2) / ring) * Math.PI * 2;
-          return (
-            <text
-              key={s.leg.name}
-              x={Math.sin(a) * RADIUS}
-              y={-Math.cos(a) * RADIUS + 5}
-              textAnchor="middle"
-              className="fill-ink font-display text-[14px] uppercase"
-            >
-              {s.leg.name.length > 9
-                ? `${s.leg.name.slice(0, 8)}.`
-                : s.leg.name}
-            </text>
-          );
-        })}
-      </svg>
-      <div className="pointer-events-none absolute inset-0 grid place-items-center text-center">
-        <div>
-          <b className="num block text-[48px] leading-[0.9] sm:text-[60px]">
-            100%
-          </b>
-          <span className="font-serif text-[18px] italic opacity-85 sm:text-[22px]">
-            {props.center}
-          </span>
-          <span className="step-glow text-gold mt-1.5 block font-mono text-[11px] tracking-[0.12em] uppercase [--step-delay:1.4s]">
-            {props.marginLabel}
-          </span>
-        </div>
+    <div className="bg-card flex min-w-0 flex-1 flex-col rounded-lg border p-4">
+      <div className="flex items-center gap-2">
+        <span className="bg-muted tabular grid size-5 place-items-center rounded text-[11px] font-medium">
+          {props.n}
+        </span>
+        <span className="text-sm font-semibold">{props.title}</span>
       </div>
+      <p className="text-muted-foreground mt-1 text-xs">{props.note}</p>
+      <div className="mt-4 flex flex-1 flex-col justify-end">{props.children}</div>
     </div>
   );
 }
 
-function Column(props: {
-  title: string;
-  legs: Leg[];
-  value: (l: Leg) => number;
-  highlight?: boolean;
-  delay: string;
-}) {
+function Legs(props: { legs: Leg[]; value: (l: Leg) => number; foot: string }) {
   return (
     <div>
-      <h3 className="mb-3 font-mono text-[12px] tracking-[0.14em] uppercase opacity-75">
-        {props.title}
-      </h3>
-      {props.legs.map((l) => (
-        <div
-          key={l.name}
-          className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-3 border-t-[1.5px] border-[#f7f3ea]/35 py-3"
-        >
-          <span className="truncate text-[17px] font-semibold">{l.name}</span>
-          <b
+      <ul className="flex flex-col gap-1.5">
+        {props.legs.map((l) => (
+          <li
+            key={l.name}
             className={cn(
-              "num text-[44px] leading-none sm:text-[52px]",
-              props.highlight && l.picked && "text-gold",
+              "flex items-center justify-between gap-3 rounded px-2 py-1 text-sm",
+              l.picked && "bg-muted",
             )}
           >
-            {odds(props.value(l))}
-          </b>
-        </div>
-      ))}
+            <span className="truncate">{l.name}</span>
+            <span className="tabular flex gap-3">
+              <span className="text-muted-foreground w-14 text-right text-xs leading-5">
+                {prob(1 / props.value(l))}
+              </span>
+              <span className="w-10 text-right font-medium">{odds(props.value(l))}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p className="tabular text-muted-foreground mt-2 border-t pt-2 text-right text-xs">
+        {props.foot}
+      </p>
+    </div>
+  );
+}
+
+function Arrow() {
+  return (
+    <div aria-hidden className="text-muted-foreground grid shrink-0 place-items-center">
+      <Icon name="arrow-right" className="hidden size-4 lg:block" />
+      <Icon name="arrow-down" className="size-4 lg:hidden" />
     </div>
   );
 }
@@ -195,84 +115,53 @@ function Column(props: {
 export async function HowItWorks(props: { detail?: BetDetail }) {
   const t = await getTranslations("LANDING.HOW");
   const d = await diagramOf(props.detail);
-  const total = d.legs.reduce((a, l) => a + 1 / l.sharp, 0);
-  const steps = [t("STEP_1"), t("STEP_2"), t("STEP_3"), t("STEP_4")];
+  const overround = d.legs.reduce((a, l) => a + 1 / l.sharp, 0);
+  const picked = d.legs.find((l) => l.picked);
 
   return (
-    <Section id="how" band="pitch">
-      <svg
-        aria-hidden
-        viewBox="0 0 1440 900"
-        preserveAspectRatio="none"
-        className="pointer-events-none absolute inset-0 size-full opacity-10"
-      >
-        <g fill="none" stroke="#f7f3ea" strokeWidth="2">
-          <path d="M720 0V900" />
-          <circle cx="720" cy="450" r="160" />
-          <rect x="-2" y="250" width="180" height="400" />
-          <rect x="1262" y="250" width="180" height="400" />
-        </g>
-      </svg>
-      <div className={`${WRAP} relative`}>
-        <SectionHead
-          index={2}
-          band="pitch"
-          title={t("TITLE")}
-          line={t("LINE", { fixture: d.fixture })}
-          aside={d.sample ? <SampleTag>{t("SAMPLE")}</SampleTag> : undefined}
-        />
-        <ol className="mb-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {steps.map((s, i) => (
-            <li
-              key={s}
-              className="step-glow flex items-center gap-2.5 rounded-full border-[1.5px] border-[#f7f3ea]/50 px-3 py-2 font-mono text-[11px] tracking-[0.08em] uppercase sm:text-[12px]"
-              style={{ animationDelay: `${i * 1.4}s` }}
-            >
-              <span className="bg-chalk text-pitch num grid size-6 shrink-0 place-items-center rounded-full text-[14px]">
-                {i + 1}
-              </span>
-              <span className="truncate">{s}</span>
-            </li>
-          ))}
-        </ol>
-        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 lg:grid-cols-[1fr_400px_1fr]">
-          <Column
-            title={t("SHARP")}
+    <Section id="how">
+      <SectionHead
+        title={t("HEADING")}
+        line={t("SUB", { fixture: d.fixture })}
+        aside={d.sample ? <SampleTag>{t("SAMPLE")}</SampleTag> : undefined}
+      />
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-stretch">
+        <Step n={1} title={t("STEP_1")} note={t("STEP_1_NOTE")}>
+          <Legs
             legs={d.legs}
             value={(l) => l.sharp}
-            delay="0s"
+            foot={t("TOTAL", { total: prob(overround), margin: prob(overround - 1) })}
           />
-          <div className="md:order-first md:col-span-2 lg:order-none lg:col-span-1">
-            <Donut
-              legs={d.legs}
-              center={t("CENTER")}
-              marginLabel={t("MARGIN", { margin: prob(total - 1) })}
-            />
+        </Step>
+        <Arrow />
+        <Step n={2} title={t("STEP_2_NAME")} note={t("STEP_2_NOTE")}>
+          <Legs legs={d.legs} value={(l) => l.fair} foot={t("TOTAL_FAIR")} />
+        </Step>
+        <Arrow />
+        <Step n={3} title={t("STEP_4")} note={t("STEP_3_NOTE")}>
+          <div className="flex items-center gap-2 text-sm">
+            <VendorLogo vendorKey={d.book} size={20} className="rounded-sm" />
+            <span className="truncate font-medium">{bookName(d.book)}</span>
+            <span className="text-muted-foreground truncate">{picked?.name}</span>
           </div>
-          <Column
-            title={t("FAIR")}
-            legs={d.legs}
-            value={(l) => l.fair}
-            highlight
-            delay="2.8s"
-          />
-        </div>
-        <div className="bg-chalk text-ink mt-12 grid grid-cols-[auto_1fr] items-center gap-x-5 gap-y-2 rounded-[20px] px-5 py-5 sm:grid-cols-[auto_1fr_auto] sm:gap-x-7 sm:px-8">
-          <VendorLogo vendorKey={d.book} size={56} className="rounded-xl" />
-          <p className="font-serif text-[22px] leading-[1.1] italic sm:text-[30px]">
-            {t.rich("VERDICT", {
-              book: bookName(d.book),
-              price: odds(d.price),
-              fair: odds(d.fair),
-              b: (chunks) => (
-                <b className="num text-pitch not-italic">{chunks}</b>
-              ),
-            })}
+          <dl className="tabular mt-3 grid grid-cols-3 gap-2 text-center">
+            <div className="bg-muted rounded px-2 py-2">
+              <dt className="text-muted-foreground font-sans text-[11px]">{t("PRICE")}</dt>
+              <dd className="text-base font-semibold">{odds(d.price)}</dd>
+            </div>
+            <div className="bg-muted rounded px-2 py-2">
+              <dt className="text-muted-foreground font-sans text-[11px]">{t("FAIR_ODDS")}</dt>
+              <dd className="text-base">{odds(d.fair)}</dd>
+            </div>
+            <div className="bg-muted rounded px-2 py-2">
+              <dt className="text-muted-foreground font-sans text-[11px]">{t("EV")}</dt>
+              <dd className="text-success text-base font-semibold">{percent(d.ev)}</dd>
+            </div>
+          </dl>
+          <p className="text-muted-foreground mt-2 border-t pt-2 text-right text-xs">
+            {t("FORMULA")}
           </p>
-          <span className="num text-vermilion col-span-2 text-[64px] leading-[0.9] sm:col-span-1 sm:text-[84px]">
-            {percent(d.ev)}
-          </span>
-        </div>
+        </Step>
       </div>
     </Section>
   );
