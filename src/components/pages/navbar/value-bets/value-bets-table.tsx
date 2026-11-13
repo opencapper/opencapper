@@ -3,7 +3,8 @@
 import { ConfidenceBadge } from "@/components/elements/odds/confidence-badge";
 import { Ev } from "@/components/elements/odds/ev";
 import { PriceAge } from "@/components/elements/live/price-age";
-import { VendorLabel } from "@/components/elements/vendor/vendor-logo";
+import { VendorLabel, VendorLogo } from "@/components/elements/vendor/vendor-logo";
+import { cn } from "@/lib/utils";
 import { DataTable } from "@/components/elements/table/data-table";
 import { DataTableColumnHeader } from "@/components/elements/table/data-table-column-header";
 import { useRowFlash } from "@/hooks/live/use-row-flash-hook";
@@ -252,14 +253,57 @@ export function ValueBetsTable(props: {
   };
   const live = useRowFlash(props.groups, props.scope, keyOf, sigOf);
   return (
-    <DataTable
-      id="VALUE_BETS"
-      data={live.rows}
-      getRowId={keyOf}
-      rowClassName={(row) => live.flash(row.original.key)}
-      columns={columns(ctx)}
-      localSorting
-      emptyState={<span className="text-muted-foreground text-sm">{t("VALUE_BETS.EMPTY")}</span>}
-    />
+    <>
+      <div className="hidden md:block">
+        <DataTable
+          id="VALUE_BETS"
+          data={live.rows}
+          getRowId={keyOf}
+          rowClassName={(row) => live.flash(row.original.key)}
+          columns={columns(ctx)}
+          localSorting
+          emptyState={<span className="text-muted-foreground text-sm">{t("VALUE_BETS.EMPTY")}</span>}
+        />
+      </div>
+      <PhoneList rows={live.rows} flash={live.flash} ctx={ctx} />
+    </>
+  );
+}
+
+// Phones get two fixed lines per bet: EV always on the right, source and age always on the second line.
+function PhoneList(props: { rows: GroupedBet[]; flash: (key: string) => string | undefined; ctx: Ctx }) {
+  const t = props.ctx.t;
+  if (props.rows.length === 0)
+    return (
+      <p className="text-muted-foreground bg-card rounded-lg border px-4 py-10 text-center text-sm md:hidden">
+        {t("VALUE_BETS.EMPTY")}
+      </p>
+    );
+  return (
+    <ul className="bg-card overflow-hidden rounded-lg border md:hidden">
+      {props.rows.map((g) => {
+        const b = g.best;
+        return (
+          <li key={g.key} className={cn("border-b last:border-b-0", props.flash(g.key))}>
+            <Link href={`/value-bets/${encodeURIComponent(b.id)}`} className="flex flex-col gap-1 px-3 py-2.5">
+              <span className="flex items-center gap-2">
+                <VendorLogo vendorKey={b.book} size={18} className="rounded-sm" />
+                <span className="min-w-0 flex-1 truncate text-sm font-medium">
+                  {sideName(b, t)}
+                  <span className="text-muted-foreground font-normal"> {matchup(b.home, b.away, t)}</span>
+                </span>
+                <Ev value={b.ev} className="text-sm font-semibold" />
+              </span>
+              <span className="text-muted-foreground flex items-center gap-3 pl-[26px] text-xs">
+                <span className="tabular text-foreground font-medium">{odds(b.odds)}</span>
+                <span className="tabular">{t("LANDING.BOARD.FAIR_SHORT", { odds: odds(b.fair_odds) })}</span>
+                <span className="tabular truncate">{t("LANDING.BOARD.REF_PINNACLE", { odds: odds(b.sharp_odds) })}</span>
+                <PriceAge iso={b.book_seen_at} serverNow={props.ctx.now} className="ml-auto" />
+              </span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

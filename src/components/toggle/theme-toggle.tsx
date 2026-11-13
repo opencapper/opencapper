@@ -41,6 +41,7 @@ const MODE_LABEL = {
 export function ThemeSegments() {
   const t = useTranslations();
   const theme = useTheme();
+  const current = theme.theme ?? "system";
   return (
     <div
       role="radiogroup"
@@ -52,12 +53,12 @@ export function ThemeSegments() {
           key={mode}
           type="button"
           role="radio"
-          aria-checked={theme.theme === mode}
+          aria-checked={current === mode}
           onClick={() => theme.setTheme(mode)}
           className={cn(
             "inline-flex h-7 items-center gap-1.5 rounded-[5px] px-3 text-xs font-medium transition-colors",
-            theme.theme === mode
-              ? "bg-background text-foreground shadow-xs"
+            current === mode
+              ? "bg-background text-foreground ring-border shadow-xs ring-1"
               : "text-muted-foreground hover:text-foreground",
           )}
         >
