@@ -1,6 +1,7 @@
 "use client";
 
 import { LiveStatusBadge } from "@/components/elements/live/live-status";
+import { PriceAge } from "@/components/elements/live/price-age";
 import { TickCell } from "@/components/elements/live/tick-cell";
 import { LeagueLabel } from "@/components/elements/flag/league-label";
 import { Chip, FilterRow } from "@/components/elements/odds/filter-chips";
@@ -12,7 +13,7 @@ import { PageShell } from "@/components/elements/page/page-shell";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
 import type { Arb } from "@/lib/api/client";
-import { ago, kickoff, marketName, money, odds, percent, query, sideName, until } from "@/lib/format";
+import { kickoff, marketName, money, odds, percent, query, sideName, until } from "@/lib/format";
 import { useLiveQuery, useNow } from "@/hooks/live/use-live-query-hook";
 import { useRowFlash } from "@/hooks/live/use-row-flash-hook";
 import { applyArbs } from "@/lib/live/apply";
@@ -116,8 +117,8 @@ export function Arbs(props: { data?: Arb[]; all: boolean; now: number }) {
                         <td className="tabular px-4 py-2 text-right" title={ta("STAKE_HINT")}>
                           {(l.stake_share * TOTAL).toFixed(2)}
                         </td>
-                        <td className="tabular text-muted-foreground px-4 py-2 text-right text-[11px] whitespace-nowrap">
-                          {ago(l.seen_at, now, locale)}
+                        <td className="px-4 py-2 text-right">
+                          <PriceAge iso={l.seen_at} serverNow={props.now} />
                         </td>
                       </tr>
                     ))}

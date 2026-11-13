@@ -1,3 +1,4 @@
+import { PriceAge } from "@/components/elements/live/price-age";
 import { TickCell } from "@/components/elements/live/tick-cell";
 import { VendorLabel, VendorLogo } from "@/components/elements/vendor/vendor-logo";
 import { Link } from "@/i18n/navigation";
@@ -37,6 +38,11 @@ export function MarketTable(props: {
   const t = useTranslations();
   const locale = useLocale();
   const m = props.market;
+  const sharpSeen = m.outcomes
+    .map((o) => o.sharp?.seen_at)
+    .filter((x): x is string => !!x)
+    .sort()
+    .at(-1);
   const books = [
     ...new Set(m.outcomes.flatMap((o) => o.prices.map((p) => p.book))),
   ].sort();
@@ -50,7 +56,7 @@ export function MarketTable(props: {
                 {marketName({ market: m.kind, period: m.period, line: m.line }, t)}
               </th>
               <th className={HEAD}>{t("ODDS.FAIR")}</th>
-              <th className={cn(HEAD, "text-warning")}>
+              <th className={cn(HEAD, "text-foreground")}>
                 <span className="inline-flex items-center gap-1.5">
                   <VendorLogo vendorKey="pinnacle" size={14} />
                   {t("ODDS.PINNACLE")}
@@ -80,7 +86,7 @@ export function MarketTable(props: {
                   >
                     {o.fair_odds ? odds(o.fair_odds) : <span className="text-muted-foreground">{t("FORMAT.NA")}</span>}
                   </td>
-                  <TickCell value={o.sharp ? Number(o.sharp.odds) : 0} className="tabular text-warning px-3 py-2 text-right">
+                  <TickCell value={o.sharp ? Number(o.sharp.odds) : 0} className="tabular text-foreground px-3 py-2 text-right font-medium">
                     {o.sharp ? odds(o.sharp.odds) : <span className="text-muted-foreground">{t("FORMAT.NA")}</span>}
                   </TickCell>
                   {books.map((b) => {
@@ -137,13 +143,18 @@ export function MarketTable(props: {
         </table>
       </div>
       {m.sharp_overround !== null && m.sharp_overround !== undefined && (
-        <div className="text-muted-foreground border-t px-3 py-1.5 text-[11px]">
-          {m.sharp_max_stake
-            ? t("ODDS.MARGIN_STAKE", {
-                margin: percent(m.sharp_overround),
-                stake: count(Number(m.sharp_max_stake), locale),
-              })
-            : t("ODDS.MARGIN", { margin: percent(m.sharp_overround) })}
+        <div className="text-muted-foreground flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t px-3 py-1.5 text-[11px]">
+          <span>
+            {m.sharp_max_stake
+              ? t("ODDS.MARGIN_STAKE", {
+                  margin: percent(m.sharp_overround),
+                  stake: count(Number(m.sharp_max_stake), locale),
+                })
+              : t("ODDS.MARGIN", { margin: percent(m.sharp_overround) })}
+          </span>
+          {sharpSeen && (
+            <PriceAge iso={sharpSeen} serverNow={props.now} prefix={t("ODDS.PINNACLE")} className="text-[11px]" />
+          )}
         </div>
       )}
     </div>

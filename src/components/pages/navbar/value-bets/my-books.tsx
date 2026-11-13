@@ -19,7 +19,7 @@ export function MyBooks(props: {
   books: string[];
   selected: string[];
   settings?: Settings;
-  mode: "prompt" | "edit";
+  mode: "prompt" | "edit" | "settings";
   onDone?: () => void;
 }) {
   const t = useTranslations();
@@ -82,11 +82,11 @@ export function MyBooks(props: {
           >
             {t("VALUE_BETS.MY_BOOKS_SKIP")}
           </Button>
-        ) : (
+        ) : props.mode === "edit" ? (
           <Button size="sm" variant="ghost" onClick={props.onDone}>
             {t("VALUE_BETS.MY_BOOKS_CANCEL")}
           </Button>
-        )}
+        ) : null}
         {picked[0].length === 0 && (
           <span className="text-muted-foreground text-xs">{t("VALUE_BETS.MY_BOOKS_NONE")}</span>
         )}

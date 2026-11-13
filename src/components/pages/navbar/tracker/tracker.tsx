@@ -117,6 +117,23 @@ export function Tracker(props: {
     <TrackerShell active="/tracker">
       <StatGrid className="sm:grid-cols-4 lg:grid-cols-7">
         <StatCard
+          icon="chart-line"
+          label={tt("KPI_CLV")}
+          value={s.avg_clv === null || s.avg_clv === undefined ? t("FORMAT.NA") : percent(s.avg_clv)}
+          tone={s.avg_clv ? (s.avg_clv > 0 ? "win" : "bad") : undefined}
+          hint={tt("KPI_CLV_HINT")}
+        />
+        <StatCard
+          icon="shield-check"
+          label={tt("KPI_BEAT")}
+          value={
+            s.beat_close_share === null || s.beat_close_share === undefined
+              ? t("FORMAT.NA")
+              : `${Math.round(s.beat_close_share * 100)}%`
+          }
+          hint={tt("KPI_BEAT_HINT", { closed: String(s.closed) })}
+        />
+        <StatCard
           icon="hash"
           label={tt("KPI_BETS")}
           value={count(s.bets, locale)}
@@ -144,23 +161,6 @@ export function Tracker(props: {
           icon="target"
           label={tt("KPI_EV")}
           value={s.avg_ev_at_bet === null || s.avg_ev_at_bet === undefined ? t("FORMAT.NA") : percent(s.avg_ev_at_bet)}
-        />
-        <StatCard
-          icon="chart-line"
-          label={tt("KPI_CLV")}
-          value={s.avg_clv === null || s.avg_clv === undefined ? t("FORMAT.NA") : percent(s.avg_clv)}
-          tone={s.avg_clv ? (s.avg_clv > 0 ? "win" : "bad") : undefined}
-          hint={tt("KPI_CLV_HINT")}
-        />
-        <StatCard
-          icon="shield-check"
-          label={tt("KPI_BEAT")}
-          value={
-            s.beat_close_share === null || s.beat_close_share === undefined
-              ? t("FORMAT.NA")
-              : `${Math.round(s.beat_close_share * 100)}%`
-          }
-          hint={tt("KPI_BEAT_HINT", { closed: String(s.closed) })}
         />
       </StatGrid>
 

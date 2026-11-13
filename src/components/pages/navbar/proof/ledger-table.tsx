@@ -46,10 +46,12 @@ function columns(t: Translate, locale: string): ColumnDef<TableFeats, LedgerEntr
       cell: (ctx) => {
         const e = ctx.row.original;
         return (
-          <div className="min-w-48">
-            <div>{sideName(e, t)}</div>
-            <div className="text-muted-foreground text-[11px]">{marketName(e, t)}</div>
-            <Matchup event={e} size="xs" className="text-muted-foreground mt-1 text-[11px]" />
+          <div className="max-w-[280px] min-w-44">
+            <div className="truncate font-medium">
+              {sideName(e, t)}
+              <span className="text-muted-foreground font-normal"> {marketName(e, t)}</span>
+            </div>
+            <Matchup event={e} size="xs" className="text-muted-foreground text-xs" />
           </div>
         );
       },

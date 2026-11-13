@@ -87,15 +87,6 @@ export function Proof(props: { data?: LedgerView }) {
       </div>
       {view[0] === "clv" ? (
         <StatGrid className="sm:grid-cols-5">
-          <StatCard icon="shield-check" label={tp("STAT_ALERTS")} value={count(s.alerts, locale)} />
-          <StatCard icon="clock" label={tp("STAT_OPEN")} value={count(s.open, locale)} />
-          <StatCard icon="circle-check" label={tp("STAT_CLOSED")} value={count(s.closed, locale)} />
-          <StatCard
-            icon="target"
-            label={tp("STAT_BEAT")}
-            value={beat === undefined ? t("FORMAT.NA") : `${(beat * 100).toFixed(0)}%`}
-            tone={beat === undefined ? undefined : beat >= 0.5 ? "win" : "bad"}
-          />
           <StatCard
             icon="trending-up"
             label={tp("STAT_CLV")}
@@ -103,6 +94,15 @@ export function Proof(props: { data?: LedgerView }) {
             tone={clv ? (clv > 0 ? "win" : "bad") : undefined}
             hint={tp("CLV_HINT")}
           />
+          <StatCard
+            icon="target"
+            label={tp("STAT_BEAT")}
+            value={beat === undefined ? t("FORMAT.NA") : `${(beat * 100).toFixed(0)}%`}
+            tone={beat === undefined ? undefined : beat >= 0.5 ? "win" : "bad"}
+          />
+          <StatCard icon="shield-check" label={tp("STAT_ALERTS")} value={count(s.alerts, locale)} />
+          <StatCard icon="clock" label={tp("STAT_OPEN")} value={count(s.open, locale)} />
+          <StatCard icon="circle-check" label={tp("STAT_CLOSED")} value={count(s.closed, locale)} />
         </StatGrid>
       ) : (
         <ResultStats stats={s} />

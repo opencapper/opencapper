@@ -74,10 +74,12 @@ function columns(c: Ctx): ColumnDef<TableFeats, Bet>[] {
       cell: (ctx) => {
         const b = ctx.row.original;
         return (
-          <div className="min-w-44">
-            <div>{sideName(b, t)}</div>
-            <div className="text-muted-foreground text-[11px]">{marketName(b, t)}</div>
-            <Matchup event={b} size="xs" className="text-muted-foreground mt-1 text-[11px]" />
+          <div className="max-w-[280px] min-w-44">
+            <div className="truncate font-medium">
+              {sideName(b, t)}
+              <span className="text-muted-foreground font-normal"> {marketName(b, t)}</span>
+            </div>
+            <Matchup event={b} size="xs" className="text-muted-foreground text-xs" />
           </div>
         );
       },

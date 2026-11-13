@@ -1,6 +1,7 @@
 "use client";
 
 import { LiveStatusBadge } from "@/components/elements/live/live-status";
+import { PriceAge } from "@/components/elements/live/price-age";
 import { TickText } from "@/components/elements/live/tick-cell";
 import { ConfidenceBadge } from "@/components/elements/odds/confidence-badge";
 import { Ev } from "@/components/elements/odds/ev";
@@ -20,15 +21,16 @@ import { Link } from "@/i18n/navigation";
 import type { BetDetail } from "@/lib/api/client";
 import { TrackBet } from "@/components/elements/account/track-bet";
 import { bookName } from "@/lib/config/vendor-registry";
-import { ago, count, DEFAULT_PLAN, feeOf, kickoff, marketName, netOdds, odds, percent, prob, sideName, until, type BookFee, type StakePlan } from "@/lib/format";
+import { ago, count, DEFAULT_PLAN, feeOf, kickoff, marketName, netOdds, odds, oddsOf, percent, prob, sideName, until, type BookFee, type StakePlan } from "@/lib/format";
 import { useLiveQuery, useNow } from "@/hooks/live/use-live-query-hook";
 import { applyBet, betNeedsReload } from "@/lib/live/apply";
 import { fetchBet } from "@/lib/live/actions";
 import { queryKeys } from "@/lib/react-query/keys";
 import { useLocale, useTranslations } from "next-intl";
 
-const BOOK_COLOR = "#ff4b1f";
-const SHARP_COLOR = "#2e9d5b";
+// Blue for the book you would bet, grey for the reference: green stays reserved for value.
+const BOOK_COLOR = "var(--chart-1)";
+const SHARP_COLOR = "var(--chart-3)";
 
 const METHODS = [
   { key: "power", label: "METHOD_POWER", note: "METHOD_POWER_NOTE" },
@@ -141,8 +143,26 @@ export function BetDetailView(props: { id: string; data?: BetDetail; fees: BookF
           tone={b.ev_conservative > 0 ? "win" : "warn"}
           hint={tb("SAFE_HINT")}
         />
-        <StatCard label={tb("STAT_ODDS")} value={<TickText value={Number(b.odds)}>{odds(b.odds)}</TickText>} />
-        <StatCard label={tb("STAT_FAIR")} value={<TickText value={Number(b.fair_odds)}>{odds(b.fair_odds)}</TickText>} />
+        <StatCard
+          label={tb("STAT_ODDS")}
+          value={<TickText value={Number(b.odds)}>{odds(b.odds)}</TickText>}
+          note={<PriceAge iso={b.book_seen_at} serverNow={props.now} prefix={book} />}
+        />
+        <StatCard
+          label={tb("STAT_FAIR")}
+          value={<TickText value={Number(b.fair_odds)}>{odds(b.fair_odds)}</TickText>}
+          note={
+            <PriceAge
+              iso={b.sharp_seen_at}
+              serverNow={props.now}
+              prefix={
+                b.exchange_probability
+                  ? `${t("LANDING.BOARD.REF_PINNACLE", { odds: odds(b.sharp_odds) })}, ${t("LANDING.BOARD.REF_EXCHANGE", { odds: oddsOf(b.exchange_probability) })}`
+                  : t("LANDING.BOARD.REF_PINNACLE", { odds: odds(b.sharp_odds) })
+              }
+            />
+          }
+        />
         <StatCard label={tb("STAT_CONFIDENCE")} value={<ConfidenceBadge value={b.confidence} />} />
       </StatGrid>
 

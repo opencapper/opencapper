@@ -1,5 +1,5 @@
 import { Providers } from "@/components/provider/providers";
-import { Toaster } from "@/components/ui/sonner";
+import { LazyToaster } from "@/components/ui/lazy-toaster";
 import { APP_VALUES } from "@/lib/config/constants";
 import { env } from "@/lib/config/env";
 import { fontVariables } from "@/lib/config/fonts";
@@ -55,7 +55,7 @@ export default async function LocaleLayout(props: Props) {
       >
         <NextIntlClientProvider>
           <Providers>
-            <Toaster />
+            <LazyToaster />
             {props.children}
           </Providers>
         </NextIntlClientProvider>
