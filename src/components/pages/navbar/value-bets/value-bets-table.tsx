@@ -74,7 +74,7 @@ function columns(c: Ctx): ColumnDef<TableFeats, GroupedBet>[] {
       cell: (ctx) => {
         const b = ctx.row.original.best;
         return (
-          <div className="max-w-[300px] min-w-44">
+          <div className="max-w-[250px] min-w-40">
             <Link
               href={`/value-bets/${encodeURIComponent(b.id)}`}
               className="block truncate font-medium underline-offset-4 hover:underline"

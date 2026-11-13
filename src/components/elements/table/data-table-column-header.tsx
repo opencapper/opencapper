@@ -41,7 +41,7 @@ export function DataTableColumnHeader<TData extends RowData, TValue>(
             <Button
               variant="ghost"
               size="sm"
-              className="data-popup-open:bg-accent text-muted-foreground hover:text-foreground -ml-2 h-7 border-0 px-2 text-[11px] font-medium tracking-[0.04em] uppercase"
+              className="data-popup-open:bg-accent text-muted-foreground hover:text-foreground -ml-1.5 h-7 gap-0.5 border-0 px-1.5 text-[11px] font-medium tracking-[0.04em] uppercase"
             />
           }
         >
@@ -54,7 +54,7 @@ export function DataTableColumnHeader<TData extends RowData, TValue>(
                   ? "arrow-up"
                   : "arrow-up-down"
             }
-            className={cn("ml-1.5 h-3.5 w-3.5", !sorted && "opacity-40")}
+            className={cn("size-3", !sorted && "opacity-40")}
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-auto">
